@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
-import { DropDownIcon } from "../../../components/icons";
+import { DropDownIcon } from "../../../common/icons";
 
 const CardItem = ({item, index}) =>{
     const [status, setStatus] = useState(null)
