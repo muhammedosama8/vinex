@@ -1,0 +1,121 @@
+import React from 'react'
+/// React router dom
+import {Routes, Route, Outlet } from 'react-router-dom'
+/// Css
+import './index.css'
+import './chart.css'
+import './step.css'
+
+/// Layout
+import Nav from './layouts/nav'
+import Footer from './layouts/Footer'
+
+
+/// Pages
+import Registration from './pages/Registration'
+import Login from './pages/Authintication/Login'
+import Error404 from './pages/Error404'
+
+//Scroll To Top
+import ScrollToTop from './layouts/ScrollToTop';
+import Categories from './pages/Categories/Categories'
+import SubCategories from './pages/Categories/SubCategories'
+import Products from './pages/Products'
+import AddProducts from './pages/Products/AddProducts'
+import Variant from './pages/Variant'
+import AddVariant from './pages/Variant/AddVariant'
+import Admins from './pages/Admin'
+import AddAdmin from './pages/Admin/AddAdmin'
+import Banners from './pages/Banners'
+import Users from './pages/Users'
+import PromCodes from './pages/PromoCodes'
+import AddPromoCodes from './pages/PromoCodes/AddPromoCodes'
+import Orders from './pages/Orders'
+import Home from './pages/Dashboard'
+
+
+const Markup = () => {
+  // let path = window.location.pathname
+  // path = path.split('/')
+  // path = path[path.length - 1]
+  // let pagePath = path.split('-').includes('page')
+  // const [activeEvent, setActiveEvent] = useState(!path)
+
+  const allroutes = [
+    /// Dashboard
+    { url: "", component: <Home/> },
+    { url: "dashboard", component: <Home/> },
+    
+
+    /// pages
+    { url: 'page-register', component: <Registration/> },
+    { url: 'page-login', component: <Login/> },
+
+    // Admins
+    { url: 'admins', component: <Admins /> },
+    { url: 'admins/add-admins', component: <AddAdmin /> },
+
+    // Users
+    { url: 'users', component: <Users /> },
+
+    // Promo Codes
+    { url: 'promo-codes', component: <PromCodes /> },
+    { url: 'promo-codes/add-promo-codes', component: <AddPromoCodes /> },
+
+    // Banners
+    { url: 'banners', component: <Banners /> },
+
+    // Orders
+    { url: 'orders', component: <Orders /> },
+
+    // Products
+    { url: 'products', component: <Products /> },
+    { url: 'products/add-products', component: <AddProducts /> },
+
+    // Variant
+    { url: 'variant', component: <Variant /> },
+    { url: 'variant/add-variant', component: <AddVariant /> },
+
+    // Categories
+    {url: 'categories', component: <Categories />},
+    {url: 'sub-categories', component: <SubCategories />}
+  ]
+
+  return (
+       <> 
+         <Routes>
+          <Route path='page-error-404' element={<Error404/>} />
+            <Route  element={<MainLayout />} > 
+                {allroutes.map((data, i) => (
+                  <Route
+                      key={i}
+                      exact
+                      path={`${data.url}`}
+                      element={data.component}
+                    />
+                ))}
+            </Route>
+          </Routes>
+          <ScrollToTop />
+       </>
+  )
+}
+
+function MainLayout(){  
+  return (
+    <div id="main-wrapper" 
+        className={`show `}
+      >  
+        <Nav />
+        <div className="content-body" style={{ minHeight: window.screen.height - 45 }}>
+          <div className="container-fluid">
+            <Outlet />                
+          </div>
+        </div>
+      <Footer />
+    </div>
+  )
+
+};
+
+export default Markup

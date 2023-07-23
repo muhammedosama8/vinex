@@ -1,0 +1,31 @@
+.image-placeholder{
+    max-width: 100% !important;
+
+    .avatar-preview{
+        width: 100% !important;
+        height: 25rem !important;
+        background-color: #CCCCCC !important;
+
+        img{
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+        }
+    }
+    .imagePreview{
+        border: 2px dashed rgb(202, 223, 247);
+        background: rgb(243, 243, 249);
+        border-radius: 10px;
+    }
+    .avatar-edit{
+        opacity: 0!important;
+        left: 0!important;
+        width: 100%!important;
+        height: 100%!important;
+
+        input + label:after{
+            height: 100%!important;
+        }
+    }
+}

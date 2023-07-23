@@ -1,0 +1,65 @@
+import { useEffect, useState } from "react";
+import { Button, Card, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import CardItem from "./CardItem";
+import './style.scss'
+
+const Variant = () =>{
+    const [variant, setVariant] = useState([])
+    const navigate = useNavigate()
+
+    useEffect(()=>{
+        let variant =[
+          {id: 1, name: 'mu', status: true},
+          {id: 2, name: 'os', status: false},
+          {id: 3, name: 'fa', status: true},
+          {id: 4, name: 'na', status: false},
+        ]
+        setVariant([...variant])
+      },[])
+
+    return(
+        <>
+          <div className="d-flex justify-content-between align-items-center mb-3 ">
+            <div className="input-group w-50">
+              <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '26px 16px'}} className="form-control" placeholder="Search by I.D, Name" />
+              <div className="flaticon-381-search-2"
+                style={{position: 'absolute', right: '16px', top: '50%', transform: 'translate(0, -50%)'}}
+              ></div>
+            </div>
+            <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/variant/add-variant')}>
+              Add Variant
+          </Button>
+          </div>
+        <Card>
+            <Card.Body>
+              <Table responsive>
+                <thead>
+                  <tr className='text-center'>
+                    <th>
+                      <strong>I.D</strong>
+                    </th>
+                    <th>
+                      <strong>Name</strong>
+                    </th>
+                    <th>
+                      <strong>STATUS</strong>
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {variant?.map((item, index)=>{
+                    return <CardItem 
+                    index= {index}
+                    item={item}
+                    />
+                  })}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        </>
+    )
+}
+export default Variant;
