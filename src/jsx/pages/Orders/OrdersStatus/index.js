@@ -32,7 +32,7 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
             <Modal.Body>
                 <div className="mt-2 mb-2">
                     {Orders?.map((order,index)=>{
-                        return <div>
+                        return <div key={index}>
                             <input 
                                 type='radio'
                                 name='orders'

@@ -81,7 +81,7 @@ const AddProducts = () => {
         <form onSubmit={submit} className='add-product'>
             <div className="row">
             <div className="col-lg-6 mb-3">
-                    <label className="text-label">English Name*</label>
+                    <label className="text-label">English Title*</label>
                     <input
                         type="text"
                         name="en"
@@ -93,7 +93,7 @@ const AddProducts = () => {
                     />
             </div>
             <div className="col-lg-6 mb-3">
-                    <label className="text-label">Arabic Name</label>
+                    <label className="text-label">Arabic Title</label>
                     <input
                         type="text"
                         name="ar"
@@ -103,6 +103,38 @@ const AddProducts = () => {
                         value={product.ar}
                         onChange={(e)=> handlerText(e)}
                     />
+            </div>
+            <div className="col-lg-6 mb-3">
+                    <label className="text-label">English Description</label>
+                    <textarea  
+                        name="desc_en" 
+                        style={{
+                            minHeight: '80px',
+                            maxHeight: '150px',
+                            height: '150px'
+                        }}
+                        className="form-control"
+                        placeholder="Enter Description"
+                        value={product.desc_en}
+                        onChange={(e)=> handlerText(e)}
+                        rows="6" >
+                    </textarea>
+            </div>
+            <div className="col-lg-6 mb-3">
+                    <label className="text-label">Arabic Description</label>
+                    <textarea  
+                        name="desc_ar" 
+                        style={{
+                            minHeight: '80px',
+                            maxHeight: '150px',
+                            height: '150px'
+                        }}
+                        className="form-control"
+                        placeholder="Enter Description"
+                        value={product.desc_ar}
+                        onChange={(e)=> handlerText(e)}
+                        rows="6" >
+                    </textarea>
             </div>
             <div className="col-lg-6 mb-3">
                     <label className="text-label">Category</label>
@@ -140,41 +172,9 @@ const AddProducts = () => {
                     />
                 </div>
             </div>
-            <div className="col-lg-12 mb-3">
-                    <label className="text-label">English Description</label>
-                    <textarea  
-                        name="desc_en" 
-                        style={{
-                            minHeight: '80px',
-                            maxHeight: '150px',
-                            height: '150px'
-                        }}
-                        className="form-control"
-                        placeholder="Enter Description"
-                        value={product.desc_en}
-                        onChange={(e)=> handlerText(e)}
-                        rows="6" >
-                    </textarea>
-            </div>
-            <div className="col-lg-12 mb-3">
-                    <label className="text-label">Arabic Description</label>
-                    <textarea  
-                        name="desc_ar" 
-                        style={{
-                            minHeight: '80px',
-                            maxHeight: '150px',
-                            height: '150px'
-                        }}
-                        className="form-control"
-                        placeholder="Enter Description"
-                        value={product.desc_ar}
-                        onChange={(e)=> handlerText(e)}
-                        rows="6" >
-                    </textarea>
-            </div>
-
+            <div className="col-lg-6 mb-2"></div>
             {product?.images?.map((data, index)=>{
-                    return <Col md={3} className='mb-3'>
+                    return <Col md={3} className='mb-3 mt-3' key={index}>
                         <h4 style={{marginLeft: '8px'}}>Image {index+1}</h4>
                         <div className="image-placeholder">	
                             <div className="avatar-edit">

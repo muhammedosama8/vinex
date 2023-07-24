@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Badge, Dropdown } from "react-bootstrap";
+import DeleteModal from "../../../common/DeleteModal";
 import { DropDownIcon } from "../../../common/icons";
 
 const CardItem = ({item, index, setModal, setItem}) =>{
     const [status, setStatus] = useState(null)
+    const [deleteModal, setDeleteModal] = useState(false)
 
     useEffect(()=>{
         setStatus(item.status)
@@ -18,9 +20,7 @@ const CardItem = ({item, index, setModal, setItem}) =>{
         <tr key={index} className='text-center'>
                     <td>
                       <strong>{item.id}</strong>
-                    </td>
-                    <td>{item.delivery_date}</td>
-                    
+                    </td>                    
                     <td>{item.customer_name}</td>
                     <td>{item.customer_email}</td>
                     <td>{item.customer_phone}</td>
@@ -48,10 +48,17 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           {/* <Dropdown.Item>Edit</Dropdown.Item> */}
-                          <Dropdown.Item>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
                     </td>
+                    {deleteModal && <DeleteModal
+                      open={deleteModal}
+                      titleMsg={item.customer_name}
+                      deletedItem={item.id}
+                      // modelService={}
+                      onCloseModal={setDeleteModal}
+                    />}
                   </tr>
     )
 }

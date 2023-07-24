@@ -110,7 +110,7 @@ const AddAdmin = () => {
                               })
                            }}
                         />
-                        <label className="ml-2" for={rule.value}> {rule.label} </label>
+                        <label className="ml-2" htmlFor={rule.value}> {rule.label} </label>
                      </div>
                   })}
                </div>

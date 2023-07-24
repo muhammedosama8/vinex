@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import DeleteModal from "../../../common/DeleteModal";
 import { DropDownIcon } from "../../../common/icons";
 
 const CardItem = ({item, index}) =>{
     const [status, setStatus] = useState(null)
+    const [deleteModal, setDeleteModal] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(()=>{
         setStatus(item.status)
@@ -40,11 +44,18 @@ const CardItem = ({item, index}) =>{
                           {DropDownIcon}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item>Edit</Dropdown.Item>
-                          <Dropdown.Item>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> navigate(`/admins/edit-admin/${item.id}`)}>Edit</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
                     </td>
+                    {deleteModal && <DeleteModal
+                      open={deleteModal}
+                      titleMsg={item.name}
+                      deletedItem={item.id}
+                      // modelService={}
+                      onCloseModal={setDeleteModal}
+                    />}
                   </tr>
     )
 }

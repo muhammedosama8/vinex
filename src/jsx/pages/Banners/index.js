@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import uploadImg from '../../../images/upload-img.webp';
 import './style.scss'
 
@@ -50,9 +50,11 @@ const Banners = () =>{
 
     }
     return(<>
-        <Row>
+        
             {formData?.map((data, index)=>{
-                return <Col md={12} className='mb-3'>
+                return <Card className="p-4" key={index}>
+                    <Row>
+                    <Col md={12}>
                     <h4>Banner {index+1}</h4>
                     <div className="image-placeholder">	
                         <div className="avatar-edit">
@@ -71,8 +73,8 @@ const Banners = () =>{
                             </div>
                         </div>
                     </div>
-                    <div className='form-row mt-3 mb-4'>
-                        <div className='form-group w-100 d-flex align-items-center'>
+                    <div className='form-row mt-3'>
+                        <div className='form-group w-100 d-flex align-items-center m-0'>
                             <label style={{width: '65px'}} className='m-0'>Link {index+1}:</label>
                             <input
                                 type='text'
@@ -98,9 +100,10 @@ const Banners = () =>{
                             />
                         </div>
                     </div>
-            </Col>
-            })}
-		</Row>
+                    </Col>
+                    </Row>
+                </Card>
+                })}
         <div className="d-flex     justify-content-end">
             <Button 
                 variant="primary" 

@@ -25,7 +25,7 @@ const Categories = () => {
     <Fragment>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div className="input-group w-50">
-            <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '26px 16px'}} className="form-control" placeholder="Search by I.D, Name" />
+            <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '18px 16px'}} className="form-control" placeholder="Search by I.D, Name" />
             <div className="flaticon-381-search-2"
               style={{position: 'absolute', right: '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
@@ -60,6 +60,7 @@ const Categories = () => {
                     {items?.map((item, index) =>{
                         return <CardItem 
                             index= {index}
+                            key= {index}
                             item={item}
                             setItem={setItem}
                             setAddModal={setAddModal}

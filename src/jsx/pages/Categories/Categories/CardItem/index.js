@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
+import DeleteModal from "../../../../common/DeleteModal";
 import { DropDownIcon } from "../../../../common/icons";
 
 const CardItem = ({item, setItem, index, setAddModal}) =>{
     const [status, setStatus] = useState(null)
+    const [deleteModal, setDeleteModal] = useState(false)
 
     useEffect(()=>{
         setStatus(item.status)
@@ -40,10 +42,17 @@ const CardItem = ({item, setItem, index, setAddModal}) =>{
                             setItem(item)
                             setAddModal(true)
                         }}> Edit</Dropdown.Item>
-                        <Dropdown.Item>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </td>
+            {deleteModal && <DeleteModal
+                      open={deleteModal}
+                      titleMsg={item.name}
+                      deletedItem={item.id}
+                      // modelService={}
+                      onCloseModal={setDeleteModal}
+                    />}
             </tr>
     )
 }

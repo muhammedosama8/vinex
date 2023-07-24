@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Select from 'react-select'
 import { InputTags } from "react-bootstrap-tagsinput";
@@ -89,7 +89,7 @@ const AddVariant = ()=>{
             </div>
             {console.log(formData)}
             {!!formData.variant?.length && formData.variant?.map((item, itemIndex)=>(
-               <Col md={12} className='mb-3'>
+               <Col md={12} className='mb-3' key={itemIndex}>
                   <Row>
                      <Col lg={3} md={3}>
                         <div className="form-group">
@@ -98,7 +98,7 @@ const AddVariant = ()=>{
                         </div>
                      </Col>
                      {item?.values?.map((res, index)=>{
-                        return <>
+                        return <React.Fragment key={index}>
                            {index > 0 && <Col lg={3} md={3}></Col>}
                            <Col lg={4} md={4}>
                               <div className="form-group">
@@ -150,7 +150,7 @@ const AddVariant = ()=>{
                                  <i className="la la-times"></i>
                               </button>}
                            </Col>
-                        </>
+                        </React.Fragment>
                      })}
                      <Col md={12} className='d-flex justify-content-end'>
                         <button 

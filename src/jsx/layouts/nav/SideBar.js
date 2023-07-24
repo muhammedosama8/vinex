@@ -102,11 +102,9 @@ const SideBar = (props) => {
                                                         <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
                                                           {data.content && data.content.map((data,index) => {
                                                             return(	
-                                                              <>
                                                                 <li key={index}>
                                                                   <Link className={`${path === data.to ? "mm-active" : ""}`} to={data.to}>{data.title}</Link>
                                                                 </li>
-                                                              </>
                                                             )
                                                           })}
                                                         </ul>

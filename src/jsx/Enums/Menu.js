@@ -356,6 +356,13 @@ export const MenuList = [
         iconStyle: <i className='la la-user-shield'></i>,
         to: 'admins',
     },
+    //Rules
+    {   
+        title:'Rules',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className='la la-shield'></i>,
+        to: 'rules',
+    },
     //Users
     {   
         title:'Users',
@@ -363,12 +370,19 @@ export const MenuList = [
         iconStyle: <i className='la la-users'></i>,
         to: 'users',
     },
-    //Products
+    //Categories
     {   
-        title:'Products',
+        title:'Categories',
         classsChange: 'mm-collapse',
-        iconStyle: <i className="flaticon-381-notepad" />,
-        to: 'products',
+        iconStyle: <i className='la la-cubes'></i>,
+        to: 'categories',
+    },
+    //SubCategories
+    {   
+        title:'SubCategories',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className='la la-cube'></i>,
+        to: 'sub-categories',
     },
     //Variant
     {   
@@ -377,6 +391,13 @@ export const MenuList = [
         iconStyle: <i className="la la-slack" />,
         to: 'variant',
     },
+    //Products
+    {   
+        title:'Products',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className="flaticon-381-notepad" />,
+        to: 'products',
+    },
     //Orders
     {   
         title:'Orders',
@@ -384,35 +405,35 @@ export const MenuList = [
         iconStyle: <i className='la la-truck'></i>,
         to: 'orders',
     },
-    // //Banners
-    // {   
-    //     title:'Banners',
-    //     classsChange: 'mm-collapse',
-    //     iconStyle: <i className="flaticon-381-television" />,
-    //     to: 'banners',
-    // },
-    // //Promo Codes
-    // {   
-    //     title:'Promo Codes',
-    //     classsChange: 'mm-collapse',
-    //     iconStyle: <i className='la la-dollar'></i>,
-    //     to: 'promo-codes',
-    // },
-    //Categories
-    {
-        title:'Categories',
+    //Banners
+    {   
+        title:'Banners',
         classsChange: 'mm-collapse',
-        iconStyle: <i className='la la-cubes'></i>,
-        content : [
-            {
-                title:'Categories',
-                to: 'categories',
-            },
-            {
-                title:'SubCategories',
-                to: 'sub-categories',
-            },
-        ]
+        iconStyle: <i className="flaticon-381-television" />,
+        to: 'banners',
     },
+    //Promo Codes
+    {   
+        title:'Promo Codes',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className='la la-dollar'></i>,
+        to: 'promo-codes',
+    },
+    //Categories
+    // {
+    //     title:'Categories',
+    //     classsChange: 'mm-collapse',
+    //     iconStyle: <i className='la la-cubes'></i>,
+    //     content : [
+    //         {
+    //             title:'Categories',
+    //             to: 'categories',
+    //         },
+    //         {
+    //             title:'SubCategories',
+    //             to: 'sub-categories',
+    //         },
+    //     ]
+    // },
     
 ]

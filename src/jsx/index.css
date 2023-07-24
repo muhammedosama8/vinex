@@ -1,3 +1,4 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
 .cs-dropdown {
   background: none !important;
   background-color: none !important;
@@ -811,4 +812,8 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 	width: auto;
 	height: auto;
 	display: contents;
+}
+.metismenu .mm-active {
+  background-color: #fe634e1c!important;
+  transition: background-color .8s ease-in-out;
 }

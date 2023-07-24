@@ -23524,11 +23524,11 @@ svg text {
   height: 350px; }
 
 .form-control {
-  border-radius: 1.25rem;
+  border-radius: .3rem;
   background: #fff;
-  border: 1px solid #eee;
+  border: 1px solid hsl(0, 0%, 80%);
   color: initial;
-  height: 44px; }
+  height: 39px; }
   @media only screen and (max-width: 1400px) {
     .form-control {
       height: 41px; } }
@@ -25783,7 +25783,7 @@ button {
   color: #fff; }
 
 .btn {
-  padding: 0.938rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   border-radius: 1.25rem;
   font-weight: 500;
   font-size: 1rem; }

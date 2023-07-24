@@ -32,6 +32,7 @@ import PromCodes from './pages/PromoCodes'
 import AddPromoCodes from './pages/PromoCodes/AddPromoCodes'
 import Orders from './pages/Orders'
 import Home from './pages/Dashboard'
+import Rules from './pages/Rules'
 
 
 const Markup = () => {
@@ -54,9 +55,13 @@ const Markup = () => {
     // Admins
     { url: 'admins', component: <Admins /> },
     { url: 'admins/add-admins', component: <AddAdmin /> },
+    { url: 'admins/edit-admin/:id', component: <AddAdmin /> },
 
     // Users
     { url: 'users', component: <Users /> },
+
+    // Rules
+    { url: 'rules', component: <Rules /> },
 
     // Promo Codes
     { url: 'promo-codes', component: <PromCodes /> },

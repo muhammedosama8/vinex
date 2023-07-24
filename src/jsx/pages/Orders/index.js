@@ -15,7 +15,7 @@ const Orders = () =>{
         {id: 2, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 380, payment_status: 'visa', status: 'Processing'},
         {id: 3, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 180, payment_status: 'cash', status: 'Shipped'},
         {id: 4, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 80, payment_status: 'visa', status: 'Delivered'},
-        {id: 4, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 80, payment_status: 'visa', status: 'Canceled'},
+        {id: 5, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 80, payment_status: 'visa', status: 'Canceled'},
       ]
       setOrders([...orders])
     },[])
@@ -26,7 +26,7 @@ const Orders = () =>{
         <>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div className="input-group w-50">
-            <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '26px 16px'}} className="form-control" placeholder="Search by I.D, Name" />
+            <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '18px 16px'}} className="form-control" placeholder="Search by I.D, Name" />
             <div className="flaticon-381-search-2"
               style={{position: 'absolute', right: '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
@@ -45,9 +45,6 @@ const Orders = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>Delivery Date</strong>
-                    </th>
-                    <th>
                       <strong>Customer Name</strong>
                     </th>
                     <th>
@@ -60,7 +57,7 @@ const Orders = () =>{
                       <strong>Total Price</strong>
                     </th>
                     <th>
-                      <strong>Payment Status</strong>
+                      <strong>Payment Method</strong>
                     </th>
                     <th>
                       <strong>STATUS</strong>
@@ -71,6 +68,7 @@ const Orders = () =>{
                 <tbody>
                   {orders?.map((item, index)=>{
                     return <CardItem 
+                    key= {index}
                     index= {index}
                     item={item}
                     setItem={setItem}
