@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Badge, Dropdown, Form } from "react-bootstrap";
 import DeleteModal from "../../../../common/DeleteModal";
-import { DropDownIcon } from "../../../../common/icons";
 
 const CardItem = ({item, setItem, index, setAddModal}) =>{
     const [status, setStatus] = useState(null)
@@ -35,10 +34,10 @@ const CardItem = ({item, setItem, index, setAddModal}) =>{
             <td>
                 <Dropdown>
                     <Dropdown.Toggle
-                        variant="success"
+                        // variant="success"
                         className="light sharp i-false"
                     >
-                        {DropDownIcon}
+                        <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={()=> {

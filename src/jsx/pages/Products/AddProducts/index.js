@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col } from "react-bootstrap";
 import Select from 'react-select';
 import uploadImg from '../../../../images/upload-img.webp';
 import '../style.scss'

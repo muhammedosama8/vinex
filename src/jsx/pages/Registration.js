@@ -9,7 +9,7 @@ import {
 
 // image
 
-import logo2 from "../../images/logo-full3.png";
+import logo2 from "../../images/logo-full1.jpg";
 import login from "../../images/reg-bg.jpg";
 
 function Register(props) {
