@@ -5,6 +5,7 @@ import { Rules } from "../../../Enums/Rules";
 const AddAdmin = () => {
    const [formData, setFormData] = useState({})
    const [rules, setRules] = useState({})
+   const [showPassword, setShowPassword] = useState(false)
 
    useEffect(()=>{
       let allRules = {}
@@ -29,12 +30,24 @@ const AddAdmin = () => {
          <form onSubmit={onSubmit}>
          <div className="row">
             <div className="col-lg-6 mb-3">
-                  <label className="text-label">Name*</label>
+                  <label className="text-label">First Name*</label>
                   <input
                      type="text"
-                     name="name"
+                     name="first_name"
                      className="form-control"
-                     placeholder="Name"
+                     placeholder="Fist Name"
+                     required
+                     pattern="[A-Za-z]+"
+                     onChange={(e)=> inputHandler(e)}
+                  />
+            </div>
+            <div className="col-lg-6 mb-3">
+                  <label className="text-label">Last Name*</label>
+                  <input
+                     type="text"
+                     name="last_name"
+                     className="form-control"
+                     placeholder="Last Name"
                      required
                      pattern="[A-Za-z]+"
                      onChange={(e)=> inputHandler(e)}
@@ -44,10 +57,24 @@ const AddAdmin = () => {
                   <label className="text-label">Email Address*</label>
                   <input
                      type="email"
+                     name="email"
                      className="form-control"
                      placeholder="example@example.com"
                      required
                      onChange={(e)=> inputHandler(e)}
+                  />
+            </div>
+            <div className="col-lg-6 mb-3">
+                  <label className="text-label">Password*</label>
+                  <input
+                     type={`${showPassword ? 'password' : 'text'}`}
+                     name="password"
+                     className="form-control"
+                     placeholder="Passwword"
+                     required
+                     onChange={(e)=> inputHandler(e)}
+                     onFocus={(e)=> setShowPassword(false)}
+                     onBlur={(e)=> setShowPassword(true)}
                   />
             </div>
             <div className="col-lg-6 mb-3">
