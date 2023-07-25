@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
 const CardItem = ({item, index}) =>{
     const [status, setStatus] = useState(null)
+    const navigate = useNavigate()
 
     useEffect(()=>{
         setStatus(item.status)
@@ -17,7 +19,12 @@ const CardItem = ({item, index}) =>{
                     <td>
                       <strong>{item.id}</strong>
                     </td>
-                    <td>{item.name}</td>
+                    <td>
+                      <Link to={`/users/${item.id}/${item.name}`} 
+                        style={{fontWeight: '800', textDecoration:'underline', textTransform: 'capitalize'}}>
+                        {item.name}
+                      </Link>
+                    </td>
                     <td>
                       {item.email}
                     </td>

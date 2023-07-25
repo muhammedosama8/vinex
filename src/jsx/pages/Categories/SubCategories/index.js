@@ -7,8 +7,6 @@ import {
   Table,
   Button,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import PageTitle from "../../../layouts/PageTitle";
 import AddSubCategoriesModal from "./AddSubCategoriesModal";
 import CardItem from "./CardItem";
 import './style.scss'

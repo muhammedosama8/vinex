@@ -10,9 +10,9 @@ const Admins = () =>{
 
     useEffect(()=>{
       let admins =[
-        {id: 1, name: 'muhammed', email: 'muhammed@gmail.com', phone: '01000000', status: true},
-        {id: 2, name: 'osama', email: 'osama@gmail.com', phone: '01000000', status: false},
-        {id: 3, name: 'nasser', email: 'nasser@gmail.com', phone: '01000000', status: true},
+        {id: 1, name: 'muhammed', email: 'muhammed@gmail.com', phone: '01000000',permission: 'Owner', status: true},
+        {id: 2, name: 'osama', email: 'osama@gmail.com', phone: '01000000',permission: 'employee', status: false},
+        {id: 3, name: 'nasser', email: 'nasser@gmail.com', phone: '01000000',permission: 'employee', status: true},
       ]
       setAdmins([...admins])
     },[])
@@ -47,6 +47,9 @@ const Admins = () =>{
                     </th>
                     <th>
                       <strong>Phone</strong>
+                    </th>
+                    <th>
+                      <strong>Permission</strong>
                     </th>
                     <th>
                       <strong>STATUS</strong>

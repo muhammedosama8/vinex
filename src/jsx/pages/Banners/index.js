@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import uploadImg from '../../../images/upload-img.webp';
+import Select from 'react-select';
 import './style.scss'
 
 const Banners = () =>{
     const [files, setFiles] = useState([{},{},{},{},{}])
-    console.log(files)
+    const [productsOptions, setProductsOptions] = useState([
+        {id: 1, label: 'Product 1', value: 'product1'}
+    ])
+
     const [errors, setErrors] = useState([
         {img1:false, link1: false},
         {img2:false, link2: false},
@@ -76,20 +80,18 @@ const Banners = () =>{
                     <div className='form-row mt-3'>
                         <div className='form-group w-100 d-flex align-items-center m-0'>
                             <label style={{width: '65px'}} className='m-0'>Link {index+1}:</label>
-                            <input
-                                type='text'
-                                className='form-control'
-                                placeholder={`link...`}
+                            <Select
                                 value={data[`link${index+1}`]}
-                                style={{height: '50px', color: 'initial'}}
-                                required
-                                onChange={(e) => {
+                                name="category"
+                                options={productsOptions}
+                                className='w-50'
+                                onChange={(e)=> {
                                     let updateFormData = formData.map((item, ind)=>{
                                         if(item.hasOwnProperty(`img${index+1}`)){
                                             let link = `link${index+1}`
                                             return {
                                                 ...item,
-                                                [link]: e.target.value,
+                                                [link]: e,
                                             }
                                         } else {
                                             return {...item}

@@ -589,17 +589,7 @@ button.react-calendar__navigation__label:hover {
   color: white !important;
   background: #eeeeee !important;
 }
-button.react-calendar__navigation__label:hover > span {
-  /* color: white !important; */
-  /* background: #EEEEEE !important; */
-}
-.react-calendar__navigation button:enabled:hover,
-.react-calendar__navigation button:enabled:focus,
-.react-calendar__navigation__label:hover > span {
-  /* background-color: #eeeeee !important; */
-  /* color: white; */
-  /* border-radius: 50%; */
-}
+
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus,
 .react-calendar__tile--hasActive,
@@ -813,7 +803,9 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 	height: auto;
 	display: contents;
 }
-.metismenu .mm-active {
+.metismenu .mm-active > a{
   background-color: #fe634e1c!important;
   transition: background-color .8s ease-in-out;
+  border-radius: 32px 0 0 32px ;
+  border-right: 2px solid;
 }

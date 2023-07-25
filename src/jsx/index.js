@@ -32,7 +32,10 @@ import PromCodes from './pages/PromoCodes'
 import AddPromoCodes from './pages/PromoCodes/AddPromoCodes'
 import Orders from './pages/Orders'
 import Home from './pages/Dashboard'
-import Rules from './pages/Rules'
+import Profile from './pages/Users/Profile'
+import AdScreen from './pages/AdScreen'
+import SocialMedia from './pages/Setting/SocialMedia'
+import Permission from './pages/Rules'
 
 
 const Markup = () => {
@@ -55,13 +58,14 @@ const Markup = () => {
     // Admins
     { url: 'admins', component: <Admins /> },
     { url: 'admins/add-admins', component: <AddAdmin /> },
-    { url: 'admins/edit-admin/:id', component: <AddAdmin /> },
+    { url: 'admins/edit-admin/:id/:name', component: <AddAdmin /> },
 
     // Users
     { url: 'users', component: <Users /> },
+    { url: 'users/:id/:name', component: <Profile /> },
 
     // Rules
-    { url: 'rules', component: <Rules /> },
+    { url: 'rules', component: <Permission /> },
 
     // Promo Codes
     { url: 'promo-codes', component: <PromCodes /> },
@@ -69,6 +73,9 @@ const Markup = () => {
 
     // Banners
     { url: 'banners', component: <Banners /> },
+
+    // Ad Screen
+    { url: 'ad-screen', component: <AdScreen /> },
 
     // Orders
     { url: 'orders', component: <Orders /> },
@@ -83,7 +90,10 @@ const Markup = () => {
 
     // Categories
     {url: 'categories', component: <Categories />},
-    {url: 'sub-categories', component: <SubCategories />}
+    {url: 'sub-categories', component: <SubCategories />},
+
+    //Setting
+    {url: 'social', component: <SocialMedia />},
   ]
 
   return (

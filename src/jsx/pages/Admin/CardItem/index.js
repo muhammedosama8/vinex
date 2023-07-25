@@ -27,6 +27,9 @@ const CardItem = ({item, index}) =>{
                     </td>
                     <td>{item.phone}</td>
                     <td>
+                      {item.permission}
+                    </td>
+                    <td>
                         <Form.Check
                         type="switch"
                         id={`custom-switch${index}`}
@@ -43,7 +46,7 @@ const CardItem = ({item, index}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item onClick={()=> navigate(`/admins/edit-admin/${item.id}`)}>Edit</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> navigate(`/admins/edit-admin/${item.id}/${item.name}`)}>Edit</Dropdown.Item>
                           <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>

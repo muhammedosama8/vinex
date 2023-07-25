@@ -19,7 +19,7 @@ const Users = () =>{
         <>
           <div className="d-flex mb-3 ">
             <div className="input-group w-50">
-              <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '18px 16px'}} className="form-control" placeholder="Search by I.D, Name" />
+              <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '18px 16px'}} className="form-control" placeholder="Search by I.D, Name, Phone" />
               <div className="flaticon-381-search-2"
                 style={{position: 'absolute', right: '16px', top: '50%', transform: 'translate(0, -50%)'}}
               ></div>

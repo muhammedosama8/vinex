@@ -89,7 +89,7 @@ const AddAdmin = () => {
                   />
             </div>
             
-            <div className="col-md-12">
+            {/* <div className="col-md-12">
                <hr></hr>
             </div>
             <div className="col-md-12 mb-3">
@@ -114,7 +114,7 @@ const AddAdmin = () => {
                      </div>
                   })}
                </div>
-            </div>
+            </div> */}
          </div>
          <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">Submit</Button>

@@ -405,6 +405,13 @@ export const MenuList = [
         iconStyle: <i className='la la-truck'></i>,
         to: 'orders',
     },
+     //Promo Codes
+     {   
+        title:'Promo Codes',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className='la la-dollar'></i>,
+        to: 'promo-codes',
+    },
     //Banners
     {   
         title:'Banners',
@@ -412,28 +419,25 @@ export const MenuList = [
         iconStyle: <i className="flaticon-381-television" />,
         to: 'banners',
     },
-    //Promo Codes
+    //Ad Screen
     {   
-        title:'Promo Codes',
+        title:'Ad Screen',
         classsChange: 'mm-collapse',
-        iconStyle: <i className='la la-dollar'></i>,
-        to: 'promo-codes',
+        iconStyle: <i className="la la-thumb-tack" />,
+        to: 'ad-screen',
     },
-    //Categories
-    // {
-    //     title:'Categories',
-    //     classsChange: 'mm-collapse',
-    //     iconStyle: <i className='la la-cubes'></i>,
-    //     content : [
-    //         {
-    //             title:'Categories',
-    //             to: 'categories',
-    //         },
-    //         {
-    //             title:'SubCategories',
-    //             to: 'sub-categories',
-    //         },
-    //     ]
-    // },
+   
+    //Setting
+    {
+        title:'Setting',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className='la la-cog'></i>,
+        content : [
+            {
+                title:'Social Media',
+                to: 'social',
+            },
+        ]
+    },
     
 ]

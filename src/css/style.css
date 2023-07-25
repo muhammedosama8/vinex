@@ -365,12 +365,6 @@ select {
 select {
   word-wrap: normal; }
 
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button; }
-
 button:not(:disabled),
 [type="button"]:not(:disabled),
 [type="reset"]:not(:disabled),
@@ -419,14 +413,11 @@ progress {
 
 [type="search"] {
   outline-offset: -2px;
-  -webkit-appearance: none; }
-
-[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none; }
+}
 
 ::-webkit-file-upload-button {
   font: inherit;
-  -webkit-appearance: button; }
+}
 
 output {
   display: inline-block; }
@@ -11463,7 +11454,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   height: 100%;
   position: absolute;
   top: 0;
-  padding-top: 120px;
+  padding-top: 100px;
   z-index: 3;
   background-color: #fff;
   box-shadow: 0px 0px 10px rgba(120, 130, 140, 0.13);
@@ -11841,20 +11832,25 @@ The smaller device rules always should write below the bigger device rules
 Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Component
 */
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li {
-  padding: 0  0 0 0; }
-  [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
+  padding: 0  0 0 0; 
+  cursor: pointer;
+}
+[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
     font-size: 16px;
     padding: 20px 50px;
     border-radius: 5rem;
     -webkit-transition: all 0.5s;
     -ms-transition: all 0.5s;
     transition: all 0.5s;
-    position: relative; }
-    @media only screen and (max-width: 1400px) {
-      [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
+    position: relative; 
+}
+@media only screen and (max-width: 1400px) {
+    [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
         padding: 20px 30px;
-        font-size: 16px; } }
-    [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a:before {
+        font-size: 16px; 
+      } 
+}
+[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a:before {
       position: absolute;
       height: 100%;
       width: 11px;
@@ -11865,18 +11861,25 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       background: #FE634E;
       -webkit-transition: all 0.5s;
       -ms-transition: all 0.5s;
-      transition: all 0.5s; }
-  [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a {
-    color: #FE634E; }
-    [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a i {
-      color: #FE634E; }
-    [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a:before {
-      left: 0; }
-  [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li .has-arrow:after {
-    right: 2.5rem; }
-    @media only screen and (max-width: 1400px) {
+      transition: all 0.5s; 
+}
+[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a {
+    color: #FE634E; 
+}
+[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a i {
+      color: #FE634E; 
+}
+[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a:before {
+      left: 0; 
+}
+[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li .has-arrow:after {
+    right: 2.5rem; 
+}
+@media only screen and (max-width: 1400px) {
       [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li .has-arrow:after {
-        right: 1.5rem; } }
+        right: 1.5rem; 
+      } 
+}
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nav-header {
   width: 5rem;

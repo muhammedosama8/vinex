@@ -9,6 +9,7 @@ const AddProducts = () => {
         ar: '',
         en: '',
         price: '',
+        offer_price: '',
         quantity: '',
         category: [],
         desc_ar: '',
@@ -80,100 +81,113 @@ const AddProducts = () => {
     return <Card className="p-4">
         <form onSubmit={submit} className='add-product'>
             <div className="row">
-            <div className="col-lg-6 mb-3">
-                    <label className="text-label">English Title*</label>
-                    <input
-                        type="text"
-                        name="en"
-                        className="form-control"
-                        placeholder="English"
-                        required
-                        value={product.en}
-                        onChange={(e)=> handlerText(e)}
-                    />
-            </div>
-            <div className="col-lg-6 mb-3">
-                    <label className="text-label">Arabic Title</label>
-                    <input
-                        type="text"
-                        name="ar"
-                        className="form-control"
-                        placeholder="Arabic"
-                        required
-                        value={product.ar}
-                        onChange={(e)=> handlerText(e)}
-                    />
-            </div>
-            <div className="col-lg-6 mb-3">
-                    <label className="text-label">English Description</label>
-                    <textarea  
-                        name="desc_en" 
-                        style={{
-                            minHeight: '80px',
-                            maxHeight: '150px',
-                            height: '150px'
-                        }}
-                        className="form-control"
-                        placeholder="Enter Description"
-                        value={product.desc_en}
-                        onChange={(e)=> handlerText(e)}
-                        rows="6" >
-                    </textarea>
-            </div>
-            <div className="col-lg-6 mb-3">
-                    <label className="text-label">Arabic Description</label>
-                    <textarea  
-                        name="desc_ar" 
-                        style={{
-                            minHeight: '80px',
-                            maxHeight: '150px',
-                            height: '150px'
-                        }}
-                        className="form-control"
-                        placeholder="Enter Description"
-                        value={product.desc_ar}
-                        onChange={(e)=> handlerText(e)}
-                        rows="6" >
-                    </textarea>
-            </div>
-            <div className="col-lg-6 mb-3">
-                    <label className="text-label">Category</label>
-                    <Select
-                        value={product.category}
-                        isMulti
-                        name="category"
-                        options={categoriesOptions}
-                        onChange={(e)=> setProduct({...product, category: e})}
-                    />
-            </div>
-            <div className="col-lg-6 mb-3">
-                    <label className="text-label">Price*</label>
-                    <input
-                        type="number"
-                        name="price"
-                        className="form-control"
-                        placeholder="Price"
-                        required
-                        value={product.price}
-                        onChange={(e)=> handlerText(e)}
-                    />
-            </div>
-            <div className="col-lg-6 mb-2">
-                <div className="form-group mb-3">
-                    <label className="text-label">Quantity*</label>
-                    <input
-                        type="number"
-                        name="quantity"
-                        className="form-control"
-                        placeholder="Quantity"
-                        required
-                        value={product.quantity}
-                        onChange={(e)=> handlerText(e)}
-                    />
+                <div className="col-lg-6 mb-3">
+                        <label className="text-label">English Title*</label>
+                        <input
+                            type="text"
+                            name="en"
+                            className="form-control"
+                            placeholder="English"
+                            required
+                            value={product.en}
+                            onChange={(e)=> handlerText(e)}
+                        />
+                </div>
+                <div className="col-lg-6 mb-3">
+                        <label className="text-label">Arabic Title</label>
+                        <input
+                            type="text"
+                            name="ar"
+                            className="form-control"
+                            placeholder="Arabic"
+                            required
+                            value={product.ar}
+                            onChange={(e)=> handlerText(e)}
+                        />
+                </div>
+                <div className="col-lg-6 mb-3">
+                        <label className="text-label">English Description</label>
+                        <textarea  
+                            name="desc_en" 
+                            style={{
+                                minHeight: '80px',
+                                maxHeight: '150px',
+                                height: '150px'
+                            }}
+                            className="form-control"
+                            placeholder="Enter Description"
+                            value={product.desc_en}
+                            onChange={(e)=> handlerText(e)}
+                            rows="6" >
+                        </textarea>
+                </div>
+                <div className="col-lg-6 mb-3">
+                        <label className="text-label">Arabic Description</label>
+                        <textarea  
+                            name="desc_ar" 
+                            style={{
+                                minHeight: '80px',
+                                maxHeight: '150px',
+                                height: '150px'
+                            }}
+                            className="form-control"
+                            placeholder="Enter Description"
+                            value={product.desc_ar}
+                            onChange={(e)=> handlerText(e)}
+                            rows="6" >
+                        </textarea>
+                </div>
+                <div className="col-lg-6 mb-3">
+                        <label className="text-label">Category</label>
+                        <Select
+                            value={product.category}
+                            isMulti
+                            name="category"
+                            options={categoriesOptions}
+                            onChange={(e)=> setProduct({...product, category: e})}
+                        />
+                </div>
+                <div className="col-lg-6 mb-3">
+                        <label className="text-label">Price*</label>
+                        <input
+                            type="number"
+                            name="price"
+                            className="form-control"
+                            placeholder="Price"
+                            required
+                            value={product.price}
+                            onChange={(e)=> handlerText(e)}
+                        />
+                </div>
+                <div className="col-lg-6 mb-3">
+                        <label className="text-label">Offer Price</label>
+                        <input
+                            type="number"
+                            name="offer_price"
+                            className="form-control"
+                            placeholder="Offer Price"
+                            required
+                            value={product.offer_price}
+                            onChange={(e)=> handlerText(e)}
+                        />
+                </div>
+                <div className="col-lg-6 mb-2">
+                    <div className="form-group mb-3">
+                        <label className="text-label">Quantity*</label>
+                        <input
+                            type="number"
+                            name="quantity"
+                            className="form-control"
+                            placeholder="Quantity"
+                            required
+                            value={product.quantity}
+                            onChange={(e)=> handlerText(e)}
+                        />
+                    </div>
                 </div>
             </div>
-            <div className="col-lg-6 mb-2"></div>
-            {product?.images?.map((data, index)=>{
+            <div className="row">
+                {product?.images?.map((data, index)=>{
                     return <Col md={3} className='mb-3 mt-3' key={index}>
                         <h4 style={{marginLeft: '8px'}}>Image {index+1}</h4>
                         <div className="image-placeholder">	
@@ -198,7 +212,6 @@ const AddProducts = () => {
                         </div>
                 </Col>
                 })}
-                
             </div>
             <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">Submit</Button>

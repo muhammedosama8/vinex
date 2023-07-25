@@ -38,7 +38,6 @@ const AddVariant = ()=>{
    }
 
    const onSubmit = () =>{
-      console.log(formData)
    }
     return(
         <form className="add-variant" onSubmit={onSubmit}>
@@ -54,7 +53,7 @@ const AddVariant = ()=>{
                 />
                </div>
             </div>
-            <div className="col-lg-6 mb-2">
+            {/* <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
                   <label className="text-label">Product*</label>
                   <Select
@@ -65,7 +64,7 @@ const AddVariant = ()=>{
                     onChange={(e)=> setFormData({...formData, products: e})}
                 />
                </div>
-            </div>
+            </div> */}
             <div className="col-lg-12 mb-2">
                <div className="form-group mb-3">
                   <label className="text-label">Variant*</label>
@@ -87,7 +86,7 @@ const AddVariant = ()=>{
                    </div>
                </div>
             </div>
-            {console.log(formData)}
+
             {!!formData.variant?.length && formData.variant?.map((item, itemIndex)=>(
                <Col md={12} className='mb-3' key={itemIndex}>
                   <Row>
@@ -181,7 +180,6 @@ const AddVariant = ()=>{
          <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">Submit</Button>
          </div>
-         {console.log(formData)}
       </form>
     )
 }
