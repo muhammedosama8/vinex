@@ -1,17 +1,21 @@
 import React ,{useState} from 'react'
 import { Modal } from "react-bootstrap";
 import PropTypes from "prop-types"
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 function DeleteModal(props) {
     const [loading, setLoading] = useState(false)
 
     const handleDeletedItem = async () => {
-        // setLoading(true)
-        // const { data: response } = await props.modelService.remove(props.deletedItem.id);
-        // toast.success(response.success)
-        // return props.onCloseModal('delete', response)
+        setLoading(true)
+        const { data: response } = await props.modelService.remove(props.deletedItem.id)
+        if(response?.status === 200){
+            toast.success('Deleted Successfully')
+            props.setShouldUpdate(true)
+            return props.onCloseModal(false)
+        }
     }
+
     return (
         <Modal show={props.open}  onHide={()=> props.onCloseModal(false)} >
             <div className="modal-header border-0">

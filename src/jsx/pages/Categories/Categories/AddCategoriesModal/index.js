@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap"
+import { Button, Col, Modal, Row } from "react-bootstrap"
+import uploadImg from '../../../../../images/upload-img.webp';
 
 const AddCategoriesModal = ({addModal, setAddModal, item})=>{
+    const [files, setFiles] = useState([{}])
     const [formData, setFormData] = useState({
         en: '',
         ar: '',
+        img: [
+            {img1:'', link1: ''}
+        ]
     })
     const [isAdd, setIsAdd] = useState(false)
 
@@ -16,6 +21,32 @@ const AddCategoriesModal = ({addModal, setAddModal, item})=>{
             setFormData({...item})
         }
     },[item])
+
+    const fileHandler = (e, index) => {
+        let update = files?.map((file,updateIndex) => {
+            if(updateIndex === index-1){
+                return e.target.files[0]
+            } else{
+                return file
+            }
+        })
+        setFiles([...update])
+		setTimeout(function(){
+			var src = document.getElementById(`saveImageFile${index}`)?.getAttribute("src");
+            let updateFormData = formData?.img.map((item, ind)=>{
+                if(item.hasOwnProperty(`img${index}`)){
+                    let img = `img${index}`
+                    return {
+                        ...item,
+                        [img]: src,
+                    }
+                } else {
+                    return {...item}
+                }
+            } )
+			setFormData({...formData, img: [...updateFormData]})
+		}, 200);
+    }
 
     const submit = () =>{
 
@@ -34,9 +65,8 @@ const AddCategoriesModal = ({addModal, setAddModal, item})=>{
             </Button>
             </Modal.Header>
             <Modal.Body>
-                <div>
-
-                    <div className='form-row'>
+                <Row>
+                    <Col md={6}>
                         <div className='form-group w-100'>
                             <label>English</label>
                             <input
@@ -49,9 +79,9 @@ const AddCategoriesModal = ({addModal, setAddModal, item})=>{
                                 onChange={(e) => setFormData({...formData, name: e.target.value})}
                             />
                         </div>
-                    </div>
+                    </Col>
 
-                    <div className='form-row'>
+                    <Col md={6}>
                         <div className='form-group w-100'>
                             <label className="">Arabic</label>
                             <input
@@ -64,8 +94,32 @@ const AddCategoriesModal = ({addModal, setAddModal, item})=>{
                                 onChange={(e) => setFormData({...formData, name: e.target.value})}
                             />
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                    {formData?.img?.map((data, index)=>{
+                    return <Col md={12}>
+                            <div className='form-group w-100'>
+                                <label className="m-0">Category Image</label>
+                                <div className="image-placeholder">	
+                                    <div className="avatar-edit">
+                                        <input type="file" onChange={(e) => fileHandler(e,index+1)} id={`imageUpload${index+1}`} /> 					
+                                        <label htmlFor={`imageUpload${index+1}`}  name=''></label>
+                                    </div>
+                                    <div className="avatar-preview2 m-auto">
+                                        <div id={`imagePreview${index+1}`}>
+                                        {files[index]?.name && <img id={`saveImageFile${index+1}`} src={URL.createObjectURL(files[index])} alt='icon' />}
+                                        {!files[index]?.name && <img id={`saveImageFile${index+1}`} src={uploadImg} alt='icon'
+                                            style={{
+                                                width: '80px',
+                                                height: '80px',
+                                            }}
+                                        />}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </Col>
+                        })}
+                </Row>
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setAddModal} variant="danger light">

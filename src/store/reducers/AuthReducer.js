@@ -5,9 +5,12 @@ import {
     LOGOUT_ACTION,
     SIGNUP_CONFIRMED_ACTION,
     SIGNUP_FAILED_ACTION,
+    LOGIN
 } from '../actions/AuthActions';
 
 const initialState = {
+    email:'',
+    password: '',
     auth: {
         email: '',
         idToken: '',
@@ -28,6 +31,13 @@ export function AuthReducer(state = initialState, action) {
             errorMessage: '',
             successMessage: 'Signup Successfully Completed',
             showLoading: false,
+        };
+    }
+    if (action.type === LOGIN) {
+        return {
+            ...state,
+            email: action.payload.email,
+            password: action.payload.password
         };
     }
     if (action.type === LOGIN_CONFIRMED_ACTION) {

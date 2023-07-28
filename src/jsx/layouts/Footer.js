@@ -6,9 +6,9 @@ const Footer = () => {
     <div className="footer">
       <div className="copyright p-2">
         <p>
-          Copyright © Designed &amp; Developed by{" "}
-          <a href="http://dexignzone.com/" target="_blank"  rel="noreferrer">
-            DexignZone
+          Copyright © Developed by{" "}
+          <a href="#" target="_blank"  rel="noreferrer">
+            Muhammed Osama
           </a>{" "}
           {d.getFullYear()}
         </p>

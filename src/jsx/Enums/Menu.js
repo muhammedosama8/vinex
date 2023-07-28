@@ -405,6 +405,13 @@ export const MenuList = [
         iconStyle: <i className='la la-truck'></i>,
         to: 'orders',
     },
+    //Reports
+    {   
+        title:'Reports',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className='la la-file-text'></i>,
+        to: 'reports',
+    },
      //Promo Codes
      {   
         title:'Promo Codes',

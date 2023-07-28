@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 /// Components
 import Index from './jsx/index';
 import { connect, useDispatch } from 'react-redux';
@@ -9,6 +11,7 @@ import { isAuthenticated } from './store/selectors/AuthSelectors';
 /// Style
 // import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
 import "./css/style.css";
+import Verified from './jsx/pages/Authintication/Verified';
 
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
 const Login = lazy(() => {
@@ -44,6 +47,7 @@ function App (props) {
     let routeblog = (  
         <Routes>
             <Route path='/login' element={<Login />} />
+            <Route path='/verified' element={<Verified />} />
             {/* <Route path='/page-register' element={<SignUp />} /> */}
             <Route path='/page-forgot-password' element={<ForgotPassword />} />
         </Routes>
@@ -61,6 +65,7 @@ function App (props) {
                     </div>  
                    }
                 >
+                    <ToastContainer />
                     <Index />
                 </Suspense>
             </>

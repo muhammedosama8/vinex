@@ -36,7 +36,7 @@ import Profile from './pages/Users/Profile'
 import AdScreen from './pages/AdScreen'
 import SocialMedia from './pages/Setting/SocialMedia'
 import Permission from './pages/Rules'
-
+import Reports from './pages/Reports'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -79,6 +79,9 @@ const Markup = () => {
 
     // Orders
     { url: 'orders', component: <Orders /> },
+
+    // Reports
+    { url: 'reports', component: <Reports /> },
 
     // Products
     { url: 'products', component: <Products /> },

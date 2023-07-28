@@ -1,20 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
-import { Rules } from "../../../Enums/Rules";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import AdminService from "../../../../services/AdminService";
+import {useLocation} from 'react-router-dom';
 
 const AddAdmin = () => {
+   const location = useLocation();
    const [formData, setFormData] = useState({})
-   const [rules, setRules] = useState({})
+   const [loading, setLoading] = useState(false)
+   const [error, setError] = useState({
+      password: false
+   })
    const [showPassword, setShowPassword] = useState(false)
+   const navigate = useNavigate()
+   const adminService = new AdminService()
 
    useEffect(()=>{
-      let allRules = {}
-      Rules.map(rul => {
-         let key = rul.value
-         allRules = { ...allRules, [key]: false}
-         return{}
-      })
-      setRules({...allRules})
+      if(location?.state?.edit){
+         let item = location.state?.item
+         setFormData({
+            first_name: item?.f_name,
+            last_name: item?.l_name,
+            email: item?.email,
+            phone: item?.phone,
+            password: '',
+         })
+      }
    },[])
 
    const inputHandler = (e) =>{
@@ -23,6 +35,35 @@ const AddAdmin = () => {
 
    const onSubmit = (e) =>{
       e.preventDefault();
+      if(formData.password.length < 6){
+         setError({...formData, password: true})
+         return
+      }
+      setLoading(true)
+      let data = {
+         f_name: formData?.first_name,
+         l_name: formData?.last_name,
+         email: formData?.email,
+         phone: formData?.phone,
+         rules: []
+      }
+      if(location?.state?.edit){
+         adminService.update(location.state?.id, data).then((response) =>{
+            if(response?.status === 200){
+               toast.success('Admin Updated Successfully')
+               navigate('/admins')
+            }
+         })
+      } else {
+         data['password'] = formData?.password
+         adminService.create(data).then((response,res) =>{
+            if(response?.status === 201){
+               toast.success('Admin Added Successfully')
+               navigate('/admins')
+            }
+         })
+      }
+      setLoading(false)
    }
 
    return (
@@ -38,6 +79,7 @@ const AddAdmin = () => {
                      placeholder="Fist Name"
                      required
                      pattern="[A-Za-z]+"
+                     value={formData.first_name}
                      onChange={(e)=> inputHandler(e)}
                   />
             </div>
@@ -50,6 +92,7 @@ const AddAdmin = () => {
                      placeholder="Last Name"
                      required
                      pattern="[A-Za-z]+"
+                     value={formData.last_name}
                      onChange={(e)=> inputHandler(e)}
                   />
             </div>
@@ -61,6 +104,7 @@ const AddAdmin = () => {
                      className="form-control"
                      placeholder="example@example.com"
                      required
+                     value={formData.email}
                      onChange={(e)=> inputHandler(e)}
                   />
             </div>
@@ -71,11 +115,17 @@ const AddAdmin = () => {
                      name="password"
                      className="form-control"
                      placeholder="Passwword"
-                     required
-                     onChange={(e)=> inputHandler(e)}
+                     required = {location?.state?.edit ? false : true}
+                     // pattern='^.{6,}$'
+                     value={formData.password}
+                     onChange={(e)=> {
+                        setError({...formData, password: false})
+                        inputHandler(e)
+                     }}
                      onFocus={(e)=> setShowPassword(false)}
                      onBlur={(e)=> setShowPassword(true)}
                   />
+                  {error['password'] && <p className="text-danger m-0" style={{fontSize: '12px'}}>length must be at least 6 characters long</p>}
             </div>
             <div className="col-lg-6 mb-3">
                   <label className="text-label">Phone Number*</label>
@@ -85,39 +135,13 @@ const AddAdmin = () => {
                      className="form-control"
                      placeholder="(+20)1234567890"
                      required
+                     value={formData.phone}
                      onChange={(e)=> inputHandler(e)}
                   />
             </div>
-            
-            {/* <div className="col-md-12">
-               <hr></hr>
-            </div>
-            <div className="col-md-12 mb-3">
-               <label className="text-label">Rules*</label>
-               <div className="row">
-                  {Rules?.map((rule, index)=>{
-                     return <div className="col-md-4" key={index}>
-                        <input 
-                           type='checkbox' 
-                           id={rule.value} 
-                           name={rule.value} 
-                           value={rule.value}
-                           onChange={(e) => {
-                              let key = rule.value
-                              setRules({
-                                 ...rules,
-                                 [key]: e.target.checked
-                              })
-                           }}
-                        />
-                        <label className="ml-2" htmlFor={rule.value}> {rule.label} </label>
-                     </div>
-                  })}
-               </div>
-            </div> */}
          </div>
          <div className="d-flex justify-content-end">
-            <Button variant="primary" type="submit">Submit</Button>
+            <Button variant="primary" type="submit" disabled={loading}>Submit</Button>
          </div>
       </form>
       </Card>

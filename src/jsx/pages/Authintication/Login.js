@@ -8,8 +8,8 @@ import { loadingToggleAction, loginAction } from "../../../store/actions/AuthAct
 
 function Login(props) {
 	const navigate = useNavigate()
-	const [email, setEmail] = useState('demo@demo.com');
-	const [password, setPassword] = useState('123456');
+	const [email, setEmail] = useState('tatasamy1998@gmail.com');
+	const [password, setPassword] = useState('Admin!123456');
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ function Login(props) {
         setErrors(errorObj);
         if (error) {
 			return;
-		}        
+		}      
 		dispatch(loadingToggleAction(true));
         dispatch(loginAction(email, password, navigate));
     }
@@ -98,7 +98,7 @@ function Login(props) {
 									/>
 									{errors.password && <div className="text-danger fs-12">{errors.password}</div>}
 								</div>
-							  <div className="form-row d-flex justify-content-between mt-4 mb-2">
+							  {/* <div className="form-row d-flex justify-content-between mt-4 mb-2">
 								<div className="form-group">
 								  <div className="custom-control custom-checkbox ml-1 ">
 									<input
@@ -115,7 +115,7 @@ function Login(props) {
 								  </div>
 								</div>
 								
-							  </div>
+							  </div> */}
 							  <div className="text-center">
 								<button
 								  type="submit"

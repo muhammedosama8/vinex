@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import AdminService from "../../../services/AdminService";
 import CardItem from "./CardItem";
 
 const Admins = () =>{
     const [admins, setAdmins] =useState([])
     const [addModal, setAddModal] =useState([])
+    const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
+    const adminService = new AdminService()
 
     useEffect(()=>{
-      let admins =[
-        {id: 1, name: 'muhammed', email: 'muhammed@gmail.com', phone: '01000000',permission: 'Owner', status: true},
-        {id: 2, name: 'osama', email: 'osama@gmail.com', phone: '01000000',permission: 'employee', status: false},
-        {id: 3, name: 'nasser', email: 'nasser@gmail.com', phone: '01000000',permission: 'employee', status: true},
-      ]
-      setAdmins([...admins])
-    },[])
+      adminService.getList().then(res=>{
+        if(res.status === 200){
+          setAdmins([...res.data?.admins]) 
+        }
+      })
+    },[shouldUpdate])
 
     return(
         <>
@@ -35,23 +37,23 @@ const Admins = () =>{
             <Card.Body>
               <Table responsive>
                 <thead>
-                  <tr className='text-center'>
-                    <th>
+                  <tr>
+                    <th className="px-2">
                       <strong>I.D</strong>
                     </th>
-                    <th>
+                    <th className="px-2">
                       <strong>Name</strong>
                     </th>
-                    <th>
+                    <th className="px-2">
                       <strong>Email</strong>
                     </th>
-                    <th>
+                    <th className="px-2">
                       <strong>Phone</strong>
                     </th>
-                    <th>
+                    <th className="px-2">
                       <strong>Permission</strong>
                     </th>
-                    <th>
+                    <th className="px-2">
                       <strong>STATUS</strong>
                     </th>
                     <th></th>
@@ -63,6 +65,7 @@ const Admins = () =>{
                     key= {index}
                     index= {index}
                     item={item}
+                    setShouldUpdate={setShouldUpdate}
                     setAddModal={setAddModal}
                     />
                   })}

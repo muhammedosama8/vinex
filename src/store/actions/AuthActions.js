@@ -2,7 +2,8 @@
 import {
     formatError,
     login,
-    runLogoutTimer,
+    loginVerified,
+    // runLogoutTimer,
     saveTokenInLocalStorage,
     signUp,
 } from '../../services/AuthService';
@@ -11,6 +12,7 @@ import {
 export const SIGNUP_CONFIRMED_ACTION = '[signup action] confirmed signup';
 export const SIGNUP_FAILED_ACTION = '[signup action] failed signup';
 export const LOGIN_CONFIRMED_ACTION = '[login action] confirmed login';
+export const LOGIN = 'login';
 export const LOGIN_FAILED_ACTION = '[login action] failed login';
 export const LOADING_TOGGLE_ACTION = '[Loading action] toggle loading';
 export const LOGOUT_ACTION = '[Logout action] logout action';
@@ -18,16 +20,15 @@ export const LOGOUT_ACTION = '[Logout action] logout action';
 
 
 export function signupAction(email, password, navigate) {
-	
     return (dispatch) => {
         signUp(email, password)
         .then((response) => {
             saveTokenInLocalStorage(response.data);
-            runLogoutTimer(
-                dispatch,
-                response.data.expiresIn * 1000,
-                //history,
-            );
+            // runLogoutTimer(
+            //     dispatch,
+            //     response.data.expiresIn * 1000,
+            //     //history,
+            // );
             dispatch(confirmedSignupAction(response.data));
             navigate('/dashboard');
 			//history.push('/dashboard');
@@ -53,13 +54,28 @@ export function loginAction(email, password, navigate) {
     return (dispatch) => {
          login(email, password)
             .then((response) => { 
+                // saveTokenInLocalStorage(response.data);
+                // runLogoutTimer(
+                //     dispatch,
+                //     response.data.expiresIn * 1000,
+                //     navigate,
+                // );
+            //    dispatch(loginConfirmedAction(response.data));     
+                dispatch(loginFn({email, password}))          
+				navigate('/verified');                
+            })
+            .catch((error) => {
+                const errorMessage = formatError(error?.response?.data);
+                dispatch(loginFailedAction(errorMessage));
+            });
+    };
+}
+export function loginVerifiedAction(email, password,code, navigate) {
+    return (dispatch) => {
+        loginVerified(email, password, code)
+            .then((response) => {
                 saveTokenInLocalStorage(response.data);
-                runLogoutTimer(
-                    dispatch,
-                    response.data.expiresIn * 1000,
-                    navigate,
-                );
-               dispatch(loginConfirmedAction(response.data));               
+                dispatch(loginConfirmedAction(response.data));               
 				navigate('/dashboard');                
             })
             .catch((error) => {
@@ -76,6 +92,12 @@ export function loginFailedAction(data) {
     };
 }
 
+export function loginFn(data) {
+    return {
+        type: LOGIN,
+        payload: data,
+    };
+}
 export function loginConfirmedAction(data) {
     return {
         type: LOGIN_CONFIRMED_ACTION,
