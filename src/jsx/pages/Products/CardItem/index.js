@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Badge, Dropdown, Form } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import avatar1 from "../../../../images/1.jpg";
 import DeleteModal from "../../../common/DeleteModal";
 
 const CardItem = ({item, index}) =>{
     const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
         setStatus(item.status)
@@ -39,11 +42,12 @@ const CardItem = ({item, index}) =>{
                         type="switch"
                         id={`custom-switch${index}`}
                         checked={status}
+                        disabled={!isExist('products')}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
                     </td>
                     <td>
-                      <Dropdown>
+                      {isExist('products') && <Dropdown>
                         <Dropdown.Toggle
                           // variant="success"
                           className="light sharp i-false"
@@ -54,7 +58,7 @@ const CardItem = ({item, index}) =>{
                           <Dropdown.Item>Edit</Dropdown.Item>
                           <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown>}
                     </td>
                     {deleteModal && <DeleteModal
                       open={deleteModal}

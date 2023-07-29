@@ -1644,6 +1644,7 @@ pre {
 .table-responsive {
   display: block;
   width: 100%;
+  /* min-height: 400px; */
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch; }
@@ -11838,7 +11839,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
     font-size: 16px;
     padding: 20px 50px;
-    border-radius: 5rem;
+    /* border-radius: 5rem; */
     -webkit-transition: all 0.5s;
     -ms-transition: all 0.5s;
     transition: all 0.5s;
@@ -25787,7 +25788,8 @@ button {
 
 .btn {
   padding: 0.5rem 1.5rem;
-  border-radius: 1.25rem;
+  /* border-radius: 1.25rem; */
+  border-radius: 8px;
   font-weight: 500;
   font-size: 1rem; }
   .btn:hover, .btn:focus, .btn:active, .btn.active {

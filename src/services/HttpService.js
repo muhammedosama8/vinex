@@ -9,15 +9,16 @@ axios.defaults.headers.common["Accept"] = "application/json";
 axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
 axios.interceptors.response.use(null, async (error) => {
+  const navigate = useNavigate()
   console.log(error)
   if (error.response && error.response.status === 401) {
     if (error.response.data.admins?.isAdmin) {
-      Logout(useNavigate());
+      Logout(navigate);
       window.location = `/login`;
     } 
   } else if(error.response && error.response.status === 403){
     if(error.response.data.message === "not authorized (old Token)."){
-      Logout(useNavigate());
+      Logout(navigate);
       window.location = `/login`;
     }
   } else if(error.response && error.response?.data?.status === 404){

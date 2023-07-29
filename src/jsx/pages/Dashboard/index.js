@@ -1,5 +1,3 @@
-import loadable from "@loadable/component";
-import pMinDelay from "p-min-delay";
 import React, { useState } from "react";
 import { Dropdown, Nav, Tab } from "react-bootstrap";
 /// Scroll
@@ -10,23 +8,10 @@ import image01 from "../../../images/1.jpg";
 import image02 from "../../../images/1.jpg";
 import image03 from "../../../images/1.jpg";
 import image04 from "../../../images/1.jpg";
-// import Donut from "./acara/dashboardChart/Donut";
-// import Increase from "./acara/dashboardChart/Increase";
-// Home Charts
-// import OrderSummaryChart from "./acara/dashboardChart/OrderSummaryChart";
-// import SalesCharts from "./acara/dashboardChart/SalesCharts";
-// import SalesRevenue from "./acara/dashboardChart/SalesRevenue";
-// import SalesRevenue2 from "./acara/dashboardChart/SalesRevenue2";
-// import SalesRevenue3 from "./acara/dashboardChart/SalesRevenue3";
-// Home Slide
-// import EventSlide from "./acara/dashboardHomeSlide/EventSlide";
-
-// const OrderSummaryChart = loadable(() =>
-//   // pMinDelay(import("./acara/dashboardChart/OrderSummaryChart"), 1000)
-// );
 
 const Home = () => {
   const [refreshToggle, setRefreshToggle] = useState(false);
+
   return (
     <div className="row">
       <div className="col-xl-3 col-xxl-4">

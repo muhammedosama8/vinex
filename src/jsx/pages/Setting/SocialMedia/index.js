@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { SocialMediaLinks } from "../../../Enums/SocialMedia";
 
 const SocialMedia = ()=>{
     const [links, setLinks] = useState({})
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
         let values={}
@@ -30,6 +33,7 @@ const SocialMedia = ()=>{
                         <input
                             type="text"
                             name={link.value}
+                            disabled={!isExist('social_media')}
                             className="form-control"
                             placeholder={`${link.label} Link`}
                             value={links[link?.value]}
@@ -38,11 +42,11 @@ const SocialMedia = ()=>{
                     </Col>
                 })}
                 </Row>
-            <div className="d-flex justify-content-end">
+            {isExist('social_media') && <div className="d-flex justify-content-end">
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
-            </div>
+            </div>}
             </form>
         </Card.Body>
     </Card>

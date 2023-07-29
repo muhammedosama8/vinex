@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col } from "react-bootstrap";
+import { Button, Card, Col, Form } from "react-bootstrap";
 import Select from 'react-select';
 import uploadImg from '../../../../images/upload-img.webp';
 import '../style.scss'
@@ -14,6 +14,8 @@ const AddProducts = () => {
         category: [],
         desc_ar: '',
         desc_en: '',
+        bestSeller: false,
+        newIn: false,
         images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]
     })
     const [categoriesOptions, setCategoriesOptions] = useState([])
@@ -141,7 +143,7 @@ const AddProducts = () => {
                         <label className="text-label">Category</label>
                         <Select
                             value={product.category}
-                            isMulti
+                            // isMulti
                             name="category"
                             options={categoriesOptions}
                             onChange={(e)=> setProduct({...product, category: e})}
@@ -183,6 +185,28 @@ const AddProducts = () => {
                             value={product.quantity}
                             onChange={(e)=> handlerText(e)}
                         />
+                    </div>
+                </div>
+                <div className="col-lg-3 mb-2">
+                    <div className="form-group mb-3 d-flex" style={{gap: '24px'}}>
+                        <label className="text-label">Best Seller</label>
+                        <Form.Check
+                        type="switch"
+                        id={`bestSeller`}
+                        checked={product.bestSeller}
+                        onChange={(e)=> setProduct({...product, bestSeller: e.target.checked})}
+                      />
+                    </div>
+                </div>
+                <div className="col-lg-3 mb-2">
+                    <div className="form-group mb-3 d-flex" style={{gap: '24px'}}>
+                        <label className="text-label">New In</label>
+                        <Form.Check
+                        type="switch"
+                        id={`newIn`}
+                        checked={product.newIn}
+                        onChange={(e)=> setProduct({...product, newIn: e.target.checked})}
+                      />
                     </div>
                 </div>
             </div>

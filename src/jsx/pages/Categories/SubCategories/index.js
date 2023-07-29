@@ -7,6 +7,8 @@ import {
   Table,
   Button,
 } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import Search from "../../../common/Search";
 import AddSubCategoriesModal from "./AddSubCategoriesModal";
 import CardItem from "./CardItem";
 import './style.scss'
@@ -14,6 +16,9 @@ import './style.scss'
 const SubCategories = () => {
     const [addModal, setAddModal] = useState(false)
     const [item, setItem] = useState({})
+    const [search, setSearch] = useState(null)
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     const items = [
         {id: 1, name: 'any name', category: 'one', status: true},
@@ -23,17 +28,12 @@ const SubCategories = () => {
   return (
     <Fragment>
         <div className="d-flex justify-content-between mb-3 align-items-center">
-          <div className="input-group w-50">
-              <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '18px 16px'}} className="form-control" placeholder="Search by I.D, Name" />
-              <div className="flaticon-381-search-2"
-                style={{position: 'absolute', right: '16px', top: '50%', transform: 'translate(0, -50%)'}}
-              ></div>
-          </div>
-        <Button variant="primary" className='me-2 h-75' onClick={()=> { 
-            setItem({})
-            setAddModal(true) }}>
-            Add SubCategories
-        </Button>
+          <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name' />
+          {isExist('sub_categories') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
+              setItem({})
+              setAddModal(true) }}>
+              Add SubCategories
+          </Button>}
         </div>
       
       <Row>

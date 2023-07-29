@@ -1,4 +1,4 @@
-//import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import {
     formatError,
     login,
@@ -16,7 +16,7 @@ export const LOGIN = 'login';
 export const LOGIN_FAILED_ACTION = '[login action] failed login';
 export const LOADING_TOGGLE_ACTION = '[Loading action] toggle loading';
 export const LOGOUT_ACTION = '[Logout action] logout action';
-
+export const CHANGE_RULES = 'change rules';
 
 
 export function signupAction(email, password, navigate) {
@@ -43,7 +43,7 @@ export function signupAction(email, password, navigate) {
 export function Logout(navigate) {
 	localStorage.removeItem('userDetails');
     navigate('/login');
-	//history.push('/login');
+	// history.push('/login');
     
 	return {
         type: LOGOUT_ACTION,
@@ -61,11 +61,13 @@ export function loginAction(email, password, navigate) {
                 //     navigate,
                 // );
             //    dispatch(loginConfirmedAction(response.data));     
-                dispatch(loginFn({email, password}))          
-				navigate('/verified');                
+                dispatch(loginFn({email, password}))   
+                dispatch(loadingToggleAction(false))  
+				navigate('/verified');      
+                          
             })
             .catch((error) => {
-                const errorMessage = formatError(error?.response?.data);
+                const errorMessage = formatError(error?.response?.data?.message);
                 dispatch(loginFailedAction(errorMessage));
             });
     };
@@ -75,11 +77,13 @@ export function loginVerifiedAction(email, password,code, navigate) {
         loginVerified(email, password, code)
             .then((response) => {
                 saveTokenInLocalStorage(response.data);
-                dispatch(loginConfirmedAction(response.data));               
+                dispatch(loginConfirmedAction(response.data));  
+                dispatch(loginFn({email, password: ''}))  
+                dispatch(loadingToggleAction(false))               
 				navigate('/dashboard');                
             })
             .catch((error) => {
-                const errorMessage = formatError(error.response.data);
+                const errorMessage = formatError(error.response.data?.message);
                 dispatch(loginFailedAction(errorMessage));
             });
     };
@@ -122,6 +126,12 @@ export function signupFailedAction(message) {
 export function loadingToggleAction(status) {
     return {
         type: LOADING_TOGGLE_ACTION,
+        payload: status,
+    };
+}
+export function changeAdminRules(status) {
+    return {
+        type: CHANGE_RULES,
         payload: status,
     };
 }

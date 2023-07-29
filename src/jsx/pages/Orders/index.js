@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Search from "../../common/Search";
 import CardItem from "./CardItem";
 import OrdersStatus from "./OrdersStatus";
 
@@ -7,7 +10,11 @@ const Orders = () =>{
     const [orders, setOrders] =useState([])
     const [item, setItem] =useState({})
     const [modal, setModal] =useState(false)
+    const [search, setSearch] =useState(null)
     const [shouldUpdate, setShouldUpdate] =useState(false)
+    const navigate= useNavigate()
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
       let orders =[
@@ -25,15 +32,15 @@ const Orders = () =>{
     return(
         <>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
-          <div className="input-group w-50">
-            <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '18px 16px'}} className="form-control" placeholder="Search by I.D, Name, Phone" />
-            <div className="flaticon-381-search-2"
-              style={{position: 'absolute', right: '16px', top: '50%', transform: 'translate(0, -50%)'}}
-            ></div>
+          <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />
+          <div>
+            <Button variant="secondary" className='mx-2 h-75' onClick={()=> exportTable()}>
+                Export
+            </Button>
+            {isExist('orders') && <Button variant="primary" className='mx-2 h-75' onClick={()=> navigate('/orders/add-order')}>
+              Add Order
+            </Button>}
           </div>
-          <Button variant="primary" className='me-2 h-75' onClick={()=> exportTable()}>
-              Export
-          </Button>
         </div>
 
         <Card>

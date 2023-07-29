@@ -56,7 +56,7 @@ const AddAdmin = () => {
          })
       } else {
          data['password'] = formData?.password
-         adminService.create(data).then((response,res) =>{
+         adminService.create(data).then((response) =>{
             if(response?.status === 201){
                toast.success('Admin Added Successfully')
                navigate('/admins')

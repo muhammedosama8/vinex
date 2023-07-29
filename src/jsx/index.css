@@ -806,6 +806,14 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 .metismenu .mm-active > a{
   background-color: #fe634e1c!important;
   transition: background-color .8s ease-in-out;
-  border-radius: 32px 0 0 32px ;
-  border-right: 2px solid;
+  /* border-radius: 32px 0 0 32px ; */
+  border-right: 3px solid;
+}
+.table-responsive .table .dropdown button{
+  background: none;
+  border: none;
+}
+.table-responsive .table .show > .dropdown-toggle,
+.table-responsive .table .dropdown button:hover{
+  color: #FE634E;
 }

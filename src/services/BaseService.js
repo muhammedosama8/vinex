@@ -1,5 +1,4 @@
 import { API_BASE_URL_ENV } from "../jsx/common/common";
-import axios from "axios";
 import http from './HttpService'
 import { getJwt } from "./AuthService";
 

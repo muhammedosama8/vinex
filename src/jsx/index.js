@@ -37,6 +37,7 @@ import AdScreen from './pages/AdScreen'
 import SocialMedia from './pages/Setting/SocialMedia'
 import Permission from './pages/Rules'
 import Reports from './pages/Reports'
+import Notification from './pages/Notification'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -83,6 +84,9 @@ const Markup = () => {
     // Reports
     { url: 'reports', component: <Reports /> },
 
+    // Notification
+    { url: 'notification', component: <Notification /> },
+
     // Products
     { url: 'products', component: <Products /> },
     { url: 'products/add-products', component: <AddProducts /> },
@@ -97,13 +101,16 @@ const Markup = () => {
 
     //Setting
     {url: 'social', component: <SocialMedia />},
+
+    // Error
+    {url: '*', component: <Error404 />},
   ]
 
   return (
        <> 
-         <Routes>
-          <Route path='page-error-404' element={<Error404/>} />
-            <Route  element={<MainLayout />} > 
+          <Routes>
+            <Route path='page-error-404' element={<Error404/>} />
+            <Route element={<MainLayout />} > 
                 {allroutes.map((data, i) => (
                   <Route
                       key={i}

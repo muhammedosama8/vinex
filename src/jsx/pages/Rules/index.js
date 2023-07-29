@@ -3,6 +3,9 @@ import { Button, Card, Table } from "react-bootstrap";
 import Select from 'react-select'
 import { Rules } from "../../Enums/Rules";
 import AdminService from "../../../services/AdminService";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { changeAdminRules } from "../../../store/actions/AuthActions";
 
 const Permission = () =>{
     const [formData, setFormData]= useState({
@@ -10,7 +13,7 @@ const Permission = () =>{
         rules: []
     })
     const [adminsOptions, setAdminsOptions]= useState([])
-    const [rules, setRules] = useState({})
+    const dispatch = useDispatch()
     const adminService = new AdminService()
 
     useEffect(()=>{
@@ -30,46 +33,46 @@ const Permission = () =>{
         })
     },[])
 
-    // useEffect(()=>{
-    //     let values = {}
-    //     Rules.map(rul=> values[rul.value] = false)
-    //     setRules({...values})
-    // },[])
-
     useEffect(()=> {
-        if(!!formData.admin){
-            if(formData.admin.rules?.length === 0){
-                let values = {}
-                Rules.map(rul=> values[rul.value] = false)
-                setFormData({...formData, rules: values})
-            }else{
-                setFormData({...formData, rules: formData.admin.rules})
-            }
+
+        if(formData.admin.rules?.length !== 0){
+            let rules = formData.admin.rules?.map(rul=> rul['role'])
+            setFormData({...formData, rules: rules})
         }
     },[formData.admin])
 
     const onSubmit = (e) =>{
         e.preventDefault();
+        let id= formData?.admin?.id
         let data ={
             email: formData?.admin?.data?.email,
             f_name: formData?.admin?.data?.f_name,
             l_name: formData?.admin?.data?.l_name,
             phone: formData?.admin?.data?.phone,
-            rules: formData?.rules
+            rules: formData.rules
         }
+
+        adminService?.update(id,data).then(res=>{
+            if(res?.status === 200){
+                dispatch(changeAdminRules(formData.rules))
+                toast.success(`Added Rules for ${formData?.admin?.label}`)
+                window.scrollTo(0,0)
+                setFormData({admin: '', rules: []})
+            }
+        })
     }
 
     return<form onSubmit={onSubmit}>
         <Card>
             <Card.Body>
                 <div className='form-row mb-3'>
-                    <div className='form-group w-100'>
+                    <div className='form-group w-50'>
                         <lable>Admin</lable>
                         <Select
                             value={formData.admin}
                             name="admin"
                             options={adminsOptions}
-                            onChange={(e)=> setFormData({...formData, admin: e})}
+                            onChange={(e)=> setFormData({rules: [], admin: e})}
                         />
                     </div>
                 </div>
@@ -91,18 +94,19 @@ const Permission = () =>{
                         {Rules?.map((rul,index)=>{
                             return <tr key={index}>
                                 <th>
-                                <strong>{rul.label}</strong></th>
+                                    <strong>{rul.label}</strong>
+                                </th>
                                 <th className="text-center">
                                     <input 
                                         type='radio'
                                         style={{
                                             width: '20px',
                                             height: '20px',
-                                            accentColor: '#FE634E'
+                                            accentColor: 'rgb(254, 69, 0)'
                                         }}
                                         name={rul.value} 
-                                        checked={formData.rules[rul.value]}
-                                        onChange={()=> setFormData({...formData, rules: {...formData.rules, [rul.value]: true}})}
+                                        checked={formData?.rules?.includes(rul?.value)}
+                                        onChange={()=> setFormData({...formData, rules: [...formData.rules, rul.value]})}
                                     />
                                 </th>
                                 <th className="text-center">
@@ -111,11 +115,14 @@ const Permission = () =>{
                                         style={{
                                             width: '20px',
                                             height: '20px',
-                                            accentColor: '#FE634E'
+                                            accentColor: 'rgb(254, 69, 0)'
                                         }}
-                                        checked={Object.keys(formData.rules).length > 0 && !formData.rules[rul.value]}
+                                        checked={Object.keys(formData?.admin).length > 0 && !formData.rules?.includes(rul.value)}
                                         name={rul.value} 
-                                        onChange={()=> setFormData({...formData, rules: {...formData.rules, [rul.value]: false}})}
+                                        onChange={()=> {
+                                            let update = formData?.rules?.filter(res=> res!==rul.value)
+                                            setFormData({...formData, rules: [...update ]})
+                                        }}
                                     />
                                 </th>
                             </tr>

@@ -1,36 +1,28 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AdminService from "../../../services/AdminService";
+import Pagination from "../../common/Pagination/Pagination";
+import Search from "../../common/Search";
 import CardItem from "./CardItem";
 
 const Admins = () =>{
-    const [admins, setAdmins] =useState([])
-    const [addModal, setAddModal] =useState([])
+    const [admins, setAdmins] =useState(null)
+    const [search, setSearch] =useState(null)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
     const adminService = new AdminService()
-
-    useEffect(()=>{
-      adminService.getList().then(res=>{
-        if(res.status === 200){
-          setAdmins([...res.data?.admins]) 
-        }
-      })
-    },[shouldUpdate])
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     return(
         <>
         <div className="d-flex justify-content-between mb-3 align-items-center">
-          <div className="input-group w-50">
-              <input type="text" style={{borderRadius: '1.25rem', color: 'initial', padding: '18px 16px'}} className="form-control" placeholder="Search by I.D, Name, Phone" />
-              <div className="flaticon-381-search-2"
-                style={{position: 'absolute', right: '16px', top: '50%', transform: 'translate(0, -50%)'}}
-              ></div>
-            </div>
-          <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/admins/add-admins')}>
+          <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />    
+          {isExist('admin') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/admins/add-admins')}>
               Add Admin
-          </Button>
+          </Button>}
         </div>
 
         <Card>
@@ -60,17 +52,22 @@ const Admins = () =>{
                   </tr>
                 </thead>
                 <tbody>
-                  {admins?.map((item, index)=>{
+                  {admins?.length > 0 && admins?.map((item, index)=>{
                     return <CardItem 
                     key= {index}
                     index= {index}
                     item={item}
                     setShouldUpdate={setShouldUpdate}
-                    setAddModal={setAddModal}
                     />
                   })}
                 </tbody>
               </Table>
+              {admins?.length === 0 && <h4 className="text-center">There is no data</h4>}
+              <Pagination
+                  setData={setAdmins}
+                  service={adminService}
+                  shouldUpdate={shouldUpdate}
+                />
             </Card.Body>
           </Card>
         </>

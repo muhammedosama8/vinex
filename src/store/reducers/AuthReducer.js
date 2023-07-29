@@ -5,7 +5,8 @@ import {
     LOGOUT_ACTION,
     SIGNUP_CONFIRMED_ACTION,
     SIGNUP_FAILED_ACTION,
-    LOGIN
+    LOGIN,
+    CHANGE_RULES
 } from '../actions/AuthActions';
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
         localId: '',
         expiresIn: '',
         refreshToken: '',
+        admin:''
     },
     errorMessage: '',
     successMessage: '',
@@ -43,7 +45,13 @@ export function AuthReducer(state = initialState, action) {
     if (action.type === LOGIN_CONFIRMED_ACTION) {
         return {
             ...state,
-            auth: action.payload,
+            auth: {
+                ...action.payload,
+                admin:{
+                    ...action.payload.admin,
+                    admin_roles: action.payload.admin.admin_roles?.map(rul=> rul['role'])
+                }
+            },
             errorMessage: '',
             successMessage: 'Login Successfully Completed',
             showLoading: false,
@@ -81,6 +89,19 @@ export function AuthReducer(state = initialState, action) {
         return {
             ...state,
             showLoading: action.payload,
+        };
+    }
+
+    if (action.type === CHANGE_RULES) {
+        return {
+            ...state,
+            auth: {
+                ...state.auth,
+                admin: {
+                    ...state.auth.admin,
+                    admin_roles: action.payload
+                }
+            },
         };
     }
     return state;

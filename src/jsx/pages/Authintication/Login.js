@@ -1,5 +1,5 @@
 import React,{ useState } from "react";
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 // image
 import logo2 from "../../../images/logo-full.png";
@@ -13,7 +13,8 @@ function Login(props) {
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
     const dispatch = useDispatch();
-	
+	const Auth = useSelector(state=> state.auth)
+
     function onLogin(e) {
         e.preventDefault();
         let error = false;
@@ -120,6 +121,7 @@ function Login(props) {
 								<button
 								  type="submit"
 								  className="btn btn-primary btn-block"
+								  disabled={Auth?.showLoading}
 								>
 								  Sign In
 								</button>

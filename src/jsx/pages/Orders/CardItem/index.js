@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { Badge, Dropdown } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import DeleteModal from "../../../common/DeleteModal";
 
 const CardItem = ({item, index, setModal, setItem}) =>{
     const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
         setStatus(item.status)
     },[item])
 
     const changeStatusToggle = ()=>{
-        setModal(true)
-        setItem(item)
+      if(!isExist('orders')){
+        return
+      }
+      setModal(true)
+      setItem(item)
     }
     
     return(
@@ -38,7 +44,7 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                       </Badge>
                     </td>
                     <td>
-                      <Dropdown>
+                      {isExist('orders') && <Dropdown>
                         <Dropdown.Toggle
                           // variant="success"
                           className="light sharp i-false"
@@ -49,7 +55,7 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                           {/* <Dropdown.Item>Edit</Dropdown.Item> */}
                           <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown>}
                     </td>
                     {deleteModal && <DeleteModal
                       open={deleteModal}
@@ -58,7 +64,7 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                       // modelService={}
                       onCloseModal={setDeleteModal}
                     />}
-                  </tr>
+        </tr>
     )
 }
 export default CardItem;

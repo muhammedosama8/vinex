@@ -3,12 +3,16 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import uploadImg from '../../../images/upload-img.webp';
 import Select from 'react-select';
 import './style.scss'
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Banners = () =>{
     const [files, setFiles] = useState([{},{},{},{},{}])
     const [productsOptions, setProductsOptions] = useState([
         {id: 1, label: 'Product 1', value: 'product1'}
     ])
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     const [errors, setErrors] = useState([
         {img1:false, link1: false},
@@ -62,7 +66,15 @@ const Banners = () =>{
                     <h4>Banner {index+1}</h4>
                     <div className="image-placeholder">	
                         <div className="avatar-edit">
-                            <input type="file" onChange={(e) => fileHandler(e,index+1)} id={`imageUpload${index+1}`} /> 					
+                            <input type="file" 
+                                    onChange={(e) => {
+                                        if(!isExist('banners')){
+                                            toast.error('Not Allowed, Don`t have Permission')
+                                            return
+                                        }
+                                        fileHandler(e,index+1)
+                                    }} 
+                                    id={`imageUpload${index+1}`} /> 					
                             <label htmlFor={`imageUpload${index+1}`}  name=''></label>
                         </div>
                         <div className="avatar-preview">
@@ -106,13 +118,13 @@ const Banners = () =>{
                     </Row>
                 </Card>
                 })}
-        <div className="d-flex     justify-content-end">
+        {isExist('banners') && <div className="d-flex     justify-content-end">
             <Button 
                 variant="primary" 
                 className="px-5"
                 onClick={()=> onSubmit()}
             >Submit</Button>
-        </div>
+        </div>}
     </>)
 }
 export default Banners;

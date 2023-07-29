@@ -63,6 +63,7 @@ function Verified(props) {
 								<button
 								  type="submit"
 								  className="btn btn-primary btn-block"
+								  disabled={Auth?.showLoading}
 								>
 								  Verify
 								</button>

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const CardItem = ({item, index}) =>{
     const [status, setStatus] = useState(null)
     const navigate = useNavigate()
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
         setStatus(item.status)
@@ -35,11 +38,12 @@ const CardItem = ({item, index}) =>{
                         type="switch"
                         id={`custom-switch${index}`}
                         checked={status}
+                        disabled={!isExist('users')}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
                     </td>
                     <td>
-                      <Dropdown>
+                     {isExist('users') && <Dropdown>
                         <Dropdown.Toggle
                           // variant="success"
                           className="light sharp i-false"
@@ -50,7 +54,7 @@ const CardItem = ({item, index}) =>{
                           {/* <Dropdown.Item>Edit</Dropdown.Item> */}
                           <Dropdown.Item>Delete</Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown>}
                     </td>
                   </tr>
     )

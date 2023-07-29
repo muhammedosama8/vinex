@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import { Dropdown, Form } from "react-bootstrap";
+import { Badge, Dropdown, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import DeleteModal from "../../../common/DeleteModal";
 import AdminService from "../../../../services/AdminService";
+import { useSelector } from "react-redux";
+import { Rules } from "../../../Enums/Rules";
 
 const CardItem = ({item, index,setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const navigate = useNavigate()
     const adminService = new AdminService()
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
         setStatus(!item.isBlocked)
@@ -20,12 +23,12 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
         "isBlocked": status
       }
       adminService.toggleStatus(item.id, data).then(res=>{
-        if(res.status === 200){
+        if(res?.status === 200){
           setStatus(!status)
         }
       })
     }
-    
+
     return(
         <tr key={index}>
                     <td>
@@ -37,18 +40,19 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                     </td>
                     <td>{item.phone}</td>
                     <td>
-                      {item?.permission ? item.permission : ''}
+                      {item?.admin_roles.length === Rules?.length ? <Badge variant="success">Full</Badge> : item?.admin_roles.length === 0 ? <Badge variant="danger">No</Badge> : <Badge variant="secondary">Some</Badge>}
                     </td>
                     <td>
                         <Form.Check
                         type="switch"
                         id={`custom-switch${index}`}
                         checked={status}
+                        disabled={!isExist('admin')}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
                     </td>
                     <td>
-                      <Dropdown>
+                      {isExist('admin') &&<Dropdown>
                         <Dropdown.Toggle
                           // variant="success"
                           className="light sharp i-false"
@@ -59,7 +63,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                           <Dropdown.Item onClick={()=> navigate(`/admins/edit-admin/${item.id}/${item.f_name}`, {state: {edit: true, id: item.id, item: item}})}>Edit</Dropdown.Item>
                           <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown>}
                     </td>
                     {deleteModal && <DeleteModal
                       open={deleteModal}

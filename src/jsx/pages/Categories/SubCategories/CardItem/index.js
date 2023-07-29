@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Badge, Dropdown, Form } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import DeleteModal from "../../../../common/DeleteModal";
 
 const CardItem = ({item, setItem, index, setAddModal}) =>{
     const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
         setStatus(item.status)
@@ -27,12 +30,13 @@ const CardItem = ({item, setItem, index, setAddModal}) =>{
                 <Form.Check
                     type="switch"
                     id={`custom-switch${index}`}
+                    disabled={!isExist('sub_categories')}
                     checked={status}
                     onChange={(e)=> changeStatusToggle(e)}
                 />
             </td>
             <td>
-                <Dropdown>
+                {isExist('sub_categories') && <Dropdown>
                     <Dropdown.Toggle
                         // variant="success"
                         className="light sharp i-false"
@@ -46,7 +50,7 @@ const CardItem = ({item, setItem, index, setAddModal}) =>{
                         }}> Edit</Dropdown.Item>
                         <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                     </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown>}
             </td>
             {deleteModal && <DeleteModal
                       open={deleteModal}
