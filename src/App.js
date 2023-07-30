@@ -12,6 +12,7 @@ import { isAuthenticated } from './store/selectors/AuthSelectors';
 // import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
 import "./css/style.css";
 import Verified from './jsx/pages/Authintication/Verified';
+import http from './services/HttpService';
 
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
 const Login = lazy(() => {
@@ -40,6 +41,8 @@ function withRouter(Component) {
 function App (props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    http.setInterceptors(navigate)
+    
     useEffect(() => {
         checkAutoLogin(dispatch, navigate);
     }, []);

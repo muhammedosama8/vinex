@@ -15,6 +15,7 @@ const Permission = () =>{
     const [adminsOptions, setAdminsOptions]= useState([])
     const dispatch = useDispatch()
     const adminService = new AdminService()
+    const [shouldUpdate, setShouldUpdate]= useState(false)
 
     useEffect(()=>{
         adminService.getList().then(res=>{
@@ -31,13 +32,15 @@ const Permission = () =>{
             setAdminsOptions(admins)
           }
         })
-    },[])
+    },[shouldUpdate])
 
     useEffect(()=> {
-
         if(formData.admin.rules?.length !== 0){
             let rules = formData.admin.rules?.map(rul=> rul['role'])
-            setFormData({...formData, rules: rules})
+            const filterData = (value) => rules?.includes(value);
+            const update = Rules.filter(({value}) => filterData(value))?.map(rul=> rul['value']);
+
+            setFormData({...formData, rules: update})
         }
     },[formData.admin])
 
@@ -58,6 +61,7 @@ const Permission = () =>{
                 toast.success(`Added Rules for ${formData?.admin?.label}`)
                 window.scrollTo(0,0)
                 setFormData({admin: '', rules: []})
+                setShouldUpdate(prev=> !prev)
             }
         })
     }
