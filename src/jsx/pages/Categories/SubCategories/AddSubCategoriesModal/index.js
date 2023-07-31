@@ -1,61 +1,113 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap"
 import Select from 'react-select'
+import { toast } from "react-toastify";
 import uploadImg from '../../../../../images/upload-img.webp';
+import BaseService from "../../../../../services/BaseService";
+import CategoriesService from "../../../../../services/CategoriesService";
+import SubCategoriesService from "../../../../../services/SubCategoriesService";
 
-const AddSubCategoriesModal = ({addModal, setAddModal, item})=>{
+const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [files, setFiles] = useState([{}])
+    const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
         en: '',
         ar: '',
         category: '',
-        img: [
-            {img1:'', link1: ''}
-        ]
+        img: ''
     })
     const [isAdd, setIsAdd] = useState(false)
-    const [ categoriesOptions, setCategoriesOptions] = useState([
-        {label: 'Pants', value: 1},
-        {label: 'T-shirts', value: 2},
-    ])
+    const [ categoriesOptions, setCategoriesOptions] = useState([])
+    const cancelTokenSource = useRef();
+    const subCategoriesService = new SubCategoriesService()
+    const categoriesService = new CategoriesService()
+
+    useEffect(()=> {
+        categoriesService?.getList().then(res=>{
+            if(res.data?.status === 200 || true){
+                let categories =  res.data?.data?.map(item=>{
+                   return{
+                      id: item?.id,
+                      value: item?.id,
+                      label: item.name_en
+                   }
+                })
+                setCategoriesOptions(categories)
+             }
+        })
+    },[])
 
     useEffect(() => {
         if(Object.keys(item).length === 0){
             setIsAdd(true)
         } else {
             setIsAdd(false)
-            setFormData({...item})
+            setFormData({
+                category: {
+                    ...item.category,
+                    label: `${item.category?.name_en}`
+                },
+                id: item?.id,
+                ar: item?.name_ar,
+                en: item?.name_en,
+                img: item?.image,
+            })
         }
     },[item])
 
-    const fileHandler = (e, index) => {
-        let update = files?.map((file,updateIndex) => {
-            if(updateIndex === index-1){
-                return e.target.files[0]
-            } else{
-                return file
-            }
-        })
-        setFiles([...update])
-		setTimeout(function(){
-			var src = document.getElementById(`saveImageFile${index}`)?.getAttribute("src");
-            let updateFormData = formData?.img.map((item, ind)=>{
-                if(item.hasOwnProperty(`img${index}`)){
-                    let img = `img${index}`
-                    return {
-                        ...item,
-                        [img]: src,
-                    }
-                } else {
-                    return {...item}
+    const fileHandler = (e) => {
+        setLoading(true)
+        let files = e.target.files
+        const filesData = Object.values(files)
+        cancelTokenSource.current = axios.CancelToken.source();
+ 
+        if (filesData.length) {
+            new BaseService().postUpload(filesData[0]).then(res=>{
+                if(res.data.status){
+                    setFormData({...formData, img: res.data.url})
+                    setFiles(filesData[0])
                 }
-            } )
-			setFormData({...formData, img: [...updateFormData]})
-		}, 200);
+                setLoading(false)
+            })
+        }
     }
 
-    const submit = () =>{
+    useEffect(() => {
+        return () => {
+            cancelTokenSource?.current?.cancel()
+          }
+    }, [])
 
+    const submit = () =>{
+        if(!formData?.img){
+            return
+        }
+        let data ={
+            category_id: formData.category?.value,
+            name_en: formData?.en,
+            name_ar: formData?.ar,
+            image: formData?.img
+        }
+        if(isAdd){
+            subCategoriesService?.create(data)?.then(res=>{
+                if(res?.status === 201){
+                    toast.success('SubCategory Added Successfully')
+                    cancelTokenSource.current.cancel()
+                    setAddModal()
+                    setShouldUpdate(prev=> !prev)
+                }
+            })
+        } else {
+            subCategoriesService?.update(formData?.id, {...data, id: formData?.id})?.then(res=>{
+                if(res?.status === 200){
+                    toast.success('SubCategory Updated Successfully')
+                    cancelTokenSource.current.cancel()
+                    setAddModal()
+                    setShouldUpdate(prev=> !prev)
+                }
+            })
+        }
     }
 
     return(
@@ -93,7 +145,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item})=>{
                                 value={formData.en}
                                 style={{height: '50px', color: 'initial'}}
                                 required
-                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                onChange={(e) => setFormData({...formData, en: e.target.value})}
                             />
                         </div>
                     </Col>
@@ -108,24 +160,30 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item})=>{
                                 value={formData.ar}
                                 style={{height: '50px', color: 'initial'}}
                                 required
-                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                onChange={(e) => setFormData({...formData, ar: e.target.value})}
                             />
                         </div>
                     </Col>
 
-                    {formData?.img?.map((data, index)=>{
-                    return <Col md={12}>
+                    <Col md={12}>
                             <div className='form-group w-100'>
                                 <label className="m-0">Category Image</label>
                                 <div className="image-placeholder">	
                                     <div className="avatar-edit">
-                                        <input type="file" onChange={(e) => fileHandler(e,index+1)} id={`imageUpload${index+1}`} /> 					
-                                        <label htmlFor={`imageUpload${index+1}`}  name=''></label>
+                                        <input type="file" onChange={(e) => fileHandler(e)} id={`imageUpload`} /> 					
+                                        <label htmlFor={`imageUpload`}  name=''></label>
                                     </div>
                                     <div className="avatar-preview2 m-auto">
-                                        <div id={`imagePreview${index+1}`}>
-                                        {files[index]?.name && <img id={`saveImageFile${index+1}`} src={URL.createObjectURL(files[index])} alt='icon' />}
-                                        {!files[index]?.name && <img id={`saveImageFile${index+1}`} src={uploadImg} alt='icon'
+                                        <div id={`imagePreview`}>
+                                        {!!formData?.img && 
+                                            <img alt='icon'
+                                                id={`saveImageFile`} 
+                                                className='w-100 h-100' 
+                                                style={{borderRadius: '30px'}} 
+                                                src={formData?.img|| URL.createObjectURL(files)}
+                                            />}
+                                        {/* {files[index]?.name && <img id={`saveImageFile${index+1}`} src={URL.createObjectURL(files[index])} alt='icon' />} */}
+                                        {formData?.img &&  <img id={`saveImageFile`} src={uploadImg} alt='icon'
                                             style={{
                                                 width: '80px',
                                                 height: '80px',
@@ -135,8 +193,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item})=>{
                                     </div>
                                 </div>
                             </div>
-                            </Col>
-                        })}
+                    </Col>
                 </Row>
             </Modal.Body>
             <Modal.Footer>

@@ -67,6 +67,7 @@ const Markup = () => {
 
     // Rules
     { url: 'rules', component: <Permission /> },
+    { url: 'rules/:id', component: <Permission /> },
 
     // Promo Codes
     { url: 'promo-codes', component: <PromCodes /> },

@@ -37,7 +37,7 @@ const Orders = () =>{
             <Button variant="secondary" className='mx-2 h-75' onClick={()=> exportTable()}>
                 Export
             </Button>
-            {isExist('orders') && <Button variant="primary" className='mx-2 h-75' onClick={()=> navigate('/orders/add-order')}>
+            {isExist('order') && <Button variant="primary" className='mx-2 h-75' onClick={()=> navigate('/orders/add-order')}>
               Add Order
             </Button>}
           </div>

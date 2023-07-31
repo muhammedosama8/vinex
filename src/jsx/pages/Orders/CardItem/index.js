@@ -14,7 +14,7 @@ const CardItem = ({item, index, setModal, setItem}) =>{
     },[item])
 
     const changeStatusToggle = ()=>{
-      if(!isExist('orders')){
+      if(!isExist('order')){
         return
       }
       setModal(true)
@@ -44,7 +44,7 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                       </Badge>
                     </td>
                     <td>
-                      {isExist('orders') && <Dropdown>
+                      {isExist('order') && <Dropdown>
                         <Dropdown.Toggle
                           // variant="success"
                           className="light sharp i-false"

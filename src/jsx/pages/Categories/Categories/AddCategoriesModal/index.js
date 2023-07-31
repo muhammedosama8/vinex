@@ -1,65 +1,114 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap"
+import { toast } from "react-toastify";
 import uploadImg from '../../../../../images/upload-img.webp';
+import BaseService from "../../../../../services/BaseService";
+import CategoriesService from "../../../../../services/CategoriesService";
 
-const AddCategoriesModal = ({addModal, setAddModal, item})=>{
-    const [files, setFiles] = useState([{}])
+const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
+    const [files, setFiles] = useState([])
     const [formData, setFormData] = useState({
         en: '',
         ar: '',
-        img: [
-            {img1:'', link1: ''}
-        ]
+        img: ''
     })
     const [isAdd, setIsAdd] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const cancelTokenSource = useRef();
+    const categoriesService = new CategoriesService()
 
     useEffect(() => {
-        if(Object.keys(item).length === 0){
+        if(Object.keys(item)?.length === 0){
             setIsAdd(true)
         } else {
             setIsAdd(false)
-            setFormData({...item})
+            setFormData({
+                id: item?.id,
+                ar: item?.name_ar,
+                en: item?.name_en,
+                img: item?.image,
+            })
         }
     },[item])
 
-    const fileHandler = (e, index) => {
-        let update = files?.map((file,updateIndex) => {
-            if(updateIndex === index-1){
-                return e.target.files[0]
-            } else{
-                return file
-            }
-        })
-        setFiles([...update])
-		setTimeout(function(){
-			var src = document.getElementById(`saveImageFile${index}`)?.getAttribute("src");
-            let updateFormData = formData?.img.map((item, ind)=>{
-                if(item.hasOwnProperty(`img${index}`)){
-                    let img = `img${index}`
-                    return {
-                        ...item,
-                        [img]: src,
-                    }
-                } else {
-                    return {...item}
+    const fileHandler = (e) => {
+        // setFiles([e.target.files[0]])
+		// setTimeout(function(){
+		// 	var src = document.getElementById(`saveImageFile`)?.getAttribute("src");
+		// 	setFormData({...formData, img: {id: '', path: src}})
+		// }, 200);
+
+        setLoading(true)
+        let files = e.target.files
+        const filesData = Object.values(files)
+        cancelTokenSource.current = axios.CancelToken.source();
+ 
+        if (filesData.length) {
+            new BaseService().postUpload(filesData[0]).then(res=>{
+                if(res.data.status){
+                    setFormData({...formData, img: res.data.url})
+                    setFiles(filesData[0])
                 }
-            } )
-			setFormData({...formData, img: [...updateFormData]})
-		}, 200);
+                setLoading(false)
+            })
+        }
     }
 
-    const submit = () =>{
+    useEffect(() => {
+        return () => {
+            cancelTokenSource?.current?.cancel()
+          }
+    }, [])
 
+    const submit = () =>{
+        if(!formData?.img){
+            return
+        }
+        let data ={
+            name_en: formData?.en,
+            name_ar: formData?.ar,
+            image: formData?.img
+        }
+        if(isAdd){
+            categoriesService?.create(data)?.then(res=>{
+                if(res?.status === 201){
+                    toast.success('Category Added Successfully')
+                    cancelTokenSource.current.cancel()
+                    setAddModal()
+                    setShouldUpdate(prev=> !prev)
+                }
+            })
+        } else {
+            categoriesService?.update(formData?.id, {...data, id: formData?.id})?.then(res=>{
+                if(res?.status === 200){
+                    toast.success('Category Updated Successfully')
+                    cancelTokenSource.current.cancel()
+                    setAddModal()
+                    setShouldUpdate(prev=> !prev)
+                }
+            })
+        }
     }
 
     return(
-        <Modal className="fade" show={addModal} onHide={setAddModal}>
+        <Modal className="fade" show={addModal} onHide={()=>{
+            if(loading){
+                cancelTokenSource.current.cancel()
+            }
+            setAddModal()
+            }}>
             <Modal.Header>
             <Modal.Title>{isAdd ? 'Add': 'Edit'} Category</Modal.Title>
             <Button
                 variant=""
                 className="close"
-                onClick={setAddModal}
+                onClick={()=>{
+                    if(loading){
+                        cancelTokenSource.current.cancel()
+                    }
+                    setAddModal()
+                }}
                 >
                 <span>&times;</span>
             </Button>
@@ -76,7 +125,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item})=>{
                                 value={formData.en}
                                 style={{height: '50px', color: 'initial'}}
                                 required
-                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                onChange={(e) => setFormData({...formData, en: e.target.value})}
                             />
                         </div>
                     </Col>
@@ -91,34 +140,42 @@ const AddCategoriesModal = ({addModal, setAddModal, item})=>{
                                 value={formData.ar}
                                 style={{height: '50px', color: 'initial'}}
                                 required
-                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                onChange={(e) => setFormData({...formData, ar: e.target.value})}
                             />
                         </div>
                     </Col>
-                    {formData?.img?.map((data, index)=>{
-                    return <Col md={12}>
+                    <Col md={12}>
                             <div className='form-group w-100'>
                                 <label className="m-0">Category Image</label>
                                 <div className="image-placeholder">	
                                     <div className="avatar-edit">
-                                        <input type="file" onChange={(e) => fileHandler(e,index+1)} id={`imageUpload${index+1}`} /> 					
-                                        <label htmlFor={`imageUpload${index+1}`}  name=''></label>
+                                        <input type="file" onChange={(e) => fileHandler(e)} id={`imageUpload`} /> 					
+                                        <label htmlFor={`imageUpload`}  name=''></label>
                                     </div>
                                     <div className="avatar-preview2 m-auto">
-                                        <div id={`imagePreview${index+1}`}>
-                                        {files[index]?.name && <img id={`saveImageFile${index+1}`} src={URL.createObjectURL(files[index])} alt='icon' />}
-                                        {!files[index]?.name && <img id={`saveImageFile${index+1}`} src={uploadImg} alt='icon'
-                                            style={{
-                                                width: '80px',
-                                                height: '80px',
-                                            }}
-                                        />}
+                                        <div id={`imagePreview`}>
+                                        {!!formData?.img && 
+                                            <img alt='icon'
+                                                id={`saveImageFile`} 
+                                                className='w-100 h-100' 
+                                                style={{borderRadius: '30px'}} 
+                                                src={formData?.img|| URL.createObjectURL(files)}
+                                            />}
+                                        {/* {files[0]?.name && <img id={`saveImageFile`} className='w-100 h-100' style={{borderRadius: '30px'}} src={URL.createObjectURL(files[0])} alt='icon' />} */}
+                                        {!formData?.img && 
+                                            <img 
+                                                id={`saveImageFile`} 
+                                                src={uploadImg} alt='icon'
+                                                style={{
+                                                    width: '80px',
+                                                    height: '80px',
+                                                }}
+                                            />}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </Col>
-                        })}
+                    </Col>
                 </Row>
             </Modal.Body>
             <Modal.Footer>
@@ -128,6 +185,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item})=>{
             <Button 
                     variant="primary" 
                     type='submit'
+                    disabled={loading}
                     onClick={()=> submit()}
                 >{isAdd ? "Add" : "Edit"}</Button>
             </Modal.Footer>

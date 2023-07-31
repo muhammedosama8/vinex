@@ -3,6 +3,9 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import Select from 'react-select'
 import { InputTags } from "react-bootstrap-tagsinput";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import CategoriesService from "../../../../services/CategoriesService";
+import AdminService from "../../../../services/AdminService";
 
 
 const AddVariant = ()=>{
@@ -11,25 +14,39 @@ const AddVariant = ()=>{
       variant: []
    })
    const [ categoriesOptions, setCategoriesOptions] = useState()
-   const [ productsOptions, setProductsOptions] = useState()
    const [ tags, setTags] = useState([])
+   const adminService = new AdminService()
+   const categoriesService = new CategoriesService()
+   const navigate = useNavigate()
 
    useEffect(()=>{
-      setCategoriesOptions([
-         {value: 1, label: 'Pants'},
-         {value: 2, label: 'T-Shirts'},
-      ])
-      setProductsOptions([
-         {value: 1, label: 'Nike'},
-         {value: 2, label: 'Any Thing'},
-      ])
+      categoriesService?.getList().then(res=>{
+         if(res.data?.status === 200 || true){
+            let categories =  res.data?.data?.map(item=>{
+               return{
+                  id: item?.id,
+                  value: item?.id,
+                  label: item.name_en
+               }
+            })
+            setCategoriesOptions(categories)
+         }
+      })
    }, [])
 
    const generateVariant = () =>{
       let update = tags?.map(tag=>{
          return {
-            type: tag,
-            values: []
+            type: {
+               name_en: tag,
+               name_ar: '',
+            },
+            values: [
+               {
+                  value_ar: "",
+                  value_en: ""
+                }
+            ]
          }
       })
       setFormData({...formData, variant: update})
@@ -42,9 +59,20 @@ const AddVariant = ()=>{
          return
       }
       let data = {
-         category_id: formData?.category?.id,
-         variant: formData?.variant
+         category_id: formData?.category?.value,
+         variant: formData?.variant?.map((variant) => {
+            return{
+               ...variant.type,
+               variant_values : variant.values
+            }
+         })
       }
+      adminService?.addVariant(data)?.then(res => {
+         if(res?.status === 201){
+            toast.success('Variant Added Successfully')
+            navigate('/variant')
+         }
+      })
    }
 
    return(
@@ -70,6 +98,7 @@ const AddVariant = ()=>{
                         <InputTags
                            style={{fontSize: '16px'}}
                            values={tags}
+                           placeholder='Values'
                            onTags={(value) => setTags(value.values)}
                         />
                         <button
@@ -87,37 +116,179 @@ const AddVariant = ()=>{
 
                {!!formData.variant?.length && formData.variant?.map((item, itemIndex)=>(
                   <Col md={12} className='mb-3' key={itemIndex}>
-                     <Row>
-                        <Col lg={3} md={3}>
+                     <Row style={{boxShadow: '0 0 2px #dedede', padding: '2rem 0'}}>
+                        <Col lg={6} md={6} className='mb-3'>
                            <div className="form-group">
                               <label className="text-label">Variant Type</label>
-                              <h3>{item?.type}</h3>
+                              <h3>{item?.type?.name_en}</h3>
                            </div>
                         </Col>
-                        <Col lg={9} md={9}>
-                           <div className='form-group'>
-                              <label className="text-label">Types*</label>
-                              <div className="input-group">
-                                    <InputTags
-                                       style={{fontSize: '16px'}}
-                                       values={item.values}
-                                       onTags={(value) => {
+                        <Col md={6} className='mb-3'>
+                           <label>Arabic Name*</label>
+                           <input
+                              type="text"
+                              name="ar"
+                              className="form-control"
+                              placeholder="Arabic Name"
+                              required
+                              pattern="[\u0600-\u06FF\s]+"
+                              value={item.type?.name_ar}
+                              onChange={(e)=> {
+                                 let update = formData.variant?.map((res, index)=>{
+                                    if(index === itemIndex){
+                                       return{
+                                          ...res,
+                                          type: {
+                                             ...res.type,
+                                             name_ar: e.target.value
+                                          }
+                                       }
+                                    } else {
+                                       return res
+                                    }
+                                 })
+                                 setFormData({...formData, variant: update})
+                              }}
+                           />
+                        </Col>
+                        <Col md={6}>
+                           <label className="text-label">Types by English*</label>
+                        </Col>
+                        <Col md={6}>
+                           <label className="text-label">Types by Arabic*</label>
+                        </Col>
+                        {item?.values?.map((val,ind)=>{
+                           return <>
+                              <Col lg={6} md={12}>
+                              <div className='form-group'>
+                                 <div className="input-group">
+                                    <input
+                                       type="text"
+                                       name="ar"
+                                       className="form-control"
+                                       placeholder="English"
+                                       required
+                                       pattern="[A-Za-z]+"
+                                       value={val?.value_en}
+                                       onChange={(e)=> {
                                           let update = formData.variant?.map((res, index)=>{
                                              if(index === itemIndex){
-                                                return {
+                                                return{
                                                    ...res,
-                                                   values: value.values
+                                                   values: res.values?.map((valType, valTypeIndex)=>{
+                                                      if(valTypeIndex === ind){
+                                                         return {
+                                                            ...valType,
+                                                            value_en: e.target.value
+                                                         }
+                                                      } else {
+                                                         return valType
+                                                      }
+                                                   })
                                                 }
-                                             } else{
+                                             } else {
                                                 return res
                                              }
                                           })
                                           setFormData({...formData, variant: update})
                                        }}
                                     />
+                                 </div>
                               </div>
-                           </div>
-                        </Col>
+                              </Col>
+                              <Col lg={5} md={12}>
+                                 <div className='form-group'>
+                                    <div className="input-group">
+                                       <input
+                                          type="text"
+                                          name="ar"
+                                          className="form-control"
+                                          placeholder="Arabic Name"
+                                          required
+                                          pattern="[\u0600-\u06FF\s]+"
+                                          value={val?.value_ar}
+                                          onChange={(e)=> {
+                                             let update = formData.variant?.map((res, index)=>{
+                                                if(index === itemIndex){
+                                                   return{
+                                                      ...res,
+                                                      values: res.values?.map((valType, valTypeIndex)=>{
+                                                         if(valTypeIndex === ind){
+                                                            return {
+                                                               ...valType,
+                                                               value_ar: e.target.value
+                                                            }
+                                                         } else {
+                                                            return valType
+                                                         }
+                                                      })
+                                                   }
+                                                } else {
+                                                   return res
+                                                }
+                                             })
+                                             setFormData({...formData, variant: update})
+                                          }}
+                                       />
+                                    </div>
+                                 </div>
+                              </Col>
+                              {ind > 0 && <Col md={1}>
+                                 <button type='button' 
+                                    style={{
+                                       height: 'fit-content',
+                                       padding: '8px 12px', backgroundColor: 'var(--danger)',
+                                       color: '#fff', border: 'none', borderRadius: '8px'
+                                    }}
+                                    onClick={()=>{
+                                       let update = formData.variant?.map((res, index)=>{
+                                          if(index === itemIndex){
+                                             let valuesUpdate = res.values?.filter((_, valuInd)=> valuInd !== ind)
+                                             return{
+                                                ...res,
+                                                values: valuesUpdate
+                                             }
+                                          } else {
+                                             return res
+                                          }
+                                       })
+                                       setFormData({...formData, variant: update})
+                                    }}
+                                 >X</button>
+                              </Col>}
+                              {ind === item?.values?.length-1 && <Col md={12} className='justify-content-end d-flex'>
+                                 <button 
+                                    className="border-0"
+                                    style={{
+                                       background:'none',
+                                       fontSize: '15px',
+                                       color: '#0909cc'
+                                    }}
+                                    type='button'
+                                    onClick={()=>{
+                                       let update = formData.variant?.map((res, index)=>{
+                                          if(index === itemIndex){
+                                             let valuesUpdate = res.values
+                                             valuesUpdate.push({
+                                                value_ar: '',
+                                                value_en: '',
+                                             })
+                                             return{
+                                                ...res,
+                                                values: valuesUpdate
+                                             }
+                                          } else {
+                                             return res
+                                          }
+                                       })
+                                       setFormData({...formData, variant: update})
+                                    }}
+                                 >
+                                    Add New Value
+                                 </button>
+                              </Col>}
+                           </>
+                        })}
                      </Row>
                   </Col>)
                )}

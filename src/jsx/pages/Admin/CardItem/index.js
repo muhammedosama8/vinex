@@ -32,15 +32,21 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
     return(
         <tr key={index}>
                     <td>
-                      <strong>{item.id}</strong>
+                      <strong>{item?.id}</strong>
                     </td>
-                    <td>{`${item.f_name} ${item.l_name}`}</td>
+                    <td>{`${item?.f_name} ${item?.l_name}`}</td>
                     <td>
-                      {item.email}
+                      {item?.email}
                     </td>
-                    <td>{item.phone}</td>
+                    <td>{item?.phone}</td>
                     <td>
-                      {item?.admin_roles.length === Rules?.length ? <Badge variant="success">Full</Badge> : item?.admin_roles.length === 0 ? <Badge variant="danger">No</Badge> : <Badge variant="secondary">Some</Badge>}
+                      <Badge 
+                        style={{cursor: 'pointer'}}
+                        onClick={()=>navigate(`/rules/${item?.id}`)}
+                        variant={item?.admin_roles.length === Rules?.length ? 'success' : item?.admin_roles.length === 0 ? 'danger' : 'secondary'}
+                      >
+                        {item?.admin_roles.length === Rules?.length ? 'Full' : item?.admin_roles.length === 0 ? 'No' : 'Some'}
+                      </Badge>
                     </td>
                     <td>
                         <Form.Check

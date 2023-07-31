@@ -1,29 +1,31 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import CategoriesService from "../../../../../services/CategoriesService";
 import DeleteModal from "../../../../common/DeleteModal";
 
-const CardItem = ({item, setItem, index, setAddModal}) =>{
-    const [status, setStatus] = useState(null)
+const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
+    // const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    const categoriesService = new CategoriesService()
 
-    useEffect(()=>{
-        setStatus(item.status)
-    },[item])
+    // useEffect(()=>{
+    //     setStatus(item.status)
+    // },[item])
 
-    const changeStatusToggle = (e)=>{
-        setStatus(e.target.checked)
-    }
+    // const changeStatusToggle = (e)=>{
+    //     setStatus(e.target.checked)
+    // }
 
     return(
         <tr key={index} className='text-center'>
             <td>
                 <strong>{item.id}</strong>
             </td>
-            <td>{item.name}</td>
-            <td>
+            <td>{item.name_en}</td>
+            {/* <td>
                 <Form.Check
                     type="switch"
                     id={`custom-switch${index}`}
@@ -31,7 +33,7 @@ const CardItem = ({item, setItem, index, setAddModal}) =>{
                     disabled={!isExist('categories')}
                     onChange={(e)=> changeStatusToggle(e)}
                 />
-            </td>
+            </td> */}
             <td>
                 {isExist('categories') && <Dropdown>
                     <Dropdown.Toggle
@@ -51,10 +53,11 @@ const CardItem = ({item, setItem, index, setAddModal}) =>{
             </td>
             {deleteModal && <DeleteModal
                       open={deleteModal}
-                      titleMsg={item.name}
-                      deletedItem={item.id}
-                      // modelService={}
+                      titleMsg={item.name_en}
+                      deletedItem={item}
+                      modelService={categoriesService}
                       onCloseModal={setDeleteModal}
+                      setShouldUpdate={setShouldUpdate}
                     />}
             </tr>
     )

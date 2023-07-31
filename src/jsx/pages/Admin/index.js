@@ -9,6 +9,7 @@ import CardItem from "./CardItem";
 
 const Admins = () =>{
     const [admins, setAdmins] =useState(null)
+    const [hasData, setHasData] =useState(false)
     const [search, setSearch] =useState(null)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
@@ -67,6 +68,7 @@ const Admins = () =>{
                   setData={setAdmins}
                   service={adminService}
                   shouldUpdate={shouldUpdate}
+                  setHasData={setHasData}
                 />
             </Card.Body>
           </Card>

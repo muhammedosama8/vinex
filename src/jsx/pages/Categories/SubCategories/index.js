@@ -8,22 +8,22 @@ import {
   Button,
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import SubCategoriesService from "../../../../services/SubCategoriesService";
+import Pagination from "../../../common/Pagination/Pagination";
 import Search from "../../../common/Search";
 import AddSubCategoriesModal from "./AddSubCategoriesModal";
 import CardItem from "./CardItem";
 import './style.scss'
 
 const SubCategories = () => {
+    const [subCategories, setSubCategories] = useState([])
     const [addModal, setAddModal] = useState(false)
     const [item, setItem] = useState({})
     const [search, setSearch] = useState(null)
+    const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-
-    const items = [
-        {id: 1, name: 'any name', category: 'one', status: true},
-        {id: 2, name: 'any name', category: 'two' ,status: false},
-    ]
+    const subCategoriesService = new SubCategoriesService()
 
   return (
     <Fragment>
@@ -52,14 +52,14 @@ const SubCategories = () => {
                     <th>
                       <strong>Categories</strong>
                     </th>
-                    <th>
+                    {/* <th>
                       <strong>STATUS</strong>
-                    </th>
+                    </th> */}
                     <th></th>
                   </tr>
                 </thead>
                 <tbody className="table-body">
-                    {items?.map((item, index) =>{
+                    {subCategories?.map((item, index) =>{
                         return <CardItem 
                             key={index}
                             index= {index}
@@ -70,12 +70,23 @@ const SubCategories = () => {
                     })}
                 </tbody>
               </Table>
+              <Pagination
+                  setData={setSubCategories}
+                  service={subCategoriesService}
+                  shouldUpdate={shouldUpdate}
+                />
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-      {addModal && <AddSubCategoriesModal item={item} addModal={addModal} setAddModal={()=> setAddModal(false)}/>}
+      {addModal && 
+        <AddSubCategoriesModal 
+          item={item} 
+          setShouldUpdate={setShouldUpdate} 
+          addModal={addModal} 
+          setAddModal={()=> setAddModal(false)}
+      />}
     </Fragment>
   );
 };

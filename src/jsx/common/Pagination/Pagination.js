@@ -6,15 +6,14 @@ const Pagination = ({setData, service,shouldUpdate})=>{
     const [dataItems, setDataItems] = useState([])
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
-    
     useEffect(()=>{
         service?.getList().then(res=>{
-            if(res?.status === 200){
-                setDataItems([...res.data?.admins]) 
+            // if(res?.status === 200){
+                setDataItems([...res.data?.data]) 
                 let total= Math.ceil(res.data?.admins?.length / 10)
                 setTotalPages(total)
                 setPage(1)
-            }
+            // }
           })
     },[shouldUpdate])
 

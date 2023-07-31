@@ -236,7 +236,7 @@ const Home = () => {
                     />
                     <div className="mr-auto">
                       <h4 className="fs-14 mb-0">
-                        <Link to="./app-profile" className="text-black">
+                        <Link to="./profile" className="text-black">
                           Steffany Humble
                         </Link>
                       </h4>
@@ -262,7 +262,7 @@ const Home = () => {
                     />
                     <div className="mr-auto">
                       <h4 className="fs-14 mb-0">
-                        <Link to={"./app-profile"} className="text-black">
+                        <Link to={"./profile"} className="text-black">
                           Jacob Swing Swing
                         </Link>
                       </h4>
@@ -288,7 +288,7 @@ const Home = () => {
                     />
                     <div className="mr-auto">
                       <h4 className="fs-14 mb-0">
-                        <Link to={"./app-profile"} className="text-black">
+                        <Link to={"./profile"} className="text-black">
                           Robert Carloz
                         </Link>
                       </h4>
@@ -314,7 +314,7 @@ const Home = () => {
                     />
                     <div className="mr-auto">
                       <h4 className="fs-14 mb-0">
-                        <Link to={"./app-profile"} className="text-black">
+                        <Link to={"./profile"} className="text-black">
                           Kevin Stefanus
                         </Link>
                       </h4>
@@ -340,7 +340,7 @@ const Home = () => {
                     />
                     <div className="mr-auto">
                       <h4 className="fs-14 mb-0">
-                        <Link to={"./app-profile"} className="text-black">
+                        <Link to={"./profile"} className="text-black">
                           Jacob Swing Swing
                         </Link>
                       </h4>

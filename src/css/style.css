@@ -11981,7 +11981,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       border-radius: 1.25rem;
       color: #fff; }
       [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu > li.mm-active > a i {
-        color: #fff;
+        color: #FE634E;
         padding: 0; }
     [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu > li:hover:nth-last-child(-n + 1) > ul {
       bottom: 0;
@@ -12136,7 +12136,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
         right: 13rem; }
   [data-sidebar-style="mini"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a {
     background: #FE634E;
-    color: #fff;
+    border: none;
+    color: #FE634E!important;
     border-radius: 1.25rem; }
     [data-theme-version="dark"][data-sidebar-style="mini"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a {
       background: #1e2746; }

@@ -8,23 +8,22 @@ import {
   Button,
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import CategoriesService from "../../../../services/CategoriesService";
+import Pagination from "../../../common/Pagination/Pagination";
 import Search from "../../../common/Search";
-import PageTitle from "../../../layouts/PageTitle";
 import AddCategoriesModal from "./AddCategoriesModal";
 import CardItem from "./CardItem";
 import './style.scss'
 
 const Categories = () => {
+    const [categories, setCategories] = useState([])
     const [addModal, setAddModal] = useState(false)
     const [item, setItem] = useState({})
     const [search, setSearch] = useState(null)
+    const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const categoriesService = new CategoriesService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-
-    const items = [
-        {id: 1, name: 'Pants', status: true},
-        {id: 2, name: 't-shirts', status: false},
-    ]
 
   return (
     <Fragment>
@@ -50,30 +49,43 @@ const Categories = () => {
                     <th>
                       <strong>Name</strong>
                     </th>
-                    <th>
+                    {/* <th>
                       <strong>STATUS</strong>
-                    </th>
+                    </th> */}
                     <th></th>
                   </tr>
                 </thead>
+
                 <tbody className="table-body">
-                    {items?.map((item, index) =>{
+                    {categories?.map((item, index) =>{
                         return <CardItem 
                             index= {index}
                             key= {index}
                             item={item}
                             setItem={setItem}
                             setAddModal={setAddModal}
+                            setShouldUpdate={setShouldUpdate}
                         />
                     })}
                 </tbody>
               </Table>
+              <Pagination
+                  setData={setCategories}
+                  service={categoriesService}
+                  shouldUpdate={shouldUpdate}
+              />
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-      {addModal && <AddCategoriesModal item={item} addModal={addModal} setAddModal={()=> setAddModal(false)}/>}
+      {addModal && 
+        <AddCategoriesModal 
+          item={item} 
+          addModal={addModal} 
+          setShouldUpdate={setShouldUpdate}
+          setAddModal={()=> setAddModal(false)}
+      />}
     </Fragment>
   );
 };

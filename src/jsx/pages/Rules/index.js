@@ -6,6 +6,7 @@ import AdminService from "../../../services/AdminService";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { changeAdminRules } from "../../../store/actions/AuthActions";
+import { useNavigate } from "react-router-dom";
 
 const Permission = () =>{
     const [formData, setFormData]= useState({
@@ -14,20 +15,26 @@ const Permission = () =>{
     })
     const [adminsOptions, setAdminsOptions]= useState([])
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const adminService = new AdminService()
     const [shouldUpdate, setShouldUpdate]= useState(false)
+    let id = window.location.pathname.split('/rules/')[1]
 
     useEffect(()=>{
         adminService.getList().then(res=>{
           if(res.status === 200){
-            let admins = res.data?.admins?.map(admin=>{
-                return {
+            let admins = res.data?.data?.map(admin=>{
+                let adminRes = {
                     id: admin.id,
                     value: admin.id,
                     label: `${admin.f_name} ${admin.l_name}`,
                     rules: admin.admin_roles,
                     data: admin
                 }
+                if(!!id && Number(id) === Number(admin.id)){
+                    setFormData({rules: [], admin: {...adminRes}})
+                }
+                return {...adminRes}
             })
             setAdminsOptions(admins)
           }
@@ -62,6 +69,9 @@ const Permission = () =>{
                 window.scrollTo(0,0)
                 setFormData({admin: '', rules: []})
                 setShouldUpdate(prev=> !prev)
+                if(!!id){
+                    navigate('/admins')
+                }
             }
         })
     }

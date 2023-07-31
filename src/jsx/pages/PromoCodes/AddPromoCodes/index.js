@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
+import Select from 'react-select'
 
 const AddPromoCodes = () => {
-    const [promoCode, setPromoCode] = useState({
+    const [formData, setFormData] = useState({
         name: '',
         amount: '',
         type: '',
@@ -10,9 +11,13 @@ const AddPromoCodes = () => {
         max_usage: '',
         count_usage: '',
     })
+    const [ typesOptions, setTypesOptions]= useState([
+      {label: 'Percentage', value: 'percentage'},
+      {label: 'Fixed Amount', value: 'fixed_amount'},
+    ])
 
     const handlerText = (e)=>{
-        setPromoCode({...promoCode, [e.target.name]: e.target.value})
+      setFormData({...formData, [e.target.name]: e.target.value})
     }
 
     const onSubmit = (e) =>{
@@ -31,7 +36,7 @@ const AddPromoCodes = () => {
                      className="form-control"
                      placeholder="Name"
                      required
-                     value={promoCode.name}
+                     value={formData.name}
                      onChange={(e)=> handlerText(e)}
                   />
                </div>
@@ -45,7 +50,7 @@ const AddPromoCodes = () => {
                      name="amount"
                      placeholder="Amount"
                      required
-                     value={promoCode.amount}
+                     value={formData.amount}
                      onChange={(e)=> handlerText(e)}
                   />
                </div>
@@ -53,13 +58,12 @@ const AddPromoCodes = () => {
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
                   <label className="text-label">Type*</label>
-                  <select className="form-control" name="type"
-                            value={promoCode.type}
-                            onChange={(e)=> handlerText(e)}>
-                    <option value="">Please select</option>
-                    <option value="percentage">Percentage</option>
-                    <option value="fixed_amount">Fixed Amount</option>
-                </select>
+                  <Select
+                     value={formData.type}
+                      name="type"
+                      options={typesOptions}
+                      onChange={(e)=> setFormData({...formData, type: e})}
+                  />
                </div>
             </div>
             <div className="col-lg-6 mb-2">
@@ -71,7 +75,7 @@ const AddPromoCodes = () => {
                      id="end_date"
                      name="end_date"
                      required
-                     value={promoCode.end_date}
+                     value={formData.end_date}
                      onChange={(e)=> handlerText(e)}
                   />
                </div>
@@ -85,7 +89,7 @@ const AddPromoCodes = () => {
                      placeholder="Max Usage"
                      name="max_usage"
                      required
-                     value={promoCode.max_usage}
+                     value={formData.max_usage}
                      onChange={(e)=> handlerText(e)}
                   />
                </div>
@@ -99,7 +103,7 @@ const AddPromoCodes = () => {
                      placeholder="Count Usage"
                      name="count_usage"
                      required
-                     value={promoCode.count_usage}
+                     value={formData.count_usage}
                      onChange={(e)=> handlerText(e)}
                   />
                </div>

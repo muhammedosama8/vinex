@@ -3,6 +3,7 @@ import http from './HttpService'
 import { getJwt } from "./AuthService";
 
 const apiDropdownEndpoint = API_BASE_URL_ENV() + "/admin/settings/dropdown";
+const apiUploadEndpoint = API_BASE_URL_ENV() + "/files/uploadFile";
 
 export default class BaseService {
   apiEndpoint;
@@ -49,4 +50,9 @@ export default class BaseService {
     return http.delete(this.entityUrl([id]));
   }
 
+  postUpload(file) {
+    const formData = new FormData();
+    formData.append("img", file);
+    return http.post(apiUploadEndpoint, formData);
+  }
 }

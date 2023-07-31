@@ -251,7 +251,7 @@ const Header = ({ onNote }) => {
 
                         <Dropdown.Menu align="right" className="mt-2 ">
                            <Link
-                              to="/app-profile"
+                              to="/profile"
                               className="dropdown-item ai-icon"
                            >
                               <svg

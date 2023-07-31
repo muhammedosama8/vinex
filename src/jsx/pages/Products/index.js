@@ -53,7 +53,7 @@ const Products = () =>{
                       <strong>Price</strong>
                     </th>
                     <th>
-                      <strong>Quantity</strong>
+                      <strong>In Stock</strong>
                     </th>
                     <th>
                       <strong>STATUS</strong>

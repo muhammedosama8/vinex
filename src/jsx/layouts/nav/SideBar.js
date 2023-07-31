@@ -52,7 +52,7 @@ const SideBar = (props) => {
     let filter = MenuList?.filter(res=> `${res.to}` === page?.split('/')[1])
 
     if(filter.length > 0) handleMenuActive(filter[0].title)
-	}, []);
+	}, [ window.location.pathname]);
 
   /// Path
   let path = window.location.pathname;
