@@ -14,7 +14,6 @@ import "./css/style.css";
 import Verified from './jsx/pages/Authintication/Verified';
 import http from './services/HttpService';
 
-const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
 const Login = lazy(() => {
     return new Promise(resolve => {
 		setTimeout(() => resolve(import('./jsx/pages/Authintication/Login')), 500);
@@ -51,8 +50,6 @@ function App (props) {
         <Routes>
             <Route path='/login' element={<Login />} />
             <Route path='/verified' element={<Verified />} />
-            {/* <Route path='/page-register' element={<SignUp />} /> */}
-            <Route path='/page-forgot-password' element={<ForgotPassword />} />
         </Routes>
     );
     if (props.isAuthenticated) {

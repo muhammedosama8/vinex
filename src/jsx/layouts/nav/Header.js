@@ -1,12 +1,8 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
-/// Scroll
-import PerfectScrollbar from "react-perfect-scrollbar";
-
 /// Image
 import profile from "../../../images/1.jpg";
-import avatar from "../../../images/1.jpg";
 import { Dropdown } from "react-bootstrap";
 import Logout from '../../pages/Authintication/Logout';
 

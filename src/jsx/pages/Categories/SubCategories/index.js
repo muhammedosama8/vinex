@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import SubCategoriesService from "../../../../services/SubCategoriesService";
+import NoData from "../../../common/NoData";
 import Pagination from "../../../common/Pagination/Pagination";
 import Search from "../../../common/Search";
 import AddSubCategoriesModal from "./AddSubCategoriesModal";
@@ -20,6 +21,7 @@ const SubCategories = () => {
     const [addModal, setAddModal] = useState(false)
     const [item, setItem] = useState({})
     const [search, setSearch] = useState(null)
+    const [hasData, setHasData] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
@@ -36,11 +38,9 @@ const SubCategories = () => {
           </Button>}
         </div>
       
-      <Row>
-        <Col lg={12}>
-          <Card>
-            <Card.Body>
-              <Table responsive>
+        <Card>
+            <Card.Body className={`${hasData === 0 && 'text-center'} `}>
+              {hasData === 1 && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -71,16 +71,16 @@ const SubCategories = () => {
                         />
                     })}
                 </tbody>
-              </Table>
+              </Table>}
+              {hasData === 0 && <NoData/>}
               <Pagination
                   setData={setSubCategories}
                   service={subCategoriesService}
                   shouldUpdate={shouldUpdate}
+                  setHasData={setHasData}
                 />
             </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+        </Card>
 
       {addModal && 
         <AddSubCategoriesModal 

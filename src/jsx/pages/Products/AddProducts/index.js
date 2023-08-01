@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Form } from "react-bootstrap";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import Select from 'react-select';
 import uploadImg from '../../../../images/upload-img.webp';
+import AdminService from "../../../../services/AdminService";
+import CategoriesService from "../../../../services/CategoriesService";
 import '../style.scss'
 
 const AddProducts = () => {
@@ -11,7 +13,7 @@ const AddProducts = () => {
         price: '',
         offer_price: '',
         quantity: '',
-        category: [],
+        category: '',
         desc_ar: '',
         desc_en: '',
         bestSeller: false,
@@ -20,13 +22,33 @@ const AddProducts = () => {
     })
     const [categoriesOptions, setCategoriesOptions] = useState([])
     const [files, setFiles] = useState([{},{},{},{},{}])
+    const categoriesService = new CategoriesService()
+    const adminService = new AdminService()
 
     useEffect(()=>{
-        setCategoriesOptions([
-            {value: 1, label: 'Pants'},
-            {value: 2, label: 'T-Shirts'},
-        ])
+        categoriesService?.getList().then(res=>{
+            if(res.data?.status === 200 || true){
+               let categories =  res.data?.data?.map(item=>{
+                  return{
+                     id: item?.id,
+                     value: item?.id,
+                     label: item.name_en
+                  }
+               })
+               setCategoriesOptions(categories)
+            }
+         })
     },[])
+
+    useEffect(()=>{
+        if(!!product?.category){
+           adminService?.getVariant(product?.category?.id)?.then(res=>{
+              if(res?.status === 200){
+                console.log(res.data.data)
+              }
+           })
+        }
+     },[product?.category])
 
     const fileHandler = (e, index) => {
         let update = files?.map((file,updateIndex) => {
@@ -82,8 +104,8 @@ const AddProducts = () => {
 
     return <Card className="p-4">
         <form onSubmit={submit} className='add-product'>
-            <div className="row">
-                <div className="col-lg-6 mb-3">
+            <Row>
+                <Col md={6} className="mb-3">
                         <label className="text-label">English Title*</label>
                         <input
                             type="text"
@@ -94,8 +116,8 @@ const AddProducts = () => {
                             value={product.en}
                             onChange={(e)=> handlerText(e)}
                         />
-                </div>
-                <div className="col-lg-6 mb-3">
+                </Col>
+                <Col md={6} className="mb-3">
                         <label className="text-label">Arabic Title</label>
                         <input
                             type="text"
@@ -106,8 +128,8 @@ const AddProducts = () => {
                             value={product.ar}
                             onChange={(e)=> handlerText(e)}
                         />
-                </div>
-                <div className="col-lg-6 mb-3">
+                </Col>
+                <Col md={6} className="mb-3">
                         <label className="text-label">English Description</label>
                         <textarea  
                             name="desc_en" 
@@ -122,8 +144,8 @@ const AddProducts = () => {
                             onChange={(e)=> handlerText(e)}
                             rows="6" >
                         </textarea>
-                </div>
-                <div className="col-lg-6 mb-3">
+                </Col>
+                <Col md={6} className="mb-3">
                         <label className="text-label">Arabic Description</label>
                         <textarea  
                             name="desc_ar" 
@@ -138,8 +160,8 @@ const AddProducts = () => {
                             onChange={(e)=> handlerText(e)}
                             rows="6" >
                         </textarea>
-                </div>
-                <div className="col-lg-6 mb-3">
+                </Col>
+                <Col md={6} className="mb-3">
                         <label className="text-label">Category</label>
                         <Select
                             value={product.category}
@@ -148,8 +170,8 @@ const AddProducts = () => {
                             options={categoriesOptions}
                             onChange={(e)=> setProduct({...product, category: e})}
                         />
-                </div>
-                <div className="col-lg-6 mb-3">
+                </Col>
+                <Col md={6} className="mb-3">
                         <label className="text-label">Price*</label>
                         <input
                             type="number"
@@ -160,20 +182,8 @@ const AddProducts = () => {
                             value={product.price}
                             onChange={(e)=> handlerText(e)}
                         />
-                </div>
-                <div className="col-lg-6 mb-3">
-                        <label className="text-label">Offer Price</label>
-                        <input
-                            type="number"
-                            name="offer_price"
-                            className="form-control"
-                            placeholder="Offer Price"
-                            required
-                            value={product.offer_price}
-                            onChange={(e)=> handlerText(e)}
-                        />
-                </div>
-                <div className="col-lg-6 mb-2">
+                </Col>
+                <Col md={6} className="mb-3">
                     <div className="form-group mb-3">
                         <label className="text-label">Quantity*</label>
                         <input
@@ -186,9 +196,9 @@ const AddProducts = () => {
                             onChange={(e)=> handlerText(e)}
                         />
                     </div>
-                </div>
-                <div className="col-lg-3 mb-2">
-                    <div className="form-group mb-3 d-flex" style={{gap: '24px'}}>
+                </Col>
+                <Col md={3} className="mb-3">
+                    {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
                         <label className="text-label">Best Seller</label>
                         <Form.Check
                         type="switch"
@@ -196,10 +206,10 @@ const AddProducts = () => {
                         checked={product.bestSeller}
                         onChange={(e)=> setProduct({...product, bestSeller: e.target.checked})}
                       />
-                    </div>
-                </div>
-                <div className="col-lg-3 mb-2">
-                    <div className="form-group mb-3 d-flex" style={{gap: '24px'}}>
+                    {/* </div> */}
+                </Col>
+                <Col md={3} className="mb-3">
+                    {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
                         <label className="text-label">New In</label>
                         <Form.Check
                         type="switch"
@@ -207,10 +217,22 @@ const AddProducts = () => {
                         checked={product.newIn}
                         onChange={(e)=> setProduct({...product, newIn: e.target.checked})}
                       />
-                    </div>
-                </div>
-            </div>
-            <div className="row">
+                    {/* </div> */}
+                </Col>
+                <Col md={6} className="mb-3">
+                        <label className="text-label">Offer Price</label>
+                        <input
+                            type="number"
+                            name="offer_price"
+                            className="form-control"
+                            placeholder="Offer Price"
+                            required
+                            value={product.offer_price}
+                            onChange={(e)=> handlerText(e)}
+                        />
+                </Col>
+            </Row>
+            <Row>
                 {product?.images?.map((data, index)=>{
                     return <Col md={3} className='mb-3 mt-3' key={index}>
                         <h4 style={{marginLeft: '8px'}}>Image {index+1}</h4>
@@ -236,7 +258,7 @@ const AddProducts = () => {
                         </div>
                 </Col>
                 })}
-            </div>
+            </Row>
             <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">Submit</Button>
             </div>

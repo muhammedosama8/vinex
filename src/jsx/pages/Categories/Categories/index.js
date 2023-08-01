@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import CategoriesService from "../../../../services/CategoriesService";
+import NoData from "../../../common/NoData";
 import Pagination from "../../../common/Pagination/Pagination";
 import Search from "../../../common/Search";
 import AddCategoriesModal from "./AddCategoriesModal";
@@ -19,6 +20,7 @@ const Categories = () => {
     const [categories, setCategories] = useState([])
     const [addModal, setAddModal] = useState(false)
     const [item, setItem] = useState({})
+    const [hasData, setHasData] = useState(null)
     const [search, setSearch] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
@@ -40,7 +42,7 @@ const Categories = () => {
         <Col lg={12}>
           <Card>
             <Card.Body>
-              <Table responsive>
+              {hasData === 1 && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -68,11 +70,13 @@ const Categories = () => {
                         />
                     })}
                 </tbody>
-              </Table>
+              </Table>}
+              {hasData === 0 && <NoData />}
               <Pagination
                   setData={setCategories}
                   service={categoriesService}
                   shouldUpdate={shouldUpdate}
+                  setHasData={setHasData}
               />
             </Card.Body>
           </Card>

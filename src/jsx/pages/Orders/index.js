@@ -27,16 +27,14 @@ const Orders = () =>{
       setOrders([...orders])
     },[])
 
-    const exportTable = ()=> {}
-
     return(
         <>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
           <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />
           <div>
-            <Button variant="secondary" className='mx-2 h-75' onClick={()=> exportTable()}>
+            {/* <Button variant="secondary" className='mx-2 h-75' onClick={()=> exportTable()}>
                 Export
-            </Button>
+            </Button> */}
             {isExist('order') && <Button variant="primary" className='mx-2 h-75' onClick={()=> navigate('/orders/add-order')}>
               Add Order
             </Button>}

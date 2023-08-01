@@ -3,13 +3,14 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AdminService from "../../../services/AdminService";
+import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
 import CardItem from "./CardItem";
 
 const Admins = () =>{
     const [admins, setAdmins] =useState(null)
-    const [hasData, setHasData] =useState(false)
+    const [hasData, setHasData] =useState(null)
     const [search, setSearch] =useState(null)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
@@ -28,7 +29,7 @@ const Admins = () =>{
 
         <Card>
             <Card.Body>
-              <Table responsive>
+              {hasData === 1 && <Table responsive>
                 <thead>
                   <tr>
                     <th className="px-2">
@@ -62,8 +63,8 @@ const Admins = () =>{
                     />
                   })}
                 </tbody>
-              </Table>
-              {admins?.length === 0 && <h4 className="text-center">There is no data</h4>}
+              </Table>}
+              {hasData === 0 && <NoData/>}
               <Pagination
                   setData={setAdmins}
                   service={adminService}

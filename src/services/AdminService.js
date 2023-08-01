@@ -3,7 +3,6 @@ import http from './HttpService'
 import { API_BASE_URL_ENV } from "../jsx/common/common";
 
 const apiEndpoint = API_BASE_URL_ENV() + "/admin";
-// const apiDropDownEndpoint = API_BASE_URL_ENV() + "/admin/user/dropdown/Admin";
 const apiTogglle = API_BASE_URL_ENV() +"/admin/block"
 const apiCategories = API_BASE_URL_ENV() +"/categories"
 export default class AdminService extends BaseService {
@@ -15,6 +14,19 @@ export default class AdminService extends BaseService {
         return http.post(`${apiCategories}/addVariant`, data) 
     }
 
+    getVariant=(id)=>{
+        return http.get(`${apiCategories}/getVariant/${id}`) 
+    }
+
+    updateVariant(id, data) {
+        const body = { ...data };
+        return http.put(`${apiCategories}/updateVariant/${id}`, body);
+    }
+
+    deleteVariant(id) {
+        return http.delete(`${apiCategories}/deleteVariant/${id}`);
+    }
+
     addCategories=(data)=>{
         return http.post(`${apiCategories}`, data) 
     }
@@ -22,6 +34,5 @@ export default class AdminService extends BaseService {
     toggleStatus(id, data) {
         return http.put(`${apiTogglle}/${id}`, data);
     }
- 
-   
+
 }

@@ -12,9 +12,8 @@ import Footer from './layouts/Footer'
 
 
 /// Pages
-import Registration from './pages/Registration'
 import Login from './pages/Authintication/Login'
-import Error404 from './pages/Error404'
+import Error404 from './common/Error404'
 
 //Scroll To Top
 import ScrollToTop from './layouts/ScrollToTop';
@@ -53,7 +52,6 @@ const Markup = () => {
     
 
     /// pages
-    { url: 'page-register', component: <Registration/> },
     { url: 'page-login', component: <Login/> },
 
     // Admins
