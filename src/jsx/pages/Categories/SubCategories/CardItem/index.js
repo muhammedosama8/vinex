@@ -3,7 +3,7 @@ import { Badge, Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import DeleteModal from "../../../../common/DeleteModal";
 
-const CardItem = ({item, setItem, index, setAddModal}) =>{
+const CardItem = ({item, setItem, index, setAddModal,subCategoriesService, setShouldUpdate}) =>{
     // const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
@@ -55,9 +55,10 @@ const CardItem = ({item, setItem, index, setAddModal}) =>{
             {deleteModal && <DeleteModal
                       open={deleteModal}
                       titleMsg={item.name}
-                      deletedItem={item.id}
-                      // modelService={}
+                      deletedItem={item}
+                      modelService={subCategoriesService}
                       onCloseModal={setDeleteModal}
+                      setShouldUpdate={setShouldUpdate}
                     />}
             </tr>
     )

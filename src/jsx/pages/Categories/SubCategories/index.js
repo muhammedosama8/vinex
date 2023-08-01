@@ -66,6 +66,8 @@ const SubCategories = () => {
                             item={item}
                             setItem={setItem}
                             setAddModal={setAddModal}
+                            subCategoriesService= {subCategoriesService}
+                            setShouldUpdate={setShouldUpdate} 
                         />
                     })}
                 </tbody>
