@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap"
 import Select from 'react-select'
+import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
 import uploadImg from '../../../../../images/upload-img.webp';
 import BaseService from "../../../../../services/BaseService";
@@ -19,7 +20,6 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
     })
     const [isAdd, setIsAdd] = useState(false)
     const [ categoriesOptions, setCategoriesOptions] = useState([])
-    const cancelTokenSource = useRef();
     const subCategoriesService = new SubCategoriesService()
     const categoriesService = new CategoriesService()
 
@@ -46,7 +46,8 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             setFormData({
                 category: {
                     ...item.category,
-                    label: `${item.category?.name_en}`
+                    label: `${item.category?.name_en}`,
+                    value: item.category.id
                 },
                 id: item?.id,
                 ar: item?.name_ar,
@@ -60,7 +61,6 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
         setLoading(true)
         let files = e.target.files
         const filesData = Object.values(files)
-        cancelTokenSource.current = axios.CancelToken.source();
  
         if (filesData.length) {
             new BaseService().postUpload(filesData[0]).then(res=>{
@@ -72,12 +72,6 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             })
         }
     }
-
-    useEffect(() => {
-        return () => {
-            cancelTokenSource?.current?.cancel()
-          }
-    }, [])
 
     const submit = () =>{
         if(!formData?.img){
@@ -93,16 +87,14 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             subCategoriesService?.create(data)?.then(res=>{
                 if(res?.status === 201){
                     toast.success('SubCategory Added Successfully')
-                    cancelTokenSource.current.cancel()
                     setAddModal()
                     setShouldUpdate(prev=> !prev)
                 }
             })
         } else {
-            subCategoriesService?.update(formData?.id, {...data, id: formData?.id})?.then(res=>{
+            subCategoriesService?.update(formData?.id, data)?.then(res=>{
                 if(res?.status === 200){
                     toast.success('SubCategory Updated Successfully')
-                    cancelTokenSource.current.cancel()
                     setAddModal()
                     setShouldUpdate(prev=> !prev)
                 }
@@ -112,6 +104,9 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
 
     return(
         <Modal className="fade" show={addModal} onHide={setAddModal}>
+            <AvForm
+                    className='form-horizontal'
+                    onValidSubmit={submit}>
             <Modal.Header>
             <Modal.Title>{isAdd ? 'Add': 'Edit'} Sub Category</Modal.Title>
             <Button
@@ -123,78 +118,93 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             </Button>
             </Modal.Header>
             <Modal.Body>
-                <Row>
-                    <Col md={12}>
-                        <div className='form-group w-100'>
-                        <label>Category</label>
-                        <Select
-                            value={formData.category}
-                            name="categories"
-                            options={categoriesOptions}
-                            onChange={(e)=> setFormData({...formData, category: e})}
-                        />
-                        </div>
-                    </Col>
-                    <Col md={6}>
-                        <div className='form-group w-100'>
-                            <label>English</label>
-                            <input
-                                type='text'
-                                className='form-control'
-                                placeholder='Name'
-                                value={formData.en}
-                                style={{height: '50px', color: 'initial'}}
-                                required
-                                onChange={(e) => setFormData({...formData, en: e.target.value})}
-                            />
-                        </div>
-                    </Col>
-
-                    <Col md={6}>
-                        <div className='form-group w-100'>
-                            <label>Arabic</label>
-                            <input
-                                type='text'
-                                className='form-control'
-                                placeholder='الاسم'
-                                value={formData.ar}
-                                style={{height: '50px', color: 'initial'}}
-                                required
-                                onChange={(e) => setFormData({...formData, ar: e.target.value})}
-                            />
-                        </div>
-                    </Col>
-
-                    <Col md={12}>
+                
+                    <Row>
+                        <Col md={12}>
                             <div className='form-group w-100'>
-                                <label className="m-0">Category Image</label>
-                                <div className="image-placeholder">	
-                                    <div className="avatar-edit">
-                                        <input type="file" onChange={(e) => fileHandler(e)} id={`imageUpload`} /> 					
-                                        <label htmlFor={`imageUpload`}  name=''></label>
-                                    </div>
-                                    <div className="avatar-preview2 m-auto">
-                                        <div id={`imagePreview`}>
-                                        {!!formData?.img && 
-                                            <img alt='icon'
-                                                id={`saveImageFile`} 
-                                                className='w-100 h-100' 
-                                                style={{borderRadius: '30px'}} 
-                                                src={formData?.img|| URL.createObjectURL(files)}
+                            <label>Category</label>
+                            <Select
+                                value={formData.category}
+                                name="categories"
+                                options={categoriesOptions}
+                                onChange={(e)=> setFormData({...formData, category: e})}
+                            />
+                            </div>
+                        </Col>
+                        <Col md={6}>
+                            <AvField
+                                    label='English'
+                                    type='text'
+                                    placeholder='Name'
+                                    bsSize="lg"
+                                    name='en'
+                                    validate={{
+                                        required: {
+                                            value: true,
+                                            errorMessage: 'This Field is required'
+                                        },
+                                        pattern: {
+                                            value: "^[a-zA-Z0-9]+$",
+                                            errorMessage: `English format is invalid`
+                                        }
+                                    }}
+                                    value={formData.en}
+                                    onChange={(e) => setFormData({...formData, en: e.target.value})}
+                                />
+                        </Col>
+
+                        <Col md={6}>
+                            <AvField
+                                    label='Arabic'
+                                    type='text'
+                                    placeholder='الاسم'
+                                    value={formData.ar}
+                                    name='ar'
+                                    validate={{
+                                        required: {
+                                            value:true,
+                                            errorMessage: 'This Field is required'
+                                        },
+                                        pattern: {
+                                            value: '/^[\u0621-\u064A0-9 ]+$/',
+                                            errorMessage: `Arabic format is invalid`
+                                        }
+                                    }}
+                                    onChange={(e) => setFormData({...formData, ar: e.target.value})}
+                                />
+                        </Col>
+
+                        <Col md={12}>
+                                <div className='form-group w-100'>
+                                    <label className="m-0">Category Image</label>
+                                    <div className="image-placeholder">	
+                                        <div className="avatar-edit">
+                                            <input type="file" onChange={(e) => fileHandler(e)} id={`imageUpload`} /> 					
+                                            <label htmlFor={`imageUpload`}  name=''></label>
+                                        </div>
+                                        <div className="avatar-preview2 m-auto">
+                                            <div id={`imagePreview`}>
+                                            {!!formData?.img && 
+                                                <img alt='icon'
+                                                    id={`saveImageFile`} 
+                                                    className='w-100 h-100' 
+                                                    style={{borderRadius: '30px'}} 
+                                                    src={formData?.img|| URL.createObjectURL(files)}
+                                                />}
+                                            {/* {files[index]?.name && <img id={`saveImageFile${index+1}`} src={URL.createObjectURL(files[index])} alt='icon' />} */}
+                                            {!formData?.img &&  <img id={`saveImageFile`} src={uploadImg} alt='icon'
+                                                style={{
+                                                    width: '80px',
+                                                    height: '80px',
+                                                }}
                                             />}
-                                        {/* {files[index]?.name && <img id={`saveImageFile${index+1}`} src={URL.createObjectURL(files[index])} alt='icon' />} */}
-                                        {formData?.img &&  <img id={`saveImageFile`} src={uploadImg} alt='icon'
-                                            style={{
-                                                width: '80px',
-                                                height: '80px',
-                                            }}
-                                        />}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                    </Col>
-                </Row>
+                        </Col>
+                    </Row>
+                
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setAddModal} variant="danger light">
@@ -203,9 +213,9 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             <Button 
                     variant="primary" 
                     type='submit'
-                    onClick={()=> submit()}
                 >{isAdd ? "Add" : "Edit"}</Button>
             </Modal.Footer>
+            </AvForm>
         </Modal>)
 }
 
