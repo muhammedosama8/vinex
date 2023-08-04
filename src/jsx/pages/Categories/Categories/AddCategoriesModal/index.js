@@ -117,7 +117,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                         errorMessage: 'This Field is required'
                                     },
                                     pattern: {
-                                        value: "^[a-zA-Z0-9]+$",
+                                        value: '/^[A-Za-z0-9 ]+$/',
                                         errorMessage: `English format is invalid`
                                     }
                                 }}

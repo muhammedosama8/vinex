@@ -89,6 +89,7 @@ const Markup = () => {
     // Products
     { url: 'products', component: <Products /> },
     { url: 'products/add-products', component: <AddProducts /> },
+    { url: 'products/add-products/:id', component: <AddProducts /> },
 
     // Variant
     { url: 'variant', component: <Variant /> },

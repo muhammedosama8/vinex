@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CardItem = ({item, index}) =>{
     const [status, setStatus] = useState(null)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    const navigate = useNavigate()
 
     useEffect(()=>{
         setStatus(item.status)
@@ -39,7 +41,9 @@ const CardItem = ({item, index}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item>Edit</Dropdown.Item>
+                          <Dropdown.Item onClick={()=>{}}>
+                            Edit
+                          </Dropdown.Item>
                           <Dropdown.Item>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}

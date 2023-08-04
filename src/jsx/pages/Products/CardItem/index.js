@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Badge, Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import avatar1 from "../../../../images/1.jpg";
+import ProductsService from "../../../../services/ProductsService";
 import DeleteModal from "../../../common/DeleteModal";
 
 const CardItem = ({item, index}) =>{
@@ -9,9 +11,11 @@ const CardItem = ({item, index}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    const navigate = useNavigate()
+    const productsService = new ProductsService()
 
     useEffect(()=>{
-        setStatus(item.status)
+        setStatus(item?.status)
     },[item])
 
     const changeStatusToggle = (e)=>{
@@ -31,12 +35,12 @@ const CardItem = ({item, index}) =>{
                           alt={item.id}
                         />
                     </td>
-                    <td>{item.name}</td>
+                    <td>{item.name_en}</td>
                     <td>
-                      <Badge variant="success light">{item.category}</Badge>
+                      <Badge variant="success light">{item.category?.name_en}</Badge>
                     </td>
                     <td>{item.price} LE</td>
-                    <td>{item.quantity}</td>
+                    <td>{item.amount}</td>
                     <td>
                       <Form.Check
                         type="switch"
@@ -55,16 +59,18 @@ const CardItem = ({item, index}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item>Edit</Dropdown.Item>
+                          <Dropdown.Item onClick={()=>{
+                            navigate(`/products/add-products/${item.id}`)
+                          }}>Edit</Dropdown.Item>
                           <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>
                     {deleteModal && <DeleteModal
                       open={deleteModal}
-                      titleMsg={item.name}
+                      titleMsg={item.name_en}
                       deletedItem={item.id}
-                      // modelService={}
+                      modelService={productsService}
                       onCloseModal={setDeleteModal}
                     />}
                   </tr>
