@@ -42,9 +42,9 @@ const Variant = () =>{
                     <th>
                       <strong>Variant</strong>
                     </th>
-                    <th>
+                    {/* <th>
                       <strong>STATUS</strong>
-                    </th>
+                    </th> */}
                     <th></th>
                   </tr>
                 </thead>

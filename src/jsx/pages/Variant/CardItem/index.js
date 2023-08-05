@@ -6,20 +6,20 @@ import VariantService from "../../../../services/VariantService";
 import DeleteModal from "../../../common/DeleteModal";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
-    const [status, setStatus] = useState(null)
+    // const [status, setStatus] = useState(null)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const [deleteModal, setDeleteModal] = useState(false)
     const navigate = useNavigate()
     const variantService= new VariantService()
 
-    useEffect(()=>{
-        setStatus(item.status)
-    },[item])
+    // useEffect(()=>{
+    //     setStatus(item.status)
+    // },[item])
 
-    const changeStatusToggle = (e)=>{
-        setStatus(e.target.checked)
-    }
+    // const changeStatusToggle = (e)=>{
+    //     setStatus(e.target.checked)
+    // }
 
     return(
         <tr key={index} className='text-center'>
@@ -34,7 +34,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                         </Badge>
                       })}
                     </td>
-                    <td>
+                    {/* <td>
                       <Form.Check
                         type="switch"
                         id={`custom-switch${index}`}
@@ -42,7 +42,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                         checked={status}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
-                    </td>
+                    </td> */}
                     <td>
                       {isExist('variant') && <Dropdown>
                         <Dropdown.Toggle
