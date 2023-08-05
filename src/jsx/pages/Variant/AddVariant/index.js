@@ -149,7 +149,10 @@ const Variant = ()=>{
                      value={formData.category}
                      name="category"
                      options={categoriesOptions}
-                     onChange={(e)=> setFormData({...formData, category: e})}
+                     onChange={(e)=> {
+                        setFormData({variant: [], category: e})
+                        setTags([])
+                     }}
                   />
                   </div>
                </div>}
