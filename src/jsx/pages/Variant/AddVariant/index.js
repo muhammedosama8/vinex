@@ -196,7 +196,7 @@ const Variant = ()=>{
                               className="form-control"
                               placeholder="Arabic Name"
                               required
-                              pattern="[\u0600-\u06FF\s]+"
+                              // pattern="[\u0600-\u06FF\s]+"
                               value={item?.name_ar}
                               onChange={(e)=> {
                                  let update = formData.variant?.map((res, index)=>{
@@ -230,7 +230,7 @@ const Variant = ()=>{
                                        className="form-control"
                                        placeholder="English"
                                        required
-                                       pattern="[A-Za-z]+"
+                                       // pattern='/^[A-Za-z0-9 ]+$/'
                                        value={val?.value_en}
                                        onChange={(e)=> {
                                           let update = formData.variant?.map((res, index)=>{
@@ -267,7 +267,7 @@ const Variant = ()=>{
                                           className="form-control"
                                           placeholder="Arabic Name"
                                           required
-                                          pattern="[\u0600-\u06FF\s]+"
+                                          // pattern="[\u0600-\u06FF\s]+"
                                           value={val?.value_ar}
                                           onChange={(e)=> {
                                              let update = formData.variant?.map((res, index)=>{
@@ -318,7 +318,7 @@ const Variant = ()=>{
                                     }}
                                  >X</button>
                               </Col>}
-                              {ind === item?.values?.length-1 && <Col md={12} className='justify-content-end d-flex'>
+                              {ind === item?.variant_values?.length-1 && <Col md={12} className='justify-content-end d-flex'>
                                  <button 
                                     className="border-0"
                                     style={{
