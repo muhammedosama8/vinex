@@ -100,6 +100,7 @@ const AddProducts = () => {
                         category: {
                             ...response.category,
                             id: response?.category_id,
+                            value: response?.category_id,
                             label: response?.category?.name_en
                         },
                         images: product?.images?.map((_,index)=> {
@@ -190,7 +191,6 @@ const AddProducts = () => {
             code: product.code,
             category_id: product.category?.value,
             images: product?.images?.filter(res=> !!res?.src)?.map(item=> item?.src),
-            sub_category_id: product.sub_category?.value,
             variant: product.variant?.map(res=>{
                 return{
                     variant_value_id: res?.variant_value_id,
@@ -205,7 +205,8 @@ const AddProducts = () => {
             offer: product.offer,
             offerPrice: Number(product.offerPrice)
         }
-        console.log(data)
+        if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
+
         if(!!id){
             productsService?.update(id, data)?.then(res=>{
                 if(res.data?.status === 200){
@@ -541,7 +542,7 @@ const AddProducts = () => {
                             </button>
                             <div className="avatar-preview">
                                 {!!data.src ? <div id={`imagePreview${index}`}>
-                                    <img id={`saveImageFile${index}`} src={data.src} alt='icon' />
+                                    <img id={`saveImageFile${index}`} src={data?.src} alt='icon' />
                                 </div> : <div id={`imagePreview${index}`}>
                                     {files[index]?.name && <img id={`saveImageFile${index}`} src={URL.createObjectURL(files[index])} alt='icon' />}
                                     {!files[index]?.name && <img id={`saveImageFile${index}`} src={uploadImg} alt='icon'

@@ -24,7 +24,7 @@ const CardItem = ({item, setItem, index, setAddModal,subCategoriesService, setSh
             </td>
             <td>{item.name_en}</td>
             <td>
-                <Badge variant="primary">{item.category.name_en}</Badge>
+                <Badge variant="primary light">{item.category.name_en}</Badge>
             </td>
             {/* <td>
                 <Form.Check

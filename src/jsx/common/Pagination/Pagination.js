@@ -3,16 +3,15 @@ import { Col, Row } from "react-bootstrap"
 import './style.scss'
 
 const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
-    const [dataItems, setDataItems] = useState([])
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
-    useEffect(()=>{
-        service?.getList().then(res=>{
+
+    useEffect(()=> {
+        service?.getList({offset: (page-1)*10, limit: 10}).then(res=>{
             if(res?.status === 200){
-                setDataItems([...res.data?.meta?.data]) 
+                setData([...res.data?.meta?.data]) 
                 let total= Math.ceil(res.data?.meta?.totalLength / 10)
                 setTotalPages(total)
-                setPage(1)
                 if(res.data?.meta?.totalLength > 0){
                     setHasData(1)
                 } else {
@@ -20,14 +19,11 @@ const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
                 }
             }
           })
-    },[shouldUpdate])
+    },[page])
 
-    useEffect(()=> {
-        const startIndex = (page - 1) * 10;
-        const endIndex = Math.min(startIndex + 10, dataItems.length);
-        const itemsToShow = dataItems.slice(startIndex, endIndex);
-        setData(itemsToShow)
-    }, [dataItems, page, setData, totalPages])
+    useEffect(()=>{
+        setPage(1)
+    },[shouldUpdate])
 
     if(totalPages > 1){
         return(
@@ -50,15 +46,18 @@ const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
                                     padding: '8px',
                                     width: '5rem'
                                 }}
+                                min={'1'}
                                 max={totalPages}
                                 defaultValue={page} 
                                 onChange = {e => { 
-                                    const pageNumber = Number(e.target.value) <= totalPages ? Number(e.target.value) : 1
-                                    setPage(pageNumber)
+                                    if(!!e.target.value && Number(e.target.value) > 0 && Number(e.target.value) <= totalPages){
+                                        setPage(e.target.value)
+                                    }
                                 }} 
                             />
                     </span>
                 </Col>
+
                 <Col md={12} className="text-center">	
                     <div className="filter-pagination  mt-3">
                         <button className=" previous-button" onClick={() => setPage(1)} disabled={page === 1 }>{'<<'}</button>

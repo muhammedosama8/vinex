@@ -82,7 +82,7 @@ const Banners = () =>{
         })
         
         new BaseService().postUpload(filesData[0]).then(res=>{
-            if(res.data.status){
+            if(res?.data?.status){
                 let updateImages = formData.map((item, ind)=>{
                     if(ind === index){
                         return {
@@ -97,11 +97,6 @@ const Banners = () =>{
                 setFiles([...update])
             }
         })
-		// setTimeout(function(){
-		// 	var src = document.getElementById(`saveImageFile${index}`)?.getAttribute("src");
-            
-		// 	setProduct({...product, images: update})
-		// }, 200);
     }
 
     const onSubmit = () => {
