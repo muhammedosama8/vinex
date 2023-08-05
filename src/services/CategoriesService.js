@@ -4,20 +4,17 @@ import { API_BASE_URL_ENV } from "../jsx/common/common";
 
 const apiEndpoint = API_BASE_URL_ENV() + "/categories";
 // const apiDropDownEndpoint = API_BASE_URL_ENV() + "/admin/user/dropdown/Admin";
-const apiTogglle = API_BASE_URL_ENV() +"/admin/block"
-const apiCategories = API_BASE_URL_ENV() +"/"
+const apiAllVariant = API_BASE_URL_ENV() +"/categories/getAllVariant"
 export default class CategoriesService extends BaseService {
     constructor() {
         super(apiEndpoint);
     }
     
     addVariant=(data)=>{
-        return http.post(`${apiCategories}/addVariant`, data) 
+        return http.post(`${apiEndpoint}/addVariant`, data) 
     }
-
-    toggleStatus(id, data) {
-        return http.put(`${apiTogglle}/${id}`, data);
-    }
- 
    
+    getAllVariant=()=>{
+        return http.get(apiAllVariant)
+    }
 }

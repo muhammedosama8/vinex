@@ -21,8 +21,13 @@ export default class BaseService {
     return `${apiDropdownEndpoint}/${model}`;
   }
 
-  getList() {
-    return http.get(this.apiEndpoint);
+  getList(params) {
+    if(params){
+      return http.get(this.apiEndpoint, {params});
+    } else {
+      return http.get(this.apiEndpoint);
+    }
+    
   }
 
   find(id, params) {

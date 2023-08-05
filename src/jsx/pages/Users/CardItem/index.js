@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const CardItem = ({item, index}) =>{
+const CardItem = ({item, index,setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
-    const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
@@ -25,7 +24,7 @@ const CardItem = ({item, index}) =>{
                     <td>
                       <Link to={`/users/${item.id}/${item.name}`} 
                         style={{fontWeight: '800', textDecoration:'underline', textTransform: 'capitalize'}}>
-                        {item.name}
+                        {item.f_name} {item.l_name} 
                       </Link>
                     </td>
                     <td>

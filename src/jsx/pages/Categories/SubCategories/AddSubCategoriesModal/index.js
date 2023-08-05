@@ -25,8 +25,8 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
 
     useEffect(()=> {
         categoriesService?.getList().then(res=>{
-            if(res.data?.status === 200 || true){
-                let categories =  res.data?.data?.map(item=>{
+            if(res.data?.status === 200){
+                let categories =  res.data?.meta?.data?.map(item=>{
                    return{
                       id: item?.id,
                       value: item?.id,

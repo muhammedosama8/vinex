@@ -1,5 +1,6 @@
 .image-placeholder{
     max-width: 100% !important;
+    position: relative;
 
     .avatar-preview{
         width: 100% !important;
@@ -27,5 +28,16 @@
         input + label:after{
             height: 100%!important;
         }
+    }
+    .delete{
+        position: absolute;
+        background-color: #fff;
+        border: none;
+        padding: 1px 8px;
+        border-radius: 50%;
+        top: 18px;
+        right: 18px;
+        z-index: 2;
+        font-size: 24px;
     }
 }

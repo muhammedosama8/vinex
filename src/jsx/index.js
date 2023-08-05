@@ -94,6 +94,7 @@ const Markup = () => {
     // Variant
     { url: 'variant', component: <Variant /> },
     { url: 'variant/add-variant', component: <AddVariant /> },
+    { url: 'variant/add-variant/:id', component: <AddVariant /> },
 
     // Categories
     {url: 'categories', component: <Categories />},

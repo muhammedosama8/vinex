@@ -64,6 +64,7 @@ const Products = () =>{
                     index= {index}
                     item={item}
                     setAddModal={setAddModal}
+                    setShouldUpdate={setShouldUpdate}
                     />
                   })}
                 </tbody>

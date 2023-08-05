@@ -6,24 +6,26 @@ import { InputTags } from "react-bootstrap-tagsinput";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import CategoriesService from "../../../../services/CategoriesService";
-import AdminService from "../../../../services/AdminService";
+import VariantService from "../../../../services/VariantService";
 
 const Variant = ()=>{
    const [formData, setFormData] = useState({
       category: '',
       variant: []
    })
+   let variant_id = window?.location?.pathname?.split('/variant/add-variant/')[1]
    const [ categoriesOptions, setCategoriesOptions] = useState()
    const [ tags, setTags] = useState([])
    const [ isAdd, setIsAdd] = useState(true)
-   const adminService = new AdminService()
+   const [ id, setId] = useState(null)
    const categoriesService = new CategoriesService()
+   const variantService = new VariantService()
    const navigate = useNavigate()
 
    useEffect(()=>{
       categoriesService?.getList().then(res=>{
          if(res.data?.status === 200){
-            let categories =  res.data?.data?.map(item=>{
+            let categories =  res.data?.meta?.data?.map(item=>{
                return{
                   id: item?.id,
                   value: item?.id,
@@ -36,14 +38,14 @@ const Variant = ()=>{
    }, [])
 
    useEffect(()=>{
-      if(!!formData?.category){
-         adminService?.getVariant(formData?.category?.id)?.then(res=>{
+      if(!!formData?.category && !id){
+         variantService?.getVariant(formData?.category?.id)?.then(res=>{
             if(res?.status === 200){
-               if(res.data.data?.length > 0){
-                  let tags = res.data.data?.map(tag=> tag.name_en)
+               if(res.data?.meta.data?.length > 0){
+                  let tags = res.data?.meta.data?.map(tag=> tag.name_en)
                   setIsAdd(false)
                   setTags([...tags])
-                  setFormData({...formData, variant: res.data.data})
+                  setFormData({...formData, variant: res.data?.meta?.data})
                } else{
                   setIsAdd(false)
                }
@@ -51,6 +53,24 @@ const Variant = ()=>{
          })
       }
    },[formData?.category])
+
+   useEffect(()=>{
+      if(!!formData?.category || !!variant_id){
+         variantService?.getVariant(Number(variant_id))?.then(res=>{
+            setId(Number(variant_id))
+            if(res?.status === 200){
+               if(res.data?.meta.data?.length > 0){
+                  let tags = res.data?.meta.data?.map(tag=> tag.name_en)
+                  setIsAdd(false)
+                  setTags([...tags])
+                  setFormData({category: categoriesOptions?.filter(opt=> opt.id === Number(variant_id))[0], variant: res.data?.meta?.data})
+               } else{
+                  setIsAdd(false)
+               }
+            }
+         })
+      }
+   },[window.location.pathname])
 
 
    const generateVariant = () =>{
@@ -77,12 +97,11 @@ const Variant = ()=>{
 
    const onSubmit = (e) =>{
       e.preventDefault()
-      if(!formData?.category || formData?.variant?.length === 0 || formData.variant?.filter(res=> res.values?.length === 0)?.length > 0){
+      if((!formData?.category && isAdd) || formData?.variant?.length === 0 || formData.variant?.filter(res=> res.values?.length === 0)?.length > 0){
          toast.error('Complete All Phases')
          return
       }
       let data = {
-         category_id: formData?.category?.value,
          variant: formData?.variant?.map((variant) => {
             return{
                name_en: variant.name_en,
@@ -96,33 +115,26 @@ const Variant = ()=>{
             }
          })
       }
+      if(isAdd) data['category_id']= formData?.category?.value
+
       if(isAdd){
-         adminService?.addVariant(data)?.then(res => {
+         variantService?.addVariant(data)?.then(res => {
             if(res?.status === 201){
                toast.success('Variant Added Successfully')
                setFormData({category: '', variant: []})
-               // navigate('/variant')
+               navigate('/variant')
             }
          })
       } else {
-         adminService?.updateVariant(formData?.category?.value, data)?.then(res => {
+         variantService?.updateVariant(formData?.category?.value, data)?.then(res => {
             if(res?.status === 200){
                toast.success('Variant Updated Successfully')
                setFormData({category: '', variant: []})
-               // navigate('/variant')
+               navigate('/variant')
             }
          })
       }
       
-   }
-
-   const deleteVariant = () =>{
-      adminService?.deleteVariant(formData?.category?.value)?.then(res => {
-         if(res?.status === 200){
-            toast.success('Variant Deleted Successfully')
-            navigate('/variant')
-         }
-      })
    }
 
    return(
@@ -130,7 +142,7 @@ const Variant = ()=>{
          <Card.Body>
             <form className="add-variant" onSubmit={onSubmit}>
             <div className="row">
-               <div className="col-lg-6 mb-2">
+               {!variant_id && <div className="col-lg-6 mb-2">
                   <div className="form-group mb-3">
                      <label className="text-label">Category*</label>
                      <Select
@@ -140,7 +152,7 @@ const Variant = ()=>{
                      onChange={(e)=> setFormData({...formData, category: e})}
                   />
                   </div>
-               </div>
+               </div>}
                <div className="col-lg-12 mb-2">
                   <div className="form-group mb-3">
                      <label className="text-label">Variant*</label>
@@ -188,10 +200,7 @@ const Variant = ()=>{
                                     if(index === itemIndex){
                                        return{
                                           ...res,
-                                          type: {
-                                             ...res.type,
-                                             name_ar: e.target.value
-                                          }
+                                          name_ar: e.target.value
                                        }
                                     } else {
                                        return res
@@ -225,7 +234,7 @@ const Variant = ()=>{
                                              if(index === itemIndex){
                                                 return{
                                                    ...res,
-                                                   values: res.values?.map((valType, valTypeIndex)=>{
+                                                   variant_values: res.variant_values?.map((valType, valTypeIndex)=>{
                                                       if(valTypeIndex === ind){
                                                          return {
                                                             ...valType,
@@ -262,7 +271,7 @@ const Variant = ()=>{
                                                 if(index === itemIndex){
                                                    return{
                                                       ...res,
-                                                      values: res.values?.map((valType, valTypeIndex)=>{
+                                                      variant_values: res.variant_values?.map((valType, valTypeIndex)=>{
                                                          if(valTypeIndex === ind){
                                                             return {
                                                                ...valType,
@@ -293,10 +302,10 @@ const Variant = ()=>{
                                     onClick={()=>{
                                        let update = formData.variant?.map((res, index)=>{
                                           if(index === itemIndex){
-                                             let valuesUpdate = res.values?.filter((_, valuInd)=> valuInd !== ind)
+                                             let valuesUpdate = res.variant_values?.filter((_, valuInd)=> valuInd !== ind)
                                              return{
                                                 ...res,
-                                                values: valuesUpdate
+                                                variant_values: valuesUpdate
                                              }
                                           } else {
                                              return res
@@ -318,14 +327,14 @@ const Variant = ()=>{
                                     onClick={()=>{
                                        let update = formData.variant?.map((res, index)=>{
                                           if(index === itemIndex){
-                                             let valuesUpdate = res.values
+                                             let valuesUpdate = res.variant_values
                                              valuesUpdate.push({
                                                 value_ar: '',
                                                 value_en: '',
                                              })
                                              return{
                                                 ...res,
-                                                values: valuesUpdate
+                                                variant_values: valuesUpdate
                                              }
                                           } else {
                                              return res
@@ -345,7 +354,7 @@ const Variant = ()=>{
             </div>
             <div className="d-flex justify-content-between">
                <div >
-                  {!isAdd && <Button variant="danger" type="button" onClick={deleteVariant}>Delete</Button>}
+                  {/* {!isAdd && <Button variant="danger" type="button" onClick={deleteVariant}>Delete</Button>} */}
                </div>
                <div>
                   <Button variant="primary" type="submit">Submit</Button>

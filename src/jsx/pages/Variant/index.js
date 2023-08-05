@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import VariantService from "../../../services/VariantService";
+import NoData from "../../common/NoData";
+import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
 import CardItem from "./CardItem";
 import './style.scss'
@@ -9,19 +12,13 @@ import './style.scss'
 const Variant = () =>{
     const [variant, setVariant] = useState([])
     const [search, setSearch] = useState(null)
+    const [hasData, setHasData] =useState(null)
+    const [shouldUpdate, setShouldUpdate] =useState(false)
     const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    const variantService = new VariantService()
 
-    useEffect(()=>{
-        let variant =[
-          {id: 1, name: 'mu', status: true},
-          {id: 2, name: 'os', status: false},
-          {id: 3, name: 'fa', status: true},
-          {id: 4, name: 'na', status: false},
-        ]
-        setVariant([...variant])
-      },[])
 
     return(
         <>
@@ -33,7 +30,7 @@ const Variant = () =>{
           </div>
         <Card>
             <Card.Body>
-              <Table responsive>
+              {hasData === 1 && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -41,6 +38,9 @@ const Variant = () =>{
                     </th>
                     <th>
                       <strong>Name</strong>
+                    </th>
+                    <th>
+                      <strong>Variant</strong>
                     </th>
                     <th>
                       <strong>STATUS</strong>
@@ -54,10 +54,20 @@ const Variant = () =>{
                     key= {index}
                     index= {index}
                     item={item}
+                    setShouldUpdate={setShouldUpdate}
                     />
                   })}
                 </tbody>
-              </Table>
+              </Table>}
+
+              {hasData === 0 && <NoData />}
+
+              <Pagination
+                  setData={setVariant}
+                  service={variantService}
+                  shouldUpdate={shouldUpdate}
+                  setHasData={setHasData}
+                />
             </Card.Body>
           </Card>
         </>

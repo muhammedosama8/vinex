@@ -6,7 +6,7 @@ import avatar1 from "../../../../images/1.jpg";
 import ProductsService from "../../../../services/ProductsService";
 import DeleteModal from "../../../common/DeleteModal";
 
-const CardItem = ({item, index}) =>{
+const CardItem = ({item, index, setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
@@ -29,7 +29,7 @@ const CardItem = ({item, index}) =>{
                     </td>
                     <td>
                         <img
-                          src={avatar1}
+                          src={item?.images[0]?.url}
                           className="rounded-lg"
                           width="40"
                           alt={item.id}
@@ -69,9 +69,10 @@ const CardItem = ({item, index}) =>{
                     {deleteModal && <DeleteModal
                       open={deleteModal}
                       titleMsg={item.name_en}
-                      deletedItem={item.id}
+                      deletedItem={item}
                       modelService={productsService}
                       onCloseModal={setDeleteModal}
+                      setShouldUpdate={setShouldUpdate}
                     />}
                   </tr>
     )
