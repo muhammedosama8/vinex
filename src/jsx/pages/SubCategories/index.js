@@ -1,17 +1,15 @@
 import React, { Fragment } from "react";
 import { useState } from "react";
 import {
-  Row,
-  Col,
   Card,
   Table,
   Button,
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import SubCategoriesService from "../../../../services/SubCategoriesService";
-import NoData from "../../../common/NoData";
-import Pagination from "../../../common/Pagination/Pagination";
-import Search from "../../../common/Search";
+import SubCategoriesService from "../../../services/SubCategoriesService";
+import NoData from "../../common/NoData";
+import Pagination from "../../common/Pagination/Pagination";
+import Search from "../../common/Search";
 import AddSubCategoriesModal from "./AddSubCategoriesModal";
 import CardItem from "./CardItem";
 import './style.scss'
@@ -72,7 +70,7 @@ const SubCategories = () => {
                     })}
                 </tbody>
               </Table>}
-              {hasData === 0 && <NoData/>}
+              {hasData === 0 && <NoData />}
               <Pagination
                   setData={setSubCategories}
                   service={subCategoriesService}

@@ -17,8 +17,8 @@ import Error404 from './common/Error404'
 
 //Scroll To Top
 import ScrollToTop from './layouts/ScrollToTop';
-import Categories from './pages/Categories/Categories'
-import SubCategories from './pages/Categories/SubCategories'
+import Categories from './pages/Categories'
+import SubCategories from './pages/SubCategories'
 import Products from './pages/Products'
 import AddProducts from './pages/Products/AddProducts'
 import Variant from './pages/Variant'
@@ -31,12 +31,13 @@ import PromCodes from './pages/PromoCodes'
 import AddPromoCodes from './pages/PromoCodes/AddPromoCodes'
 import Orders from './pages/Orders'
 import Home from './pages/Dashboard'
-import Profile from './pages/Users/Profile'
 import AdScreen from './pages/AdScreen'
 import SocialMedia from './pages/Setting/SocialMedia'
 import Permission from './pages/Rules'
 import Reports from './pages/Reports'
 import Notification from './pages/Notification'
+import Profile from './pages/Profile'
+import Control from './pages/Setting/Control'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -102,6 +103,10 @@ const Markup = () => {
 
     //Setting
     {url: 'social', component: <SocialMedia />},
+    {url: 'control', component: <Control />},
+
+    //Profile
+    {url: 'profile', component: <Profile />},
 
     // Error
     {url: '*', component: <Error404 />},

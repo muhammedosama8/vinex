@@ -1,11 +1,10 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
-import uploadImg from '../../../../../images/upload-img.webp';
-import BaseService from "../../../../../services/BaseService";
-import CategoriesService from "../../../../../services/CategoriesService";
+import uploadImg from '../../../../images/upload-img.webp';
+import CategoriesService from "../../../../services/CategoriesService";
+import BaseService from "../../../../services/BaseService";
 
 const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [files, setFiles] = useState([])
@@ -179,7 +178,6 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                 </div>
                         </Col>
                     </Row>
-                
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setAddModal} variant="danger light">

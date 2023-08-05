@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Dropdown, Form } from "react-bootstrap";
+import { useState } from "react";
+import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import CategoriesService from "../../../../../services/CategoriesService";
-import DeleteModal from "../../../../common/DeleteModal";
+import CategoriesService from "../../../../services/CategoriesService";
+import DeleteModal from "../../../common/DeleteModal";
 
 const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
     // const [status, setStatus] = useState(null)

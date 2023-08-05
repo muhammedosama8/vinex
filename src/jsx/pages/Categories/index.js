@@ -8,10 +8,10 @@ import {
   Button,
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import CategoriesService from "../../../../services/CategoriesService";
-import NoData from "../../../common/NoData";
-import Pagination from "../../../common/Pagination/Pagination";
-import Search from "../../../common/Search";
+import CategoriesService from "../../../services/CategoriesService";
+import NoData from "../../common/NoData";
+import Pagination from "../../common/Pagination/Pagination";
+import Search from "../../common/Search";
 import AddCategoriesModal from "./AddCategoriesModal";
 import CardItem from "./CardItem";
 import './style.scss'

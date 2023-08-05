@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Badge, Dropdown, Form } from "react-bootstrap";
+import { Badge, Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import DeleteModal from "../../../../common/DeleteModal";
+import DeleteModal from "../../../common/DeleteModal";
 
 const CardItem = ({item, setItem, index, setAddModal,subCategoriesService, setShouldUpdate}) =>{
     // const [status, setStatus] = useState(null)

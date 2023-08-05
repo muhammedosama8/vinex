@@ -1,13 +1,12 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap"
 import Select from 'react-select'
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
-import uploadImg from '../../../../../images/upload-img.webp';
-import BaseService from "../../../../../services/BaseService";
-import CategoriesService from "../../../../../services/CategoriesService";
-import SubCategoriesService from "../../../../../services/SubCategoriesService";
+import uploadImg from '../../../../images/upload-img.webp';
+import SubCategoriesService from "../../../../services/SubCategoriesService";
+import CategoriesService from "../../../../services/CategoriesService";
+import BaseService from "../../../../services/BaseService";
 
 const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [files, setFiles] = useState([{}])
@@ -83,6 +82,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             name_ar: formData?.ar,
             image: formData?.img
         }
+        setLoading(true)
         if(isAdd){
             subCategoriesService?.create(data)?.then(res=>{
                 if(res?.status === 201){
@@ -90,6 +90,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                     setAddModal()
                     setShouldUpdate(prev=> !prev)
                 }
+                setLoading(false)
             })
         } else {
             subCategoriesService?.update(formData?.id, data)?.then(res=>{
@@ -98,6 +99,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                     setAddModal()
                     setShouldUpdate(prev=> !prev)
                 }
+                setLoading(false)
             })
         }
     }
@@ -211,8 +213,9 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                 Close
             </Button>
             <Button 
-                    variant="primary" 
-                    type='submit'
+                disabled={loading}
+                variant="primary" 
+                type='submit'
                 >{isAdd ? "Add" : "Edit"}</Button>
             </Modal.Footer>
             </AvForm>

@@ -451,6 +451,10 @@ export const MenuList = [
                 title:'Social Media',
                 to: 'social',
             },
+            {
+                title:'Control',
+                to: 'control',
+            }
         ]
     },
     
