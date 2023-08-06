@@ -14,8 +14,9 @@ function setInterceptors(navigate){
         Logout(navigate);
         window.location = `/login`;
       } 
-    } else if(error.response && error.response.status === 403){
-      if(error.response.data.message === "not authorized (old Token)."){
+    } else if(error.response && error.response.status === 402){
+      console.log(error.response)
+      if(error.response.data.message === "not authorized (old Token)." || error.response.data.message === "غير مصرح به (رمز قديم)"){
         Logout(navigate);
         window.location = `/login`;
       }
