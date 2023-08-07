@@ -11,6 +11,7 @@ import BaseService from "../../../../services/BaseService";
 import SubCategoriesService from "../../../../services/SubCategoriesService";
 import ProductsService from "../../../../services/ProductsService";
 import { useNavigate } from "react-router-dom";
+import ConfirmModal from "../../../common/ConfirmModal";
 
 const AddProducts = () => {
     const [product, setProduct]= useState({
@@ -36,6 +37,7 @@ const AddProducts = () => {
         desc_en: false,
         images: 0
     })
+    const [confirm, setConfirm]= useState(false)
     const [id, setId]= useState(null)
     const [loading, setLoadning]= useState(false)
     const [categoriesOptions, setCategoriesOptions] = useState([])
@@ -211,7 +213,8 @@ const AddProducts = () => {
             productsService?.update(id, data)?.then(res=>{
                 if(res.data?.status === 200){
                     toast.success('Product Updated Successfully')
-                    navigate('/products')
+                    // navigate('/products')
+                    setConfirm(true)
                 }
                 setLoadning(false)
             })
@@ -564,6 +567,11 @@ const AddProducts = () => {
                 type="submit">Submit</Button>
             </div>
         </AvForm>
+        {confirm && <ConfirmModal 
+            open={confirm}
+            path='/products'
+            onCloseModal={setConfirm}
+        />}
     </Card>
 }
 
