@@ -569,8 +569,11 @@ const AddProducts = () => {
         </AvForm>
         {confirm && <ConfirmModal 
             open={confirm}
-            path='/products'
-            onCloseModal={setConfirm}
+            title='Confirm Added'
+            body='You can add another product by change some information'
+            button='Add More Same Product'
+            onCloseModal={()=> navigate('/products')}
+            submitButton={()=> setConfirm(false)}
         />}
     </Card>
 }
