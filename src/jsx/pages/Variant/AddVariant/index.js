@@ -47,7 +47,7 @@ const Variant = ()=>{
                   setTags([...tags])
                   setFormData({...formData, variant: res.data?.meta?.data})
                } else{
-                  setIsAdd(false)
+                  setIsAdd(true)
                }
             }
          })
@@ -65,7 +65,7 @@ const Variant = ()=>{
                   setTags([...tags])
                   setFormData({category: categoriesOptions?.filter(opt=> opt.id === Number(variant_id))[0], variant: res.data?.meta?.data})
                } else{
-                  setIsAdd(false)
+                  setIsAdd(true)
                }
             }
          })
@@ -115,7 +115,7 @@ const Variant = ()=>{
             }
          })
       }
-      if(isAdd) data['category_id']= Number(formData?.category?.value)
+      if(isAdd) data['category_id']= formData?.category?.value
 
       if(isAdd){
          variantService?.addVariant(data)?.then(res => {
