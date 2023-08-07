@@ -22,7 +22,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                       <strong>{item.id}</strong>
                     </td>
                     <td>
-                      <Link to={`/users/${item.id}/${item.name}`} 
+                      <Link to={`/users/${item.id}/${item.f_name}`} 
                         style={{fontWeight: '800', textDecoration:'underline', textTransform: 'capitalize'}}>
                         {item.f_name} {item.l_name} 
                       </Link>

@@ -115,7 +115,7 @@ const Variant = ()=>{
             }
          })
       }
-      if(isAdd) data['category_id']= formData?.category?.value
+      if(isAdd) data['category_id']= Number(formData?.category?.value)
 
       if(isAdd){
          variantService?.addVariant(data)?.then(res => {
@@ -126,7 +126,7 @@ const Variant = ()=>{
             }
          })
       } else {
-         variantService?.updateVariant(formData?.category?.value, data)?.then(res => {
+         variantService?.updateVariant(Number(variant_id), data)?.then(res => {
             if(res?.status === 200){
                toast.success('Variant Updated Successfully')
                setFormData({category: '', variant: []})
