@@ -28,7 +28,7 @@ const Admins = () =>{
         </div>
 
         <Card>
-            <Card.Body>
+            <Card.Body className={`${hasData === 0 ? 'text-center' :''}`}>
               {hasData === 1 && <Table responsive>
                 <thead>
                   <tr>
