@@ -8,10 +8,10 @@ import {
 
 const tokenKey = "token";
 
-export function login(email, password) {
+export function login(country_code, phone) {
     const postData = {
-        email,
-        password
+        country_code,
+        phone
     };
     return axios.post(
         `${API_BASE_URL_ENV()}/admin/login`,
@@ -19,10 +19,10 @@ export function login(email, password) {
     );
 }
 
-export function loginVerified(email, password, code) {
+export function loginVerified(country_code, phone, code) {
     const postData = {
-        email,
-        password,
+        country_code,
+        phone,
         code
     };
     return axios.post(

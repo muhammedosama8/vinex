@@ -9,14 +9,14 @@ import { loadingToggleAction, loginVerifiedAction } from "../../../store/actions
 function Verified(props) {
     const Auth = useSelector(state => state.auth)
 	const navigate = useNavigate()
-	const [code, setCode] = useState('1234');
+	const [code, setCode] = useState('');
     const dispatch = useDispatch();
-    const email = Auth.email
-    const password = Auth.password
+    const phone = Auth.phone
+    const country_code = Auth.country_code
 	
     useEffect(()=>{
-        if(!email && !password) navigate('/login')
-    },[email, navigate, password])
+        if(!country_code && !phone) navigate('/login')
+    },[country_code, navigate, phone])
 
     function verifiedAcc(e) {
         e.preventDefault();
@@ -24,7 +24,7 @@ function Verified(props) {
 			return;
 		}        
 		dispatch(loadingToggleAction(true));
-        dispatch(loginVerifiedAction(email, password,code, navigate));
+        dispatch(loginVerifiedAction(country_code, phone,code, navigate));
     }
 
   return (

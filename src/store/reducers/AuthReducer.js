@@ -11,6 +11,8 @@ import {
 
 const initialState = {
     email:'',
+    country_code: '',
+    phone: '',
     password: '',
     auth: {
         email: '',
@@ -38,8 +40,10 @@ export function AuthReducer(state = initialState, action) {
     if (action.type === LOGIN) {
         return {
             ...state,
-            email: action.payload.email,
-            password: action.payload.password
+            country_code: action.payload.country_code,
+            phone: action.payload.phone
+            // email: action.payload.email,
+            // password: action.payload.password
         };
     }
     if (action.type === LOGIN_CONFIRMED_ACTION) {
@@ -65,6 +69,8 @@ export function AuthReducer(state = initialState, action) {
             successMessage: '',
             auth: {
                 email: '',
+                phone: '',
+                country_code: '',
                 idToken: '',
                 localId: '',
                 expiresIn: '',

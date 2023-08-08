@@ -1,38 +1,24 @@
 import React,{ useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 // image
 import logo2 from "../../../images/logo-full.png";
 import login from "../../../images/reg-bg.jpg";
+import {AvField, AvForm} from "availity-reactstrap-validation";
 import { loadingToggleAction, loginAction } from "../../../store/actions/AuthActions";
 
 function Login(props) {
 	const navigate = useNavigate()
-	const [email, setEmail] = useState('tatasamy1998@gmail.com');
-	const [password, setPassword] = useState('Admin!123456');
-    let errorsObj = { email: '', password: '' };
-    const [errors, setErrors] = useState(errorsObj);
+	const [code, setCode] = useState('+20');
+	const [phone, setPhone] = useState('');
     const dispatch = useDispatch();
 	const Auth = useSelector(state=> state.auth)
 
     function onLogin(e) {
-        e.preventDefault();
-        let error = false;
-        const errorObj = { ...errorsObj };
-        if (email === '') {
-            errorObj.email = 'Email is Required';
-            error = true;
-        }
-        if (password === '') {
-            errorObj.password = 'Password is Required';
-            error = true;
-        }
-        setErrors(errorObj);
-        if (error) {
-			return;
-		}      
+        e.preventDefault();     
 		dispatch(loadingToggleAction(true));
-        dispatch(loginAction(email, password, navigate));
+        dispatch(loginAction(code, phone, navigate));
     }
 
   return (
@@ -71,34 +57,46 @@ function Login(props) {
                                     {props.successMessage}
                                 </div>
                             )}
-							<form onSubmit={onLogin}>
-                                <div className="form-group">
-									<label className="mb-2 ">
-									  <strong>Email</strong>
-									</label>
-									<input 
-										type="email" 
-										className="form-control"
-										value={email}
-										placeholder='demo@demo.com'
-										onChange={(e) => setEmail(e.target.value)}
-                                       //defaultValue="abcd@gmail.com"
-									/>
-								  {errors.email && <div className="text-danger fs-12">{errors.email}</div>}
-								</div>
-								<div className="form-group">
-									<label className="mb-2 "><strong>Password</strong></label>
-									<input
-									  type="password"
-									  className="form-control"
-									  placeholder='*********'
-									  value={password}
-										onChange={(e) =>
-											setPassword(e.target.value)
-										}
-									/>
-									{errors.password && <div className="text-danger fs-12">{errors.password}</div>}
-								</div>
+							<AvForm onValidSubmit={onLogin} className='login-form'>
+								<Row>
+									<Col md={3} className="form-group mb-2 position-relative">
+										<AvField
+											label ='Code'
+											name ='code'
+											type="text" 
+											value={code}
+											pattern="^\+\d{1,4}$"
+											errorMessage="Please enter a valid value"
+											validate={{
+												required: {
+													value:true,
+													errorMessage: 'This Field is required'
+												},
+											}}
+											placeholder='Code'
+											onChange={(e) => setCode(e.target.value)}
+										/>
+									</Col>
+									<Col md={9} className="form-group pl-0 phone">
+										<AvField
+											label ='Phone'
+											name ='phone'
+											type="text" 
+											value={phone}
+											pattern="^\d+$"
+											errorMessage="Please enter a valid Phone"
+											validate={{
+												required: {
+													value:true,
+													errorMessage: 'This Field is required'
+												},
+											}}
+											placeholder='Phone'
+											onChange={(e) => setPhone(e.target.value)}
+										/>
+									</Col>
+								</Row>
+								
 							  {/* <div className="form-row d-flex justify-content-between mt-4 mb-2">
 								<div className="form-group">
 								  <div className="custom-control custom-checkbox ml-1 ">
@@ -126,7 +124,7 @@ function Login(props) {
 								  Sign In
 								</button>
 							  </div>
-							</form>
+							</AvForm>
 						  </div>
 						</div>
 					  </div>

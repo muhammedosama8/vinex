@@ -215,6 +215,7 @@ const AddProducts = () => {
                     toast.success('Product Updated Successfully')
                     // navigate('/products')
                     setConfirm(true)
+                    setProduct({...product, images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]})
                 }
                 setLoadning(false)
             })

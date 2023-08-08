@@ -50,9 +50,9 @@ export function Logout(navigate) {
     };
 }
 
-export function loginAction(email, password, navigate) {
+export function loginAction(country_code, phone, navigate) {
     return (dispatch) => {
-         login(email, password)
+         login(country_code, phone)
             .then((response) => { 
                 // saveTokenInLocalStorage(response.data);
                 // runLogoutTimer(
@@ -61,7 +61,7 @@ export function loginAction(email, password, navigate) {
                 //     navigate,
                 // );
             //    dispatch(loginConfirmedAction(response.data));     
-                dispatch(loginFn({email, password}))   
+                dispatch(loginFn({country_code, phone}))   
                 dispatch(loadingToggleAction(false))  
 				navigate('/verified');      
                           
@@ -72,13 +72,13 @@ export function loginAction(email, password, navigate) {
             });
     };
 }
-export function loginVerifiedAction(email, password,code, navigate) {
+export function loginVerifiedAction(country_code, phone,code, navigate) {
     return (dispatch) => {
-        loginVerified(email, password, code)
+        loginVerified(country_code, phone, code)
             .then((response) => {
                 saveTokenInLocalStorage(response.data);
                 dispatch(loginConfirmedAction(response.data));  
-                dispatch(loginFn({email, password: ''}))  
+                dispatch(loginFn({country_code, phone: ''}))  
                 dispatch(loadingToggleAction(false))               
 				navigate('/dashboard');                
             })
