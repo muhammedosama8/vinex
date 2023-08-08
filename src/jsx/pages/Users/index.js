@@ -19,7 +19,7 @@ const Users = () =>{
             <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />
           </div>
         <Card>
-            <Card.Body>
+            <Card.Body className={`${hasData === 0 && 'text-center'} `}>
               {hasData === 1 && <Table responsive>
                 <thead>
                   <tr className='text-center'>
