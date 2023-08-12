@@ -8,21 +8,15 @@ import {
 
 const tokenKey = "token";
 
-export function login(country_code, phone) {
-    const postData = {
-        country_code,
-        phone
-    };
-    return axios.post(
-        `${API_BASE_URL_ENV()}/admin/login`,
-        postData,
-    );
+export function login(email, password) {
+    const postData = { email, password };
+    return axios.post(`${API_BASE_URL_ENV()}/admin/login`, postData);
 }
 
-export function loginVerified(country_code, phone, code) {
+export function loginVerified(email, password, code) {
     const postData = {
-        country_code,
-        phone,
+        email,
+        password,
         code
     };
     return axios.post(
@@ -54,6 +48,10 @@ export function formatError(errorResponse) {
            swal("Oops", "Email not found", "error",{ button: "Try Again!",});
            break;
         case 'Incorrect Password.':
+            //return 'Invalid Password';
+            swal("Oops", "Invalid Password", "error",{ button: "Try Again!",});
+            break;
+        case 'كلمة سر خاطئة':
             //return 'Invalid Password';
             swal("Oops", "Invalid Password", "error",{ button: "Try Again!",});
             break;

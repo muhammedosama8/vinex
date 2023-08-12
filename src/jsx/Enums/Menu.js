@@ -384,6 +384,13 @@ export const MenuList = [
         iconStyle: <i className='la la-cube'></i>,
         to: 'sub-categories',
     },
+    //Brands
+    {   
+        title:'Brands',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className='la la-file-text'></i>,
+        to: 'brands',
+    },
     //Variant
     {   
         title:'Variant',
@@ -409,7 +416,7 @@ export const MenuList = [
     {   
         title:'Reports',
         classsChange: 'mm-collapse',
-        iconStyle: <i className='la la-file-text'></i>,
+        iconStyle: <i className='la la-pie-chart'></i> ,
         to: 'reports',
     },
     // Notification
@@ -440,6 +447,13 @@ export const MenuList = [
         iconStyle: <i className="la la-thumb-tack" />,
         to: 'ad-screen',
     },
+    //Control
+    {   
+        title:'Control',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className="la la-wrench" />,
+        to: 'control',
+    },
    
     //Setting
     {
@@ -450,10 +464,6 @@ export const MenuList = [
             {
                 title:'Social Media',
                 to: 'social',
-            },
-            {
-                title:'Control',
-                to: 'control',
             }
         ]
     },

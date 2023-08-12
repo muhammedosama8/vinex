@@ -50,35 +50,27 @@ export function Logout(navigate) {
     };
 }
 
-export function loginAction(country_code, phone, navigate) {
+export function loginAction(email, password, navigate) {
     return (dispatch) => {
-         login(country_code, phone)
-            .then((response) => { 
-                // saveTokenInLocalStorage(response.data);
-                // runLogoutTimer(
-                //     dispatch,
-                //     response.data.expiresIn * 1000,
-                //     navigate,
-                // );
-            //    dispatch(loginConfirmedAction(response.data));     
-                dispatch(loginFn({country_code, phone}))   
-                dispatch(loadingToggleAction(false))  
-				navigate('/verified');      
-                          
-            })
-            .catch((error) => {
-                const errorMessage = formatError(error?.response?.data?.message);
+         login(email, password).then((response) => {  
+                if(response?.status === 200){
+                    dispatch(loginFn({email, password}))   
+                    dispatch(loadingToggleAction(false))  
+                    navigate('/verified'); 
+                }  
+            }).catch(error => {
+                const errorMessage = formatError(error?.response?.data);
                 dispatch(loginFailedAction(errorMessage));
             });
     };
 }
-export function loginVerifiedAction(country_code, phone,code, navigate) {
+export function loginVerifiedAction(email, password,code, navigate) {
     return (dispatch) => {
-        loginVerified(country_code, phone, code)
+        loginVerified(email, password, code)
             .then((response) => {
                 saveTokenInLocalStorage(response.data);
                 dispatch(loginConfirmedAction(response.data));  
-                dispatch(loginFn({country_code, phone: ''}))  
+                dispatch(loginFn({email, password: ''}))  
                 dispatch(loadingToggleAction(false))               
 				navigate('/dashboard');                
             })

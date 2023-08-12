@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import BaseService from "../../../../services/BaseService";
-import uploadImg from '../../../../images/upload-img.webp';
+import BaseService from "../../../services/BaseService";
+import uploadImg from '../../../images/upload-img.webp';
 
 const Control = () => {
     const [logo, setLogo] = useState('')

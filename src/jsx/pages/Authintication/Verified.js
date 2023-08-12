@@ -11,12 +11,12 @@ function Verified(props) {
 	const navigate = useNavigate()
 	const [code, setCode] = useState('');
     const dispatch = useDispatch();
-    const phone = Auth.phone
-    const country_code = Auth.country_code
+    const email = Auth.email
+    const password = Auth.password
 	
     useEffect(()=>{
-        if(!country_code && !phone) navigate('/login')
-    },[country_code, navigate, phone])
+        if(!password && !email) navigate('/login')
+    },[email, navigate, password])
 
     function verifiedAcc(e) {
         e.preventDefault();
@@ -24,7 +24,7 @@ function Verified(props) {
 			return;
 		}        
 		dispatch(loadingToggleAction(true));
-        dispatch(loginVerifiedAction(country_code, phone,code, navigate));
+        dispatch(loginVerifiedAction(email, password,code, navigate));
     }
 
   return (

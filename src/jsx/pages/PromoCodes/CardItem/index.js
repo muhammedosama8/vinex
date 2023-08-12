@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import PromoCodeService from "../../../../services/PromoCodeService";
+import DeleteModal from "../../../common/DeleteModal";
 
-const CardItem = ({item, index}) =>{
+const CardItem = ({item, index, setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
+    const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    const promoCodeService = new PromoCodeService()
+    const navigate = useNavigate()
 
     useEffect(()=>{
         setStatus(item.status)
@@ -13,6 +20,11 @@ const CardItem = ({item, index}) =>{
 
     const changeStatusToggle = (e)=>{
         setStatus(e.target.checked)
+        promoCodeService?.toggleStatus(item?.id).then(res=>{
+          if(res.status === 200){
+            toast.success('Update Status Successfully')
+          }
+        })
     }
     
     return(
@@ -24,7 +36,7 @@ const CardItem = ({item, index}) =>{
                     <td>
                       {item.amount}
                     </td>
-                    <td>{item.type}</td>
+                    <td>{item.Type}</td>
                     <td>{item.end_date}</td>
                     <td>{item.max_usage}</td>
                     <td>{item.count_usage}</td>
@@ -46,11 +58,19 @@ const CardItem = ({item, index}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item>Edit</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> navigate('/promo-codes/edit-promo-codes', {state: {item: item}})}>Edit</Dropdown.Item>
                           <Dropdown.Item>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>
+                    {deleteModal && <DeleteModal
+                      open={deleteModal}
+                      titleMsg={item.name}
+                      deletedItem={item}
+                      modelService={promoCodeService}
+                      onCloseModal={setDeleteModal}
+                      setShouldUpdate={setShouldUpdate}
+                    />}
                   </tr>
     )
 }

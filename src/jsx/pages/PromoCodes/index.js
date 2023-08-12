@@ -2,25 +2,21 @@ import { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import PromoCodeService from "../../../services/PromoCodeService";
+import NoData from "../../common/NoData";
+import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
 import CardItem from "./CardItem";
 
 const PromCodes = () =>{
     const [promCodes, setPromCodes] =useState([])
     const [search, setSearch] =useState(null)
+    const [hasData, setHasData] = useState(null)
+    const [shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-
-    useEffect(()=>{
-      let promCodes =[
-        {id: 1, name: 'mu', amount: 5, type: 'Percentage', end_date: '9/4/2024', max_usage: 5, count_usage: 5, status: true},
-        {id: 2, name: 'os', amount: 5, type: 'Fixed Amount', end_date: '9/4/2024', max_usage: 5, count_usage: 5, status: false},
-        {id: 3, name: 'fa', amount: 5, type: 'Percentage', end_date: '9/4/2024', max_usage: 5, count_usage: 5, status: true},
-        {id: 4, name: 'na', amount: 5, type: 'Fixed Amount', end_date: '9/4/2024', max_usage: 5, count_usage: 5, status: false},
-      ]
-      setPromCodes([...promCodes])
-    },[])
+    const promoCodeService = new PromoCodeService()
 
     return(
         <>
@@ -31,8 +27,8 @@ const PromCodes = () =>{
           </Button>}
           </div>
         <Card>
-            <Card.Body>
-              <Table responsive>
+            <Card.Body className={`${hasData === 0 ? 'text-center' :''}`}>
+              {hasData === 1 && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -68,10 +64,19 @@ const PromCodes = () =>{
                     key= {index}
                     index= {index}
                     item={item}
+                    setShouldUpdate={setShouldUpdate}
                     />
                   })}
                 </tbody>
-              </Table>
+              </Table>}
+
+              {hasData === 0 && <NoData />}
+              <Pagination
+                  setData={setPromCodes}
+                  service={promoCodeService}
+                  shouldUpdate={shouldUpdate}
+                  setHasData={setHasData}
+              />
             </Card.Body>
           </Card>
         </>

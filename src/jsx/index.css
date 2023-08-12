@@ -817,13 +817,3 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 .table-responsive .table .dropdown button:hover{
   color: #FE634E;
 }
-.login-form .invalid-feedback{
-    width: max-content;
-    position: absolute;
-    left: 0;
-}
-.login-form .phone .invalid-feedback{
-    width: max-content;
-    position: absolute;
-    left: 16px;
-}

@@ -4,7 +4,7 @@ import Select from 'react-select'
 import { Rules } from "../../Enums/Rules";
 import AdminService from "../../../services/AdminService";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeAdminRules } from "../../../store/actions/AuthActions";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +17,8 @@ const Permission = () =>{
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const adminService = new AdminService()
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const [shouldUpdate, setShouldUpdate]= useState(false)
     let id = window.location.pathname.split('/rules/')[1]
 
@@ -55,10 +57,10 @@ const Permission = () =>{
         e.preventDefault();
         let id= formData?.admin?.id
         let data ={
-            email: formData?.admin?.data?.email,
+            // email: formData?.admin?.data?.email,
             f_name: formData?.admin?.data?.f_name,
             l_name: formData?.admin?.data?.l_name,
-            phone: formData?.admin?.data?.phone,
+            // phone: formData?.admin?.data?.phone,
             rules: formData.rules
         }
 
@@ -68,8 +70,8 @@ const Permission = () =>{
                 toast.success(`Added Rules for ${formData?.admin?.label}`)
                 window.scrollTo(0,0)
                 setFormData({admin: '', rules: []})
-                setShouldUpdate(prev=> !prev)
                 if(!!id){
+                    setShouldUpdate(prev=> !prev)
                     navigate('/admins')
                 }
             }
@@ -143,11 +145,11 @@ const Permission = () =>{
                         })}
                     </tbody>
                 </Table>
-                <div className="d-flex justify-content-end mt-5">
+                {isExist('rules') &&<div className="d-flex justify-content-end mt-5">
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
-                </div>
+                </div>}
             </Card.Body>
         </Card>
     </form>

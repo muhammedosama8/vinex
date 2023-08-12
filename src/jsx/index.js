@@ -37,7 +37,8 @@ import Permission from './pages/Rules'
 import Reports from './pages/Reports'
 import Notification from './pages/Notification'
 import Profile from './pages/Profile'
-import Control from './pages/Setting/Control'
+import Control from './pages/Control'
+import Brands from './pages/Brand'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -71,6 +72,7 @@ const Markup = () => {
     // Promo Codes
     { url: 'promo-codes', component: <PromCodes /> },
     { url: 'promo-codes/add-promo-codes', component: <AddPromoCodes /> },
+    { url: 'promo-codes/edit-promo-codes', component: <AddPromoCodes /> },
 
     // Banners
     { url: 'banners', component: <Banners /> },
@@ -100,6 +102,7 @@ const Markup = () => {
     // Categories
     {url: 'categories', component: <Categories />},
     {url: 'sub-categories', component: <SubCategories />},
+    {url: 'brands', component: <Brands />},
 
     //Setting
     {url: 'social', component: <SocialMedia />},

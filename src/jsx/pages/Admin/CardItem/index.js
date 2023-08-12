@@ -38,7 +38,9 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                     <td>
                       {item?.email}
                     </td>
-                    <td>{item?.phone}</td>
+                    <td>
+                      {item?.user_phones?.filter(res=> !!res.is_default)[0]?.country_code}{item?.user_phones?.filter(res=> !!res.is_default)[0]?.phone}
+                    </td>
                     <td>
                       <Badge 
                         style={{cursor: 'pointer'}}

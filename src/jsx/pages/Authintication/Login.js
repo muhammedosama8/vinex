@@ -10,15 +10,16 @@ import { loadingToggleAction, loginAction } from "../../../store/actions/AuthAct
 
 function Login(props) {
 	const navigate = useNavigate()
-	const [code, setCode] = useState('+20');
-	const [phone, setPhone] = useState('');
+	const [email, setEmail] = useState('tatasamy1998@gmail.com');
+	const [password, setPassword] = useState('Admin!123456');
+	const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
 	const Auth = useSelector(state=> state.auth)
 
     function onLogin(e) {
         e.preventDefault();     
 		dispatch(loadingToggleAction(true));
-        dispatch(loginAction(code, phone, navigate));
+        dispatch(loginAction(email, password, navigate));
     }
 
   return (
@@ -59,13 +60,13 @@ function Login(props) {
                             )}
 							<AvForm onValidSubmit={onLogin} className='login-form'>
 								<Row>
-									<Col md={3} className="form-group mb-2 position-relative">
+									<Col md={12} className="form-group mb-2">
 										<AvField
-											label ='Code'
-											name ='code'
-											type="text" 
-											value={code}
-											pattern="^\+\d{1,4}$"
+											label ='Email'
+											name ='email'
+											type="email" 
+											value={email}
+											pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
 											errorMessage="Please enter a valid value"
 											validate={{
 												required: {
@@ -73,27 +74,29 @@ function Login(props) {
 													errorMessage: 'This Field is required'
 												},
 											}}
-											placeholder='Code'
-											onChange={(e) => setCode(e.target.value)}
+											placeholder='Email'
+											onChange={(e) => setEmail(e.target.value)}
 										/>
 									</Col>
-									<Col md={9} className="form-group pl-0 phone">
+									<Col md={12} className="form-group position-relative">
 										<AvField
-											label ='Phone'
-											name ='phone'
-											type="text" 
-											value={phone}
-											pattern="^\d+$"
-											errorMessage="Please enter a valid Phone"
+											label ='Password'
+											name ='password'
+											type={showPassword ? 'text' : 'password'}
+											value={password}
+											errorMessage="Please enter a valid password"
 											validate={{
 												required: {
 													value:true,
 													errorMessage: 'This Field is required'
 												},
 											}}
-											placeholder='Phone'
-											onChange={(e) => setPhone(e.target.value)}
+											placeholder='Password'
+											onChange={(e) => setPassword(e.target.value)}
 										/>
+										{showPassword ? 
+											<i className="la la-eye-slash position-absolute" style={{top: '50%',right: '5%'}} onClick={()=>setShowPassword(false)}></i> : 
+											<i className="la la-eye position-absolute" style={{top: '50%',right: '5%'}} onClick={()=>setShowPassword(true)}></i>}
 									</Col>
 								</Row>
 								

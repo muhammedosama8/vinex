@@ -15,12 +15,11 @@ function setInterceptors(navigate){
         window.location = `/login`;
       } 
     } else if(error.response && error.response.status === 402){
-      console.log(error.response)
       if(error.response.data.message === "not authorized (old Token)." || error.response.data.message === "غير مصرح به (رمز قديم)"){
         Logout(navigate);
         window.location = `/login`;
       }
-    } else if(error.response && error.response?.data?.status === 404){
+    } else{
       toast.error(error.response?.data?.message)
     }
   });
