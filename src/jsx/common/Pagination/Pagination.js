@@ -19,10 +19,10 @@ const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
                 }
             }
           })
-    },[page])
+    },[page, shouldUpdate])
 
     useEffect(()=>{
-        setPage(1)
+        if(page > 1) setPage(1)
     },[shouldUpdate])
 
     if(totalPages > 1){

@@ -12,6 +12,7 @@ import SubCategoriesService from "../../../../services/SubCategoriesService";
 import ProductsService from "../../../../services/ProductsService";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../../../common/ConfirmModal";
+import BrandsService from "../../../../services/BrandsService";
 
 const AddProducts = () => {
     const [product, setProduct]= useState({
@@ -29,6 +30,7 @@ const AddProducts = () => {
         category: '',
         sub_category: '',
         code: '',
+        brand: '',
         variant: [],
         images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]
     })
@@ -41,6 +43,7 @@ const AddProducts = () => {
     const [id, setId]= useState(null)
     const [loading, setLoadning]= useState(false)
     const [categoriesOptions, setCategoriesOptions] = useState([])
+    const [brandOptions, setBrandOptions] = useState([])
     const [subCategoriesOptions, setSubCategoriesOptions] = useState([])
     const [variant, setVariant] = useState([])
     const [files, setFiles] = useState([{},{},{},{},{}])
@@ -49,6 +52,7 @@ const AddProducts = () => {
     const subCategoriesService = new SubCategoriesService()
     const adminService = new AdminService()
     const productsService = new ProductsService()
+    const brandsService = new BrandsService()
 
     useEffect(()=>{
         categoriesService?.getList().then(res=>{
@@ -61,6 +65,18 @@ const AddProducts = () => {
                   }
                })
                setCategoriesOptions(categories)
+            }
+        })
+        brandsService?.getList().then(res=>{
+            if(res.data?.status === 200){
+               let categories =  res.data?.meta?.data?.map(item=>{
+                  return{
+                     id: item?.id,
+                     value: item?.id,
+                     label: item.name_en
+                  }
+               })
+               setBrandOptions(categories)
             }
         })
     },[])
@@ -117,7 +133,8 @@ const AddProducts = () => {
                             }
                             
                         }),
-                        sub_category: '',
+                        sub_category: response?.sub_category_id ? subCategoriesOptions?.filter(opt=> opt.value ===response?.sub_category_id)[0] : '',
+                        brand: response?.brand_id ? subCategoriesOptions?.filter(opt=> opt.value ===response?.brand_id)[0] : '',
                         variant: response?.variant?.map(item=>{
                             return{
                                 name_ar: item.variant?.name_ar,
@@ -208,6 +225,7 @@ const AddProducts = () => {
             offerPrice: Number(product.offerPrice)
         }
         if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
+        if(!!product.brand) data['brand_id']= product?.brand?.value
 
         if(!!id){
             productsService?.update(id, data)?.then(res=>{
@@ -382,6 +400,15 @@ const AddProducts = () => {
                                 value={product.code}
                                 onChange={(e)=> handlerText(e)}
                             />
+                </Col>
+                <Col md={6} className="mb-3">
+                        <label className="text-label">Brand</label>
+                        <Select
+                            value={product.brand}
+                            name="brand"
+                            options={brandOptions}
+                            onChange={(e)=> setProduct({...product, brand: e})}
+                        />
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField

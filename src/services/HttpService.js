@@ -19,8 +19,10 @@ function setInterceptors(navigate){
         Logout(navigate);
         window.location = `/login`;
       }
-    } else{
+    } else if(error.response){
       toast.error(error.response?.data?.message)
+    } else {
+      toast.error(error.message)
     }
   });
 }

@@ -66,16 +66,16 @@ const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
             brandsService?.create(data)?.then(res=>{
                 if(res?.status === 201){
                     toast.success('Brand Added Successfully')
-                    setAddModal()
                     setShouldUpdate(prev=> !prev)
+                    setAddModal()
                 }
             })
         } else {
             brandsService?.update(formData?.id, data)?.then(res=>{
                 if(res?.status === 200){
                     toast.success('Brand Updated Successfully')
-                    setAddModal()
                     setShouldUpdate(prev=> !prev)
+                    setAddModal()
                 }
             })
         }

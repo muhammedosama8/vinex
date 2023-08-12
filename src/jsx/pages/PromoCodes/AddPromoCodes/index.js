@@ -21,7 +21,7 @@ const AddPromoCodes = () => {
    const navigate = useNavigate()
    const [ typesOptions, setTypesOptions]= useState([
       {label: 'Percentage', value: 'percentage'},
-      {label: 'Fixed Amount', value: 'fixed_amount'},
+      {label: 'Fixed Amount', value: 'fixed'},
    ])
 
    const handlerText = (e)=>{

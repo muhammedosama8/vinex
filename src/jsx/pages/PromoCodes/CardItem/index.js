@@ -15,12 +15,12 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
     const navigate = useNavigate()
 
     useEffect(()=>{
-        setStatus(item.status)
+        setStatus(item.is_active)
     },[item])
 
     const changeStatusToggle = (e)=>{
         setStatus(e.target.checked)
-        promoCodeService?.toggleStatus(item?.id).then(res=>{
+        promoCodeService?.toggleStatus(item?.id, {is_active: e.target.checked}).then(res=>{
           if(res.status === 200){
             toast.success('Update Status Successfully')
           }

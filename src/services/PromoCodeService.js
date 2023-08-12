@@ -11,7 +11,7 @@ export default class PromoCodeService extends BaseService {
         super(apiEndpoint);
     }
 
-    toggleStatus(id) {
-        return http.put(this.entityUrl(`${apiToggleStatusEndpoint}/${id}`));
+    toggleStatus(id, data) {
+        return http.put(`${apiToggleStatusEndpoint}/${id}`, data);
     }
 }
