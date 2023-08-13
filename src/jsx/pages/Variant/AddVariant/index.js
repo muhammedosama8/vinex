@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import Select from 'react-select'
 import { InputTags } from "react-bootstrap-tagsinput";
 import { toast } from "react-toastify";
@@ -10,8 +10,7 @@ import VariantService from "../../../../services/VariantService";
 
 const Variant = ()=>{
    const [formData, setFormData] = useState({
-      category: '',
-      variant: []
+      category: '', variant: []
    })
    let variant_id = window?.location?.pathname?.split('/variant/add-variant/')[1]
    const [ categoriesOptions, setCategoriesOptions] = useState()
@@ -73,12 +72,20 @@ const Variant = ()=>{
    },[window.location.pathname])
 
 
+   let checkTypeVariant = (val) => {
+      if(val === 'color' || val === 'colour' || val === 'coulor'){
+         return true
+      }
+      return false
+   }
+
    const generateVariant = () =>{
       let filterFormDataVariant = formData?.variant?.map(item => item.name_en)
       let filterFound = tags.filter(item => filterFormDataVariant.includes(item));
       let filterNotFound = tags.filter(item => !filterFormDataVariant.includes(item));
 
       let filter = formData?.variant?.filter(res=> filterFound?.includes(res.name_en))
+      
       let update = filterNotFound?.map((tag)=>{
          return {
             name_en: tag,
@@ -86,7 +93,7 @@ const Variant = ()=>{
             variant_values: [
                {
                   value_ar: "",
-                  value_en: ""
+                  value_en: checkTypeVariant(tag) ? '#dfdfdf' : ''
                 }
             ]
          }
@@ -118,10 +125,10 @@ const Variant = ()=>{
       if(isAdd) data['category_id']= formData?.category?.value
 
       if(isAdd){
-         variantService?.addVariant(data)?.then(res => {
+         variantService?.addVariant(data).then(res=> {
             if(res?.status === 201){
                toast.success('Variant Added Successfully')
-               setFormData({category: '', variant: []})
+               // setFormData({category: '', variant: []})
                navigate('/variant')
             }
          })
@@ -129,7 +136,7 @@ const Variant = ()=>{
          variantService?.updateVariant(Number(variant_id), data)?.then(res => {
             if(res?.status === 200){
                toast.success('Variant Updated Successfully')
-               setFormData({category: '', variant: []})
+               // setFormData({category: '', variant: []})
                navigate('/variant')
             }
          })
@@ -144,7 +151,7 @@ const Variant = ()=>{
             <div className="row">
                {!variant_id && <div className="col-lg-6 mb-2">
                   <div className="form-group mb-3">
-                     <label className="text-label">Category*</label>
+                     <label className="text-label">Category</label>
                      <Select
                      value={formData.category}
                      name="category"
@@ -158,7 +165,7 @@ const Variant = ()=>{
                </div>}
                <div className="col-lg-12 mb-2">
                   <div className="form-group mb-3">
-                     <label className="text-label">Variant*</label>
+                     <label className="text-label">Variant</label>
                      <div className="input-group">
                         <InputTags
                            style={{fontSize: '16px'}}
@@ -179,8 +186,9 @@ const Variant = ()=>{
                   </div>
                </div>
 
-               {!!formData.variant?.length && formData.variant?.map((item, itemIndex)=>(
-                  <Col md={12} className='mb-3' key={itemIndex}>
+               {!!formData.variant?.length && formData.variant?.map((item, itemIndex)=>{
+                  let typeVal = (item?.name_en === 'color' || item?.name_en === 'colour' || item?.name_en === 'coulor')
+                  return <Col md={12} className='mb-3' key={itemIndex}>
                      <Row style={{boxShadow: '0 0 2px #dedede', padding: '2rem 0'}}>
                         <Col lg={6} md={6} className='mb-3'>
                            <div className="form-group">
@@ -189,7 +197,7 @@ const Variant = ()=>{
                            </div>
                         </Col>
                         <Col md={6} className='mb-3'>
-                           <label>Arabic Name*</label>
+                           <label>Arabic Name</label>
                            <input
                               type="text"
                               name="ar"
@@ -214,19 +222,19 @@ const Variant = ()=>{
                            />
                         </Col>
                         <Col md={6}>
-                           <label className="text-label">Types by English*</label>
+                           <label className="text-label">Types by English</label>
                         </Col>
-                        <Col md={6}>
-                           <label className="text-label">Types by Arabic*</label>
-                        </Col>
+                        {!typeVal && <Col md={6}>
+                           <label className="text-label">Types by Arabic</label>
+                        </Col>}
                         {item?.variant_values?.map((val,ind)=>{
                            return <>
-                              <Col lg={6} md={12}>
+                              <Col lg={typeVal ? 11 : 6} md={12}>
                               <div className='form-group'>
                                  <div className="input-group">
                                     <input
-                                       type="text"
-                                       name="ar"
+                                       type={typeVal ? "color" : 'text'}
+                                       name="en"
                                        className="form-control"
                                        placeholder="English"
                                        required
@@ -255,10 +263,41 @@ const Variant = ()=>{
                                           setFormData({...formData, variant: update})
                                        }}
                                     />
+                                    {typeVal && <input
+                                       type="text"
+                                       name="en"
+                                       className="form-control"
+                                       placeholder="e.g. #RRGGBB"
+                                       pattern="#[0-9a-fA-F]{6}"
+                                       required
+                                       value={val?.value_en}
+                                       onChange={(e)=> {
+                                          let update = formData.variant?.map((res, index)=>{
+                                             if(index === itemIndex){
+                                                return{
+                                                   ...res,
+                                                   variant_values: res.variant_values?.map((valType, valTypeIndex)=>{
+                                                      if(valTypeIndex === ind){
+                                                         return {
+                                                            ...valType,
+                                                            value_en: e.target.value
+                                                         }
+                                                      } else {
+                                                         return valType
+                                                      }
+                                                   })
+                                                }
+                                             } else {
+                                                return res
+                                             }
+                                          })
+                                          setFormData({...formData, variant: update})
+                                       }}
+                                    />}
                                  </div>
                               </div>
                               </Col>
-                              <Col lg={5} md={12}>
+                              {!typeVal && <Col lg={5} md={12}>
                                  <div className='form-group'>
                                     <div className="input-group">
                                        <input
@@ -294,7 +333,7 @@ const Variant = ()=>{
                                        />
                                     </div>
                                  </div>
-                              </Col>
+                              </Col>}
                               {ind > 0 && <Col md={1}>
                                  <button type='button' 
                                     style={{
@@ -333,7 +372,7 @@ const Variant = ()=>{
                                              let valuesUpdate = res.variant_values
                                              valuesUpdate.push({
                                                 value_ar: '',
-                                                value_en: '',
+                                                value_en: checkTypeVariant(item.name_en) ? '#dedede' : '',
                                              })
                                              return{
                                                 ...res,
@@ -352,13 +391,11 @@ const Variant = ()=>{
                            </>
                         })}
                      </Row>
-                  </Col>)
+                  </Col>}
                )}
             </div>
             <div className="d-flex justify-content-between">
-               <div >
-                  {/* {!isAdd && <Button variant="danger" type="button" onClick={deleteVariant}>Delete</Button>} */}
-               </div>
+               <div></div>
                <div>
                   <Button variant="primary" type="submit">Submit</Button>
                </div>
