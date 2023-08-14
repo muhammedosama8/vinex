@@ -3,15 +3,19 @@ import { Badge, Button, Card, Col, Row, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import '../style.scss'
 
-const Profile =()=>{
+const UserProfile =()=>{
     const [edit, setEdit] = useState(false)
     const [orders, setOrders] = useState([])
-    const path = window.location.pathname
-    const id = path?.split('/')[2]
+    const [user, setUser] = useState({})
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
+        setUser({
+            ...window?.history?.state?.usr,
+            phone: user.user_phones?.filter(res=> res.is_default)[0]?.phone
+        })
+        
         let orders =[
             {id: 1,order: 't-shirt', quantity: '3', total_price: 280, payment_status: 'cash', status: 'Ordered'},
             {id: 2,order: 't-shirt', quantity: '3', total_price: 380, payment_status: 'visa', status: 'Processing'},
@@ -26,25 +30,33 @@ const Profile =()=>{
         e.preventDefault();
         setEdit(false)
     }
+
+    const handleInput = (e) =>{
+        setUser({...user, [e.target.name]: e.target.value})
+    }
     return(<div>
         {!edit && <Card>
             <Card.Body>
                 <Row>
                     <Col md={6} className='mb-2'>
-                        <h4>Name</h4>
-                        <p>Muhammed Osama</p>
+                        <h4>First Name</h4>
+                        <p>{user.f_name}</p>
+                    </Col>
+                    <Col md={6} className='mb-2'>
+                        <h4>Last Name</h4>
+                        <p>{user.l_name}</p>
                     </Col>
                     <Col md={6} className='mb-2'>
                         <h4>Email</h4>
-                        <p>muhammed@gmail.com</p>
+                        <p>{user.email}</p>
                     </Col>
                     <Col md={6}>
                         <h4>Phone</h4>
-                        <p>01004545333</p>
+                        <p>{user.phone}</p>
                     </Col>
                     <Col md={6}>
                         <h4>Address</h4>
-                        <p>12 gmal street, Giza, Cairo</p>
+                        <p>{user?.address}</p>
                     </Col>
                 </Row>
                 {isExist('users') && <button className="edit" onClick={()=> setEdit(true)}>
@@ -112,14 +124,27 @@ const Profile =()=>{
                 <form onSubmit={onSubmit}>
                 <Row>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">Name</label>
+                        <label className="text-label">First Name</label>
                         <input 
                             type='text' 
                             className="form-control"
-                            name='name' 
-                            placeholder="Name"
-                            value='Muhammed Osama'
+                            name='f_name' 
+                            placeholder="First Name"
+                            value={user.f_name}
                             required
+                            onChange={(e)=> handleInput(e)}
+                        />
+                    </Col>
+                    <Col md={6} className='mb-3'>
+                        <label className="text-label">Last Name</label>
+                        <input 
+                            type='text' 
+                            className="form-control"
+                            name='l_name' 
+                            placeholder="Last Name"
+                            value={user.l_name}
+                            required
+                            onChange={(e)=> handleInput(e)}
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
@@ -128,9 +153,10 @@ const Profile =()=>{
                             type='email' 
                             className="form-control"
                             placeholder="Email"
-                            name='name' 
-                            value='muhammed@gmail.com'
+                            name='email' 
+                            value={user.email}
                             required
+                            onChange={(e)=> handleInput(e)}
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
@@ -140,8 +166,9 @@ const Profile =()=>{
                             className="form-control"
                             placeholder="Phone"
                             name='phone' 
-                            value='01007656888'
+                            value={user.phone}
                             required
+                            onChange={(e)=> handleInput(e)}
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
@@ -151,8 +178,9 @@ const Profile =()=>{
                             className="form-control"
                             placeholder="Address"
                             name='address' 
-                            value='12 gmal street, Giza, Cairo'
+                            value={user.address}
                             required
+                            onChange={(e)=> handleInput(e)}
                         />
                     </Col>
 
@@ -177,4 +205,4 @@ const Profile =()=>{
         </Card>}
     </div>)
 }
-export default Profile;
+export default UserProfile;

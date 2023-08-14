@@ -28,6 +28,7 @@ const AddProducts = () => {
         price: '',
         offer_price: '',
         category: '',
+        weight: '',
         sub_category: '',
         code: '',
         brand: '',
@@ -363,7 +364,7 @@ const AddProducts = () => {
                         {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">Category</label>
+                        <label className="text-label">Category*</label>
                         <Select
                             value={product.category}
                             name="category"
@@ -454,7 +455,28 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='Offer Price*'
+                                label='Weight*'
+                                type='number'
+                                placeholder='Weight'
+                                bsSize="lg"
+                                name='weight'
+                                validate={{
+                                    required: {
+                                        value: true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                    pattern: {
+                                        value: "^[0-9]+$",
+                                        errorMessage: `Format is invalid`
+                                    }
+                                }}
+                                value={product.weight}
+                                onChange={(e)=> handlerText(e)}
+                            />
+                </Col>
+                <Col md={6} className="mb-3">
+                        <AvField
+                                label='Offer Price'
                                 type='number'
                                 placeholder='Offer Price'
                                 bsSize="lg"

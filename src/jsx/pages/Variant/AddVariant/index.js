@@ -73,7 +73,8 @@ const Variant = ()=>{
 
 
    let checkTypeVariant = (val) => {
-      if(val === 'color' || val === 'colour' || val === 'coulor'){
+      let check= val.toLowerCase().indexOf('color') !== -1 ? true : false
+      if(val === 'color' || val === 'colour' || val === 'coulor' || check){
          return true
       }
       return false
@@ -111,7 +112,7 @@ const Variant = ()=>{
       let data = {
          variant: formData?.variant?.map((variant) => {
             return{
-               name_en: variant.name_en,
+               name_en: (variant.name_en === 'color' || variant.name_en === 'colour' || variant.name_en === 'coulor' || /color/.test(variant.name_en.toLowerCase())) ? 'color' : variant.name_en,
                name_ar: variant.name_ar,
                variant_values : variant.variant_values?.map(val=>{
                   return{
@@ -187,7 +188,7 @@ const Variant = ()=>{
                </div>
 
                {!!formData.variant?.length && formData.variant?.map((item, itemIndex)=>{
-                  let typeVal = (item?.name_en === 'color' || item?.name_en === 'colour' || item?.name_en === 'coulor')
+                  let typeVal = (item?.name_en === 'color' || item?.name_en === 'colour' || item?.name_en === 'coulor' || (item?.name_en.toLowerCase().indexOf('color') !== -1) )
                   return <Col md={12} className='mb-3' key={itemIndex}>
                      <Row style={{boxShadow: '0 0 2px #dedede', padding: '2rem 0'}}>
                         <Col lg={6} md={6} className='mb-3'>
@@ -267,32 +268,33 @@ const Variant = ()=>{
                                        type="text"
                                        name="en"
                                        className="form-control"
-                                       placeholder="e.g. #RRGGBB"
-                                       pattern="#[0-9a-fA-F]{6}"
-                                       required
+                                       disabled={true}
+                                       // placeholder="e.g. #RRGGBB"
+                                       // pattern="#[0-9a-fA-F]{6}"
+                                       // required
                                        value={val?.value_en}
-                                       onChange={(e)=> {
-                                          let update = formData.variant?.map((res, index)=>{
-                                             if(index === itemIndex){
-                                                return{
-                                                   ...res,
-                                                   variant_values: res.variant_values?.map((valType, valTypeIndex)=>{
-                                                      if(valTypeIndex === ind){
-                                                         return {
-                                                            ...valType,
-                                                            value_en: e.target.value
-                                                         }
-                                                      } else {
-                                                         return valType
-                                                      }
-                                                   })
-                                                }
-                                             } else {
-                                                return res
-                                             }
-                                          })
-                                          setFormData({...formData, variant: update})
-                                       }}
+                                       // onChange={(e)=> {
+                                       //    let update = formData.variant?.map((res, index)=>{
+                                       //       if(index === itemIndex){
+                                       //          return{
+                                       //             ...res,
+                                       //             variant_values: res.variant_values?.map((valType, valTypeIndex)=>{
+                                       //                if(valTypeIndex === ind){
+                                       //                   return {
+                                       //                      ...valType,
+                                       //                      value_en: e.target.value
+                                       //                   }
+                                       //                } else {
+                                       //                   return valType
+                                       //                }
+                                       //             })
+                                       //          }
+                                       //       } else {
+                                       //          return res
+                                       //       }
+                                       //    })
+                                       //    setFormData({...formData, variant: update})
+                                       // }}
                                     />}
                                  </div>
                               </div>

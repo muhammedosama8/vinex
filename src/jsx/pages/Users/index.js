@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Table } from "react-bootstrap";
+import { Button, Card, Table } from "react-bootstrap";
 import UserService from "../../../services/UserService";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
@@ -15,8 +15,11 @@ const Users = () =>{
 
     return(
         <>
-          <div className="d-flex mb-3 ">
+          <div className="d-flex mb-3 justify-content-between">
             <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />
+            <Button variant="secondary">
+              Export Sheet
+            </Button>
           </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>

@@ -11,3 +11,9 @@
         }
     }
 }
+.user{
+    cursor: pointer;
+    &:hover{
+        color: rgba(0, 0, 255, 0.9);
+    }
+}

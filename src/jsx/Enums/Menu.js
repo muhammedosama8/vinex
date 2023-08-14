@@ -398,6 +398,13 @@ export const MenuList = [
         iconStyle: <i className="la la-slack" />,
         to: 'variant',
     },
+    //DynamicVariant
+    {   
+        title:'Dynamic Variant',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className="la la-simplybuilt" />,
+        to: 'dynamic-variant',
+    },
     //Products
     {   
         title:'Products',

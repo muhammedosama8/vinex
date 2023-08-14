@@ -39,6 +39,9 @@ import Notification from './pages/Notification'
 import Profile from './pages/Profile'
 import Control from './pages/Control'
 import Brands from './pages/Brand'
+import DynamicVariant from './pages/DynamicVariant'
+import AddDynamicVariant from './pages/DynamicVariant/AddVariant'
+import UserProfile from './pages/Users/Profile'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -63,7 +66,7 @@ const Markup = () => {
 
     // Users
     { url: 'users', component: <Users /> },
-    { url: 'users/:id/:name', component: <Profile /> },
+    { url: 'users/:id/:name', component: <UserProfile /> },
 
     // Rules
     { url: 'rules', component: <Permission /> },
@@ -98,6 +101,11 @@ const Markup = () => {
     { url: 'variant', component: <Variant /> },
     { url: 'variant/add-variant', component: <AddVariant /> },
     { url: 'variant/add-variant/:id', component: <AddVariant /> },
+
+    // DynamicVariant
+    { url: 'dynamic-variant', component: <DynamicVariant /> },
+    { url: 'dynamic-variant/add-dynamic-variant', component: <AddDynamicVariant /> },
+    { url: 'dynamic-variant/add-dynamic-variant/:id', component: <AddDynamicVariant /> },
 
     // Categories
     {url: 'categories', component: <Categories />},

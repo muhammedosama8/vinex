@@ -31,4 +31,5 @@ export const Rules = [
     {label: 'Ad Screen', value: 'ad_screen'},
     {label: 'Social Media', value: 'social_media'},
     {label: 'Brands', value: 'brands'},
+    {label: 'Control', value: 'control'},
 ]
