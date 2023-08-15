@@ -12,6 +12,9 @@ function DeleteModal(props) {
         if(response?.status === 200){
             toast.success('Deleted Successfully')
             props.setShouldUpdate(prev=> !prev)
+            if(props?.isEdit === false){
+                props?.setModal(false)
+            }
             return props.onCloseModal(false)
         }
     }

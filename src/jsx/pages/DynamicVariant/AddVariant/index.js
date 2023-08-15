@@ -11,7 +11,6 @@ const AddDynamicVariant = ()=>{
    const [formData, setFormData] =useState({category: ''})
    const [dynamicVariant, setDynamicVariant] = useState([
       {
-         category: '',
          name_en: "",
          name_ar: "",
          available_amount: '',
@@ -19,7 +18,7 @@ const AddDynamicVariant = ()=>{
          price: ''
       }
    ])
-   let dynamic_variant_id = window?.location?.pathname?.split('/dynamic-variant/add-dynamic-variant/')[1]
+   let dynamic_variant_id = window?.location?.pathname?.split('/dynamic-variant/edit-dynamic-variant/')[1]
    const [ categoriesOptions, setCategoriesOptions] = useState()
    const [ isAdd, setIsAdd] = useState(true)
    const [ id, setId] = useState(null)
@@ -28,6 +27,16 @@ const AddDynamicVariant = ()=>{
    const navigate = useNavigate()
 
    useEffect(()=>{
+      if(window.history.state?.usr){
+         // setFormData({category:{
+         //    value: window.history.state?.usr?.id,
+         //    label: window.history.state?.usr?.name_en,
+         // }})
+         setIsAdd(false)
+         setId(window.history.state?.usr?.id)
+         setDynamicVariant([window.history.state?.usr])
+         return
+      }
       categoriesService?.getList().then(res=>{
          if(res.data?.status === 200){
             let categories =  res.data?.meta?.data?.map(item=>{
@@ -40,52 +49,47 @@ const AddDynamicVariant = ()=>{
             setCategoriesOptions(categories)
          }
       })
+
    }, [])
 
-   useEffect(()=>{
-      if(!!formData?.category && !id){
-         dynamicVariantService?.find(formData?.category?.id)?.then(res=>{
-            if(res?.status === 200){
-               if(res.data?.meta.data?.length > 0){
-                  setIsAdd(false)
-                  setDynamicVariant(res.data?.meta?.data)
-               } else{
-                  setIsAdd(true)
-               }
-            }
-         })
-      }
-   },[formData?.category])
-
-   useEffect(()=>{
-      if(!!formData?.category || !!dynamic_variant_id){
-         dynamicVariantService?.getList(Number(dynamic_variant_id)).then(res=>{
-            if(res?.status === 200){
-               setDynamicVariant([...res.data?.meta.data])
-            }
-         })
-      }
-   },[window.location.pathname])
+   // useEffect(()=>{
+   //    if(!!formData?.category || !!dynamic_variant_id){
+   //       dynamicVariantService?.getList(Number(dynamic_variant_id)).then(res=>{
+   //          if(res?.status === 200){
+   //             setDynamicVariant([...res.data?.meta.data])
+   //          }
+   //       })
+   //    }
+   // },[window.location.pathname])
 
    const onSubmit = (e) =>{
       e.preventDefault()
+      let data ={
+         category_id: formData?.category?.value,
+         dynamic_variant: dynamicVariant
+
+      }
+      let editedData ={
+         name_en: dynamicVariant[0].name_en,
+         name_ar: dynamicVariant[0].name_ar,
+         available_amount: parseInt(dynamicVariant[0].available_amount),
+         has_amount: dynamicVariant[0].has_amount,
+         price: parseFloat(dynamicVariant[0].price)
+      }
       if(isAdd){
-         // dynamicVariantService?.create(dynamicVariant).then(res=> {
-         //    if(res?.status === 201){
-         //       toast.success('Dynamic Variant Added Successfully')
-         //       // setFormData({category: '', variant: []})
-         //       navigate('/variant')
-         //    }
-         // })
-         
+         dynamicVariantService?.create(data).then(res=> {
+            if(res?.status === 201){
+               toast.success('Dynamic Variant Added Successfully')
+               navigate('/dynamic-variant')
+            }
+         })
       } else {
-         // dynamicVariant?.update(Number(dynamic_variant_id), dynamicVariant)?.then(res => {
-         //    if(res?.status === 200){
-         //       toast.success('Dynamic Variant Updated Successfully')
-         //       // setFormData({category: '', variant: []})
-         //       navigate('/variant')
-         //    }
-         // })
+         dynamicVariantService?.update(id, editedData)?.then(res => {
+            if(res?.status === 200){
+               toast.success('Dynamic Variant Updated Successfully')
+               navigate('/dynamic-variant')
+            }
+         })
       }
       
    }
@@ -115,7 +119,7 @@ const AddDynamicVariant = ()=>{
                            className="position-absolute"
                            type='button' 
                            style={{
-                              height: 'fit-content', right: '16px', top: '16px',zIndex: '999',
+                              height: 'fit-content', right: '16px', top: '16px',zIndex: '2',
                               padding: '2px 8px', backgroundColor: 'var(--danger)',
                               color: '#fff', border: 'none', borderRadius: '8px'
                            }}
@@ -181,7 +185,7 @@ const AddDynamicVariant = ()=>{
                            <label className="text-label">Has Amount</label>
                            <Form.Check
                            type="switch"
-                           id={`has_amount`}
+                           id={`has_amount${itemIndex}`}
                            checked={item.has_amount}
                            onChange={(e)=> {
                               let update = dynamicVariant?.map((res, index)=>{
@@ -252,19 +256,18 @@ const AddDynamicVariant = ()=>{
                   </Col>
                ))}
                   <div className="d-flex w-100 justify-content-end mb-3">
-                     <Button 
+                     {isAdd && <Button 
                         variant="link" 
                         style={{color: 'blue'}}
                         type="button" 
                         onClick={()=>setDynamicVariant([...dynamicVariant, {
-                           category: '',
                            name_en: "",
                            name_ar: "",
                            available_amount: '',
                            has_amount: false,
                            price: ''
                         }])}
-                     >Add New Dynamic Variant</Button>
+                     >Add New Dynamic Variant</Button>}
                   </div>
             </div>
             <div className="d-flex justify-content-between">

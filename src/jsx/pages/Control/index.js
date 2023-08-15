@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import BaseService from "../../../services/BaseService";
-import uploadImg from '../../../images/upload-img.webp';
+import uploadImg from '../../../images/upload-img.png';
 import { toast } from "react-toastify";
 
 const Control = () => {

@@ -3,7 +3,7 @@ import { Button, Col, Modal, Row } from "react-bootstrap"
 import Select from 'react-select'
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
-import uploadImg from '../../../../images/upload-img.webp';
+import uploadImg from '../../../../images/upload-img.png';
 import SubCategoriesService from "../../../../services/SubCategoriesService";
 import CategoriesService from "../../../../services/CategoriesService";
 import BaseService from "../../../../services/BaseService";

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
-import uploadImg from '../../../../images/upload-img.webp';
+import uploadImg from '../../../../images/upload-img.png';
 import BaseService from "../../../../services/BaseService";
 import BrandsService from "../../../../services/BrandsService";
 

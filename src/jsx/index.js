@@ -105,7 +105,7 @@ const Markup = () => {
     // DynamicVariant
     { url: 'dynamic-variant', component: <DynamicVariant /> },
     { url: 'dynamic-variant/add-dynamic-variant', component: <AddDynamicVariant /> },
-    { url: 'dynamic-variant/add-dynamic-variant/:id', component: <AddDynamicVariant /> },
+    { url: 'dynamic-variant/edit-dynamic-variant/:id', component: <AddDynamicVariant /> },
 
     // Categories
     {url: 'categories', component: <Categories />},

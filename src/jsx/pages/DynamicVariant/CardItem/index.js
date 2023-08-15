@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
-import { Badge, Dropdown, Form } from "react-bootstrap";
+import { useState } from "react";
+import { Badge, Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import DynamicVariantService from "../../../../services/DynamicVariantService";
-import DeleteModal from "../../../common/DeleteModal";
+import ChooseEditModal from "../ChooseEditModal";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
     // const [status, setStatus] = useState(null)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    const [deleteModal, setDeleteModal] = useState(false)
-    const navigate = useNavigate()
-    const dynamicVariantService= new DynamicVariantService()
+    const [chooseModal, setChooseModal] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
 
     // useEffect(()=>{
     //     setStatus(item.status)
@@ -28,7 +25,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                     </td>
                     <td>{item.name_en}</td>
                     <td style={{display: 'grid', gap:'10px',gridTemplateColumns: 'auto auto auto'}}>
-                      {item.variants?.map((variant, index)=>{
+                      {item.dynamic_variants?.map((variant, index)=>{
                         return <Badge variant="primary light" className="mr-2">
                           {variant?.name_en}
                         </Badge>
@@ -52,20 +49,25 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item onClick={()=> navigate(`/variant/add-variant/${item.id}`)}>
+                          <Dropdown.Item onClick={()=> {
+                            setIsEdit(true)
+                            setChooseModal(true)}}>
                             Edit
                           </Dropdown.Item>
-                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> {
+                            setIsEdit(false)
+                            setChooseModal(true)
+                            }}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>
-                    {deleteModal && <DeleteModal
-                      open={deleteModal}
-                      titleMsg={item.name_en}
-                      deletedItem={item}
-                      modelService={dynamicVariantService}
-                      setShouldUpdate={setShouldUpdate}
-                      onCloseModal={setDeleteModal}
+                    
+                    {chooseModal && <ChooseEditModal
+                    modal={chooseModal}
+                    setModal={()=>setChooseModal(false)}
+                    dynamicVariants={item.dynamic_variants}
+                    isEdit={isEdit}
+                    setShouldUpdate={setShouldUpdate}
                     />}
                   </tr>
     )

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import Select from 'react-select';
 import {AvField, AvForm} from "availity-reactstrap-validation";
-import uploadImg from '../../../../images/upload-img.webp';
+import uploadImg from '../../../../images/upload-img.png';
 import AdminService from "../../../../services/AdminService";
 import CategoriesService from "../../../../services/CategoriesService";
 import '../style.scss'
@@ -211,6 +211,7 @@ const AddProducts = () => {
             code: product.code,
             category_id: product.category?.value,
             images: product?.images?.filter(res=> !!res?.src)?.map(item=> item?.src),
+            weight: product?.weight,
             variant: product.variant?.map(res=>{
                 return{
                     variant_value_id: res?.variant_value_id,
@@ -529,51 +530,113 @@ const AddProducts = () => {
                
                 {variant?.length > 0 && variant?.map((item, index)=>{
                     let findInd = product?.variant?.findIndex(res=> res.name_en === item.name_en)
-                   
-                    return<Col md={6} className="mb-3">
+                   console.log(item)
+                    return <Col md={6} className="mb-3">
                     <label className="text-label">{item.name_en}</label>
                     <div className="d-grid mt-2" style={{gridTemplateColumns: 'auto auto auto auto'}}>
                         {item?.variant_values?.map(value=>{
+                            if(item?.name_en === 'color'){
+                                // return <div className="radio-input">
+                                // <input checked="" className="d-none" value={value?.value_en} name="color" id={`${value?.value_en}`} type="radio" />
+                                //     <label for={`${value?.value_en}`}>
+                                //     <span style={{backgroundColor: value?.value_en}}>
+                                //         <i className="la la-check"></i>
+                                //     </span>
+                                //     </label>
+                                // </div>
+                                return <label for={value?.value_en} className='m-0 mr-3 position-relative'>
+                                <input 
+                                type="radio" 
+                                id={value?.value_en} 
+                                name={item.name_en} 
+                                value={value?.value_en}
+                                checked={product.variant[findInd]?.variant_values?.value_en === value?.value_en}
+                                className='mr-2'
+                                required
+                                style={{
+                                    width: '30px',
+                                    height: '30px',
+                                    opacity: 0
+                                }}
+                                onChange={()=> {
+                                    let var_value = {
+                                        name_en: item.name_en,
+                                        name_ar: item.name_ar,
+                                        variant_value_id: value.id,
+                                        variant_id: item.id,
+                                        variant_values: {
+                                            ...value
+                                        }
+                                    }
+                                    let isExist = product?.variant?.filter(res=> res.variant_id === item.id)
+                                    if(!isExist?.length){
+                                        setProduct({...product, variant: [...product.variant, var_value]})
+                                    } else {
+                                        let update = product?.variant?.map(res=>{
+                                            if(res.variant_id === item.id){
+                                                return var_value
+                                            } else {
+                                                return res
+                                            }
+                                        })
+                                        setProduct({...product, variant: [...update]})
+                                    }
+                                }}
+                            />
+                                <span className={`d-inline-block`} style={{
+                                    background: value?.value_en,
+                                    width: '30px',
+                                    height: '30px',
+                                    border: '1px solid',
+                                    textAlign: 'center',
+                                    position: 'absolute',
+                                    left: '0'
+                                }}>
+                                   {value?.value_en === product.variant[findInd]?.variant_values?.value_en ? 
+                                    <i className="la la-check color"></i> : ''}
+                                </span>
+                            </label>
+                            }
                             return <label for={value?.value_en} className='m-0 mr-3'>
                                 <input 
-                                    type="radio" 
-                                    id={value?.value_en} 
-                                    name={item.name_en} 
-                                    value={value?.value_en}
-                                    checked={product.variant[findInd]?.variant_values?.value_en === value?.value_en}
-                                    className='mr-2'
-                                    required
-                                    onChange={()=> {
-                                        let var_value = {
-                                            name_en: item.name_en,
-                                            name_ar: item.name_ar,
-                                            variant_value_id: value.id,
-                                            variant_id: item.id,
-                                            variant_values: {
-                                                ...value
+                                type="radio" 
+                                id={value?.value_en} 
+                                name={item.name_en} 
+                                value={value?.value_en}
+                                checked={product.variant[findInd]?.variant_values?.value_en === value?.value_en}
+                                className='mr-2'
+                                required
+                                onChange={()=> {
+                                    let var_value = {
+                                        name_en: item.name_en,
+                                        name_ar: item.name_ar,
+                                        variant_value_id: value.id,
+                                        variant_id: item.id,
+                                        variant_values: {
+                                            ...value
+                                        }
+                                    }
+                                    let isExist = product?.variant?.filter(res=> res.variant_id === item.id)
+                                    if(!isExist?.length){
+                                        setProduct({...product, variant: [...product.variant, var_value]})
+                                    } else {
+                                        let update = product?.variant?.map(res=>{
+                                            if(res.variant_id === item.id){
+                                                return var_value
+                                            } else {
+                                                return res
                                             }
-                                        }
-                                        let isExist = product?.variant?.filter(res=> res.variant_id === item.id)
-                                        if(!isExist?.length){
-                                            setProduct({...product, variant: [...product.variant, var_value]})
-                                        } else {
-                                            let update = product?.variant?.map(res=>{
-                                                if(res.variant_id === item.id){
-                                                    return var_value
-                                                } else {
-                                                    return res
-                                                }
-                                            })
-                                            setProduct({...product, variant: [...update]})
-                                        }
-                                        // if(product.variant?.length === 0){
-                                        //     setProduct({...product, variant: [var_value]})
-                                        // } else {
-                                            
-                                        // }
-                                    }}
-                                />
-                                {value?.value_en}
+                                        })
+                                        setProduct({...product, variant: [...update]})
+                                    }
+                                    // if(product.variant?.length === 0){
+                                    //     setProduct({...product, variant: [var_value]})
+                                    // } else {
+                                        
+                                    // }
+                                }}
+                            />
+                                {value?.value_en }
                             </label>
                         })}
                     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import uploadImg from '../../../images/upload-img.webp';
+import uploadImg from '../../../images/upload-img.png';
 import Select from 'react-select';
 import './style.scss'
 import { useSelector } from "react-redux";

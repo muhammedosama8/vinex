@@ -37,10 +37,10 @@ const DynamicVariant = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>Name</strong>
+                      <strong>Category Name</strong>
                     </th>
-                    <th>
-                      <strong>Variant</strong>
+                    <th className="text-left">
+                      <strong>Dynamic Variants</strong>
                     </th>
                     {/* <th>
                       <strong>STATUS</strong>

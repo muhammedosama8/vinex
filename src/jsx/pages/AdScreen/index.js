@@ -3,7 +3,7 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Select from 'react-select';
-import uploadImg from '../../../images/upload-img.webp';
+import uploadImg from '../../../images/upload-img.png';
 import BaseService from "../../../services/BaseService";
 import ProductsService from "../../../services/ProductsService";
 import ScreenService from "../../../services/ScreenService";
