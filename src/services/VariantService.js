@@ -6,6 +6,7 @@ const apiEndpoint = API_BASE_URL_ENV() + "/categories/addVariant";
 const apiGetAllVariant = API_BASE_URL_ENV() +"/categories/getAllVariant"
 const apiGetVariant = API_BASE_URL_ENV() +"/categories/getVariant"
 const apiUpdateVariant = API_BASE_URL_ENV() +"/categories/updateVariant"
+const apiDeleteVariant = API_BASE_URL_ENV() +"/categories/deleteVariant"
 
 export default class VariantService extends BaseService {
     // constructor() {
@@ -26,5 +27,9 @@ export default class VariantService extends BaseService {
 
     updateVariant=(id,data) => {
         return http.put(`${apiUpdateVariant}/${id}`,data)
+    }
+
+    remove=(id) => {
+        return http.delete(`${apiDeleteVariant}/${id}`)
     }
 }

@@ -42,6 +42,11 @@ import Brands from './pages/Brand'
 import DynamicVariant from './pages/DynamicVariant'
 import AddDynamicVariant from './pages/DynamicVariant/AddVariant'
 import UserProfile from './pages/Users/Profile'
+import Currency from './pages/Setting/Currency'
+import StaticPages from './pages/Setting/StaticPages'
+import FAQs from './pages/Setting/StaticPages/FAQs'
+import Privacy from './pages/Setting/StaticPages/Privacy'
+import About from './pages/Setting/StaticPages/About'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -115,6 +120,11 @@ const Markup = () => {
     //Setting
     {url: 'social', component: <SocialMedia />},
     {url: 'control', component: <Control />},
+    {url: 'currency', component: <Currency />},
+    {url: 'pages', component: <StaticPages />},
+    {url: 'pages/about', component: <About />},
+    {url: 'pages/privacy', component: <Privacy />},
+    {url: 'pages/faqs', component: <FAQs />},
 
     //Profile
     {url: 'profile', component: <Profile />},

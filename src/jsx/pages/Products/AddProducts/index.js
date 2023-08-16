@@ -33,6 +33,7 @@ const AddProducts = () => {
         code: '',
         brand: '',
         variant: [],
+        dynamicVariant:[],
         images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]
     })
     const [errors, setErrors] = useState({
@@ -47,6 +48,7 @@ const AddProducts = () => {
     const [brandOptions, setBrandOptions] = useState([])
     const [subCategoriesOptions, setSubCategoriesOptions] = useState([])
     const [variant, setVariant] = useState([])
+    const [dynamicVariant, setDynamicVariant] = useState([])
     const [files, setFiles] = useState([{},{},{},{},{}])
     const navigate = useNavigate()
     const categoriesService = new CategoriesService()
@@ -100,6 +102,12 @@ const AddProducts = () => {
                         }
                     })
                     setSubCategoriesOptions(subCategories)
+                }
+            })
+
+            productsService?.getDynamicVariant(product?.category?.value).then(res=>{
+                if(res.status === 200){
+                    setDynamicVariant(res.data.data)
                 }
             })
         }
@@ -530,7 +538,6 @@ const AddProducts = () => {
                
                 {variant?.length > 0 && variant?.map((item, index)=>{
                     let findInd = product?.variant?.findIndex(res=> res.name_en === item.name_en)
-                   console.log(item)
                     return <Col md={6} className="mb-3">
                     <label className="text-label">{item.name_en}</label>
                     <div className="d-grid mt-2" style={{gridTemplateColumns: 'auto auto auto auto'}}>
@@ -641,6 +648,39 @@ const AddProducts = () => {
                         })}
                     </div>
             </Col>
+                })}
+            </Row>
+            {dynamicVariant?.length > 0 && <label className="text-label mb-2 mt-2 d-block">Dynamic Variant</label>}
+            <Row className="px-3">
+            {dynamicVariant?.length > 0 && dynamicVariant?.map((item, index)=>{
+                    // let findInd = product?.dynamicVariant?.findIndex(res=> res.name_en === item.name_en)
+                    return <Col md={6} className="mb-3">
+                        <label for={item?.name_en} className='m-0 mr-3 w-100'>
+                                <input 
+                                type="checkbox" 
+                                name={item.name_en} 
+                                value={item?.name_en}
+                                id={item?.name_en}
+                                // checked={product.variant[findInd]?.variant_values?.value_en === value?.value_en}
+                                className='mr-3'
+                                required
+                                onChange={(e)=> {
+                                    if(product?.dynamicVariant?.length === 0){
+                                        setProduct({...product, dynamicVariant: [item]})
+                                        return
+                                    }
+                                    let isExist = product.dynamicVariant.some(res=> res.id === item.id)
+                                    if(isExist){
+                                        let update = product.dynamicVariant?.filter(res=> res.id !== item.id)
+                                        setProduct({...product, dynamicVariant: update})
+                                    } else {
+                                        setProduct({...product, dynamicVariant: [...product.dynamicVariant,item]})
+                                    }
+                                }}
+                            />
+                                {item?.name_en} {`(${item?.available_amount})`}
+                            </label>
+                     </Col>
                 })}
             </Row>
 

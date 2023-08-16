@@ -179,7 +179,7 @@ const AdScreen = () =>{
                             >
                                 <i className='la la-times' style={{fontSize: '18px'}}></i>
                             </button>}
-                            {!!data?.src && <img id={`saveImageFile${index}`} ssrc={data?.src} alt='icon' />}
+                            {!!data?.src && <img id={`saveImageFile${index}`} src={data?.src} alt='icon' />}
                             {!data?.src && <img id={`saveImageFile${index}`} src={uploadImg} alt='icon'
                                 style={{
                                     width: '80px',

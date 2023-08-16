@@ -3,6 +3,7 @@ import http from './HttpService'
 import { API_BASE_URL_ENV } from "../jsx/common/common";
 
 const apiEndpoint = API_BASE_URL_ENV() + "/product";
+const apiDynamicVariantEndpoint = API_BASE_URL_ENV() + "/product/dynamicVariantsOfProduct";
 const apiTogglle = API_BASE_URL_ENV() +"/admin/block"
 
 export default class ProductsService extends BaseService {
@@ -16,6 +17,10 @@ export default class ProductsService extends BaseService {
 
     getProduct(id){
         return http.get(`${apiEndpoint}/${id}`)
+    }
+
+    getDynamicVariant(id){
+        return http.get(`${apiDynamicVariantEndpoint}/${id}`)
     }
    
 }

@@ -32,4 +32,5 @@ export const Rules = [
     {label: 'Social Media', value: 'social_media'},
     {label: 'Brands', value: 'brands'},
     {label: 'Control', value: 'control'},
+    {label: 'Currency', value: 'currency'},
 ]
