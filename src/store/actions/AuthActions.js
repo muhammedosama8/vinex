@@ -54,9 +54,11 @@ export function loginAction(email, password, navigate) {
     return (dispatch) => {
          login(email, password).then((response) => {  
                 if(response?.status === 200){
-                    dispatch(loginFn({email, password}))   
+                    dispatch(loginFn({email, password:''}))  
+                    saveTokenInLocalStorage(response.data);
+                    dispatch(loginConfirmedAction(response.data)); 
                     dispatch(loadingToggleAction(false))  
-                    navigate('/verified'); 
+                    navigate('/dashboard'); 
                 }  
             }).catch(error => {
                 const errorMessage = formatError(error?.response?.data);

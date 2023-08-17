@@ -49,7 +49,7 @@ function App (props) {
     let routeblog = (  
         <Routes>
             <Route path='/login' element={<Login />} />
-            <Route path='/verified' element={<Verified />} />
+            {/* <Route path='/verified' element={<Verified />} /> */}
         </Routes>
     );
     if (props.isAuthenticated) {
