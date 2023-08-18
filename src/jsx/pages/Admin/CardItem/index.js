@@ -5,6 +5,7 @@ import DeleteModal from "../../../common/DeleteModal";
 import AdminService from "../../../../services/AdminService";
 import { useSelector } from "react-redux";
 import { Rules } from "../../../Enums/Rules";
+import { toast } from "react-toastify";
 
 const CardItem = ({item, index,setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
@@ -24,6 +25,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
       }
       adminService.toggleStatus(item.id, data).then(res=>{
         if(res?.status === 200){
+          toast.success('Updated Status Successfully')
           setStatus(!status)
         }
       })

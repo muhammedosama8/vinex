@@ -13,7 +13,7 @@ const UserProfile =()=>{
     useEffect(()=>{
         setUser({
             ...window?.history?.state?.usr,
-            phone: user.user_phones?.filter(res=> res.is_default)[0]?.phone
+            phone: window?.history?.state?.usr.user_phones?.filter(res=> res.is_default)[0]?.phone
         })
         
         let orders =[
@@ -59,9 +59,9 @@ const UserProfile =()=>{
                         <p>{user?.address}</p>
                     </Col>
                 </Row>
-                {isExist('users') && <button className="edit" onClick={()=> setEdit(true)}>
+                {/* {isExist('users') && <button className="edit" onClick={()=> setEdit(true)}>
                     <i className="la la-edit"></i>
-                </button>}
+                </button>} */}
             </Card.Body>
         </Card>}
         {!edit && <Card>

@@ -71,7 +71,7 @@ const Markup = () => {
 
     // Users
     { url: 'users', component: <Users /> },
-    { url: 'users/:id/:name', component: <UserProfile /> },
+    { url: 'users/profile', component: <UserProfile /> },
 
     // Rules
     { url: 'rules', component: <Permission /> },

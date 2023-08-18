@@ -10,7 +10,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
-        setStatus(item.status)
+        setStatus(item.isBlocked)
     },[item])
 
     const changeStatusToggle = (e)=>{
@@ -23,25 +23,27 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                       <strong>{item.id}</strong>
                     </td>
                     <td>
-                      <p className="mb-0 user" onClick={()=> navigate(`/users/${item.id}/${item.f_name}`, {state:  item})}
-                        style={{fontWeight: !!item.f_name && '800',opacity:'.75', textDecoration:!!item.f_name &&'underline', textTransform: 'capitalize'}}>
-                        {item.f_name || '-'} {item.l_name} 
-                      </p>
+                      {item.f_name ? <p  className="mb-0 user" onClick={()=> navigate(`/users/profile`, {state:  item})}
+                        style={{fontWeight: !!item.f_name && '800',opacity:'.75', textDecoration:!!item.f_name &&'underline', textTransform: 'capitalize', cursor: 'pointer' }}>
+                        {item.f_name} {item.l_name} 
+                      </p> : '-'}
                     </td>
                     <td>
                       {item.email || '-'}
                     </td>
-                    <td>
+                    <td style={{cursor: 'pointer'}} onClick={()=> {
+                      navigate(`/users/profile`, {state:  item})
+                    }}>
                       {item?.user_phones?.filter(res=> !!res.is_default)[0]?.country_code}{item?.user_phones?.filter(res=> !!res.is_default)[0]?.phone || '-'}
                     </td>
-                    <td>{item.count_orders || '-'}</td>
+                    {/* <td>{item.count_orders || '-'}</td> */}
                     <td>
                       <Form.Check
                         type="switch"
                         id={`custom-switch${index}`}
-                        checked={status}
-                        disabled={!isExist('users')}
-                        onChange={(e)=> changeStatusToggle(e)}
+                        checked={!status}
+                        disabled
+                        // onChange={(e)=> changeStatusToggle(e)}
                       />
                     </td>
                     <td>

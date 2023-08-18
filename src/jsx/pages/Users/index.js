@@ -10,6 +10,7 @@ const Users = () =>{
     const [users, setUsers] =useState([])
     const [hasData, setHasData] =useState(null)
     const [search, setSearch] =useState(null)
+    // const [isDeleted, setIsDeleted] =useState(false)
     const [shouldUpdate, setShouldUpdate] =useState(false)
     const userService = new UserService()
 
@@ -21,6 +22,14 @@ const Users = () =>{
               Export Sheet
             </Button>
           </div>
+          {/* <div className="d-flex align-items-center mb-3 ">
+          <Button variant={isDeleted ? 'secondary' : 'primary'} className='mr-2' onClick={()=> setIsDeleted(false)}>
+            Active
+          </Button>
+          <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
+            Not-Active
+          </Button>
+        </div> */}
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
               {hasData === 1 && <Table responsive>
@@ -38,9 +47,9 @@ const Users = () =>{
                     <th>
                       <strong>Mobile</strong>
                     </th>
-                    <th>
+                    {/* <th>
                       <strong>Count Orders</strong>
-                    </th>
+                    </th> */}
                     <th>
                       <strong>STATUS</strong>
                     </th>
@@ -66,6 +75,7 @@ const Users = () =>{
                   service={userService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  // isDeleted={isDeleted}
                 />
             </Card.Body>
           </Card>
