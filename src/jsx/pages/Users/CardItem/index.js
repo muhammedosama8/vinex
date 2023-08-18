@@ -24,17 +24,17 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                     </td>
                     <td>
                       <p className="mb-0 user" onClick={()=> navigate(`/users/${item.id}/${item.f_name}`, {state:  item})}
-                        style={{fontWeight: '800',opacity:'.75', textDecoration:'underline', textTransform: 'capitalize'}}>
-                        {item.f_name} {item.l_name} 
+                        style={{fontWeight: !!item.f_name && '800',opacity:'.75', textDecoration:!!item.f_name &&'underline', textTransform: 'capitalize'}}>
+                        {item.f_name || '-'} {item.l_name} 
                       </p>
                     </td>
                     <td>
-                      {item.email}
+                      {item.email || '-'}
                     </td>
                     <td>
-                      {item?.user_phones?.filter(res=> !!res.is_default)[0]?.country_code}{item?.user_phones?.filter(res=> !!res.is_default)[0]?.phone}
+                      {item?.user_phones?.filter(res=> !!res.is_default)[0]?.country_code}{item?.user_phones?.filter(res=> !!res.is_default)[0]?.phone || '-'}
                     </td>
-                    <td>{item.count_orders}</td>
+                    <td>{item.count_orders || '-'}</td>
                     <td>
                       <Form.Check
                         type="switch"

@@ -51,7 +51,10 @@ export default class BaseService {
     return http.get(this.dropDownUrl(model), { params });
   }
 
-  remove(id) {
+  remove(id, data) {
+    if(data?.isDeleted){
+      return http.delete(this.entityUrl([id]), JSON.stringify(data));
+    }
     return http.delete(this.entityUrl([id]));
   }
 

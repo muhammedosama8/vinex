@@ -22,6 +22,15 @@ const CardItem = ({item, setItem, index, setAddModal,subCategoriesService, setSh
             <td>
                 <strong>{item.id}</strong>
             </td>
+            <td>
+                        <img
+                          src={item.image}
+                          className="rounded-lg"
+                          width="40"
+                          height="40"
+                          alt={item.id}
+                        />
+                    </td>
             <td>{item.name_en}</td>
             <td>
                 <Badge variant="primary light">{item.category.name_en}</Badge>

@@ -8,14 +8,26 @@ function DeleteModal(props) {
 
     const handleDeletedItem = async () => {
         setLoading(true)
-        const { data: response } = await props.modelService.remove(props.deletedItem.id)
-        if(response?.status === 200){
-            toast.success('Deleted Successfully')
-            props.setShouldUpdate(prev=> !prev)
-            if(props?.isEdit === false){
-                props?.setModal(false)
+        if(props.isDeleted){
+            const { data: response } = await props.modelService.remove(props.deletedItem.id , { isDeleted: props.isDeleted })
+            if(response?.status === 200){
+                toast.success('Deleted Successfully')
+                props.setShouldUpdate(prev=> !prev)
+                if(props?.isEdit === false){
+                    props?.setModal(false)
+                }
+                return props.onCloseModal(false)
             }
-            return props.onCloseModal(false)
+        } else {
+            const { data: response } = await props.modelService.remove(props.deletedItem.id)
+            if(response?.status === 200){
+                toast.success('Deleted Successfully')
+                props.setShouldUpdate(prev=> !prev)
+                if(props?.isEdit === false){
+                    props?.setModal(false)
+                }
+                return props.onCloseModal(false)
+            }
         }
     }
 

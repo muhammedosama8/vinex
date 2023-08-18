@@ -318,7 +318,7 @@ const AddProducts = () => {
                                         errorMessage: 'This Field is required'
                                     },
                                     pattern: {
-                                        value: '/^[\u0621-\u064A0-9 ]+$/',
+                                        value: '/^[\u0621-\u064A0-9١-٩ ]+$/',
                                         errorMessage: `Arabic format is invalid`
                                     }
                                 }}

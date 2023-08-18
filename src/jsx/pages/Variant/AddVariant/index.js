@@ -116,7 +116,7 @@ const Variant = ()=>{
                name_ar: variant.name_ar,
                variant_values : variant.variant_values?.map(val=>{
                   return{
-                     value_ar: val.value_ar,
+                     value_ar: (variant.name_en === 'color' || variant.name_en === 'colour' || variant.name_en === 'coulor' || /color/.test(variant.name_en.toLowerCase())) ? 'اللون' : val.value_ar,
                      value_en: val.value_en,
                   }
                })

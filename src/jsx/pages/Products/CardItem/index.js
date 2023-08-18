@@ -32,6 +32,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                           src={item?.images[0]?.url}
                           className="rounded-lg"
                           width="40"
+                          height="40"
                           alt={item.id}
                         />
                     </td>
@@ -39,7 +40,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                     <td>
                       <Badge variant="success light">{item.category?.name_en}</Badge>
                     </td>
-                    <td>{item.price} LE</td>
+                    <td>{item.price}</td>
                     <td>{item.amount}</td>
                     <td>
                       <Form.Check
@@ -73,6 +74,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                       modelService={productsService}
                       onCloseModal={setDeleteModal}
                       setShouldUpdate={setShouldUpdate}
+                      isDeleted={true}
                     />}
                   </tr>
     )
