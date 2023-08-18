@@ -24,6 +24,15 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
             <td>
                 <strong>{item.id}</strong>
             </td>
+            <td>
+                        <img
+                          src={item?.images}
+                          className="rounded-lg"
+                          width="40"
+                          height="40"
+                          alt={item.id}
+                        />
+                    </td>
             <td>{item.name_en}</td>
             {/* <td>
                 <Form.Check

@@ -23,6 +23,7 @@ const Categories = () => {
     const [hasData, setHasData] = useState(null)
     const [search, setSearch] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
+    const [isDeleted, setIsDeleted] =useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const categoriesService = new CategoriesService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
@@ -37,7 +38,14 @@ const Categories = () => {
               Add Categories
           </Button>}
         </div>
-      
+        <div className="d-flex align-items-center mb-3 ">
+          <Button variant={isDeleted ? 'secondary' : 'primary'} className='mr-2' onClick={()=> setIsDeleted(false)}>
+            Active
+          </Button>
+          <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
+            Not-Active
+          </Button>
+        </div>
       <Row>
         <Col lg={12}>
           <Card>
@@ -80,6 +88,7 @@ const Categories = () => {
                   service={categoriesService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  isDeleted={isDeleted}
               />
             </Card.Body>
           </Card>

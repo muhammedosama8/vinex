@@ -42,7 +42,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                     </td>
                     <td>{item.price}</td>
                     <td>{item.amount}</td>
-                    <td>
+                    {/* <td>
                       <Form.Check
                         type="switch"
                         id={`custom-switch${index}`}
@@ -50,7 +50,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                         disabled={!isExist('products')}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
-                    </td>
+                    </td> */}
                     <td>
                       {isExist('products') && <Dropdown>
                         <Dropdown.Toggle

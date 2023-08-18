@@ -42,6 +42,7 @@ export function signupAction(email, password, navigate) {
 
 export function Logout(navigate) {
 	localStorage.removeItem('userDetails');
+	localStorage.removeItem('adminRules');
     navigate('/login');
 	// history.push('/login');
     

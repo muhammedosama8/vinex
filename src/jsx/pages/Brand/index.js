@@ -49,6 +49,9 @@ const Brands = () => {
                       <strong>I.D</strong>
                     </th>
                     <th>
+                      <strong>Image</strong>
+                    </th>
+                    <th>
                       <strong>Name</strong>
                     </th>
                     {/* <th>

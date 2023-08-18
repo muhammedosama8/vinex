@@ -67,6 +67,7 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                       modelService={categoriesService}
                       onCloseModal={setDeleteModal}
                       setShouldUpdate={setShouldUpdate}
+                      isDeleted={true}
                     />}
             </tr>
     )

@@ -13,6 +13,7 @@ const Products = () =>{
     const [hasData, setHasData] =useState(null)
     const [addModal, setAddModal] =useState([])
     const [search, setSearch] =useState(null)
+    const [isDeleted, setIsDeleted] =useState(false)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
@@ -27,7 +28,14 @@ const Products = () =>{
               Add Product
           </Button>}
         </div>
-
+        <div className="d-flex align-items-center mb-3 ">
+          <Button variant={isDeleted ? 'secondary' : 'primary'} className='mr-2' onClick={()=> setIsDeleted(false)}>
+            Active
+          </Button>
+          <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
+            Not-Active
+          </Button>
+        </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
               {hasData === 1 && <Table responsive>
@@ -51,9 +59,9 @@ const Products = () =>{
                     <th>
                       <strong>In Stock</strong>
                     </th>
-                    <th>
+                    {/* <th>
                       <strong>STATUS</strong>
-                    </th>
+                    </th> */}
                     <th></th>
                   </tr>
                 </thead>
@@ -75,6 +83,7 @@ const Products = () =>{
                   service={productsService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  isDeleted={isDeleted}
                 />
             </Card.Body>
           </Card>

@@ -53,9 +53,11 @@ export default class BaseService {
 
   remove(id, data) {
     if(data?.isDeleted){
-      return http.delete(this.entityUrl([id]), JSON.stringify(data));
+      return http.delete(this.entityUrl([id]), {data});
+    } else{
+      return http.delete(this.entityUrl([id]));
     }
-    return http.delete(this.entityUrl([id]));
+    
   }
 
   postUpload(file) {

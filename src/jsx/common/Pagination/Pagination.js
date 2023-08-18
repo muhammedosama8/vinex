@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import { Col, Row } from "react-bootstrap"
 import './style.scss'
 
-const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
+const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
 
     useEffect(()=> {
-        service?.getList({offset: (page-1)*10, limit: 10}).then(res=>{
+        service?.getList({offset: (page-1)*10, limit: 10, isDeleted: isDeleted}).then(res=>{
             if(res?.status === 200){
                 setData([...res.data?.meta?.data]) 
                 let total= Math.ceil(res.data?.meta?.totalLength / 10)
@@ -19,7 +19,7 @@ const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
                 }
             }
           })
-    },[page, shouldUpdate])
+    },[page, shouldUpdate, isDeleted])
 
     useEffect(()=>{
         if(page > 1) setPage(1)
