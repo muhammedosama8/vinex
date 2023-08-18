@@ -3,7 +3,7 @@ import http from './HttpService'
 import { API_BASE_URL_ENV } from "../jsx/common/common";
 
 const apiEndpoint = API_BASE_URL_ENV() + "/product";
-const apiDynamicVariantEndpoint = API_BASE_URL_ENV() + "/product/dynamicVariantsOfProduct";
+const apiDynamicVariantEndpoint = API_BASE_URL_ENV() + "/dynamicVariant/dynamicVariantsByCategory";
 const apiTogglle = API_BASE_URL_ENV() +"/admin/block"
 
 export default class ProductsService extends BaseService {
