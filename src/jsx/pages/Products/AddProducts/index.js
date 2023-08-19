@@ -32,7 +32,6 @@ const AddProducts = () => {
         code: '',
         brand: '',
         variant: [],
-        dynamicVariant:[],
         images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]
     })
     const [errors, setErrors] = useState({
@@ -48,6 +47,7 @@ const AddProducts = () => {
     const [subCategoriesOptions, setSubCategoriesOptions] = useState([])
     const [variant, setVariant] = useState([])
     const [dynamicVariant, setDynamicVariant] = useState([])
+    const [productDynamicVariant, setProductDynamicVariant] = useState([])
     const [files, setFiles] = useState([{},{},{},{},{}])
     const navigate = useNavigate()
     const categoriesService = new CategoriesService()
@@ -117,6 +117,7 @@ const AddProducts = () => {
         setId(Number(prod_id))
 
         if(!!prod_id){
+            let prod = []
             productsService?.getProduct(prod_id)?.then(res=>{
                 let response = res.data.data
                 if(res.data?.status === 200){
@@ -141,7 +142,12 @@ const AddProducts = () => {
                             }
                             
                         }),
-                        sub_category: response.product?.sub_category_id ? subCategoriesOptions?.filter(opt=> opt.value ===response.product?.sub_category_id)[0] : '',
+                        sub_category: {
+                            ...response.product?.sub_category,
+                            label: response.product?.sub_category?.name_en,
+                            value: response.product?.sub_category_id,
+                            id: response.product?.sub_category_id,
+                        },
                         variant: response.product?.variant?.map(item=>{
                             return{
                                 name_ar: item.variant?.name_ar,
@@ -152,8 +158,12 @@ const AddProducts = () => {
                             }
                         })
                     }
-                    console.log(data)
                     setProduct({...data})
+                }
+            })
+            productsService.getDynamicVariantOfProducts(prod_id).then(res=>{
+                if(res.status === 200){
+                    setProductDynamicVariant(res.data.data)
                 }
             })
         }
@@ -214,7 +224,7 @@ const AddProducts = () => {
         let data ={
             name_en: product.name_en,
             name_ar: product.name_ar,
-            price: Number(product.price),
+            price: parseFloat(product.price),
             code: product.code,
             category_id: product.category?.value,
             images: product?.images?.filter(res=> !!res?.src)?.map(item=> item?.src),
@@ -225,13 +235,18 @@ const AddProducts = () => {
                     variant_id: res?.variant_id,
                 }
             }),
-            amount: Number(product.amount),
+            dynamic_variant: productDynamicVariant?.map(dy=>{
+                return {
+                    dynamic_variant_id: dy?.id
+                }
+            }),
+            amount: parseFloat(product.amount),
             description_en: product.description_en,
             description_ar: product.description_ar,
             bestSeller: product.bestSeller,
             newIn: product.newIn,
             offer: product.offer,
-            offerPrice: Number(product.offerPrice)
+            offerPrice: parseFloat(product.offerPrice)
         }
         if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
         if(!!product.brand) data['brand_id']= product?.brand?.value
@@ -650,20 +665,20 @@ const AddProducts = () => {
                                 name={item.name_en} 
                                 value={item?.name_en}
                                 id={item?.name_en}
-                                // checked={product.variant[findInd]?.variant_values?.value_en === value?.value_en}
+                                checked={productDynamicVariant?.some(res=> res.id === item?.id)}
                                 className='mr-3'
                                 required
                                 onChange={(e)=> {
-                                    if(product?.dynamicVariant?.length === 0){
-                                        setProduct({...product, dynamicVariant: [item]})
+                                    if(productDynamicVariant?.length === 0){
+                                        setProductDynamicVariant([item])
                                         return
                                     }
-                                    let isExist = product.dynamicVariant.some(res=> res.id === item.id)
+                                    let isExist = productDynamicVariant?.some(res=> res.id === item.id)
                                     if(isExist){
-                                        let update = product.dynamicVariant?.filter(res=> res.id !== item.id)
-                                        setProduct({...product, dynamicVariant: update})
+                                        let update = productDynamicVariant?.filter(res=> res.id !== item.id)
+                                        setProductDynamicVariant([...update])
                                     } else {
-                                        setProduct({...product, dynamicVariant: [...product.dynamicVariant,item]})
+                                        setProductDynamicVariant([...productDynamicVariant, item])
                                     }
                                 }}
                             />

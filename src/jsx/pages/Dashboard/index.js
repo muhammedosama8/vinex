@@ -118,7 +118,7 @@ const Home = () => {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <rect width={20} height={8} rx={4} fill="#FE634E" />
+                      <rect width={20} height={8} rx={4} fill="var(--primary)" />
                     </svg>
                     <h4 className="fs-18 text-black mb-1 font-w600">45,612</h4>
                     <span className="fs-14">Ticket Sold</span>
