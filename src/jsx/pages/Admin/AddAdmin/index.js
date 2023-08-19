@@ -6,34 +6,27 @@ import AdminService from "../../../../services/AdminService";
 import {useLocation} from 'react-router-dom';
 import Select from 'react-select';
 import CountryiesService from "../../../../services/CountriesService";
+import {AvField, AvForm} from "availity-reactstrap-validation";
 
 const AddAdmin = () => {
    const location = useLocation();
-   const [formData, setFormData] = useState({})
+   const [formData, setFormData] = useState({
+      first_name: '',
+      last_name: '',
+      email: '',
+      phone: '',
+      country_code: '',
+      password: '',
+      rules: []
+   })
    const [loading, setLoading] = useState(false)
    const [countriesOptions, setCountriesOptions] = useState([])
-   const [error, setError] = useState({
-      password: false
-   })
    const [showPassword, setShowPassword] = useState(false)
    const navigate = useNavigate()
    const adminService = new AdminService()
    const countryiesService = new CountryiesService()
 
    useEffect(()=>{
-      countryiesService?.getList().then(res=>{
-         if(res.status === 200){
-            let data = res.data.data?.map(item=>{
-               return{
-                  label: `${item.name_en} (${item?.country_code || ''})`,
-                  name_en: item.name_en,
-                  country_code: item?.country_code,
-                  type: item.type
-               }
-            })
-            setCountriesOptions(data)
-         }
-      })
       if(location?.state?.edit){
          let item = location.state?.item
          setFormData({
@@ -44,6 +37,20 @@ const AddAdmin = () => {
             country_code: item?.country_code,
             password: '',
          })
+      } else {
+         countryiesService?.getList().then(res=>{
+            if(res.status === 200){
+               let data = res.data.data?.map(item=>{
+                  return{
+                     label: `${item.name_en} (${item?.country_code || ''})`,
+                     name_en: item.name_en,
+                     country_code: item?.country_code,
+                     type: item.type
+                  }
+               })
+               setCountriesOptions(data)
+            }
+         })    
       }
    },[])
 
@@ -53,8 +60,12 @@ const AddAdmin = () => {
 
    const onSubmit = (e) =>{
       e.preventDefault();
-      if(!location?.state?.edit && formData.password.length < 6){
-         setError({...formData, password: true})
+      // if(!location?.state?.edit && formData.password.length < 6){
+      //    setError({...formData, password: true})
+      //    return
+      // }
+      if(!formData.country_code){
+         toast.error('Select Country')
          return
       }
       setLoading(true)
@@ -88,63 +99,77 @@ const AddAdmin = () => {
 
    return (
       <Card className="p-4">
-         <form onSubmit={onSubmit}>
+         <AvForm onValidSubmit={onSubmit}>
          <div className="row">
             <div className="col-lg-6 mb-3">
-                  <label className="text-label">First Name*</label>
-                  <input
-                     type="text"
-                     name="first_name"
-                     className="form-control"
-                     placeholder="Fist Name"
-                     required
-                     pattern="[A-Za-z]+"
-                     value={formData.first_name}
-                     onChange={(e)=> inputHandler(e)}
-                  />
+               <AvField
+						label ='First Name*'
+						name ='first_name'
+						type='text'
+						value={formData.first_name}
+						errorMessage="Please enter a valid First Name"
+						validate={{
+							required: {
+								value:true,
+								errorMessage: 'This Field is required'
+							},
+						}}
+						placeholder='First Name'
+						onChange={(e)=> inputHandler(e)}
+					/>
             </div>
             <div className="col-lg-6 mb-3">
-                  <label className="text-label">Last Name*</label>
-                  <input
-                     type="text"
-                     name="last_name"
-                     className="form-control"
-                     placeholder="Last Name"
-                     required
-                     pattern="[A-Za-z]+"
-                     value={formData.last_name}
-                     onChange={(e)=> inputHandler(e)}
-                  />
+               <AvField
+						label ='Last Name*'
+						name ='last_name'
+						type='text'
+						value={formData.last_name}
+						errorMessage="Please enter a valid Last Name"
+						validate={{
+							required: {
+								value:true,
+								errorMessage: 'This Field is required'
+							},
+						}}
+						placeholder='Last Name'
+						onChange={(e)=> inputHandler(e)}
+					/>
             </div>
            {!location?.state?.edit &&  <div className="col-lg-6 mb-3">
-                  <label className="text-label">Email Address*</label>
-                  <input
-                     type="email"
-                     name="email"
-                     className="form-control"
-                     placeholder="example@example.com"
-                     required
-                     value={formData.email}
-                     onChange={(e)=> inputHandler(e)}
-                  />
+               <AvField
+						label ='Email*'
+						name ='email'
+						type='email'
+						value={formData.email}
+						errorMessage="Please enter a valid Email"
+						validate={{
+							required: {
+								value:true,
+								errorMessage: 'This Field is required'
+							},
+						}}
+						placeholder='example@example.com'
+						onChange={(e)=> inputHandler(e)}
+					/>
             </div>}
             {!location?.state?.edit && <div className="col-lg-6 mb-3">
-                  <label className="text-label">Password*</label>
-                  <input
-                     type={`${showPassword ? 'password' : 'text'}`}
-                     name="password"
-                     className="form-control"
-                     placeholder="Passwword"
-                     required
-                     value={formData.password}
-                     onChange={(e)=> {
-                        setError({...formData, password: false})
-                        inputHandler(e)
-                     }}
-                     onFocus={(e)=> setShowPassword(false)}
-                     onBlur={(e)=> setShowPassword(true)}
-                  />
-                  {error['password'] && <p className="text-danger m-0" style={{fontSize: '12px'}}>length must be at least 6 characters long</p>}
+               <AvField
+						label ='Password*'
+						name ='password'
+						type={`${showPassword ? 'password' : 'text'}`}
+						value={formData.password}
+						errorMessage="Please enter a valid Password"
+						validate={{
+							required: {
+								value:true,
+								errorMessage: 'This Field is required'
+							},
+						}}
+                  onFocus={(e)=> setShowPassword(false)}
+                  onBlur={(e)=> setShowPassword(true)}
+						placeholder='Password'
+						onChange={(e)=> inputHandler(e)}
+					/>
             </div>}
             {!location?.state?.edit && <div className="col-lg-3 mb-3">
                   <label className="text-label">Country Code*</label>
@@ -156,23 +181,28 @@ const AddAdmin = () => {
                   />
             </div>}
             {!location?.state?.edit && <div className="col-lg-3 mb-3">
-                  <label className="text-label">Phone Number*</label>
-                  <input
-                     type="number"
-                     name="phone"
-                     className="form-control"
-                     placeholder="01234567890"
-                     required
-                     value={formData.phone}
-                     onChange={(e)=> inputHandler(e)}
-                  />
+                  <AvField
+						label ='Phone*'
+						name ='phone'
+						type='number'
+						value={formData.phone}
+						errorMessage="Please enter a valid Phone"
+						validate={{
+							required: {
+								value:true,
+								errorMessage: 'This Field is required'
+							},
+						}}
+						placeholder='Phone'
+						onChange={(e)=> inputHandler(e)}
+					/>
             </div>}
          </div>
          <div className="d-flex justify-content-between mt-4">
             <Button variant="secondary" type="button" onClick={()=> navigate('/admins')}>Cancel</Button>
             <Button variant="primary" type="submit" disabled={loading}>Submit</Button>
          </div>
-      </form>
+      </AvForm>
       </Card>
    );
 };

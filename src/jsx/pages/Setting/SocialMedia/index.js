@@ -49,9 +49,9 @@ const SocialMedia = ()=>{
         socialMediaService?.create(links)?.then(res=>{
             if(res.status === 201){
                 toast?.success('Added Social Links Successfully')
-                setLoading(false)
                 setIsAdd(false)
             }
+            setLoading(false)
         }).catch(error=> toast.error(error))
     }
 

@@ -287,8 +287,9 @@ const AddProducts = () => {
         } else {
             productsService?.create(data)?.then(res=>{
                 if(res.data?.status === 201){
+                    setConfirm(true)
                     toast.success('Product Added Successfully')
-                    navigate('/products')
+                    // navigate('/products')
                 }
                 setLoadning(false)
             })
