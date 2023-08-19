@@ -13,6 +13,9 @@ import ProductsService from "../../../../services/ProductsService";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../../../common/ConfirmModal";
 import BrandsService from "../../../../services/BrandsService";
+import { loadingToggleAction } from "../../../../store/actions/AuthActions";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from '../../../common/Loader'
 
 const AddProducts = () => {
     const [product, setProduct]= useState({
@@ -40,6 +43,7 @@ const AddProducts = () => {
         desc_en: false,
         images: 0
     })
+    const dispatch = useDispatch()
     const [confirm, setConfirm]= useState(false)
     const [id, setId]= useState(null)
     const [loading, setLoadning]= useState(false)
@@ -56,6 +60,7 @@ const AddProducts = () => {
     const adminService = new AdminService()
     const productsService = new ProductsService()
     const brandsService = new BrandsService()
+    const Auth = useSelector(state=> state.auth)
 
     useEffect(()=>{
         categoriesService?.getList().then(res=>{
@@ -125,6 +130,7 @@ const AddProducts = () => {
         setId(Number(prod_id))
 
         if(!!prod_id){
+            dispatch(loadingToggleAction(true))
             productsService?.getProduct(prod_id)?.then(res=>{
                 let response = res.data.data
                 if(res.data?.status === 200){
@@ -178,6 +184,7 @@ const AddProducts = () => {
                                 }
                             })
                             setProduct({...data})
+                            dispatch(loadingToggleAction(false))  
                         }
                     })
                 }
@@ -311,6 +318,11 @@ const AddProducts = () => {
 		setProduct({...product, images: update})
     }
 
+    if(Auth.showLoading){
+        return <Card className="p-4" style={{minHeight: '30rem'}}>
+            <Loader />
+        </Card>
+    }
     return <Card className="p-4">
         <AvForm onValidSubmit={submit} className='add-product'>
             <Row>

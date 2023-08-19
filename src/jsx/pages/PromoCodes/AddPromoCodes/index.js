@@ -17,6 +17,7 @@ const AddPromoCodes = () => {
         count_usage: '',
    })
    const [isAdd, setIsAdd] = useState(false)
+   const [loading, setLoading] = useState(false)
    const promoCodeService = new PromoCodeService()
    const navigate = useNavigate()
    const [ typesOptions, setTypesOptions]= useState([
@@ -34,7 +35,7 @@ const AddPromoCodes = () => {
             name: stateData.item?.name,
             amount: stateData.item?.amount,
             type: typesOptions?.filter(res=> res.value === stateData.item?.Type)[0],
-            end_date: stateData.item?.end_date,
+            end_date: stateData.item?.end_date.split('T00')[0],
             max_usage: stateData.item?.max_usage || '',
             count_usage: stateData.item?.count_usage || '',
          })
@@ -50,18 +51,18 @@ const AddPromoCodes = () => {
          name: formData.name,
          amount: parseInt(formData?.amount),
          Type: formData?.type?.value,
-         // end_date: formData?.end_date,
-         end_date: "2023-08-12T00:49:49.258Z",
+         end_date: formData?.end_date,
          max_usage: parseInt(formData?.max_usage) || 0,
          count_usage: parseInt(formData?.count_usage) || 0
         }
-
+         setLoading(true)
          if(isAdd){
             promoCodeService.create(data).then(res=>{
-            if(res.status === 201){
-               toast?.success('Promocode Added Succssefully')
-               navigate('/promo-codes')
-            }
+               if(res.status === 201){
+                  toast?.success('Promocode Added Succssefully')
+                  navigate('/promo-codes')
+               }
+               setLoading(false)
            })
          } else {
             promoCodeService.update(stateData?.item?.id, data).then(res=>{
@@ -70,8 +71,8 @@ const AddPromoCodes = () => {
                   navigate('/promo-codes')
                }
               })
-         }
-        
+              setLoading(false)
+            }
    }
 
    return(<Card>
@@ -158,7 +159,7 @@ const AddPromoCodes = () => {
             </div>
          </div>
          <div className="d-flex justify-content-end">
-            <Button variant="primary" type="submit">Submit</Button>
+            <Button variant="primary" disabled={loading} type="submit">Submit</Button>
          </div>
       </form>
       </Card.Body>
