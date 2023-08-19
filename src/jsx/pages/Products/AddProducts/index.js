@@ -32,6 +32,7 @@ const AddProducts = () => {
         code: '',
         brand: '',
         variant: [],
+        dynamic_variant: [],
         images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]
     })
     const [errors, setErrors] = useState({
@@ -47,7 +48,7 @@ const AddProducts = () => {
     const [subCategoriesOptions, setSubCategoriesOptions] = useState([])
     const [variant, setVariant] = useState([])
     const [dynamicVariant, setDynamicVariant] = useState([])
-    const [productDynamicVariant, setProductDynamicVariant] = useState([])
+    // const [productDynamicVariant, setProductDynamicVariant] = useState([])
     const [files, setFiles] = useState([{},{},{},{},{}])
     const navigate = useNavigate()
     const categoriesService = new CategoriesService()
@@ -106,7 +107,14 @@ const AddProducts = () => {
 
             productsService?.getDynamicVariant(product?.category?.value).then(res=>{
                 if(res.status === 200){
-                    setDynamicVariant(res.data.data)
+                    let data = res.data?.data?.map(item=>{
+                        return{
+                            ...item,
+                            label: item.name_en,
+                            value: item.id,
+                        }
+                    })
+                    setDynamicVariant(data)
                 }
             })
         }
@@ -117,7 +125,6 @@ const AddProducts = () => {
         setId(Number(prod_id))
 
         if(!!prod_id){
-            let prod = []
             productsService?.getProduct(prod_id)?.then(res=>{
                 let response = res.data.data
                 if(res.data?.status === 200){
@@ -129,7 +136,11 @@ const AddProducts = () => {
                             value: response.product?.category_id,
                             label: response.product?.category?.name_en
                         },
-                        brand: response.product.brand?.name_en ? brandOptions?.filter(opt=> opt.label === response.product.brand?.name_en)[0] : '',
+                        brand: response.product.brand?.name_en ? {
+                            ...response.product.brand,
+                            label: response.product.brand?.name_en,
+                            value: response.product.brand_id
+                        } : '',
                         images: product?.images?.map((_,index)=> {
                             if(!!response.product.images[index]?.url){
                                 return {
@@ -158,12 +169,17 @@ const AddProducts = () => {
                             }
                         })
                     }
-                    setProduct({...data})
-                }
-            })
-            productsService.getDynamicVariantOfProducts(prod_id).then(res=>{
-                if(res.status === 200){
-                    setProductDynamicVariant(res.data.data)
+                    productsService.getDynamicVariantOfProducts(prod_id).then(res2=>{
+                        if(res2.status === 200){
+                            data['dynamic_variant'] = res2.data.data?.map(item=>{
+                                return{
+                                    ...item,
+                                    label: item.name_en
+                                }
+                            })
+                            setProduct({...data})
+                        }
+                    })
                 }
             })
         }
@@ -235,7 +251,7 @@ const AddProducts = () => {
                     variant_id: res?.variant_id,
                 }
             }),
-            dynamic_variant: productDynamicVariant?.map(dy=>{
+            dynamic_variant: product?.dynamic_variant?.map(dy=>{
                 return {
                     dynamic_variant_id: dy?.id
                 }
@@ -654,9 +670,20 @@ const AddProducts = () => {
             </Col>
                 })}
             </Row>
-            {dynamicVariant?.length > 0 && <label className="text-label mb-2 mt-2 d-block">Dynamic Variant</label>}
-            <Row className="px-3">
-            {dynamicVariant?.length > 0 && dynamicVariant?.map((item, index)=>{
+            {dynamicVariant?.length > 0 && <Row>
+            <Col md={12}>
+                <label className="text-label mb-2 mt-2 d-block">Dynamic Variant</label>
+                <Select 
+                    options={dynamicVariant?.filter(res=> !product.dynamic_variant?.some(res2=> res.label === res2.label))}
+                    name='dynamic_variant'
+                    isMulti={true}
+                    value={product.dynamic_variant}
+                    onChange={e=>{
+                        setProduct({...product, dynamic_variant: e})
+                    }}
+                />
+            </Col>
+            {/* {dynamicVariant?.length > 0 && dynamicVariant?.map((item, index)=>{
                     // let findInd = product?.dynamicVariant?.findIndex(res=> res.name_en === item.name_en)
                     return <Col md={6} className="mb-3">
                         <label for={item?.name_en} className='m-0 mr-3 w-100'>
@@ -685,13 +712,13 @@ const AddProducts = () => {
                                 {item?.name_en} {`(${item?.available_amount})`}
                             </label>
                      </Col>
-                })}
-            </Row>
+                })} */}
+            </Row>}
 
+            <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>Images</label>
             <Row>
                 {product?.images?.map((data, index)=>{
-                    return <Col md={3} className='mb-3 mt-3' key={index}>
-                        <label className="text-label" style={{marginLeft: '8px'}}>Image {index+1}</label>
+                    return <Col md={3} className='mb-3' key={index}>
                         <div className="image-placeholder">	
                             <div className="avatar-edit">
                                 <input type="file" onChange={(e) => fileHandler(e,index)} id={`imageUpload${index}`} /> 					

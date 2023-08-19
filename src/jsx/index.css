@@ -33,7 +33,7 @@
   margin: 0 !important;
 }
 li.slick-active .owl-dot {
-  background: #fe634e !important;
+  background: var(--primary) !important;
 }
 .fat-slider-item {
   width: unset !important;
@@ -804,7 +804,7 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 	display: contents;
 }
 .metismenu .mm-active > a{
-  background-color: #fe634e1c!important;
+  background-color: var(--bg-primary)!important;
   transition: background-color .8s ease-in-out;
   /* border-radius: 32px 0 0 32px ; */
   border-right: 3px solid;
@@ -815,5 +815,5 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 }
 .table-responsive .table .show > .dropdown-toggle,
 .table-responsive .table .dropdown button:hover{
-  color: #FE634E;
+  color: var(--primary);
 }

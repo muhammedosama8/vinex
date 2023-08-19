@@ -172,6 +172,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --danger: #FF4847;
   --light: #F4F5F9;
   --dark: #B1B1B1;
+  --bg-primary: #fe634e1c;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
