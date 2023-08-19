@@ -11,11 +11,11 @@ function DeleteModal(props) {
         if(props.isDeleted){
             const { data: response } = await props.modelService.remove(props.deletedItem.id , { isDeleted: props.isDeleted })
             if(response?.status === 200){
-                toast.success('Deleted Successfully')
                 props.setShouldUpdate(prev=> !prev)
                 if(props?.isEdit === false){
                     props?.setModal(false)
                 }
+                toast.success('Deleted Successfully')
                 return props.onCloseModal(false)
             }
         } else {

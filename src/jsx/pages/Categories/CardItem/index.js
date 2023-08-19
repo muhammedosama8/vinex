@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import CategoriesService from "../../../../services/CategoriesService";
@@ -7,13 +7,21 @@ import DeleteModal from "../../../common/DeleteModal";
 const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
     // const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
+    const [isDeleted, setIsDeleted] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const categoriesService = new CategoriesService()
 
-    // useEffect(()=>{
-    //     setStatus(item.status)
-    // },[item])
+    const changeIsDeleted = ()=>{
+        categoriesService.remove(item.id, { isDeleted: false }).then(res=>{
+            if(res.status === 200){
+                setShouldUpdate(prev=> !prev)
+            }
+        })
+    }
+    useEffect(()=>{
+        setIsDeleted(item.isDeleted)
+    },[item])
 
     // const changeStatusToggle = (e)=>{
     //     setStatus(e.target.checked)
@@ -56,10 +64,12 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                             setItem(item)
                             setAddModal(true)
                         }}> Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                        {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>Deactive</Dropdown.Item>}
+                        {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>Active</Dropdown.Item>}
                     </Dropdown.Menu>
                 </Dropdown>}
             </td>
+
             {deleteModal && <DeleteModal
                       open={deleteModal}
                       titleMsg={item.name_en}

@@ -9,18 +9,23 @@ import DeleteModal from "../../../common/DeleteModal";
 const CardItem = ({item, index, setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
+    const [isDeleted, setIsDeleted] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
     const productsService = new ProductsService()
 
-    useEffect(()=>{
-        setStatus(item?.status)
-    },[item])
-
-    const changeStatusToggle = (e)=>{
-        setStatus(e.target.checked)
+    const changeIsDeleted = ()=>{
+      productsService.remove(item.id, { isDeleted: false }).then(res=>{
+          if(res.status === 200){
+              setShouldUpdate(prev=> !prev)
+          }
+      })
     }
+
+    useEffect(()=>{
+      setIsDeleted(item.isDeleted)
+    },[item])
     
     return(
         <tr key={index} className='text-center'>
@@ -33,6 +38,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                           className="rounded-lg"
                           width="40"
                           height="40"
+                          onLoad={()=> console.log('xxxxx')}
                           alt={item.id}
                         />
                     </td>
@@ -63,7 +69,8 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                           <Dropdown.Item onClick={()=>{
                             navigate(`/products/add-products/${item.id}`)
                           }}>Edit</Dropdown.Item>
-                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                          {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>Deactive</Dropdown.Item>}
+                        {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>Active</Dropdown.Item>}
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

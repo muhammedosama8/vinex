@@ -26,7 +26,6 @@ const AddProducts = () => {
         offer: false,
         offerPrice: '',
         price: '',
-        offer_price: '',
         category: '',
         weight: '',
         sub_category: '',
@@ -121,19 +120,19 @@ const AddProducts = () => {
             productsService?.getProduct(prod_id)?.then(res=>{
                 let response = res.data.data
                 if(res.data?.status === 200){
-                    
                     let data= {
-                        ...response,
+                        ...response?.product,
                         category: {
-                            ...response.category,
-                            id: response?.category_id,
-                            value: response?.category_id,
-                            label: response?.category?.name_en
+                            ...response?.product.category,
+                            id: response?.product.category_id,
+                            value: response.product?.category_id,
+                            label: response.product?.category?.name_en
                         },
+                        brand: response.product.brand?.name_en ? brandOptions?.filter(opt=> opt.label === response.product.brand?.name_en)[0] : '',
                         images: product?.images?.map((_,index)=> {
-                            if(!!response.images[index]?.url){
+                            if(!!response.product.images[index]?.url){
                                 return {
-                                    src: response.images[index]?.url
+                                    src: response.product.images[index]?.url
                                 }
                             } else {
                                 return {
@@ -142,9 +141,8 @@ const AddProducts = () => {
                             }
                             
                         }),
-                        sub_category: response?.sub_category_id ? subCategoriesOptions?.filter(opt=> opt.value ===response?.sub_category_id)[0] : '',
-                        brand: response?.brand_id ? subCategoriesOptions?.filter(opt=> opt.value ===response?.brand_id)[0] : '',
-                        variant: response?.variant?.map(item=>{
+                        sub_category: response.product?.sub_category_id ? subCategoriesOptions?.filter(opt=> opt.value ===response.product?.sub_category_id)[0] : '',
+                        variant: response.product?.variant?.map(item=>{
                             return{
                                 name_ar: item.variant?.name_ar,
                                 name_en: item.variant?.name_en,
@@ -154,6 +152,7 @@ const AddProducts = () => {
                             }
                         })
                     }
+                    console.log(data)
                     setProduct({...data})
                 }
             })
@@ -485,24 +484,14 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='Offer Price'
-                                type='number'
-                                placeholder='Offer Price'
-                                bsSize="lg"
-                                name='offer_price'
-                                // validate={{
-                                //     required: {
-                                //         value: true,
-                                //         errorMessage: 'This Field is required'
-                                //     },
-                                //     pattern: {
-                                //         value: "^[0-9]+$",
-                                //         errorMessage: `English format is invalid`
-                                //     }
-                                // }}
-                                value={product.offer_price}
-                                onChange={(e)=> handlerText(e)}
-                            />
+                            label='Offer Price'
+                            type='number'
+                            placeholder='Offer Price'
+                            bsSize="lg"
+                            name='offerPrice'
+                            value={product.offerPrice}
+                            onChange={(e)=> handlerText(e)}
+                        />
                 </Col>
                 <Col md={2} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
@@ -713,7 +702,12 @@ const AddProducts = () => {
                 </Col>
                 })}
             </Row>
-            <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-between mt-4">
+            <Button 
+                variant="secondary"
+                type="button"
+                onClick={()=> navigate('/products')}
+            >Cancel</Button>
             <Button 
                 variant="primary"
                 loading={loading}

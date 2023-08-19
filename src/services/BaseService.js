@@ -52,12 +52,11 @@ export default class BaseService {
   }
 
   remove(id, data) {
-    if(data?.isDeleted){
+    if(data || data?.isDeleted){
       return http.delete(this.entityUrl([id]), {data});
-    } else{
-      return http.delete(this.entityUrl([id]));
     }
     
+    return http.delete(this.entityUrl([id]));
   }
 
   postUpload(file) {

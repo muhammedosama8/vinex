@@ -31,7 +31,7 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                             setItem(item)
                             setAddModal(true)
                         }}> Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                        {/* <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item> */}
                     </Dropdown.Menu>
                 </Dropdown>}
             </td>

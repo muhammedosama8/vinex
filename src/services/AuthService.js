@@ -2,6 +2,7 @@ import axios from 'axios';
 import swal from "sweetalert";
 import { API_BASE_URL_ENV } from '../jsx/common/common';
 import {
+    changeAdminRules,
     loginConfirmedAction,
     Logout,
 } from '../store/actions/AuthActions';
@@ -73,6 +74,7 @@ export function saveTokenInLocalStorage(tokenDetails) {
 
     localStorage.setItem('userDetails', JSON.stringify(tokenDetails));
     localStorage.setItem(tokenKey, tokenDetails.accessToken);
+    localStorage.setItem('adminRules', JSON.stringify({admin_roles: tokenDetails.admin.admin_roles}));
 }
 
 // export function runLogoutTimer(dispatch, timer, navigate) {
@@ -84,6 +86,7 @@ export function saveTokenInLocalStorage(tokenDetails) {
 
 export function checkAutoLogin(dispatch, navigate) {
     const tokenDetailsString = localStorage.getItem('userDetails');
+    const adminRules = localStorage.getItem('adminRules');
     let tokenDetails = '';
     if (!tokenDetailsString) {
         dispatch(Logout(navigate));
@@ -91,15 +94,15 @@ export function checkAutoLogin(dispatch, navigate) {
     }
 
     tokenDetails = JSON.parse(tokenDetailsString);
-    let expireDate = new Date(tokenDetails.expireDate);
-    let todaysDate = new Date();
+    // let expireDate = new Date(tokenDetails.expireDate);
+    // let todaysDate = new Date();
 
-    if (todaysDate > expireDate) {
-        dispatch(Logout(navigate));
-        return;
-    }
-		
+    // if (todaysDate > expireDate) {
+    //     dispatch(Logout(navigate));
+    //     return;
+    // }
     dispatch(loginConfirmedAction(tokenDetails));
+    // dispatch(changeAdminRules(tokenDetails));
 	
     // const timer = expireDate.getTime() - todaysDate.getTime();
     // runLogoutTimer(dispatch, timer, navigate);
