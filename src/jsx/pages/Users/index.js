@@ -51,9 +51,11 @@ const Users = () =>{
                       <strong>Count Orders</strong>
                     </th> */}
                     <th>
-                      <strong>STATUS</strong>
+                      <strong>Active</strong>
                     </th>
-                    <th></th>
+                    <th>
+                      <strong>Deleted</strong>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

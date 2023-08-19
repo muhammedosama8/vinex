@@ -42,11 +42,18 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                         type="switch"
                         id={`custom-switch${index}`}
                         checked={!status}
-                        disabled
                         // onChange={(e)=> changeStatusToggle(e)}
                       />
                     </td>
                     <td>
+                      <Form.Check
+                        type="switch"
+                        id={`isDeleted${index}`}
+                        checked={item.isDeleted}
+                        // onChange={(e)=> changeStatusToggle(e)}
+                      />
+                    </td>
+                    {/* <td>
                      {isExist('users') && <Dropdown>
                         <Dropdown.Toggle
                           // variant="success"
@@ -55,11 +62,11 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {/* <Dropdown.Item>Edit</Dropdown.Item> */}
+                           <Dropdown.Item>Edit</Dropdown.Item> 
                           <Dropdown.Item>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
-                    </td>
+                    </td> */}
                   </tr>
     )
 }
