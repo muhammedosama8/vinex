@@ -44,9 +44,21 @@ const SocialMedia = ()=>{
         e.preventDefault()
         // const result = areAllValuesFilled(links);
         // if(result) return
+        if(!links.facebook && !links.instagram && !links.snapchat && !links.tiktok
+            && !links.twitter && !links.whatsapp){
+                toast.error('Enter Value')
+                return
+        }
+        let data = {}
+        if(!!links.facebook) data['facebook'] = links.facebook
+        if(!!links.instagram) data['instagram'] = links.instagram
+        if(!!links.snapchat) data['snapchat'] = links.snapchat
+        if(!!links.tiktok) data['tiktok'] = links.tiktok
+        if(!!links.twitter) data['twitter'] = links.twitter
+        if(!!links.whatsapp) data['whatsapp'] = links.whatsapp
 
         setLoading(true)
-        socialMediaService?.create(links)?.then(res=>{
+        socialMediaService?.create(data)?.then(res=>{
             if(res.status === 201){
                 toast?.success('Added Social Links Successfully')
                 setIsAdd(false)
