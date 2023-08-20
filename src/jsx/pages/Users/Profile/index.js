@@ -48,15 +48,11 @@ const UserProfile =()=>{
                     </Col>
                     <Col md={6} className='mb-2'>
                         <h4>Email</h4>
-                        <p>{user.email}</p>
+                        <p className="mb-0">{user.email}</p>
                     </Col>
                     <Col md={6}>
                         <h4>Phone</h4>
-                        <p>{user.phone}</p>
-                    </Col>
-                    <Col md={6}>
-                        <h4>Address</h4>
-                        <p>{user?.address}</p>
+                        <p className="mb-0">{user.phone}</p>
                     </Col>
                 </Row>
                 {/* {isExist('users') && <button className="edit" onClick={()=> setEdit(true)}>

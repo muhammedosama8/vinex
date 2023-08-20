@@ -1,14 +1,21 @@
 import { Button, Card, Col, Row } from "react-bootstrap";
 import {AvField, AvForm} from "availity-reactstrap-validation";
+import { EditorState } from "draft-js";
 import { useState } from "react";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+import 'draft-js/dist/Draft.css';
+import EditorField from "./Editor";
 
 const About = () =>{
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [formData, setFormData] =useState([
         {
             title_en:'',
             title_ar:'',
             description_ar:'',
-            description_en:'',
+            description_en: EditorState.createEmpty(),
         }
     ])
 
@@ -74,7 +81,7 @@ const About = () =>{
 				</Col>
                 <Col md={6} className="form-group mb-2">
                     <label className="d-block">English Description</label>
-					<textarea
+					{/* <textarea
 						name ='description_en'
 						type="text" 
                         className="description"
@@ -82,7 +89,28 @@ const About = () =>{
 						required
 						placeholder='Description'
 						onChange={(e) => changeInput(e,index)}
-					/>
+					/> */}
+                    <EditorField
+                        // editorState ={editorState}
+                        // // editorState ={item.description_en}
+                        // toolbarClassName="toolbarClassName"
+                        // wrapperClassName="wrapperClassName"
+                        // editorClassName="editorClassName"
+                        // onEditorStateChange={(e) => {
+                        //     setEditorState(e)
+                        //     // let update = formData.map((item,ind)=>{
+                        //     //     if(index === ind){
+                        //     //         return{
+                        //     //             ...item,
+                        //     //             description_en: e
+                        //     //         }
+                        //     //     } else{
+                        //     //         return item
+                        //     //     }
+                        //     // })
+                        //     // setFormData(update)
+                        // }}
+                    />
 				</Col>
                 <Col md={6} className="form-group mb-2">
                     <label className="d-block">Arabic Description</label>
