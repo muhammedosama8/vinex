@@ -4,17 +4,17 @@ import { EditorState } from "draft-js";
 import { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import './style.scss'
 
 import 'draft-js/dist/Draft.css';
 import EditorField from "./Editor";
 
 const About = () =>{
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [formData, setFormData] =useState([
         {
             title_en:'',
             title_ar:'',
-            description_ar:'',
+            description_ar:EditorState.createEmpty(),
             description_en: EditorState.createEmpty(),
         }
     ])
@@ -90,31 +90,32 @@ const About = () =>{
 						placeholder='Description'
 						onChange={(e) => changeInput(e,index)}
 					/> */}
-                    <EditorField
-                        // editorState ={editorState}
-                        // // editorState ={item.description_en}
-                        // toolbarClassName="toolbarClassName"
-                        // wrapperClassName="wrapperClassName"
-                        // editorClassName="editorClassName"
-                        // onEditorStateChange={(e) => {
-                        //     setEditorState(e)
-                        //     // let update = formData.map((item,ind)=>{
-                        //     //     if(index === ind){
-                        //     //         return{
-                        //     //             ...item,
-                        //     //             description_en: e
-                        //     //         }
-                        //     //     } else{
-                        //     //         return item
-                        //     //     }
-                        //     // })
-                        //     // setFormData(update)
-                        // }}
-                    />
+                    <div className="editorField">
+                        <Editor
+                            // editorState ={editorState}
+                            editorState ={item.description_en}
+                            toolbarClassName="toolbarClassName"
+                            wrapperClassName="wrapperClassName"
+                            editorClassName="editorClassName"
+                            onEditorStateChange={(e) => {
+                                let update = formData.map((item,ind)=>{
+                                    if(index === ind){
+                                        return{
+                                            ...item,
+                                            description_en: e
+                                        }
+                                    } else{
+                                        return item
+                                    }
+                                })
+                                setFormData(update)
+                            }}
+                        />
+                    </div>
 				</Col>
                 <Col md={6} className="form-group mb-2">
                     <label className="d-block">Arabic Description</label>
-					<textarea
+					{/* <textarea
 						name ='description_ar'
 						type="text" 
                         className="description"
@@ -122,7 +123,29 @@ const About = () =>{
 						required
 						placeholder='Description'
 						onChange={(e) => changeInput(e,index)}
-					/>
+					/> */}
+                    <div className="editorField">
+                        <Editor
+                            // editorState ={editorState}
+                            editorState ={item.description_ar}
+                            toolbarClassName="toolbarClassName"
+                            wrapperClassName="wrapperClassName"
+                            editorClassName="editorClassName"
+                            onEditorStateChange={(e) => {
+                                let update = formData.map((item,ind)=>{
+                                    if(index === ind){
+                                        return{
+                                            ...item,
+                                            description_ar: e
+                                        }
+                                    } else{
+                                        return item
+                                    }
+                                })
+                                setFormData(update)
+                            }}
+                        />
+                    </div>
 				</Col>
             </Row>
             })}
