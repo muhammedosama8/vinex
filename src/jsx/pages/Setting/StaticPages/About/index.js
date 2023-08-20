@@ -4,10 +4,8 @@ import { EditorState } from "draft-js";
 import { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import './style.scss'
-
 import 'draft-js/dist/Draft.css';
-import EditorField from "./Editor";
+import './style.scss'
 
 const About = () =>{
     const [formData, setFormData] =useState([
