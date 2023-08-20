@@ -26,7 +26,7 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
             </td>
             <td>
                         <img
-                          src={item?.images}
+                          src={item?.image}
                           className="rounded-lg"
                           width="40"
                           height="40"
