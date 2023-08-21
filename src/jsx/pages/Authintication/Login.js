@@ -33,7 +33,7 @@ function Login(props) {
 					<p className="fs-12">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
 
 					<div className="mt-5">
-						<a href='/' className="text-white">© 2023 Muhammed Osama</a>
+						<a href='/' className="text-white">© 2023 Leap</a>
 					</div>
 				</div>
 			</div>

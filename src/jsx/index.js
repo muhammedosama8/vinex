@@ -47,6 +47,8 @@ import StaticPages from './pages/Setting/StaticPages'
 import FAQs from './pages/Setting/StaticPages/FAQs'
 import Privacy from './pages/Setting/StaticPages/Privacy'
 import About from './pages/Setting/StaticPages/About'
+import AddNotification from './pages/Notification/AddNotification'
+import TimeSlot from './pages/TimeSlot'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -85,6 +87,9 @@ const Markup = () => {
     // Banners
     { url: 'banners', component: <Banners /> },
 
+    // Time Slot
+    { url: 'time-slot', component: <TimeSlot /> },
+
     // Ad Screen
     { url: 'ad-screen', component: <AdScreen /> },
 
@@ -96,6 +101,7 @@ const Markup = () => {
 
     // Notification
     { url: 'notification', component: <Notification /> },
+    { url: 'notification/add-notification', component: <AddNotification /> },
 
     // Products
     { url: 'products', component: <Products /> },

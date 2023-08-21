@@ -440,6 +440,13 @@ export const MenuList = [
         iconStyle: <i className='la la-dollar'></i>,
         to: 'promo-codes',
     },
+     //Time Slot
+     {   
+        title:'Time Slot',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className='la la-clock'></i>,
+        to: 'time-slot',
+    },
     //Banners
     {   
         title:'Banners',

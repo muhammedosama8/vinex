@@ -33,4 +33,6 @@ export const Rules = [
     {label: 'Brands', value: 'brands'},
     {label: 'Control', value: 'control'},
     {label: 'Currency', value: 'currency'},
+    {label: 'Notification', value: 'notification'},
+    {label: 'TimeSlot', value: 'time_slot'},
 ]
