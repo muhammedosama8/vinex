@@ -1,11 +1,9 @@
 import BaseService from "./BaseService";
-import http from './HttpService'
-
 import { API_BASE_URL_ENV } from "../jsx/common/common";
 
-const apiEndpoint = API_BASE_URL_ENV() + "/timeSlot";
+const apiEndpoint = API_BASE_URL_ENV() + "/timeSlot/blockDate";
 
-export default class TimeSlotService extends BaseService {
+export default class BlockDateService extends BaseService {
     constructor() {
         super(apiEndpoint);
     }

@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react"
 import { Button, Card, Col, Row, Table } from "react-bootstrap"
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import TimeSlotService from "../../../services/TimeSlotService"
 import NoData from "../../common/NoData"
-import Pagination from "../../common/Pagination/Pagination"
 import CardItem from "./CardItem"
 
 const TimeSlot = () =>{
     const [timeSlot, setTimeSlot] = useState([])
-    const [addModal, setAddModal] = useState(false)
-    const [item, setItem] = useState({})
     const [hasData, setHasData] = useState(null)
-    const [search, setSearch] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
-    const [isDeleted, setIsDeleted] =useState(false)
+    const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
     const timeSlotService = new TimeSlotService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
@@ -21,22 +18,20 @@ const TimeSlot = () =>{
     useEffect(()=>{
         timeSlotService.getList().then(res=>{
             if(res.status === 200){
-                console.log(res)
                 setTimeSlot(res.data.data)
                 setHasData(1)
             }
         })
     },[shouldUpdate])
+
   return (
     <>
-        {/* <div className="d-flex justify-content-between align-items-center mb-3 ">
+        <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div></div>
-          {isExist('categories') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
-              setItem({})
-              setAddModal(true) }}>
-              Add Categories
+          {isExist('time_slot') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/time-slot/specific-block')}>
+              specific block
           </Button>}
-        </div> */}
+        </div>
       <Row>
         <Col lg={12}>
           <Card>
@@ -72,8 +67,6 @@ const TimeSlot = () =>{
                             index= {index}
                             key= {index}
                             item={item}
-                            setItem={setItem}
-                            setAddModal={setAddModal}
                             setShouldUpdate={setShouldUpdate}
                         />
                     })}
@@ -84,14 +77,6 @@ const TimeSlot = () =>{
           </Card>
         </Col>
       </Row>
-{console.log(timeSlot)}
-      {/* {addModal && 
-        <AddCategoriesModal 
-          item={item} 
-          addModal={addModal} 
-          setShouldUpdate={setShouldUpdate}
-          setAddModal={()=> setAddModal(false)}
-      />} */}
     </>
   );
 }

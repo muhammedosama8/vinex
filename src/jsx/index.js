@@ -49,6 +49,7 @@ import Privacy from './pages/Setting/StaticPages/Privacy'
 import About from './pages/Setting/StaticPages/About'
 import AddNotification from './pages/Notification/AddNotification'
 import TimeSlot from './pages/TimeSlot'
+import SpecificBlock from './pages/TimeSlot/SpecificBlock'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -89,6 +90,7 @@ const Markup = () => {
 
     // Time Slot
     { url: 'time-slot', component: <TimeSlot /> },
+    { url: 'time-slot/specific-block', component: <SpecificBlock /> },
 
     // Ad Screen
     { url: 'ad-screen', component: <AdScreen /> },
