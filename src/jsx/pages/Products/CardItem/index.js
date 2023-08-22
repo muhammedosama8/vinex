@@ -38,7 +38,6 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                           className="rounded-lg"
                           width="40"
                           height="40"
-                          onLoad={()=> console.log('xxxxx')}
                           alt={item.id}
                         />
                     </td>

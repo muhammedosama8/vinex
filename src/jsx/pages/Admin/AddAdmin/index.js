@@ -64,37 +64,39 @@ const AddAdmin = () => {
       //    setError({...formData, password: true})
       //    return
       // }
-      if(!formData.country_code){
-         toast.error('Select Country')
-         return
-      }
-      setLoading(true)
+      
       let data = {
          f_name: formData?.first_name,
          l_name: formData?.last_name,
          rules: []
       }
       if(location?.state?.edit){
+         setLoading(true)
          adminService.update(location.state?.id, data).then((response) =>{
             if(response?.status === 200){
                toast.success('Admin Updated Successfully')
                navigate('/admins')
             }
+            setLoading(false)
          })
       } else {
+         if(!formData.country_code){
+            toast.error('Select Country')
+            return
+         }
          data['password'] = formData?.password
          data['email'] = formData?.email
          data['phone'] = formData?.phone
          data['country_code'] = formData?.country_code?.country_code
-
+         setLoading(true)
          adminService.create(data).then((response) =>{
             if(response?.status === 201){
                toast.success('Admin Added Successfully')
                navigate('/admins')
             }
+            setLoading(false)
          })
       }
-      setLoading(false)
    }
 
    return (

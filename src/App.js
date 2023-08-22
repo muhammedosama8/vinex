@@ -11,7 +11,6 @@ import { isAuthenticated } from './store/selectors/AuthSelectors';
 /// Style
 // import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
 import "./css/style.css";
-import Verified from './jsx/pages/Authintication/Verified';
 import http from './services/HttpService';
 
 const Login = lazy(() => {
@@ -49,7 +48,6 @@ function App (props) {
     let routeblog = (  
         <Routes>
             <Route path='/login' element={<Login />} />
-            {/* <Route path='/verified' element={<Verified />} /> */}
         </Routes>
     );
     if (props.isAuthenticated) {

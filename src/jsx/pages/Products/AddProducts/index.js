@@ -120,6 +120,7 @@ const AddProducts = () => {
                         }
                     })
                     setDynamicVariant(data)
+                    setProduct({...product, dynamic_variant: []})
                 }
             })
         }

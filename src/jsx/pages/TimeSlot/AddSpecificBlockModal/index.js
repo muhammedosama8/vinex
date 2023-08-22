@@ -79,7 +79,6 @@ const AddSpecificBlockModal = ({modal, setModal, setShouldUpdate})=>{
                                     padding: '2px 6px'
                                 }}   
                                 onClick={()=>{
-                                    console.log(index , formData.filter((_, ind)=> index !== ind))
                                     let update = formData.filter((_, ind)=> index !== ind)
                                     setFormData(update)
                                 }}   

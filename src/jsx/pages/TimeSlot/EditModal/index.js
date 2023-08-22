@@ -17,7 +17,6 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
     const timeSlotService = new TimeSlotService()
 
     const submit = () =>{
-        console.log(formData)
         if(!formData.from || !formData.to){
             toast.error('Select Time')
             return

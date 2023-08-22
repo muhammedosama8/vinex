@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
@@ -9,6 +10,8 @@ const Notification = ()=>{
     const [notification, setNotification] = useState([])
     const [hasData, setHasData] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
     useEffect(()=>{
         setNotification([
@@ -22,13 +25,13 @@ const Notification = ()=>{
     return(
         <>
         <div className="d-flex mb-3 justify-content-end">
-            <Button 
+            {isExist('notification') && <Button 
                 variant='primary'
                 onClick={()=>{
                     navigate('add-notification')
                 }}>
                 Add Notification
-            </Button>
+            </Button>}
         </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
