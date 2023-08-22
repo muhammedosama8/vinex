@@ -23738,6 +23738,7 @@ input[type="checkbox"]:checked:after {
 
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
+  cursor: pointer;
   border-color: var(--primary); }
 
 .custom-control-input:focus ~ .custom-control-label::before {

@@ -74,7 +74,7 @@ export function saveTokenInLocalStorage(tokenDetails) {
 
     localStorage.setItem('userDetails', JSON.stringify(tokenDetails));
     localStorage.setItem(tokenKey, tokenDetails.accessToken);
-    localStorage.setItem('adminRules', JSON.stringify({admin_roles: tokenDetails.admin.admin_roles}));
+    localStorage.setItem('adminRules', JSON.stringify(tokenDetails.admin.admin_roles?.map(item => item.role)));
 }
 
 // export function runLogoutTimer(dispatch, timer, navigate) {
@@ -88,12 +88,14 @@ export function checkAutoLogin(dispatch, navigate) {
     const tokenDetailsString = localStorage.getItem('userDetails');
     const adminRules = localStorage.getItem('adminRules');
     let tokenDetails = '';
+
     if (!tokenDetailsString) {
         dispatch(Logout(navigate));
 		return;
     }
 
     tokenDetails = JSON.parse(tokenDetailsString);
+    let rules = JSON.parse(adminRules);
     // let expireDate = new Date(tokenDetails.expireDate);
     // let todaysDate = new Date();
 
@@ -102,7 +104,7 @@ export function checkAutoLogin(dispatch, navigate) {
     //     return;
     // }
     dispatch(loginConfirmedAction(tokenDetails));
-    // dispatch(changeAdminRules(tokenDetails));
+    dispatch(changeAdminRules(rules));
 	
     // const timer = expireDate.getTime() - todaysDate.getTime();
     // runLogoutTimer(dispatch, timer, navigate);

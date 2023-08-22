@@ -1,13 +1,43 @@
 import { useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import TimeSlotService from "../../../../services/TimeSlotService";
 import EditTimeSlotModal from "../EditModal";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
     const [editModal, setEditModal] = useState(false)
+    const [loading, setLoading] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    const timeSlotService = new TimeSlotService()
 
+    const changeStatusToggle = (e) => {
+        if(!item.capacity || !item.interval_min || !item.to || !item.from){
+            toast.error('Edit Values First')
+            return
+        }
+        let data = {
+            availableDays: [
+              {
+                capacity: item.capacity,
+                interval_min: item.interval_min,
+                to: item.to?.slice(0,5),
+                from: item.from?.slice(0,5),
+                isOpen: e.target.checked,
+                id: item.id
+              }
+            ]
+        }
+        setLoading(true)
+        timeSlotService.create(data).then(res=>{
+            if(res?.status === 201){
+                toast.success('TimeSlot Updated Successfully')
+                setShouldUpdate(prev=> !prev)
+            }
+            setLoading(false)
+        })
+    }
     return(
         <tr key={index} className='text-center'>
             <td>
@@ -22,9 +52,16 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
             <td>
                 <Form.Check
                     type="switch"
+                    style={{cursor: 'pointer'}}
                     id={`custom-switch${index}`}
                     checked={item.isOpen}
-                    // onChange={(e)=> changeStatusToggle(e)}
+                    disabled={loading}
+                    onChange={(e)=> {
+                        if(!isExist('time_slot')){
+                            return
+                        }
+                        changeStatusToggle(e)
+                    }}
                 />
             </td>
             <td>

@@ -49,7 +49,7 @@ export function AuthReducer(state = initialState, action) {
                 ...action.payload,
                 admin:{
                     ...action.payload.admin,
-                    admin_roles: action.payload.admin.admin_roles?.map(rul=> rul['role'])
+                    admin_roles: action.payload.admin?.admin_roles?.map(rul=> rul['role'])
                 }
             },
             errorMessage: '',
