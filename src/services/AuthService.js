@@ -74,7 +74,7 @@ export function saveTokenInLocalStorage(tokenDetails) {
 
     localStorage.setItem('userDetails', JSON.stringify(tokenDetails));
     localStorage.setItem(tokenKey, tokenDetails.accessToken);
-    localStorage.setItem('adminRules', JSON.stringify(tokenDetails.admin.admin_roles?.map(item => item.role)));
+    localStorage.setItem('LeapAdminRules', JSON.stringify(tokenDetails.admin.admin_roles?.map(item => item.role)));
 }
 
 // export function runLogoutTimer(dispatch, timer, navigate) {
@@ -86,7 +86,7 @@ export function saveTokenInLocalStorage(tokenDetails) {
 
 export function checkAutoLogin(dispatch, navigate) {
     const tokenDetailsString = localStorage.getItem('userDetails');
-    const adminRules = localStorage.getItem('adminRules');
+    const adminRules = localStorage.getItem('LeapAdminRules');
     let tokenDetails = '';
 
     if (!tokenDetailsString) {

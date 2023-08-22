@@ -67,7 +67,7 @@ const Permission = () =>{
         adminService?.update(id,data).then(res=>{
             if(res?.status === 200){
                 dispatch(changeAdminRules(formData.rules))
-                localStorage.setItem('adminRules', JSON.stringify(formData.rules));
+                localStorage.setItem('LeapAdminRules', JSON.stringify(formData.rules));
                 toast.success(`Added Rules for ${formData?.admin?.label}`)
                 window.scrollTo(0,0)
                 setFormData({admin: '', rules: []})
