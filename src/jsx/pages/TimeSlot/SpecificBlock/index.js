@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import BlockDateService from "../../../../services/BlockDateService";
+import NoData from "../../../common/NoData";
 import AddSpecificBlockModal from "../AddSpecificBlockModal";
 
 const SpecificBlock = () =>{
@@ -36,7 +37,7 @@ const SpecificBlock = () =>{
     <Card>
         <Card.Body>
             <Row>
-            {specificBlock?.map((item, index)=> {
+            {specificBlock?.length > 0 ? specificBlock?.map((item, index)=> {
                 return <Col md={3}><Card className='position-relative' style={{border: '1px solid #dedede'}}>
                 <Card.Body>
                   <Card.Title>{index+1}</Card.Title>
@@ -58,7 +59,9 @@ const SpecificBlock = () =>{
                 </Card.Body>
               </Card>
               </Col>
-            })}
+            }) : <div className="m-auto">
+                <NoData />
+            </div>}
             </Row>
             
         {modal && <AddSpecificBlockModal 

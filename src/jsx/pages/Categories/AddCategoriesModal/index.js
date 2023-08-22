@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import uploadImg from '../../../../images/upload-img.png';
 import CategoriesService from "../../../../services/CategoriesService";
 import BaseService from "../../../../services/BaseService";
+import Loader from "../../../common/Loader";
 
 const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [files, setFiles] = useState([])
@@ -163,7 +164,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                                     src={formData?.img|| URL.createObjectURL(files)}
                                                 />}
                                             {/* {files[0]?.name && <img id={`saveImageFile`} className='w-100 h-100' style={{borderRadius: '30px'}} src={URL.createObjectURL(files[0])} alt='icon' />} */}
-                                            {!formData?.img && 
+                                            {(!formData?.img && !loading) && 
                                                 <img 
                                                     id={`saveImageFile`} 
                                                     src={uploadImg} alt='icon'
@@ -172,6 +173,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                                         height: '80px',
                                                     }}
                                                 />}
+                                            {(!formData?.img && loading) && <Loader />}
                                             </div>
                                         </div>
                                     </div>

@@ -37,7 +37,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                       {item.amount}
                     </td>
                     <td>{item.Type}</td>
-                    <td>{item.end_date}</td>
+                    <td>{item.end_date.split('T00')[0]}</td>
                     <td>{item.max_usage}</td>
                     <td>{item.count_usage}</td>
                     <td>
@@ -59,7 +59,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={()=> navigate('/promo-codes/edit-promo-codes', {state: {item: item}})}>Edit</Dropdown.Item>
-                          <Dropdown.Item>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

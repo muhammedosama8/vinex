@@ -120,7 +120,6 @@ const AddProducts = () => {
                         }
                     })
                     setDynamicVariant(data)
-                    setProduct({...product, dynamic_variant: []})
                 }
             })
         }
@@ -137,6 +136,7 @@ const AddProducts = () => {
                 if(res.data?.status === 200){
                     let data= {
                         ...response?.product,
+                        offerPrice: response.product.offerPrice || '',
                         category: {
                             ...response?.product.category,
                             id: response?.product.category_id,
@@ -160,12 +160,12 @@ const AddProducts = () => {
                             }
                             
                         }),
-                        sub_category: {
+                        sub_category: response.product?.sub_category?.name_en ? {
                             ...response.product?.sub_category,
                             label: response.product?.sub_category?.name_en,
                             value: response.product?.sub_category_id,
                             id: response.product?.sub_category_id,
-                        },
+                        } : '',
                         variant: response.product?.variant?.map(item=>{
                             return{
                                 name_ar: item.variant?.name_ar,
@@ -203,7 +203,6 @@ const AddProducts = () => {
                 return file
             }
         })
-        
         new BaseService().postUpload(filesData[0]).then(res=>{
             if(res.data.status){
                 let updateImages = product?.images.map((item, ind)=>{
@@ -422,7 +421,7 @@ const AddProducts = () => {
                             value={product.category}
                             name="category"
                             options={categoriesOptions}
-                            onChange={(e)=> setProduct({...product, category: e})}
+                            onChange={(e)=> setProduct({...product, category: e, dynamic_variant: [],variant: [], sub_category: ''})}
                         />
                 </Col>
                 <Col md={6} className="mb-3">

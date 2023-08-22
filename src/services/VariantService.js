@@ -17,7 +17,10 @@ export default class VariantService extends BaseService {
         return http.post(apiEndpoint, data) 
     }
    
-    getList=()=>{
+    getList=(params)=>{
+        if(params){
+            return http.get(apiGetAllVariant, {params})
+        }
         return http.get(apiGetAllVariant)
     }
 

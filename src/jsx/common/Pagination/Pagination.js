@@ -5,6 +5,7 @@ import './style.scss'
 const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
+    const [pageShow, setPageShow] = useState(1)
 
     useEffect(()=> {
         service?.getList({offset: (page-1)*10, limit: 10, isDeleted: isDeleted}).then(res=>{
@@ -20,11 +21,15 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
             }
         })
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    },[page, shouldUpdate, isDeleted])
+    },[page, shouldUpdate])
 
     useEffect(()=>{
         if(page > 1) setPage(1)
     },[shouldUpdate])
+
+    useEffect(()=>{
+        setPage(1)
+    },[isDeleted])
 
     if(totalPages > 1){
         return(
@@ -49,27 +54,41 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
                                 }}
                                 min={'1'}
                                 max={totalPages}
-                                defaultValue={page} 
+                                defaultValue={pageShow} 
+                                value={pageShow} 
                                 onChange = {e => { 
-                                    if(!!e.target.value && Number(e.target.value) > 0 && Number(e.target.value) <= totalPages){
+                                    setPageShow(e.target.value)
+                                    if(!!e.target.value && parseInt(e.target.value) > 0 && parseInt(e.target.value) <= totalPages){
                                         setPage(e.target.value)
                                     }
                                 }} 
                             />
                     </span>
                 </Col>
-
+{console.log(typeof page)}
                 <Col md={12} className="text-center">	
                     <div className="filter-pagination  mt-3">
-                        <button className=" previous-button" onClick={() => setPage(1)} disabled={page === 1 }>{'<<'}</button>
+                        <button className=" previous-button" onClick={() => {
+                            setPage(1)
+                            setPageShow(1)
+                        }} disabled={parseInt(page) === 1 }>{'<<'}</button>
                                     
-                        <button className="previous-button" onClick={() => setPage(prev=> prev-1)} disabled={page === 1}>
+                        <button className="previous-button" onClick={() => {
+                            setPage(prev=> parseInt(prev)-1)
+                            setPageShow(page-1)
+                        }} disabled={parseInt(page) === 1 }>
                             Previous
                         </button>
-                        <button className="next-button" onClick={() => setPage(prev=> prev+1)} disabled={page === totalPages}>
+                        <button className="next-button" onClick={() => {
+                            setPage(prev=> parseInt(prev)+1)
+                            setPageShow(page+1)
+                        }} disabled={parseInt(page) === totalPages}>
                             Next
                         </button>
-                        <button className=" next-button" onClick={() => setPage(totalPages)} disabled={page === totalPages}>{'>>'}</button>
+                        <button className=" next-button" onClick={() => {
+                            setPage(parseInt(totalPages))
+                            setPageShow(parseInt(totalPages))
+                        }} disabled={parseInt(page) === totalPages}>{'>>'}</button>
                     </div>
                 </Col>
             </Row>

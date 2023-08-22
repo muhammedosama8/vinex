@@ -7,6 +7,7 @@ import uploadImg from '../../../../images/upload-img.png';
 import SubCategoriesService from "../../../../services/SubCategoriesService";
 import CategoriesService from "../../../../services/CategoriesService";
 import BaseService from "../../../../services/BaseService";
+import Loader from "../../../common/Loader";
 
 const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [files, setFiles] = useState([{}])
@@ -194,12 +195,13 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                                                     src={formData?.img|| URL.createObjectURL(files)}
                                                 />}
                                             {/* {files[index]?.name && <img id={`saveImageFile${index+1}`} src={URL.createObjectURL(files[index])} alt='icon' />} */}
-                                            {!formData?.img &&  <img id={`saveImageFile`} src={uploadImg} alt='icon'
+                                            {(!formData?.img && !loading) &&  <img id={`saveImageFile`} src={uploadImg} alt='icon'
                                                 style={{
                                                     width: '80px',
                                                     height: '80px',
                                                 }}
                                             />}
+                                            {(!formData?.img && loading) && <Loader />}
                                             </div>
                                         </div>
                                     </div>

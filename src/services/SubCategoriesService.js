@@ -10,7 +10,10 @@ const apiUpdateEndpoint = API_BASE_URL_ENV() + "/categories/updateSubCategory";
 
 export default class SubCategoriesService extends BaseService {
     
-    getList() {
+    getList(params) {
+        if(params){
+            return http.get(apiGetEndpoint,{params});
+        }
         return http.get(apiGetEndpoint);
     }
 
