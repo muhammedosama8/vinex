@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import CategoriesService from "../../../../services/CategoriesService";
 import VariantService from "../../../../services/VariantService";
-import { loadingToggleAction } from "../../../../store/actions/AuthActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from '../../../common/Loader'
 
@@ -19,12 +18,11 @@ const Variant = ()=>{
    const [ categoriesOptions, setCategoriesOptions] = useState()
    const [ tags, setTags] = useState([])
    const [ isAdd, setIsAdd] = useState(true)
+   const [ loading, setLoading] = useState(true)
    const [ id, setId] = useState(null)
    const categoriesService = new CategoriesService()
    const variantService = new VariantService()
    const navigate = useNavigate()
-   const dispatch = useDispatch()
-   const Auth = useSelector(state=> state.auth)
 
    useEffect(()=>{
       categoriesService?.getList().then(res=>{
@@ -60,7 +58,7 @@ const Variant = ()=>{
 
    useEffect(()=>{
       if(!!formData?.category || !!variant_id){
-         dispatch(loadingToggleAction(true))
+         setLoading(true)
          variantService?.getVariant(Number(variant_id))?.then(res=>{
             setId(Number(variant_id))
             if(res?.status === 200){
@@ -72,7 +70,7 @@ const Variant = ()=>{
                } else{
                   setIsAdd(true)
                }
-               dispatch(loadingToggleAction(false))  
+               setLoading(false)
             }
          })
       }
@@ -152,7 +150,7 @@ const Variant = ()=>{
       
    }
 
-   if(Auth.showLoading){
+   if(loading){
       return <Card className="p-4" style={{minHeight: '30rem'}}>
           <Loader />
       </Card>
