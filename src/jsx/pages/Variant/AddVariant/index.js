@@ -18,7 +18,7 @@ const Variant = ()=>{
    const [ categoriesOptions, setCategoriesOptions] = useState()
    const [ tags, setTags] = useState([])
    const [ isAdd, setIsAdd] = useState(true)
-   const [ loading, setLoading] = useState(true)
+   const [ loading, setLoading] = useState(false)
    const [ id, setId] = useState(null)
    const categoriesService = new CategoriesService()
    const variantService = new VariantService()
@@ -70,8 +70,8 @@ const Variant = ()=>{
                } else{
                   setIsAdd(true)
                }
-               setLoading(false)
             }
+            setLoading(false)
          })
       }
    },[window.location.pathname])

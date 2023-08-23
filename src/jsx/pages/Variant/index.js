@@ -55,6 +55,7 @@ const Variant = () =>{
                     index= {index}
                     item={item}
                     setShouldUpdate={setShouldUpdate}
+                    shouldUpdate={shouldUpdate}
                     />
                   })}
                 </tbody>
