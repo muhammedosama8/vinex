@@ -47,7 +47,7 @@ const Orders = () =>{
         </div>
 
         <Card>
-            <Card.Body>
+            <Card.Body className={`${hasData === 0 ? 'text-center' :''}`}>
               {hasData === 1 && <Table responsive>
                 <thead>
                   <tr className='text-center'>
