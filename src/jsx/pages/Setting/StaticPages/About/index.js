@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import 'draft-js/dist/Draft.css';
-import './style.scss'
+import '../style.scss'
 
 const About = () =>{
     const [formData, setFormData] =useState([
@@ -79,15 +79,6 @@ const About = () =>{
 				</Col>
                 <Col md={6} className="form-group mb-2">
                     <label className="d-block">English Description</label>
-					{/* <textarea
-						name ='description_en'
-						type="text" 
-                        className="description"
-						value={item.description_en}
-						required
-						placeholder='Description'
-						onChange={(e) => changeInput(e,index)}
-					/> */}
                     <div className="editorField">
                         <Editor
                             // editorState ={editorState}
@@ -113,15 +104,6 @@ const About = () =>{
 				</Col>
                 <Col md={6} className="form-group mb-2">
                     <label className="d-block">Arabic Description</label>
-					{/* <textarea
-						name ='description_ar'
-						type="text" 
-                        className="description"
-						value={item.description_ar}
-						required
-						placeholder='Description'
-						onChange={(e) => changeInput(e,index)}
-					/> */}
                     <div className="editorField">
                         <Editor
                             // editorState ={editorState}
