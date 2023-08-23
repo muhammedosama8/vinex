@@ -9,13 +9,8 @@ axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
 function setInterceptors(navigate){
   axios.interceptors.response.use(null, async (error) => {
     console.log(error)
-    if (error.response && error.response.status === 401) {
-      if (error.response.data.admins?.isAdmin) {
-        Logout(navigate);
-        window.location = `/login`;
-      } 
-    } else if(error.response && error.response.status === 402){
-      if(error.response.data.message === "not authorized (old Token)." || error.response.data.message === "غير مصرح به (رمز قديم)"){
+    if(error.response && error.response.status === 401){
+      if(error.response.data.message === "not authorized" || error.response.data.message === "غير مصرح به"){
         Logout(navigate);
         window.location = `/login`;
       }

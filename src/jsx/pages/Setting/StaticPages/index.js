@@ -1,11 +1,10 @@
 import { Card, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Cover from '../../../../images/cover.jpg'
 import './style.scss'
 const pages = [
-    { name: 'About', path:'/pages/about' },
-    { name: 'Privacy', path:'/pages/privacy' },
-    { name: 'FAQs', path:'/pages/faqs' }
+    { name: 'About',type: 'about', path:'/pages/about' },
+    { name: 'Privacy',type: 'Privacy', path:'/pages/privacy' },
+    { name: 'FAQs',type: 'faqs', path:'/pages/faqs' }
 ]
 const StaticPages = () =>{
     const navigate= useNavigate()
@@ -15,7 +14,7 @@ const StaticPages = () =>{
             <Row>
                 {pages?.map((page,index)=>{
                     return <Col key={index} md={6}>
-                        <Card className="pages-card" onClick={()=> navigate(page.path)}>
+                        <Card className="pages-card" onClick={()=> navigate(page.path, {state: page.type})}>
                             <h1>{page.name}</h1>
                         </Card>
                     </Col>

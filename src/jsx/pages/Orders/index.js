@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import OrdersService from "../../../services/OrdersService";
+import NoData from "../../common/NoData";
+import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
 import CardItem from "./CardItem";
 import OrdersStatus from "./OrdersStatus";
@@ -10,9 +13,11 @@ const Orders = () =>{
     const [orders, setOrders] =useState([])
     const [item, setItem] =useState({})
     const [modal, setModal] =useState(false)
+    const [hasData, setHasData] =useState(null)
     const [search, setSearch] =useState(null)
     const [shouldUpdate, setShouldUpdate] =useState(false)
     const navigate= useNavigate()
+    const ordersService = new OrdersService()
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
@@ -43,7 +48,7 @@ const Orders = () =>{
 
         <Card>
             <Card.Body>
-              <Table responsive>
+              {hasData === 1 && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -81,7 +86,14 @@ const Orders = () =>{
                     />
                   })}
                 </tbody>
-              </Table>
+              </Table>}
+              {hasData === 0 && <NoData />}
+              <Pagination
+                  setData={setOrders}
+                  service={ordersService}
+                  shouldUpdate={shouldUpdate}
+                  setHasData={setHasData}
+                />
             </Card.Body>
           </Card>
           {modal && <OrdersStatus modal={modal} setModal={setModal} item={item} setShouldUpdate={setShouldUpdate}/>}

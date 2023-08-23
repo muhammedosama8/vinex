@@ -54,6 +54,7 @@ export function Logout(navigate) {
 export function loginAction(email, password, navigate) {
     return (dispatch) => {
          login(email, password).then((response) => {  
+            console.log(response)
                 if(response?.status === 200){
                     dispatch(loginFn({email, password:''}))  
                     saveTokenInLocalStorage(response.data);
@@ -62,6 +63,7 @@ export function loginAction(email, password, navigate) {
                     navigate('/dashboard'); 
                 }  
             }).catch(error => {
+                console.log(error)
                 const errorMessage = formatError(error?.response?.data);
                 dispatch(loginFailedAction(errorMessage));
             });

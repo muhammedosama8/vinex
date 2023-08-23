@@ -1,21 +1,27 @@
 import { Button, Card, Col, Row } from "react-bootstrap";
 import {AvField, AvForm} from "availity-reactstrap-validation";
-import { EditorState } from "draft-js";
-import { useState } from "react";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { useEffect, useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import 'draft-js/dist/Draft.css';
 import '../style.scss'
+import StaticPagesServices from "../../../../../services/StaticPagesService";
+import { toast } from "react-toastify";
 
-const About = () =>{
+const Static = () =>{
     const [formData, setFormData] =useState([
         {
             title_en:'',
             title_ar:'',
-            description_ar:EditorState.createEmpty(),
+            description_ar: EditorState.createEmpty(),
             description_en: EditorState.createEmpty(),
         }
     ])
+    const [isEdit, setIsEdit] = useState()
+    const staticPagesServices = new StaticPagesServices()
 
     const changeInput = (e,name,index) =>{
         let update = formData.map((item,ind)=>{
@@ -31,7 +37,48 @@ const About = () =>{
         setFormData(update)
     }
 
-    const submit = () =>{}
+    useEffect(()=>{
+        let params = {type: window.history?.state.usr}
+        staticPagesServices.getList(params).then(res=>{
+            if(res.status === 200){
+                if(res.data.data?.length === 0){
+                    setIsEdit(false)
+                } else {
+                    let data = res.data.data?.map(item =>{
+                        return{
+                            title_en: item.title_en,
+                            title_ar: item.title_ar,
+                            description_ar: EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(item.description_ar))),
+                            description_en: EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(item.description_en))),
+                        }
+                    })
+                    setIsEdit(true)
+                    setFormData(data)
+                }
+            }
+        })
+    },[])
+    const submit = () =>{
+        let data ={
+            type: window.history?.state.usr,
+            static_page: formData.map(res=>{
+                let en = draftToHtml(convertToRaw(res.description_en.getCurrentContent()))
+                let ar = draftToHtml(convertToRaw(res.description_ar.getCurrentContent()))
+                console.log(res)
+                return{
+                    ...res,
+                    description_en: en,
+                    description_ar: ar
+                }
+            })
+        }
+        staticPagesServices.create(data).then(res=>{
+            if(res.status === 201){
+                toast.success("Update Data Successfullly")
+                setIsEdit(true)
+            }
+        })
+    }
 
     return<>
     <Card>
@@ -39,7 +86,7 @@ const About = () =>{
         <AvForm onValidSubmit={submit}>
             {formData?.map((item, index)=>{
                 return <Row className="mb-5 position-relative" key={index}>
-                    {index > 0 && <button className="delete border-0" type="button" onClick={()=>{
+                    {index > 0 && <button className="delete border-0" disabled={isEdit} type="button" onClick={()=>{
                         let update = formData.filter((_,ind) => ind !== index)
                         setFormData(update)
                     }}>
@@ -51,6 +98,7 @@ const About = () =>{
 						name ={`title_en${index}`}
 						type="text" 
 						value={item.title_en}
+                        disabled={isEdit}
 						validate={{
 							required: {
 								value:true,
@@ -66,6 +114,7 @@ const About = () =>{
 						label ='Arabic Title'
 					    name ={`title_ar${index}`}
 						type="text" 
+                        disabled={isEdit}
 						value={item.title_ar}
 						validate={{
 							required: {
@@ -131,23 +180,29 @@ const About = () =>{
             })}
             
             <div className="d-flex justify-content-between">
-                <Button variant="secondary" onClick={()=>{
+                <Button 
+                    disabled={isEdit}
+                    variant="secondary" 
+                    onClick={()=>{
                     setFormData([...formData, {
                         title_en:'',
                         title_ar:'',
-                        description_ar:'',
-                        description_en:'',
+                        description_ar: EditorState.createEmpty(),
+                        description_en: EditorState.createEmpty(),
                     }])
                 }}>
                     Add New Details
                 </Button>
-                <Button variant="primary" type="submit">
+                {!isEdit && <Button variant="primary" type="submit">
                     Submit
-                </Button>
+                </Button>}
+                {isEdit && <Button variant="primary" type="button" onClick={()=>setIsEdit(true)}>
+                    Edit
+                </Button>}
             </div>
         </AvForm>
         </Card.Body>
     </Card>
     </>
 }
-export default About;
+export default Static;

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import CategoriesService from "../../../../services/CategoriesService";
+import NotificationService from "../../../../services/NotificationService";
 import DeleteModal from "../../../common/DeleteModal";
 import SendModal from "../SendModal";
 
@@ -10,16 +10,16 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
     const [send, setSend] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    const categoriesService = new CategoriesService()
+    const notificationService = new NotificationService()
 
     return(
         <tr key={index} className='text-center'>
             <td>
                 {item.id}
             </td>
-            <td>{item.name_en}</td>
+            <td>{item.title_en}</td>
             <td>
-                {item.message_en}
+                {item.description_en}
             </td>
             <td>
                 {isExist('notification') && <Dropdown>
@@ -38,9 +38,9 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
 
             {deleteModal && <DeleteModal
                       open={deleteModal}
-                      titleMsg={item.name_en}
+                      titleMsg={item.title_en}
                       deletedItem={item}
-                      modelService={categoriesService}
+                      modelService={notificationService}
                       onCloseModal={setDeleteModal}
                       setShouldUpdate={setShouldUpdate}
                     />}

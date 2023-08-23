@@ -9,8 +9,8 @@ const AddNotification = ()=>{
     const [formData, setFormData] = useState({
         title_en: '',
         title_ar: '',
-        message_en: '',
-        message_ar: '',
+        description_en: '',
+        description_ar: '',
     })
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
@@ -18,21 +18,22 @@ const AddNotification = ()=>{
 
 
     const submit = () =>{
-        if(formData?.message_en || formData?.message_ar){
+        if(!formData?.description_en || !formData?.description_ar){
             toast.error('Enter Message First')
             return
         }
         let data ={
             title_en: formData?.title_en,
             title_ar: formData?.title_ar,
-            message_en: formData?.message_en,
-            message_ar: formData?.message_ar,
+            description_en: formData?.description_en,
+            description_ar: formData?.description_ar,
         }
         setLoading(true)
         notificationService?.create(data)?.then(res=>{
             if(res?.status === 201){
                 toast.success('Notification Added Successfully')
                 setLoading(false)
+                navigate('/notification')
             }
         })
     }
@@ -98,12 +99,12 @@ const AddNotification = ()=>{
                                     minHeight: '100px',
                                     height:' 200px'
                                 }}
-                                name ='message_en'
+                                name ='description_en'
                                 type="text" 
-                                value={formData.message_en}
+                                value={formData.description_en}
                                 required
                                 placeholder='Description'
-                                onChange={(e) => setFormData({...formData, message_en: e.target.value})}
+                                onChange={(e) => setFormData({...formData, description_en: e.target.value})}
                             />
                         </Col>
                         <Col md={6}>
@@ -118,12 +119,12 @@ const AddNotification = ()=>{
                                     minHeight: '100px',
                                     height:' 200px'
                                 }}
-                                name ='message_ar'
+                                name ='description_ar'
                                 type="text" 
-                                value={formData.message_ar}
+                                value={formData.description_ar}
                                 required
                                 placeholder='Description'
-                                onChange={(e) => setFormData({...formData, message_ar: e.target.value})}
+                                onChange={(e) => setFormData({...formData, description_ar: e.target.value})}
                             />
                         </Col>
                     </Row>

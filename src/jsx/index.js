@@ -44,12 +44,10 @@ import AddDynamicVariant from './pages/DynamicVariant/AddVariant'
 import UserProfile from './pages/Users/Profile'
 import Currency from './pages/Setting/Currency'
 import StaticPages from './pages/Setting/StaticPages'
-import FAQs from './pages/Setting/StaticPages/FAQs'
-import Privacy from './pages/Setting/StaticPages/Privacy'
-import About from './pages/Setting/StaticPages/About'
 import AddNotification from './pages/Notification/AddNotification'
 import TimeSlot from './pages/TimeSlot'
 import SpecificBlock from './pages/TimeSlot/SpecificBlock'
+import Static from './pages/Setting/StaticPages/Static'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -130,9 +128,9 @@ const Markup = () => {
     {url: 'control', component: <Control />},
     {url: 'currency', component: <Currency />},
     {url: 'pages', component: <StaticPages />},
-    {url: 'pages/about', component: <About />},
-    {url: 'pages/privacy', component: <Privacy />},
-    {url: 'pages/faqs', component: <FAQs />},
+    {url: 'pages/about', component: <Static />},
+    {url: 'pages/privacy', component: <Static />},
+    {url: 'pages/faqs', component: <Static />},
 
     //Profile
     {url: 'profile', component: <Profile />},

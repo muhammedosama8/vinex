@@ -10,13 +10,14 @@ const SendModal = ({modal, setModal, item})=>{
 
 
     const submit = () =>{
-        //setLoading(true)
-        // notificationService?.create(data)?.then(res=>{
-        //     if(res?.status === 201){
-        //         toast.success('Category Added Successfully')
-        //         setLoading(false)
-        //     }
-        // })
+        setLoading(true)
+        notificationService?.send(item?.id)?.then(res=>{
+            if(res?.status === 200){
+                toast.success('Notification Send Successfully')
+                setLoading(false)
+                setModal()
+            }
+        })
     }
 
     return(
@@ -27,7 +28,7 @@ const SendModal = ({modal, setModal, item})=>{
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>Send {item.name_en}</Modal.Title>
+            <Modal.Title>Send {item.title_en}</Modal.Title>
             <Button
                 variant=""
                 className="close"
@@ -48,7 +49,7 @@ const SendModal = ({modal, setModal, item})=>{
                                 bsSize="lg"
                                 name='name_en'
                                 disabled
-                                value={item.name_en}
+                                value={item.title_en}
                             />
                         </Col>
 
@@ -57,7 +58,7 @@ const SendModal = ({modal, setModal, item})=>{
                                 label='Arabic Title'
                                 type='text'
                                 placeholder='الاسم'
-                                value={item.name_ar}
+                                value={item.title_ar}
                                 name='name_ar'
                                 disabled
                             />
@@ -76,7 +77,7 @@ const SendModal = ({modal, setModal, item})=>{
                                 }}
                                 name ='message_en'
                                 type="text" 
-                                value={item.message_en}
+                                value={item.description_en}
                                 disabled
                                 placeholder='Description'
                             />
@@ -95,13 +96,13 @@ const SendModal = ({modal, setModal, item})=>{
                                 }}
                                 name ='message_ar'
                                 type="text" 
-                                value={item.message_ar}
+                                value={item.description_ar}
                                 disabled
                             />
                         </Col>
                     </Row>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className="justify-content-between">
             <Button onClick={setModal} variant="danger light">
                 Close
             </Button>

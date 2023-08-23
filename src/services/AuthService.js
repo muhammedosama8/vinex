@@ -40,6 +40,7 @@ export function signUp(email, password) {
 }
 
 export function formatError(errorResponse) {
+    console.log(errorResponse)
     switch (errorResponse?.message) {
         case 'EMAIL_EXISTS':
             //return 'Email already exists';
@@ -50,7 +51,7 @@ export function formatError(errorResponse) {
            break;
         case 'Incorrect Password.':
             //return 'Invalid Password';
-            swal("Oops", "Invalid Password", "error",{ button: "Try Again!",});
+            swal("Oops", "Incorrect Password", "error",{ button: "Try Again!",});
             break;
         case 'كلمة سر خاطئة':
             //return 'Invalid Password';
