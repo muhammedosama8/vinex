@@ -10,7 +10,12 @@ function setInterceptors(navigate){
   axios.interceptors.response.use(null, async (error) => {
     console.log(error)
     if(error.response && error.response.status === 401){
-      if(error.response.data.message === "not authorized" || error.response.data.message === "غير مصرح به"){
+      if(error.response.data.message === "not authorized" || error.response.data.message === "غير مصرح به (رمز قديم)"){
+        Logout(navigate);
+        window.location = `/login`;
+      }
+    } else if(error.response && error.response.status === 402){
+      if(error.response.data.message === "not authorized" || error.response.data.message === "غير مصرح به (رمز قديم)"){
         Logout(navigate);
         window.location = `/login`;
       }

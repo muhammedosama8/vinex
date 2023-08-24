@@ -10,6 +10,7 @@ import 'draft-js/dist/Draft.css';
 import '../style.scss'
 import StaticPagesServices from "../../../../../services/StaticPagesService";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const Static = () =>{
     const [formData, setFormData] =useState([
@@ -20,6 +21,8 @@ const Static = () =>{
             description_en: EditorState.createEmpty(),
         }
     ])
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const [isEdit, setIsEdit] = useState()
     const staticPagesServices = new StaticPagesServices()
 
@@ -136,6 +139,9 @@ const Static = () =>{
                             wrapperClassName="wrapperClassName"
                             editorClassName="editorClassName"
                             onEditorStateChange={(e) => {
+                                if(isEdit){
+                                    return
+                                }
                                 let update = formData.map((item,ind)=>{
                                     if(index === ind){
                                         return{
@@ -161,6 +167,9 @@ const Static = () =>{
                             wrapperClassName="wrapperClassName"
                             editorClassName="editorClassName"
                             onEditorStateChange={(e) => {
+                                if(isEdit){
+                                    return
+                                }
                                 let update = formData.map((item,ind)=>{
                                     if(index === ind){
                                         return{
@@ -179,7 +188,7 @@ const Static = () =>{
             </Row>
             })}
             
-            <div className="d-flex justify-content-between">
+            {isExist('static_pages') && <div className="d-flex justify-content-between">
                 <Button 
                     disabled={isEdit}
                     variant="secondary" 
@@ -196,10 +205,10 @@ const Static = () =>{
                 {!isEdit && <Button variant="primary" type="submit">
                     Submit
                 </Button>}
-                {isEdit && <Button variant="primary" type="button" onClick={()=>setIsEdit(true)}>
+                {isEdit && <Button variant="primary" type="button" onClick={()=>setIsEdit(false)}>
                     Edit
                 </Button>}
-            </div>
+            </div>}
         </AvForm>
         </Card.Body>
     </Card>
