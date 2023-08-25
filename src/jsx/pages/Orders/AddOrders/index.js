@@ -9,7 +9,7 @@ import ProductsService from "../../../../services/ProductsService";
 import SubCategoriesService from "../../../../services/SubCategoriesService";
 
 const AddOrders = () =>{
-    const [steps, setSteps] = useState(3)
+    const [steps, setSteps] = useState(1)
     const [type, setType] = useState('exist')
     const [search, setSearch] = useState('')
     const [categoriesOptions, setCategoriesOptions] = useState([])

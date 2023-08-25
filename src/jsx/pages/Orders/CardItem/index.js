@@ -26,11 +26,11 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                     <td>
                       <strong>{item.id}</strong>
                     </td>                    
-                    <td>{item.customer_name}</td>
-                    <td>{item.customer_email}</td>
-                    <td>{item.customer_phone}</td>
-                    <td>{item.total_price}</td>
-                    <td>{item.payment_status}</td>
+                    <td>{item.user.f_name || '-'} {item.user.l_name}</td>
+                    <td>{item.user.email || '-'}</td>
+                    <td>{item.user.country_code}{item.user.phone}</td>
+                    <td>{item.total}</td>
+                    <td className="text-capitalize">{item.payment_method}</td>
                     <td>
                       <Badge
                         onClick={changeStatusToggle} 
