@@ -12,6 +12,9 @@ export default class ProductsService extends BaseService {
     constructor() {
         super(apiEndpoint);
     }
+    getAllProducts(params) {
+        return http.get(apiEndpoint, {params});
+    }
     getList(params) {
         return http.get(apiGetEndpoint, {params});
     }

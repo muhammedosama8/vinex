@@ -48,6 +48,7 @@ import AddNotification from './pages/Notification/AddNotification'
 import TimeSlot from './pages/TimeSlot'
 import SpecificBlock from './pages/TimeSlot/SpecificBlock'
 import Static from './pages/Setting/StaticPages/Static'
+import AddOrders from './pages/Orders/AddOrders'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -95,6 +96,7 @@ const Markup = () => {
 
     // Orders
     { url: 'orders', component: <Orders /> },
+    { url: 'orders/add-orders', component: <AddOrders /> },
 
     // Reports
     { url: 'reports', component: <Reports /> },
