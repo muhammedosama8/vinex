@@ -37,7 +37,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                       {item.amount}
                     </td>
                     <td>{item.Type}</td>
-                    <td>{item.end_date.split('T00')[0]}</td>
+                    <td>{item.end_date.split('T')[0]}</td>
                     <td>{item.max_usage}</td>
                     <td>{item.count_usage}</td>
                     <td>
