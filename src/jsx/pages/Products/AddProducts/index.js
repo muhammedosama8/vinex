@@ -350,7 +350,7 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='Arabic Title'
+                                label='Arabic Title*'
                                 type='text'
                                 placeholder='الاسم'
                                 value={product.name_ar}
@@ -369,7 +369,7 @@ const AddProducts = () => {
                                 />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">English Description</label>
+                        <label className="text-label">English Description*</label>
                         <textarea  
                             name="description_en" 
                             style={{
@@ -393,7 +393,7 @@ const AddProducts = () => {
                         {errors['desc_en'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">Arabic Description</label>
+                        <label className="text-label">Arabic Description*</label>
                         <textarea  
                             name="description_ar" 
                             style={{

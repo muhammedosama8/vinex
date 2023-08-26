@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +11,8 @@ import CardItem from "./CardItem";
 const Products = () =>{
     const [products, setProducts] =useState([])
     const [hasData, setHasData] =useState(null)
-    const [addModal, setAddModal] =useState([])
     const [search, setSearch] =useState(null)
+    const [indexEdit, setIndexEdit] = useState(null)
     const [isDeleted, setIsDeleted] =useState(false)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
@@ -59,9 +59,9 @@ const Products = () =>{
                     <th>
                       <strong>In Stock</strong>
                     </th>
-                    {/* <th>
+                    <th>
                       <strong>STATUS</strong>
-                    </th> */}
+                    </th>
                     <th></th>
                   </tr>
                 </thead>
@@ -71,8 +71,9 @@ const Products = () =>{
                     key= {index}
                     index= {index}
                     item={item}
-                    setAddModal={setAddModal}
                     setShouldUpdate={setShouldUpdate}
+                    setIndexEdit={setIndexEdit}
+                    indexEdit={indexEdit}
                     />
                   })}
                 </tbody>

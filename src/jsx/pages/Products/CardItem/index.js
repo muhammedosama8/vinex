@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { Badge, Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import avatar1 from "../../../../images/1.jpg";
+import { toast } from "react-toastify";
 import ProductsService from "../../../../services/ProductsService";
 import DeleteModal from "../../../common/DeleteModal";
 
-const CardItem = ({item, index, setShouldUpdate}) =>{
-    const [status, setStatus] = useState(null)
+const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
+    const [quantity, setQuantity] = useState(item.amount)
+    
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
@@ -19,6 +20,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
       productsService.remove(item.id, { isDeleted: false }).then(res=>{
           if(res.status === 200){
               setShouldUpdate(prev=> !prev)
+              toast.success('Status Updated Successfully')
           }
       })
     }
@@ -26,7 +28,28 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
     useEffect(()=>{
       setIsDeleted(item.isDeleted)
     },[item])
+
+    const changeStatusToggle = (e) =>{
+      productsService.remove(item.id, { isDeleted: !e.target.checked }).then(res=>{
+        if(res.status === 200){
+            setShouldUpdate(prev=> !prev)
+            toast.success('Status Updated Successfully')
+        }
+    })
+    }
     
+    const updateQuantity = () =>{
+      let data ={
+        amount: parseInt(quantity)
+      }
+      productsService?.update(item.id, data)?.then(res=>{
+        if(res.data?.status === 200){
+            toast.success('Product Updated Successfully')
+            setIndexEdit(null)
+        }
+      })
+    }
+
     return(
         <tr key={index} className='text-center'>
                     <td>
@@ -46,20 +69,43 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                       <Badge variant="success light">{item.category?.name_en}</Badge>
                     </td>
                     <td>{item.price}</td>
-                    <td>{item.amount}</td>
-                    {/* <td>
+                    <td>
+                      <input
+                        type='number'
+                        value={quantity}
+                        min={1}
+                        style={{
+                          width: '5rem',
+                          padding: '5px',
+                          border: '1px solid #dedede',
+                          borderRadius: '5px'
+                        }}
+                        onChange={(e)=>{
+                          setQuantity(e.target.value)
+                        }}
+                        onFocus={()=>setIndexEdit(index)}
+                      />
+                      {index === indexEdit &&<i 
+                        className="la la-check-circle ml-2"
+                        style={{
+                          fontSize: '1.35rem',
+                          cursor: 'pointer'
+                        }}
+                        onClick={updateQuantity}
+                      ></i>}
+                    </td>
+                    <td>
                       <Form.Check
                         type="switch"
                         id={`custom-switch${index}`}
-                        checked={status}
+                        checked={!item.isDeleted}
                         disabled={!isExist('products')}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
-                    </td> */}
+                    </td>
                     <td>
                       {isExist('products') && <Dropdown>
                         <Dropdown.Toggle
-                          // variant="success"
                           className="light sharp i-false"
                         >
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>

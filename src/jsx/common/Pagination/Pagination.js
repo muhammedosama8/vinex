@@ -61,7 +61,7 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
                             />
                     </span>
                 </Col>
-{console.log(typeof page)}
+
                 <Col md={12} className="text-center">	
                     <div className="filter-pagination  mt-3">
                         <button className=" previous-button" onClick={() => {
