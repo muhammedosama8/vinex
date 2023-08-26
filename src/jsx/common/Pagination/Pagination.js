@@ -21,15 +21,11 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
             }
         })
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    },[page, shouldUpdate])
-
-    useEffect(()=>{
-        if(page > 1) setPage(1)
-    },[shouldUpdate])
+    },[page, isDeleted, shouldUpdate])
 
     useEffect(()=>{
         setPage(1)
-    },[isDeleted])
+    },[isDeleted, shouldUpdate])
 
     if(totalPages > 1){
         return(
