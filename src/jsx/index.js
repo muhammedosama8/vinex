@@ -49,6 +49,8 @@ import TimeSlot from './pages/TimeSlot'
 import SpecificBlock from './pages/TimeSlot/SpecificBlock'
 import Static from './pages/Setting/StaticPages/Static'
 import AddOrders from './pages/Orders/AddOrders'
+import DigitalProducts from './pages/DigitalProducts'
+import AddDigitalProducts from './pages/DigitalProducts/AddDigitalProducts'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -109,6 +111,11 @@ const Markup = () => {
     { url: 'products', component: <Products /> },
     { url: 'products/add-products', component: <AddProducts /> },
     { url: 'products/add-products/:id', component: <AddProducts /> },
+
+    //Digital Products
+    { url: 'digital-products', component: <DigitalProducts /> },
+    { url: 'digital-products/add-products', component: <AddDigitalProducts /> },
+    { url: 'digital-products/add-products/:id', component: <AddDigitalProducts /> },
 
     // Variant
     { url: 'variant', component: <Variant /> },

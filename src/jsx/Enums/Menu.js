@@ -412,6 +412,13 @@ export const MenuList = [
         iconStyle: <i className="flaticon-381-notepad" />,
         to: 'products',
     },
+    //Digital Products
+    {   
+        title:'Digital Products',
+        classsChange: 'mm-collapse',
+        iconStyle: <i className="la la-qrcode"></i>,
+        to: 'digital-products',
+    },
     //Orders
     {   
         title:'Orders',
