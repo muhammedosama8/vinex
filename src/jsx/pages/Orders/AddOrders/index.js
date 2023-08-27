@@ -158,7 +158,7 @@ const AddOrders = () =>{
             }
         })
     }
-console.log(formData)
+
     const firstNext = () => {
         setSteps(2)
     }

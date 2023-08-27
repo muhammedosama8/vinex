@@ -517,7 +517,7 @@ const AddDigitalProducts = () => {
                       />
                 </Col>
                 {dynamicVariant?.length > 0 && <Col md={6}>
-                <label className="text-label mb-2 mt-2 d-block">Dynamic Variant</label>
+                <label className="text-label mb-2 d-block">Dynamic Variant</label>
                 <Select 
                     options={dynamicVariant?.filter(res=> !product.dynamic_variant?.some(res2=> res.label === res2.label))}
                     name='dynamic_variant'

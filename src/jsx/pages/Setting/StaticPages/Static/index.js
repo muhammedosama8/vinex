@@ -67,7 +67,6 @@ const Static = () =>{
             static_page: formData.map(res=>{
                 let en = draftToHtml(convertToRaw(res.description_en.getCurrentContent()))
                 let ar = draftToHtml(convertToRaw(res.description_ar.getCurrentContent()))
-                console.log(res)
                 return{
                     ...res,
                     description_en: en,
