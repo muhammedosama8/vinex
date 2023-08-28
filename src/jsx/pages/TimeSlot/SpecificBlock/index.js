@@ -66,7 +66,7 @@ const SpecificBlock = () =>{
             
         {modal && <AddSpecificBlockModal 
             modal={modal}
-            setModal={setModal}
+            setModal={()=> setModal(false)}
             setShouldUpdate={setShouldUpdate}
         />}
         </Card.Body>
