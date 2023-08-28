@@ -1,4 +1,3 @@
-// import { useNavigate } from "react-router-dom";
 import {
     formatError,
     login,
@@ -31,7 +30,6 @@ export function signupAction(email, password, navigate) {
             // );
             dispatch(confirmedSignupAction(response.data));
             navigate('/dashboard');
-			//history.push('/dashboard');
         })
         .catch((error) => {
             const errorMessage = formatError(error.response.data);
@@ -44,7 +42,6 @@ export function Logout(navigate) {
 	localStorage.removeItem('userDetails');
 	localStorage.removeItem('LeapAdminRules');
     navigate('/login');
-	// history.push('/login');
     
 	return {
         type: LOGOUT_ACTION,
@@ -57,10 +54,10 @@ export function loginAction(email, password, navigate) {
                 if(response?.status === 200){
                     dispatch(loginFn({email, password:''}))  
                     saveTokenInLocalStorage(response.data);
-                    dispatch(loginConfirmedAction(response.data)); 
-                    dispatch(loadingToggleAction(false))  
+                    dispatch(loginConfirmedAction(response.data));
                     navigate('/dashboard'); 
                 }  
+                dispatch(loadingToggleAction(false))  
             }).catch(error => {
                 const errorMessage = formatError(error?.response?.data);
                 dispatch(loginFailedAction(errorMessage));
