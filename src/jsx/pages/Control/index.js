@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import BaseService from "../../../services/BaseService";
 import uploadImg from '../../../images/upload-img.png';
 import { toast } from "react-toastify";
+import ControlService from "../../../services/ControlServices";
 
 const Control = () => {
-    const [logo1, setLogo1] = useState('')
-    const [logo2, setLogo2] = useState('')
-    const [logo3, setLogo3] = useState('')
-    const [color, setColor] = useState('')
-    // const [loding, setLoading] = useState(false)
+    const [websiteLogo, setWebsiteLogo] = useState('')
+    const [mobileLogo, setMobileLogo] = useState('')
+    const [dashboardLogo, setDashboardLogo] = useState('')
+    const [color, setColor] = useState('#444444')
+    const [loding, setLoading] = useState(false)
+    const controlService = new ControlService()
 
     const fileHandler = (e, setLogo) => {
         // setLoading(true)
@@ -27,7 +29,29 @@ const Control = () => {
         }
     }
 
+    useEffect(()=>{
+        controlService.getList().then(res=>{
+            setColor(res.data.data.main_color)
+            setDashboardLogo(res.data.data.dashboard_logo)
+            setMobileLogo(res.data.data.mobile_logo)
+            setWebsiteLogo(res.data.data.website_logo)
+        })
+    }, [])
+
     const submit = () =>{
+        let data = {
+            mobile_logo: mobileLogo,
+            website_logo: websiteLogo,
+            dashboard_logo: dashboardLogo,
+            main_color: color
+        }
+        setLoading(true)
+        controlService?.create(data).then(res=>{
+            if(res.data.status === 201){
+                toast.success('Control Updated Successfully')
+            }
+            setLoading(false)
+        })
     }
 
     return<Card>
@@ -38,13 +62,13 @@ const Control = () => {
                     <label className="m-0">Website Logo</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
-                            <input type="file" onChange={(e) => fileHandler(e, setLogo1)} id={`imageUpload1`} /> 					
+                            <input type="file" onChange={(e) => fileHandler(e, setWebsiteLogo)} id={`imageUpload1`} /> 					
                             <label htmlFor={`imageUpload1`}  name=''></label>
                         </div>
                             <div className="avatar-preview2 m-auto">
                                 <div id={`imagePreview1`} className='position-relative'>
-                                    {!!logo1 && <button 
-                                        onClick={()=> setLogo1('')}
+                                    {!!websiteLogo && <button 
+                                        onClick={()=> setWebsiteLogo('')}
                                         style={{
                                             color: 'red',
                                             zIndex: '1',
@@ -58,14 +82,14 @@ const Control = () => {
                                         }}>
                                         <i className="la la-trash"></i>
                                     </button>}
-                                {!!logo1 && 
+                                {!!websiteLogo && 
                                     <img alt='icon'
                                             id={`saveImageFile1`} 
                                         className='w-100 h-100' 
                                         style={{borderRadius: '30px'}} 
-                                        src={logo1}
+                                        src={websiteLogo}
                                     />}
-                                {!logo1 && 
+                                {!websiteLogo && 
                                     <img 
                                         id={`saveImageFile1`} 
                                         src={uploadImg} alt='icon'
@@ -81,13 +105,13 @@ const Control = () => {
                     <label className="m-0">Mobile Logo</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
-                            <input type="file" onChange={(e) => fileHandler(e, setLogo2)} id={`imageUpload2`} /> 					
+                            <input type="file" onChange={(e) => fileHandler(e, setMobileLogo)} id={`imageUpload2`} /> 					
                             <label htmlFor={`imageUpload2`}  name=''></label>
                         </div>
                             <div className="avatar-preview2 m-100 m-auto">
                                 <div id={`imagePreview2`} className='position-relative'>
-                                    {!!logo2 && <button 
-                                        onClick={()=> setLogo2('')}
+                                    {!!mobileLogo && <button 
+                                        onClick={()=> setMobileLogo('')}
                                         style={{
                                             color: 'red',
                                             zIndex: '1',
@@ -101,15 +125,15 @@ const Control = () => {
                                         }}>
                                         <i className="la la-trash"></i>
                                     </button>}
-                                {!!logo2 && 
+                                {!!mobileLogo && 
                                     <img alt='icon'
                                             id={`saveImageFile2`} 
                                         className='w-100 h-100' 
                                         style={{borderRadius: '30px'}} 
-                                        src={logo2}
+                                        src={mobileLogo}
                                     />
                                 }
-                                {!logo2 && 
+                                {!mobileLogo && 
                                     <img 
                                         id={`saveImageFile2`} 
                                         src={uploadImg} alt='icon'
@@ -126,13 +150,13 @@ const Control = () => {
                     <label className="m-0">Dashoard Logo</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
-                            <input type="file" onChange={(e) => fileHandler(e, setLogo3)} id={`imageUpload3`} /> 					
+                            <input type="file" onChange={(e) => fileHandler(e, setDashboardLogo)} id={`imageUpload3`} /> 					
                             <label htmlFor={`imageUpload3`}  name=''></label>
                         </div>
                             <div className="avatar-preview2 m-100 m-auto">
                                 <div id={`imagePreview3`} className='position-relative'>
-                                    {!!logo3 && <button 
-                                        onClick={()=> setLogo3('')}
+                                    {!!dashboardLogo && <button 
+                                        onClick={()=> setDashboardLogo('')}
                                         style={{
                                             color: 'red',
                                             zIndex: '1',
@@ -146,14 +170,14 @@ const Control = () => {
                                         }}>
                                         <i className="la la-trash"></i>
                                     </button>}
-                                {!!logo3 && 
+                                {!!dashboardLogo && 
                                     <img alt='icon'
                                            id={`saveImageFile3`} 
                                         className='w-100 h-100' 
                                         style={{borderRadius: '30px'}} 
-                                        src={logo3}
+                                        src={dashboardLogo}
                                     />}
-                                {!logo3 && 
+                                {!dashboardLogo && 
                                     <img 
                                         id={`saveImageFile3`} 
                                         src={uploadImg} alt='icon'
@@ -179,7 +203,7 @@ const Control = () => {
             </Col>
         </Row>
         <div className="d-flex justify-content-end mt-5">
-           <Button variant="primary" onClick={submit}>
+           <Button variant="primary" onClick={submit} disabled={loding}>
                 Submit
            </Button>
         </div>
