@@ -6,7 +6,8 @@ import {
     SIGNUP_CONFIRMED_ACTION,
     SIGNUP_FAILED_ACTION,
     LOGIN,
-    CHANGE_RULES
+    CHANGE_RULES,
+    SET_LOGO
 } from '../actions/AuthActions';
 
 const initialState = {
@@ -23,6 +24,7 @@ const initialState = {
     errorMessage: '',
     successMessage: '',
     showLoading: false,
+    logo: ''
 };
 
 export function AuthReducer(state = initialState, action) {
@@ -99,6 +101,12 @@ export function AuthReducer(state = initialState, action) {
                     admin_roles: action.payload
                 }
             },
+        };
+    }
+    if (action.type === SET_LOGO) {
+        return {
+            ...state,
+            logo: action.payload
         };
     }
     return state;

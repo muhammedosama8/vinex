@@ -4,6 +4,9 @@ import BaseService from "../../../services/BaseService";
 import uploadImg from '../../../images/upload-img.png';
 import { toast } from "react-toastify";
 import ControlService from "../../../services/ControlServices";
+import { useDispatch } from "react-redux";
+import { setLogo } from "../../../store/actions/AuthActions";
+import Loader from "../../common/Loader";
 
 const Control = () => {
     const [websiteLogo, setWebsiteLogo] = useState('')
@@ -11,10 +14,14 @@ const Control = () => {
     const [dashboardLogo, setDashboardLogo] = useState('')
     const [color, setColor] = useState('#444444')
     const [loding, setLoading] = useState(false)
+    const [lodingImg1, setLoadingImg1] = useState(null)
+    const [lodingImg2, setLoadingImg2] = useState(null)
+    const [lodingImg3, setLoadingImg3] = useState(null)
+    const disabled = useDispatch()
     const controlService = new ControlService()
 
-    const fileHandler = (e, setLogo) => {
-        // setLoading(true)
+    const fileHandler = (e, setLogo, setLoadingImg) => {
+        setLoadingImg(true)
         let files = e.target.files
         const filesData = Object.values(files)
  
@@ -24,7 +31,7 @@ const Control = () => {
                     setLogo(res.data.url)
                     // setFiles(filesData[0])
                 }
-                // setLoading(false)
+                setLoadingImg(false)
             })
         }
     }
@@ -49,6 +56,7 @@ const Control = () => {
         controlService?.create(data).then(res=>{
             if(res.data.status === 201){
                 toast.success('Control Updated Successfully')
+                disabled(setLogo(dashboardLogo))
             }
             setLoading(false)
         })
@@ -62,7 +70,7 @@ const Control = () => {
                     <label className="m-0">Website Logo</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
-                            <input type="file" onChange={(e) => fileHandler(e, setWebsiteLogo)} id={`imageUpload1`} /> 					
+                            <input type="file" onChange={(e) => fileHandler(e, setWebsiteLogo, setLoadingImg1)} id={`imageUpload1`} /> 					
                             <label htmlFor={`imageUpload1`}  name=''></label>
                         </div>
                             <div className="avatar-preview2 m-auto">
@@ -82,19 +90,20 @@ const Control = () => {
                                         }}>
                                         <i className="la la-trash"></i>
                                     </button>}
-                                {!!websiteLogo && 
+                                {(!!websiteLogo && !lodingImg1 )&& 
                                     <img alt='icon'
                                             id={`saveImageFile1`} 
                                         className='w-100 h-100' 
                                         style={{borderRadius: '30px'}} 
                                         src={websiteLogo}
                                     />}
-                                {!websiteLogo && 
+                                {(!websiteLogo && !lodingImg1) && 
                                     <img 
                                         id={`saveImageFile1`} 
                                         src={uploadImg} alt='icon'
                                         style={{ width: '80px', height: '80px' }}
                                     />}
+                                {lodingImg1 && <Loader />}
                                 </div>
                             </div>
                         </div>
@@ -105,7 +114,7 @@ const Control = () => {
                     <label className="m-0">Mobile Logo</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
-                            <input type="file" onChange={(e) => fileHandler(e, setMobileLogo)} id={`imageUpload2`} /> 					
+                            <input type="file" onChange={(e) => fileHandler(e, setMobileLogo, setLoadingImg2)} id={`imageUpload2`} /> 					
                             <label htmlFor={`imageUpload2`}  name=''></label>
                         </div>
                             <div className="avatar-preview2 m-100 m-auto">
@@ -125,7 +134,7 @@ const Control = () => {
                                         }}>
                                         <i className="la la-trash"></i>
                                     </button>}
-                                {!!mobileLogo && 
+                                {(!!mobileLogo && !lodingImg2) && 
                                     <img alt='icon'
                                             id={`saveImageFile2`} 
                                         className='w-100 h-100' 
@@ -133,13 +142,14 @@ const Control = () => {
                                         src={mobileLogo}
                                     />
                                 }
-                                {!mobileLogo && 
+                                {(!mobileLogo && !lodingImg2) && 
                                     <img 
                                         id={`saveImageFile2`} 
                                         src={uploadImg} alt='icon'
                                         style={{ width: '80px', height: '80px' }}
                                     />
                                 }
+                                {lodingImg2 && <Loader />}
                                 </div>
                             </div>
                         </div>
@@ -150,7 +160,7 @@ const Control = () => {
                     <label className="m-0">Dashoard Logo</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
-                            <input type="file" onChange={(e) => fileHandler(e, setDashboardLogo)} id={`imageUpload3`} /> 					
+                            <input type="file" onChange={(e) => fileHandler(e, setDashboardLogo, setLoadingImg3)} id={`imageUpload3`} /> 					
                             <label htmlFor={`imageUpload3`}  name=''></label>
                         </div>
                             <div className="avatar-preview2 m-100 m-auto">
@@ -170,19 +180,20 @@ const Control = () => {
                                         }}>
                                         <i className="la la-trash"></i>
                                     </button>}
-                                {!!dashboardLogo && 
+                                {(!!dashboardLogo && !lodingImg3) && 
                                     <img alt='icon'
                                            id={`saveImageFile3`} 
                                         className='w-100 h-100' 
                                         style={{borderRadius: '30px'}} 
                                         src={dashboardLogo}
                                     />}
-                                {!dashboardLogo && 
+                                {(!dashboardLogo && !lodingImg3) && 
                                     <img 
                                         id={`saveImageFile3`} 
                                         src={uploadImg} alt='icon'
                                         style={{ width: '80px', height: '80px' }}
-                                    />}
+                                />}
+                                {lodingImg3 && <Loader />}
                                 </div>
                             </div>
                         </div>

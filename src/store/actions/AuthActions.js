@@ -16,6 +16,7 @@ export const LOGIN_FAILED_ACTION = '[login action] failed login';
 export const LOADING_TOGGLE_ACTION = '[Loading action] toggle loading';
 export const LOGOUT_ACTION = '[Logout action] logout action';
 export const CHANGE_RULES = 'change rules';
+export const SET_LOGO = 'change logo';
 
 
 export function signupAction(email, password, navigate) {
@@ -124,6 +125,13 @@ export function loadingToggleAction(status) {
 export function changeAdminRules(status) {
     return {
         type: CHANGE_RULES,
+        payload: status,
+    };
+}
+
+export function setLogo(status) {
+    return {
+        type: SET_LOGO,
         payload: status,
     };
 }
