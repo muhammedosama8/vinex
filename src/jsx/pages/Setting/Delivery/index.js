@@ -83,13 +83,14 @@ const Delivery = () => {
 
     return <Card>
         <Card.Body>
-            <AvForm onValidSubmit={submit}>
+            <AvForm>
                 <Row className="mb-3">
                     <Col md={6}>
                         <label className="text-label">Possible Delivery</label>
                         <Form.Check
                             type="switch"
                             id={`delivery_possibility`}
+                            disabled={!isAdd}
                             checked={formData.delivery_possibility}
                            onChange={(e)=> setFormData({...formData, delivery_possibility: e.target.checked})}
                         />
@@ -101,6 +102,7 @@ const Delivery = () => {
                             <Form.Check
                                 type="switch"
                                 id={`delivery_all_area`}
+                                disabled={!isAdd}
                                 checked={formData.delivery_all_area}
                                 onChange={(e)=> setFormData({...formData, delivery_all_area: e.target.checked})}
                             />
@@ -115,6 +117,7 @@ const Delivery = () => {
                             placeholder='Cash in Delivery Fees'
                             type='number'
                             name='cash_in_delivery'
+                            disabled={!isAdd}
                             errorMessage="Please Enter a Valid Value"
                             validate={{
                                 required: {
@@ -132,6 +135,7 @@ const Delivery = () => {
                             placeholder='Delivery Fees'
                             type='number'
                             name='delivery_fee'
+                            disabled={!isAdd}
                             errorMessage="Please Enter a Valid Value"
                             validate={{
                                 required: {
@@ -149,6 +153,7 @@ const Delivery = () => {
                             placeholder='Shipping Fee (Price per Kg)'
                             type='number'
                             name='shipping_fee'
+                            disabled={!isAdd}
                             // errorMessage="Please Enter a Valid Value"
                             // validate={{
                             //     required: {
@@ -167,6 +172,7 @@ const Delivery = () => {
                             label={area.name_en}
                             placeholder='Delivery Fee'
                             type='number'
+                            disabled={!isAdd}
                             name={`${area.delivery_fee}`}
                             errorMessage="Please Enter a Valid Value"
                             validate={{
@@ -214,8 +220,8 @@ const Delivery = () => {
                 </Row>}
                 <div className="d-flex justify-content-between mt-4">
                     <Button variant="secondary" type="button" onClick={()=> setFormData(inital)}>Cancel</Button>
-                    {isAdd && <Button variant="primary" type="submit" disabled={loading}>Submit</Button>}
                     {!isAdd && <Button variant="primary" type="button" onClick={()=> setIsAdd(true)} >Edit</Button>}
+                    {isAdd && <Button variant="primary" type="submit" onClick={submit} disabled={loading}>Submit</Button>}
                 </div>
             </AvForm>
         </Card.Body>
