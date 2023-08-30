@@ -11597,6 +11597,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   .deznav {
     left: 0;
     top: 5rem;
+    padding-bottom: 6rem;
     padding-top: 1rem; } }
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu > li.mega-menu > ul.collapse:not(.in),
