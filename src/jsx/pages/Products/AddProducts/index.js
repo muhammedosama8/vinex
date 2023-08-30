@@ -470,6 +470,7 @@ const AddProducts = () => {
                                 placeholder='Price'
                                 bsSize="lg"
                                 name='price'
+                                min='0.0000000000001'
                                 validate={{
                                     required: {
                                         value: true,
@@ -501,6 +502,7 @@ const AddProducts = () => {
                                         errorMessage: `English format is invalid`
                                     }
                                 }}
+                                min={1}
                                 value={product.amount}
                                 onChange={(e)=> handlerText(e)}
                             />
@@ -512,6 +514,7 @@ const AddProducts = () => {
                                 placeholder='Weight'
                                 bsSize="lg"
                                 name='weight'
+                                min='0.0000000000001'
                                 validate={{
                                     required: {
                                         value: true,
@@ -531,6 +534,7 @@ const AddProducts = () => {
                             label='Offer Price'
                             type='number'
                             placeholder='Offer Price'
+                            min='0.0000000000001'
                             bsSize="lg"
                             name='offerPrice'
                             value={product.offerPrice}
