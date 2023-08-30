@@ -475,10 +475,6 @@ const AddProducts = () => {
                                     required: {
                                         value: true,
                                         errorMessage: 'This Field is required'
-                                    },
-                                    pattern: {
-                                        value: "^[0-9]+$",
-                                        errorMessage: `English format is invalid`
                                     }
                                 }}
                                 value={product.price}
@@ -496,13 +492,9 @@ const AddProducts = () => {
                                     required: {
                                         value: true,
                                         errorMessage: 'This Field is required'
-                                    },
-                                    pattern: {
-                                        value: "^[0-9]+$",
-                                        errorMessage: `English format is invalid`
                                     }
                                 }}
-                                min={1}
+                                min='1'
                                 value={product.amount}
                                 onChange={(e)=> handlerText(e)}
                             />
@@ -519,10 +511,6 @@ const AddProducts = () => {
                                     required: {
                                         value: true,
                                         errorMessage: 'This Field is required'
-                                    },
-                                    pattern: {
-                                        value: "^[0-9]+$",
-                                        errorMessage: `Format is invalid`
                                     }
                                 }}
                                 value={product.weight}
