@@ -483,6 +483,10 @@ export const MenuList = [
         iconStyle: <i className='la la-cog'></i>,
         content : [
             {
+                title:'Delivery',
+                to: 'delivery',
+            },
+            {
                 title:'Social Media',
                 to: 'social',
             },

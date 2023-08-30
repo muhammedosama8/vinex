@@ -51,6 +51,7 @@ import Static from './pages/Setting/StaticPages/Static'
 import AddOrders from './pages/Orders/AddOrders'
 import DigitalProducts from './pages/DigitalProducts'
 import AddDigitalProducts from './pages/DigitalProducts/AddDigitalProducts'
+import Delivery from './pages/Setting/Delivery'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -140,6 +141,7 @@ const Markup = () => {
     {url: 'pages/about', component: <Static />},
     {url: 'pages/privacy', component: <Static />},
     {url: 'pages/faqs', component: <Static />},
+    {url: 'delivery', component: <Delivery />},
 
     //Profile
     {url: 'profile', component: <Profile />},
