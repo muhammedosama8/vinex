@@ -54,7 +54,7 @@ function Login(props) {
 						<div className="col-xl-12">
 						  <div className="auth-form">
 							<div className=" mb-3">
-							  <h2 className="text-primary">Welcome to Vinex</h2>
+							  <h2 className="text-primary">Welcome Back</h2>
 							</div>
 							<h4 className=" mb-4 ">Sign in by entering information below</h4>
                             {props.errorMessage && (
