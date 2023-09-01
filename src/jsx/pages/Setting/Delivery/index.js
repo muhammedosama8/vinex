@@ -4,6 +4,7 @@ import { Card, Col, Row, Form, Button } from "react-bootstrap";
 import AreasService from "../../../../services/AreasServices";
 import SettingService from "../../../../services/SettingServices";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const inital = {
     delivery_possibility: true,
@@ -19,6 +20,8 @@ const Delivery = () => {
     const [isAdd, setIsAdd] = useState(false)
     const areasService = new AreasService()
     const settingService = new SettingService()
+    const Auth = useSelector(state=> state.auth?.auth)
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     const formDataHandler = (e)=>{
         setFormData({...formData, [e.target.name]: e.target.value})
@@ -26,7 +29,7 @@ const Delivery = () => {
 
     useEffect(()=>{
         settingService.getList().then(res=>{
-            let response = res.data.data
+            let response = res?.data?.data
             if(response){
                 let data = {
                     delivery_possibility: response.delivery_possibility,
@@ -46,7 +49,7 @@ const Delivery = () => {
     useEffect(()=>{
         if(!formData.delivery_all_area){
             areasService.getList(1).then(res=>{
-                let data = res.data.data?.map(are=>{
+                let data = res?.data?.data?.map(are=>{
                     return{
                         ...are,
                         delivery_fee: are?.delivery_fee
@@ -84,6 +87,20 @@ const Delivery = () => {
     return <Card>
         <Card.Body>
             <AvForm>
+                {!isAdd && <button 
+                    style={{
+                        background: 'none',
+                        border: 'none',
+                        fontSize: '28px',
+                        position: 'absolute',
+                        right: '0',
+                        top: '-12px',
+                        zIndex: '1'
+                    }}
+                    type="button" 
+                    onClick={()=> setIsAdd(true)} >
+                    <i className="la la-edit"></i>
+                </button>}
                 <Row className="mb-3">
                     <Col md={6}>
                         <label className="text-label">Possible Delivery</label>
@@ -218,11 +235,11 @@ const Delivery = () => {
                         />
                     </Col> */}
                 </Row>}
-                <div className="d-flex justify-content-between mt-4">
-                    <Button variant="secondary" type="button" onClick={()=> setFormData(inital)}>Cancel</Button>
-                    {!isAdd && <Button variant="primary" type="button" onClick={()=> setIsAdd(true)} >Edit</Button>}
+                {isExist('delivery') && <div className="d-flex justify-content-between mt-4">
+                    {/* <Button variant="secondary" type="button" onClick={()=> setFormData(inital)}>Cancel</Button> */}
+                    <div></div>
                     {isAdd && <Button variant="primary" type="submit" onClick={submit} disabled={loading}>Submit</Button>}
-                </div>
+                </div>}
             </AvForm>
         </Card.Body>
     </Card>

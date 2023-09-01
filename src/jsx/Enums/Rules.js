@@ -36,4 +36,5 @@ export const Rules = [
     {label: 'Notification', value: 'notification'},
     {label: 'TimeSlot', value: 'time_slot'},
     {label: 'Static Pages', value: 'static_pages'},
+    {label: 'Delivery', value: 'delivery'},
 ]
