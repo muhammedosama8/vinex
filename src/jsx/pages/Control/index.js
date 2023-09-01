@@ -13,6 +13,8 @@ const Control = () => {
     const [mobileLogo, setMobileLogo] = useState('')
     const [dashboardLogo, setDashboardLogo] = useState('')
     const [color, setColor] = useState('#444444')
+    const [labelColor, setLabelColor] = useState('#444444')
+    const [title, setTitle] = useState('')
     const [loding, setLoading] = useState(false)
     const [lodingImg1, setLoadingImg1] = useState(null)
     const [lodingImg2, setLoadingImg2] = useState(null)
@@ -37,13 +39,17 @@ const Control = () => {
     }
 
     useEffect(()=>{
+        setLoading(true)
         controlService.getList().then(res=>{
             if(res){
                 setColor(res.data.data.main_color)
                 setDashboardLogo(res.data.data.dashboard_logo)
                 setMobileLogo(res.data.data.mobile_logo)
                 setWebsiteLogo(res.data.data.website_logo)
+                setTitle(res.data.data.website_title)
+                setLabelColor(res.data.data.label_color)
             }
+            setLoading(false)
         })
     }, [])
 
@@ -52,7 +58,9 @@ const Control = () => {
             mobile_logo: mobileLogo,
             website_logo: websiteLogo,
             dashboard_logo: dashboardLogo,
-            main_color: color
+            main_color: color,
+            website_title: title,
+            label_color: labelColor
         }
         setLoading(true)
         controlService?.create(data).then(res=>{
@@ -62,6 +70,14 @@ const Control = () => {
             }
             setLoading(false)
         })
+    }
+
+    if(loding){
+        return <Card style={{padding: '10rem 0'}}>
+            <Card.Body>
+                <Loader />
+            </Card.Body>
+        </Card>
     }
 
     return<Card>
@@ -201,8 +217,8 @@ const Control = () => {
                         </div>
                     </div>
             </Col>
-            <Col md={6} className='mt-3'>
-                <div className='form-group w-100'>
+            <Col md={6} className='mt-3 d-flex'>
+                <div className='form-group w-50'>
                     <label className="d-block">Color</label>
                     <input 
                         type='color' 
@@ -213,6 +229,33 @@ const Control = () => {
                         }}
                         onChange={(e)=> setColor(e.target.value)} />
                 </div>
+                <div className='form-group w-50'>
+                    <label className="d-block">Label Color</label>
+                    <input 
+                        type='color' 
+                        value={labelColor} 
+                        style={{
+                            height: '40px',
+                            width: '62px'
+                        }}
+                        onChange={(e)=> setLabelColor(e.target.value)} />
+                </div>
+            </Col>
+            <Col md={6} className='mt-3'></Col>
+            <Col md={6} className='mt-3'>
+                <label className="d-block">Website Title</label>
+                <input
+                    type='text'
+                    value={title}
+                    placeholder='Title'
+                    style={{
+                        padding: '8px',
+                        border: '1px solid #dedede',
+                        borderRadius: '5px'
+                    }}
+                    className='w-100'
+                    onChange={(e)=> setTitle(e.target.value)}
+                />
             </Col>
         </Row>
         <div className="d-flex justify-content-end mt-5">
