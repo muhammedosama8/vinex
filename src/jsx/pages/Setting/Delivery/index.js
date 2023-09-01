@@ -87,14 +87,14 @@ const Delivery = () => {
     return <Card>
         <Card.Body>
             <AvForm>
-                {!isAdd && <button 
+                {(!isAdd && isExist('delivery')) && <button 
                     style={{
                         background: 'none',
                         border: 'none',
                         fontSize: '28px',
                         position: 'absolute',
-                        right: '0',
-                        top: '-12px',
+                        right: '12px',
+                        top: '12px',
                         zIndex: '1'
                     }}
                     type="button" 
