@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap"
 import { Orders } from "../../../Enums/Orders";
+import OrdersService from "../../../../services/OrdersService";
 
 const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
     const [itemStatus, setItemStatus] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const ordersService = new OrdersService()
 
     useEffect(() => {
         setItemStatus(item.status)
@@ -13,8 +16,17 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
         setItemStatus(order)
     }
     const submit = () =>{
-
-        setShouldUpdate(prev=> !prev)
+        let data = {
+            status: itemStatus.toLowerCase()
+        }
+        setLoading(true)
+        ordersService.toggleStatus(item.id, data).then(res=>{
+            if(res && res.status === 200){
+                setShouldUpdate(prev=> !prev)
+                setModal(false)
+            }
+            setLoading(false)
+        })
     }
 
     return(
@@ -37,8 +49,8 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
                                 type='radio'
                                 name='orders'
                                 value={order}
-                                checked={itemStatus === order}
-                                onChange={()=> changeStatus(order)}
+                                checked={(itemStatus === order.toLowerCase())}
+                                onChange={()=> changeStatus(order.toLowerCase())}
                                 id={order}
                             />
                             <label for={order} className='mx-2'>{order}</label>
@@ -53,6 +65,7 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
             <Button 
                     variant="primary" 
                     type='submit'
+                    disabled={loading}
                     onClick={()=> submit()}
                 >Submit</Button>
             </Modal.Footer>

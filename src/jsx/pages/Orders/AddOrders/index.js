@@ -7,11 +7,17 @@ import { useNavigate } from "react-router-dom";
 import CategoriesService from "../../../../services/CategoriesService";
 import ProductsService from "../../../../services/ProductsService";
 import SubCategoriesService from "../../../../services/SubCategoriesService";
+import PromoCodeService from "../../../../services/PromoCodeService";
+import UserService from "../../../../services/UserService";
+import { toast } from "react-toastify";
+import TimeSlotService from "../../../../services/TimeSlotService";
+import BlockDateService from "../../../../services/BlockDateService";
 
 const AddOrders = () =>{
     const [steps, setSteps] = useState(1)
     const [type, setType] = useState('exist')
     const [search, setSearch] = useState('')
+    const [calc, setCalc] = useState(false)
     const [categoriesOptions, setCategoriesOptions] = useState([])
     const [formData, setFormData] = useState([{
         category: '',
@@ -23,11 +29,16 @@ const AddOrders = () =>{
         dynamicVariantOptions: [],
         variant: [],
         dynamicVariant: [],
-        amount: ''
+        amount: '',
+        totalPrice: 0
     }])
+    const [day, setDay] = useState('')
     const [promoCode, setPromoCode] = useState('')
+    const [promoCodeData, setPromoCodeData] = useState(null)
     const [paymentMethod, setPaymentMethod] = useState('')
     const [selectedUser, setSelectedUser] = useState({})
+    const [intervalHours, setIntervalHours] = useState([])
+    const [selectedIntervalHours, setSelectedIntervalHours] = useState({})
     const [user, setUser] = useState({
         f_name:'',
         l_name:'',
@@ -40,6 +51,10 @@ const AddOrders = () =>{
     const [countriesOptions, setCountriesOptions] = useState([])
     const countryiesService = new CountryiesService()
     const categoriesService = new CategoriesService()
+    const promoCodeService = new PromoCodeService()
+    const userService = new UserService()
+    const timeSlotService = new TimeSlotService()
+    const blockDateService = new BlockDateService()
 
     useEffect(()=>{
         if(type === 'new'){
@@ -72,6 +87,22 @@ const AddOrders = () =>{
         })
     },[])
 
+    useEffect(()=>{
+        let calcTotal = formData.map((res,ind)=>{
+            if(!!res.product && res.amount > 0){
+                let total = res.product.price*res.amount + res.dynamicVariant?.map(vari=> vari.amount*vari.price)?.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+                // let data = {} 
+                return {
+                    ...res,
+                    totalPrice: total
+                }
+            } else {
+                return res
+            }
+        })
+        setFormData(calcTotal)
+    },[calc])
+
     const getAllProductOptions = (index, category)=>{
         let params = category.value
 
@@ -81,7 +112,7 @@ const AddOrders = () =>{
 
         Promise.all([subCategoriesReq, dynamicVariantsReq, productsReq]).then((response)=>{
             let sub_categories = []
-            let dynamicVariant = []
+            let dynamicVar = []
             let products = []
             if(response[0].status === 200){
                 let subCategories = response[0].data?.meta?.data?.map(item=>{
@@ -94,14 +125,14 @@ const AddOrders = () =>{
                 sub_categories.push(...subCategories)
             }
             if(response[1].status === 200){
-                let data = response[1].data?.data?.map(item=>{
+                let data = response[1].data?.data?.filter(item => item.available_amount > 0)?.map(item=>{
                     return{
                         ...item,
-                        label: `${item.name_en}  (${item.price})`,
+                        label: `${item.name_en}`,
                         value: item.id,
                     }
                 })
-                dynamicVariant.push(...data)
+                dynamicVar.push(...data)
             }
             if(response[2].status === 200){
                 let data = response[2].data?.meta?.data?.filter(res=> !res.isDeleted)?.map(res=>{
@@ -122,8 +153,16 @@ const AddOrders = () =>{
                         subCategoryOptions: sub_categories,
                         productsOptions: products,
                         sub_category:'',
-                        amount: 1,
-                        dynamicVariantOptions: dynamicVariant
+                        product:'',
+                        dynamicVariantOptions: dynamicVar,
+                        dynamicVariant: dynamicVar?.length > 0 ? dynamicVar.map(dy=>{
+                            return {
+                                amount: 0,
+                                dynamic_variant_id: dy.id,
+                                has_amount: dy.has_amount,
+                                price: dy.price
+                            }
+                        }) : []
                     }
                 } else {
                     return res
@@ -164,8 +203,34 @@ const AddOrders = () =>{
     }
 
     const secondNext = () => {
+        if(!paymentMethod){
+            if(!paymentMethod){
+                toast.error('Select Payment First')
+            }
+        }
+        
         if(paymentMethod?.value === 'cash'){
-
+            let data = {
+                day: day.split('T')[0],
+                payment_method: "cash",
+                user_id: selectedUser.id,
+                user_address_id: 0,
+                interval_hours_id: selectedIntervalHours.id,
+                promoCode: !!promoCodeData ? promoCode : '',
+                products: formData.map(data=> {
+                    return {
+                        dynamic_variant: data.dynamicVariant?.filter(fi=> !!fi.amount).map(dy=>{
+                            return {
+                                amount: dy.amount,
+                                dynamic_variant_id: dy.dynamic_variant_id
+                            }
+                        }),
+                        amount: data.amount,
+                        product_id: data.product.id
+                    }
+                })
+              }
+              console.log(data)
         } else {
             let update = formData.filter(res=> !!res.product)
             setFormData(update)
@@ -174,14 +239,69 @@ const AddOrders = () =>{
     }
 
     const searchHandler = () => {
-        setSelectedUser({ email: 'muhammed.o.nasser@gmail.com', phone: '01009170794' })
+        let params ={}
+        if(search.includes('.com')){
+            params['email'] = search
+        } else {
+            params['phone'] = search
+        }
+        
+        userService.searchUser(params).then(res=>{
+            if(res.data.data?.length > 0){
+                let data = res.data.data[0]
+                setSelectedUser({...data, phone: data.user_phones?.filter(phone=> phone.is_default)[0].phone, type: search})
+            } else {
+                toast.error("User Not Found")
+                setSelectedUser({})
+            }
+        })
     }
 
-    useEffect(()=>{
-        if(!promoCode){
-
+    const getPromoCode = () =>{
+        let data ={ 
+            promoCode: promoCode
         }
-    } ,[promoCode])
+        if(!promoCode){
+            setPromoCodeData(null)
+            return
+        }
+        promoCodeService.getPromoCode(data).then(res=>{
+            if(res?.data?.data){
+                setPromoCodeData({
+                    type: res.data.data.coupon_type,
+                    value: res.data.data.coupon_value,
+                })
+            } else {
+                setPromoCodeData(null)
+            }
+        })
+    }
+console.log(formData)
+    useEffect(()=>{
+        if(!!day){
+            let check
+            blockDateService.getList().then(res=>{
+                let data = res.data?.data?.map(response=> response.date.split('T')[0])
+                check = data.includes(day)
+            })
+            if(!check){
+                timeSlotService.getIntervalHours({date: day}).then(res=>{
+                    if(res?.status === 200 && res.data?.data?.length > 0){
+                        let data = res.data?.data?.map(response=>{
+                            return{
+                                ...response,
+                                from: response.from.split(':00')[0],
+                                to: response.to.split(':00')[0],
+                            }
+                        })
+                        setIntervalHours(data)
+                        setSelectedIntervalHours(data[0])
+                    }
+                })
+            }
+        }
+    }, [day])
+
     return<>
     {steps === 1 && <Card>
         <Card.Body>
@@ -238,7 +358,7 @@ const AddOrders = () =>{
                                     <input type='radio' checked={true} />
                                     <div>
                                         <i className="la la-user mr-2" style={{fontSize: '1.3rem'}}></i>
-                                        <span>{selectedUser.email === search ? selectedUser.email : selectedUser.phone}</span>
+                                        <span>{selectedUser.type}</span>
                                     </div>
                                 </label>
                             </Card>
@@ -435,13 +555,15 @@ const AddOrders = () =>{
                                         if(ind === index){
                                             return {
                                                 ...res,
-                                                product: e
+                                                product: e,
+                                                amount: 1,
                                             }
                                         } else {
                                             return res
                                         }
                                     })
                                     setFormData(update)
+                                    setCalc(prev => !prev)
                                 }}
                             />
                         </Col>
@@ -452,9 +574,15 @@ const AddOrders = () =>{
                                 name='amount'
                                 placeholder='Quantity'
                                 value={data.amount}
-                                min={1}
+                                min={0}
                                 max={data.product?.amount}
                                 onChange={(e)=>{
+                                    if(!e.target.value){
+                                        return
+                                    }
+                                    if(+e.target.value === 0){
+                                        return toast.error('Enter Valid Value')
+                                    }
                                     let update = formData.map((res, ind)=>{
                                         if(ind === index){
                                             return {
@@ -466,9 +594,11 @@ const AddOrders = () =>{
                                         }
                                     })
                                     setFormData(update)
+                                    setCalc(prev => !prev)
                                 }}
                             />
                         </Col>
+
                         {data?.product?.variant?.map(variant=>{
                             return <Col md={3}>
                                 <label className="text-label mb-1 text-capitalize">{variant.variant.name_en} :</label>
@@ -479,42 +609,129 @@ const AddOrders = () =>{
                             <label className="text-label mb-1 text-capitalize">Weight :</label>
                             <p style={{color:'#222'}}>{data.product.weight}</p>
                         </Col>}
-                        {data.dynamicVariantOptions?.length > 0 && <Col className="mb-3" md={12}>
-                                <label className="text-label mb-2 d-block">Dynamic Variant</label>
-                                <Select 
-                                    options={data.dynamicVariantOptions?.filter(res=> !data.dynamicVariant?.some(res2=> res.label === res2.label))}
-                                    name='dynamic_variant'
-                                    isMulti={true}
-                                    value={data.dynamicVariant}
-                                    onChange={e=>{
-                                        let update = formData?.map((res,ind)=>{
-                                            if(ind === index){
-                                                return{
-                                                    ...res,
-                                                    dynamicVariant: e
-                                                }
-                                            } else {
-                                                return res
-                                            }
-                                        })
-                                        setFormData(update)
-                                    }}
-                                />
-                        </Col>}
                         
-                        {!!data.product && <Col md={12}>
+                        {data.dynamicVariantOptions?.length > 0 && <Col md={12}><label className="text-label mb-2 d-block">Dynamic Variant</label></Col>}
+
+                        {data.dynamicVariantOptions?.length > 0 &&  data.dynamicVariantOptions.map((vari, ind)=>{
+                                    return <Col md={6} key={ind} className='d-flex justify-content-between'>
+                                        <label className="text-label m-0">{vari.name_en}</label>
+
+                                        <div style={{fontSize: '19px', width: '5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                            <i 
+                                                onClick={()=>{
+                                                    if(data.dynamicVariant[ind]?.amount === vari.available_amount || (!data.dynamicVariant[ind]?.has_amount && data.dynamicVariant[ind]?.amount === 1)){
+                                                        return
+                                                    }
+                                                    let updateDynamic = data.dynamicVariant?.map((v, inde) => {
+                                                        if(inde === ind){
+                                                            return{
+                                                                ...v,
+                                                                amount: v.amount+1
+                                                            }
+                                                        } else{
+                                                            return v
+                                                        }
+                                                    })
+                                                    let update = formData.map((res,i)=>{
+                                                        if(i === index){
+                                                            return {
+                                                                ...res,
+                                                                dynamicVariant: updateDynamic
+                                                            }
+                                                        } else{
+                                                            return res
+                                                        }
+                                                    })
+                                                    setFormData([...update])
+                                                    setCalc(prev => !prev)
+                                                }}
+                                                className="la la-plus-circle"
+                                                style={{cursor:( data.dynamicVariant[ind]?.amount === vari.available_amount || (!data.dynamicVariant[ind]?.has_amount && data.dynamicVariant[ind]?.amount === 1)) ? 'not-allowed' :'pointer'}}></i>
+                                            <span className="mx-3">{data.dynamicVariant[ind]?.amount}</span>
+                                            <i 
+                                                onClick={()=>{
+                                                    if(data.dynamicVariant[ind]?.amount === 0){
+                                                        return
+                                                    }
+                                                    let updateDynamic = data.dynamicVariant?.map((v, inde) => {
+                                                        if(inde === ind){
+                                                            return{
+                                                                ...v,
+                                                                amount: v.amount-1
+                                                            }
+                                                        } else{
+                                                            return v
+                                                        }
+                                                    })
+                                                    let update = formData.map((res,i)=>{
+                                                        if(i === index){
+                                                            return {
+                                                                ...res,
+                                                                dynamicVariant: updateDynamic
+                                                            }
+                                                        } else{
+                                                            return res
+                                                        }
+                                                    })
+                                                    setFormData([...update])
+                                                    setCalc(prev => !prev)
+                                                }}
+                                                style={{cursor: data.dynamicVariant[ind]?.amount === 0 ? 'not-allowed' : 'pointer'}}
+                                                className="la la-minus-circle"></i>
+                                        </div>
+                                    </Col>
+                        })}
+                        
+                        {!!data.product && <Col md={12} className='mt-4'>
                         <div className="p-3 d-flex justify-content-between" style={{backgroundColor: 'var(--light)', borderRadius: '8px'}}>
                             <span style={{fontSize: '20px', fontWeight: '500'}}>
-                                {data.product?.price} x{data?.amount} {data.dynamicVariant?.length > 0 && 
-                                <span className="text"> + {data.dynamicVariant.reduce((total, product) => total + product.price, 0)}</span>}
+                                {data.product?.price} x{data?.amount} {data.dynamicVariant?.filter(vari=> !!(vari.amount*vari.price))?.length > 0 && 
+                                <span className="text"> + {data.dynamicVariant?.map(vari=> vari.amount*vari.price)?.reduce((accumulator, currentValue) => accumulator + currentValue, 0)}</span>}
                             </span>
                             <span style={{fontSize: '20px'}}>
-                                Total :  <span className="text-primary" style={{fontWeight: '600'}}>{((+data.product?.price*data?.amount) + data.dynamicVariant.reduce((total, product) => total + product.price, 0))}</span>
+                                Total :  <span className="text-primary" style={{fontWeight: '600'}}>{data.totalPrice}</span>
                             </span>
                         </div>
                         </Col>}
                     </Row>
                 })}
+                {!!formData.filter(res=> !!res.product)?.length && 
+                <Row className="px-2 py-4 mt-3" style={{backgroundColor: 'var(--light)'}}>
+                    <Col md={6}>
+                        <div className="form-group mb-3">
+                            <label className="text-label">Order Day</label>
+                            <input
+                                type="date"
+                                className="form-control"
+                                id="date"
+                                name="date"
+                                min={new Date().toJSON().split("T")[0]}
+                                value={day}
+                                onChange={(e)=> setDay(e.target.value)}
+                            />
+                        </div>
+                    </Col>
+                    <Row className='mx-1'>
+                        {intervalHours?.map((hour, ind)=>{
+                            return <Col md={2} key={ind} className='mb-3'>
+                                <div 
+                                    onClick={()=> setSelectedIntervalHours(hour)}
+                                    style={{
+                                        backgroundColor: hour.id === selectedIntervalHours.id ? 'var(--primary)' : 'rgb(222 222 222 / 54%)', 
+                                        color: hour.id === selectedIntervalHours.id ? '#fff' : '#444',
+                                        padding: '1rem 0',
+                                        textAlign: 'center',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer'
+                                    }}>
+                                    <span className="d-block">From: <b>{hour.from}</b></span>
+                                    <span>to: <b>{hour.to}</b></span>
+                                </div>
+                            </Col>
+                        })}
+                    </Row>
+                </Row>}
+
                 {!!formData.filter(res=> !!res.product)?.length && <Row className="px-2 py-4 mt-3" style={{backgroundColor: 'var(--light)'}}>
                         <Col md={6} style={{borderRight: '1px solid #dedede'}}>
                             <Row>
@@ -533,6 +750,9 @@ const AddOrders = () =>{
                                         variant='outline-secondary' 
                                         className="w-100 p-0"
                                         style={{marginTop:'29px', height: '42px'}}
+                                        // disabled={!promoCode}
+                                        type='button'
+                                        onClick={getPromoCode}
                                         >
                                         Apply
                                     </Button>
@@ -557,21 +777,23 @@ const AddOrders = () =>{
                             </div>}
                             <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label">SubTotal ({formData.filter(res=> !!res.product)?.length})</label>
-                                <p className="mb-0">{formData.filter(res=> !!res.product).reduce((total, data) => total + ((data.product?.price*data?.amount) + data.dynamicVariant.reduce((total1, product) => total1 + product.price, 0)), 0)}</p>
+                                <p className="mb-0">{formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0)}</p>
                             </div>
                             <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label">Shipping Fee</label>
                                 <p className="mb-0">30</p>
                             </div>
-                            <div className="mt-1 d-flex justify-content-between">
+                            {!!promoCodeData && <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label">Coupon</label>
-                                <p className="text-seccess mb-0">-34</p>
-                            </div>
+                                <p className="text-danger mb-0">{promoCodeData.type === "percentage" ? `${promoCodeData.value}%` : `-${promoCodeData.value}`}</p>
+                            </div>}
                             <div className="my-2" style={{height: '1px', background: '#dedede'}}></div>
 
                             <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label" style={{fontWeight: '600'}}>Total</label>
-                                <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + ((data.product?.price*data?.amount) + data.dynamicVariant.reduce((total1, product) => total1 + product.price, 0)), 0) -34 +30)}</p>
+                                {!promoCodeData && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) +30}</p>}
+                                {(!!promoCodeData && promoCodeData?.type === "percentage") && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) -(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) * (promoCodeData.value/100)) +30)}</p>}
+                                {(!!promoCodeData && promoCodeData?.type !== "percentage") && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) - promoCodeData.value +30)}</p>}
                             </div>
                         </Col>
                         
@@ -607,7 +829,7 @@ const AddOrders = () =>{
                     <Button 
                         variant="primary" 
                         type="submit"
-                        disabled={(!formData.filter(res=> !!res.product).length || !paymentMethod)}
+                        disabled={!formData.filter(res=> !!res.product).length}
                     >
                         {paymentMethod?.value === 'cash' ? 'Submit' : 'Next'}
                     </Button>

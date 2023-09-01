@@ -35,7 +35,7 @@ const AddPromoCodes = () => {
             name: stateData.item?.name,
             amount: stateData.item?.amount,
             type: typesOptions?.filter(res=> res.value === stateData.item?.Type)[0],
-            end_date: stateData.item?.end_date.split('T00')[0],
+            end_date: stateData.item?.end_date.split('T')[0],
             max_usage: stateData.item?.max_usage || '',
             count_usage: stateData.item?.count_usage || '',
          })

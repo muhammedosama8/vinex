@@ -21,17 +21,6 @@ const Orders = () =>{
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
-    useEffect(()=>{
-      let orders =[
-        {id: 1, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 280, payment_status: 'cash', status: 'Ordered'},
-        {id: 2, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 380, payment_status: 'visa', status: 'Processing'},
-        {id: 3, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 180, payment_status: 'cash', status: 'Shipped'},
-        {id: 4, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 80, payment_status: 'visa', status: 'Delivered'},
-        {id: 5, delivery_date: '1/7/2025', customer_name: 'mu', customer_email: 'mu@gmail.com',customer_phone:'01000000', total_price: 80, payment_status: 'visa', status: 'Canceled'},
-      ]
-      setOrders([...orders])
-    },[])
-
     return(
         <>
         <div className="d-flex justify-content-between align-items-center mb-3 ">

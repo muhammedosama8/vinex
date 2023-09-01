@@ -33,12 +33,14 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                     <td className="text-capitalize">{item.payment_method}</td>
                     <td>
                       <Badge
+                        className="text-capitalize"
+                        style={{cursor: 'pointer'}}
                         onClick={changeStatusToggle} 
-                        variant={`${item.status === 'Delivered' ? 'success' : 
-                                  item.status === 'Canceled' ? 'danger' :
-                                  item.status === 'Ordered' ? 'primary' :
-                                  item.status === 'Processing' ? 'warning' :
-                                  item.status === 'Shipped' ? 'info' : ''}  light`}
+                        variant={`${item.status === 'delivered' ? 'success' : 
+                                  item.status === 'canceled' ? 'danger' :
+                                  item.status === 'ordered' ? 'primary' :
+                                  item.status === 'process' ? 'warning' :
+                                  item.status === 'shipped' ? 'info' : ''} light`}
                       >
                         {item.status}
                       </Badge>
@@ -61,7 +63,6 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                       open={deleteModal}
                       titleMsg={item.customer_name}
                       deletedItem={item.id}
-                      // modelService={}
                       onCloseModal={setDeleteModal}
                     />}
         </tr>

@@ -1,5 +1,5 @@
 const Orders= [
-    'Ordered', 'Processing', 'Shipped', 'Delivered', 'Canceled' 
+    'Ordered', 'Process', 'Shipped', 'Delivered', 'Canceled' 
 ]
 
 export { Orders }
