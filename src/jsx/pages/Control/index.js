@@ -83,6 +83,46 @@ const Control = () => {
     return<Card>
     <Card.Body>
         <Row>
+            <Col md={6} className='mb-5'>
+                <label className="d-block">Website Title</label>
+                <input
+                    type='text'
+                    value={title}
+                    placeholder='Title'
+                    style={{
+                        padding: '8px',
+                        border: '1px solid #dedede',
+                        borderRadius: '5px'
+                    }}
+                    className='w-100'
+                    onChange={(e)=> setTitle(e.target.value)}
+                />
+            </Col>
+            <Col md={6} className='mb-5 d-flex' style={{justifyContent: 'space-evenly'}}>
+                <div className='form-group'>
+                    <label className="d-block">Color</label>
+                    <input 
+                        type='color' 
+                        value={color} 
+                        style={{
+                            height: '40px',
+                            width: '62px'
+                        }}
+                        onChange={(e)=> setColor(e.target.value)} />
+                </div>
+                <div className='form-group'>
+                    <label className="d-block">Label Color</label>
+                    <input 
+                        type='color' 
+                        value={labelColor} 
+                        style={{
+                            height: '40px',
+                            width: '62px'
+                        }}
+                        onChange={(e)=> setLabelColor(e.target.value)} />
+                </div>
+            </Col>
+            
             <Col md={4}>
                 <div className='form-group w-100'>
                     <label className="m-0">Website Logo</label>
@@ -216,46 +256,6 @@ const Control = () => {
                             </div>
                         </div>
                     </div>
-            </Col>
-            <Col md={6} className='mt-3 d-flex'>
-                <div className='form-group w-50'>
-                    <label className="d-block">Color</label>
-                    <input 
-                        type='color' 
-                        value={color} 
-                        style={{
-                            height: '40px',
-                            width: '62px'
-                        }}
-                        onChange={(e)=> setColor(e.target.value)} />
-                </div>
-                <div className='form-group w-50'>
-                    <label className="d-block">Label Color</label>
-                    <input 
-                        type='color' 
-                        value={labelColor} 
-                        style={{
-                            height: '40px',
-                            width: '62px'
-                        }}
-                        onChange={(e)=> setLabelColor(e.target.value)} />
-                </div>
-            </Col>
-            <Col md={6} className='mt-3'></Col>
-            <Col md={6} className='mt-3'>
-                <label className="d-block">Website Title</label>
-                <input
-                    type='text'
-                    value={title}
-                    placeholder='Title'
-                    style={{
-                        padding: '8px',
-                        border: '1px solid #dedede',
-                        borderRadius: '5px'
-                    }}
-                    className='w-100'
-                    onChange={(e)=> setTitle(e.target.value)}
-                />
             </Col>
         </Row>
         <div className="d-flex justify-content-end mt-5">
