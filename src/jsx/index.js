@@ -67,7 +67,7 @@ const Markup = () => {
     
 
     /// pages
-    { url: 'page-login', component: <Login/> },
+    { url: 'login', component: <Login/> },
 
     // Admins
     { url: 'admins', component: <Admins /> },

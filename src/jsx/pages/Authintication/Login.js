@@ -1,20 +1,21 @@
-import React,{ useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-// image
-import logo2 from "../../../images/logo-full.png";
 import login from "../../../images/reg-bg.jpg";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { loadingToggleAction, loginAction } from "../../../store/actions/AuthActions";
+import ControlService from "../../../services/ControlServices";
 
 function Login(props) {
 	const navigate = useNavigate()
 	const [email, setEmail] = useState('tatasamy1998@gmail.com');
 	const [password, setPassword] = useState('Admin!123456');
 	const [showPassword, setShowPassword] = useState(false);
+	const [dashboardLogo, setDashboardLogo] = useState('');
     const dispatch = useDispatch();
 	const Auth = useSelector(state=> state.auth)
+	const controlService = new ControlService()
 
     function onLogin(e) {
         e.preventDefault();     
@@ -22,11 +23,19 @@ function Login(props) {
         dispatch(loginAction(email, password, navigate));
     }
 
+	useEffect(()=>{
+        controlService.getList().then(res=>{
+            if(res){
+                setDashboardLogo(res.data.data.dashboard_logo)
+            }
+        })
+    }, [])
+
   return (
 		<div className="login-wrapper">
 			<div className="login-aside-left" style={{backgroundImage:"url("+ login +")"}}>
-				<div className="login-logo">
-					<img src={logo2} alt="logo" />
+				<div className="login-logo" style={{width: '8rem'}}>
+					<img src={dashboardLogo} alt="logo" className="w-100"/>
 				  </div>
 				<div className="login-description">
 					<h2 className="text-white mb-4">Check the Status</h2>
