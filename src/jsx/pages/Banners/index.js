@@ -32,7 +32,7 @@ const Banners = () =>{
     useEffect(()=>{
         setLoading(true)
         productsService?.getList()?.then(res=>{
-            if(res.status === 200){
+            if(res && res?.status === 200){
                 let products = res.data?.meta?.data?.map(prod=>{
                     return{
                         id: prod?.id,
@@ -47,14 +47,14 @@ const Banners = () =>{
 
     useEffect(()=>{
         bannerService?.getList()?.then(res=>{
-            if(res.status === 200){
-                if(res?.data?.meta?.data?.length === 0){
+            if(res && res?.status === 200){
+                if(res.data?.meta?.data?.length === 0){
                     return
                 }
-                if(res?.data?.meta?.data?.length > 0){
+                if(res.data?.meta?.data?.length > 0){
                     setIsAdd(false)
                 }
-                let data = res?.data?.meta?.data?.map(item=>{
+                let data = res.data?.meta?.data?.map(item=>{
                     return {
                         src: item?.image,
                         product: !!item.product_id ? productsOptions?.filter(opt=> opt?.id === item.product_id)[0] : '',
@@ -99,7 +99,7 @@ const Banners = () =>{
         })
         
         new BaseService().postUpload(filesData[0]).then(res=>{
-            if(res?.data?.status){
+            if(res && res?.data?.status){
                 let updateImages = formData.map((item, ind)=>{
                     if(ind === index){
                         return {
@@ -134,8 +134,8 @@ const Banners = () =>{
                 return
             }
             setSumbitLoading(true)
-            bannerService?.create(data)?.then(res=>{
-                if(res?.status === 201){
+            bannerService.create(data)?.then(res=>{
+                if(res && res?.status === 201){
                     toast.success('Banners Added Successfully')
                     setIsAdd(false)
                 }
@@ -143,8 +143,8 @@ const Banners = () =>{
             })
         } else {
             setSumbitLoading(true)
-            bannerService?.update(data)?.then(res=>{
-                if(res?.status === 200){
+            bannerService.update(data)?.then(res=>{
+                if(res && res?.status === 200){
                     toast.success('Banners Updated Successfully')
                     setIsAdd(false)
                 }

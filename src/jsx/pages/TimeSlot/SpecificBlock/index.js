@@ -13,7 +13,7 @@ const SpecificBlock = () =>{
 
     useEffect(()=>{
         blockDateService.getList().then(res=>{
-            if(res.status === 200){
+            if(res?.status === 200){
                 setSpecificBlock(res.data.data)
             }
         })
@@ -21,12 +21,13 @@ const SpecificBlock = () =>{
 
     const remove = (id) =>{
         blockDateService.remove(id).then(res=>{
-            if(res.status === 200){
+            if(res?.status === 200){
                 toast.success('Deleted Successfully')
                 setShouldUpdate(prev=> !prev)
             }
         })
     }
+
     return<>
     <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div></div>

@@ -1,7 +1,6 @@
 import { Button, Col, Modal, Row } from "react-bootstrap"
 import {AvForm} from "availity-reactstrap-validation";
-import { useEffect, useState } from "react";
-import DeleteModal from "../../../common/DeleteModal";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import VariantService from "../../../../services/VariantService";
 

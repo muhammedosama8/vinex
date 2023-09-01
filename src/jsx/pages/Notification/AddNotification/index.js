@@ -29,7 +29,7 @@ const AddNotification = ()=>{
             description_ar: formData?.description_ar,
         }
         setLoading(true)
-        notificationService?.create(data)?.then(res=>{
+        notificationService.create(data)?.then(res=>{
             if(res?.status === 201){
                 toast.success('Notification Added Successfully')
                 setLoading(false)

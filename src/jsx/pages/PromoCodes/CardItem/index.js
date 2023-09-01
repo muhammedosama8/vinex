@@ -20,8 +20,8 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
 
     const changeStatusToggle = (e)=>{
         setStatus(e.target.checked)
-        promoCodeService?.toggleStatus(item?.id, {is_active: e.target.checked}).then(res=>{
-          if(res.status === 200){
+        promoCodeService.toggleStatus(item?.id, {is_active: e.target.checked}).then(res=>{
+          if(res?.status === 200){
             toast.success('Update Status Successfully')
           }
         })

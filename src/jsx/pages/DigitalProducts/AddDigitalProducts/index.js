@@ -43,7 +43,6 @@ const AddDigitalProducts = () => {
     })
     const dispatch = useDispatch()
     const [confirm, setConfirm]= useState(false)
-    const [id, setId]= useState(null)
     const [loading, setLoadning]= useState(false)
     const [categoriesOptions, setCategoriesOptions] = useState([])
     const [brandOptions, setBrandOptions] = useState([])
@@ -59,7 +58,7 @@ const AddDigitalProducts = () => {
     const Auth = useSelector(state=> state.auth)
 
     useEffect(()=>{
-        categoriesService?.getList().then(res=>{
+        categoriesService.getList().then(res=>{
             if(res.data?.status === 200){
                let categories =  res.data?.meta?.data?.map(item=>{
                   return{
@@ -71,7 +70,7 @@ const AddDigitalProducts = () => {
                setCategoriesOptions(categories)
             }
         })
-        brandsService?.getList().then(res=>{
+        brandsService.getList().then(res=>{
             if(res.data?.status === 200){
                let categories =  res.data?.meta?.data?.map(item=>{
                   return{
@@ -87,7 +86,7 @@ const AddDigitalProducts = () => {
 
     useEffect(()=>{
         if(!!product?.category){
-           subCategoriesService?.getListForCategory(product?.category?.id).then(res=>{
+           subCategoriesService.getListForCategory(product?.category?.id).then(res=>{
                 if(res.data?.status === 200){
                     let subCategories =  res.data?.meta?.data?.map(item=>{
                         return{
@@ -100,8 +99,8 @@ const AddDigitalProducts = () => {
                 }
             })
 
-            productsService?.getDynamicVariant(product?.category?.value).then(res=>{
-                if(res.status === 200){
+            productsService.getDynamicVariant(product?.category?.value).then(res=>{
+                if(res?.status === 200){
                     let data = res.data?.data?.map(item=>{
                         return{
                             ...item,
@@ -117,7 +116,6 @@ const AddDigitalProducts = () => {
 
     useEffect(()=>{
         let prod_id = window.location.pathname.split('/digital-products/add-products/')[1]
-        setId(Number(prod_id))
 
         if(!!prod_id){
             dispatch(loadingToggleAction(true))
@@ -185,7 +183,7 @@ const AddDigitalProducts = () => {
             }
         })
         new BaseService().postUpload(filesData[0]).then(res=>{
-            if(res.data.status){
+            if(res.data?.status){
                 let updateImages = product?.images.map((item, ind)=>{
                     if(ind === index){
                         return {src: res.data.url}
@@ -198,8 +196,6 @@ const AddDigitalProducts = () => {
             }
         })
 		setTimeout(function(){
-			var src = document.getElementById(`saveImageFile${index}`)?.getAttribute("src");
-            
 			setProduct({...product, images: update})
 		}, 200);
     }
@@ -208,7 +204,7 @@ const AddDigitalProducts = () => {
         const filesData = Object.values(filesAll)
 
         new BaseService().postUpload(filesData[0]).then(res=>{
-            if(res.data.status){
+            if(res.data?.status){
                 setProduct({...product, serial_image: {src: res.data.url}})
                 setFiles([e.target.files[0]])
             }

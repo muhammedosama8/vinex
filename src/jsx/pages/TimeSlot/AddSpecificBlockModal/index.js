@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap"
 import {AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ const AddSpecificBlockModal = ({modal, setModal, setShouldUpdate})=>{
             blockDate: [...formData.filter(item => !!item)]
         }
         setLoading(true)
-        blockDateService?.create(data)?.then(res=>{
+        blockDateService.create(data)?.then(res=>{
             if(res?.status === 201){
                 toast.success('Added Successfully')
                 setModal()

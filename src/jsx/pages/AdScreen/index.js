@@ -22,7 +22,7 @@ const AdScreen = () =>{
 
     useEffect(()=>{
         productsService?.getList()?.then(res=>{
-            if(res.status === 200){
+            if(res?.status === 200){
                 let products = res.data?.meta?.data?.map(prod=>{
                     return{
                         id: prod?.id,
@@ -37,12 +37,12 @@ const AdScreen = () =>{
 
     useEffect(()=>{
         screenService?.getList()?.then(res=>{
-            if(res.status === 200){
-                if(res?.data?.meta?.data?.length === 0){
+            if(res?.status === 200){
+                if(res.data?.meta?.data?.length === 0){
                     return
                 }
-                if(res?.data?.meta?.data?.length > 0) setIsAdd(false)
-                let data = res?.data?.meta?.data?.map(item=>{
+                if(res.data?.meta?.data?.length > 0) setIsAdd(false)
+                let data = res.data?.meta?.data?.map(item=>{
                     return {
                         src: item?.image,
                         product: productsOptions?.filter(opt=> opt?.id === item.product_id)[0] || ''
@@ -65,7 +65,7 @@ const AdScreen = () =>{
         })
         
         new BaseService().postUpload(filesData[0]).then(res=>{
-            if(res?.data?.status){
+            if(res && res?.data?.status){
                 let updateImages = formData.map((item, ind)=>{
                     if(ind === index){
                         return {
@@ -97,14 +97,14 @@ const AdScreen = () =>{
                 toast.error('Add Image First')
                 return
              }
-            screenService?.create(data)?.then(res=>{
+            screenService.create(data)?.then(res=>{
                 if(res?.status === 201){
                     toast.success('Screen Added Successfully')
                     setIsAdd(false)
                 }
             })
         } else {
-            screenService?.update(data)?.then(res=>{
+            screenService.update(data)?.then(res=>{
                 if(res?.status === 200){
                     toast.success('Screen Updated Successfully')
                     setIsAdd(false)

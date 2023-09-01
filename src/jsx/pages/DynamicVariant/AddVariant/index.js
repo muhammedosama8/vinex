@@ -37,7 +37,7 @@ const AddDynamicVariant = ()=>{
          setDynamicVariant([window.history.state?.usr])
          return
       }
-      categoriesService?.getList().then(res=>{
+      categoriesService.getList().then(res=>{
          if(res.data?.status === 200){
             let categories =  res.data?.meta?.data?.map(item=>{
                return{
@@ -77,14 +77,14 @@ const AddDynamicVariant = ()=>{
          price: parseFloat(dynamicVariant[0].price)
       }
       if(isAdd){
-         dynamicVariantService?.create(data).then(res=> {
+         dynamicVariantService.create(data).then(res=> {
             if(res?.status === 201){
                toast.success('Dynamic Variant Added Successfully')
                navigate('/dynamic-variant')
             }
          })
       } else {
-         dynamicVariantService?.update(id, editedData)?.then(res => {
+         dynamicVariantService.update(id, editedData)?.then(res => {
             if(res?.status === 200){
                toast.success('Dynamic Variant Updated Successfully')
                navigate('/dynamic-variant')

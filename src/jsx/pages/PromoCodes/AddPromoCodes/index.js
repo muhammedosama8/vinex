@@ -20,16 +20,17 @@ const AddPromoCodes = () => {
    const [loading, setLoading] = useState(false)
    const promoCodeService = new PromoCodeService()
    const navigate = useNavigate()
-   const [ typesOptions, setTypesOptions]= useState([
-      {label: 'Percentage', value: 'percentage'},
-      {label: 'Fixed Amount', value: 'fixed'},
-   ])
+   const [ typesOptions, setTypesOptions]= useState([])
 
    const handlerText = (e)=>{
       setFormData({...formData, [e.target.name]: e.target.value})
    }
 
    useEffect(()=>{
+      setTypesOptions([
+         {label: 'Percentage', value: 'percentage'},
+         {label: 'Fixed Amount', value: 'fixed'},
+      ])
       if(stateData){
          setFormData({
             name: stateData.item?.name,
@@ -58,7 +59,7 @@ const AddPromoCodes = () => {
          setLoading(true)
          if(isAdd){
             promoCodeService.create(data).then(res=>{
-               if(res.status === 201){
+               if(res?.status === 201){
                   toast?.success('Promocode Added Succssefully')
                   navigate('/promo-codes')
                }
@@ -66,7 +67,7 @@ const AddPromoCodes = () => {
            })
          } else {
             promoCodeService.update(stateData?.item?.id, data).then(res=>{
-               if(res.status === 200){
+               if(res?.status === 200){
                   toast?.success('Promocode Updated Succssefully')
                   navigate('/promo-codes')
                }

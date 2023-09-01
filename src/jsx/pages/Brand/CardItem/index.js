@@ -5,19 +5,10 @@ import BrandsService from "../../../../services/BrandsService";
 import DeleteModal from "../../../common/DeleteModal";
 
 const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
-    // const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const brandsService = new BrandsService()
-
-    // useEffect(()=>{
-    //     setStatus(item.status)
-    // },[item])
-
-    // const changeStatusToggle = (e)=>{
-    //     setStatus(e.target.checked)
-    // }
 
     return(
         <tr key={index} className='text-center'>
@@ -46,7 +37,6 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
             <td>
                 {isExist('brands') && <Dropdown>
                     <Dropdown.Toggle
-                        // variant="success"
                         className="light sharp i-false"
                     >
                         <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>

@@ -39,7 +39,7 @@ const AddAdmin = () => {
          })
       } else {
          countryiesService?.getList().then(res=>{
-            if(res.status === 200){
+            if(res && res?.status === 200){
                let data = res.data.data?.map(item=>{
                   return{
                      label: `${item.name_en} (${item?.country_code || ''})`,

@@ -64,16 +64,16 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
             image: formData?.img
         }
         if(isAdd){
-            categoriesService?.create(data)?.then(res=>{
-                if(res?.status === 201){
+            categoriesService.create(data)?.then(res=>{
+                if(res && res?.status === 201){
                     toast.success('Category Added Successfully')
                     setAddModal()
                     setShouldUpdate(prev=> !prev)
                 }
             })
         } else {
-            categoriesService?.update(formData?.id, data)?.then(res=>{
-                if(res?.status === 200){
+            categoriesService.update(formData?.id, data)?.then(res=>{
+                if(res && res?.status === 200){
                     toast.success('Category Updated Successfully')
                     setAddModal()
                     setShouldUpdate(prev=> !prev)

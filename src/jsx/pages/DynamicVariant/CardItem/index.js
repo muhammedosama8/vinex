@@ -4,19 +4,10 @@ import { useSelector } from "react-redux";
 import ChooseEditModal from "../ChooseEditModal";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
-    // const [status, setStatus] = useState(null)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const [chooseModal, setChooseModal] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
-
-    // useEffect(()=>{
-    //     setStatus(item.status)
-    // },[item])
-
-    // const changeStatusToggle = (e)=>{
-    //     setStatus(e.target.checked)
-    // }
 
     return(
         <tr key={index} className='text-center'>
@@ -31,15 +22,6 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                         </Badge>
                       })}
                     </td>
-                    {/* <td>
-                      <Form.Check
-                        type="switch"
-                        id={`custom-switch${index}`}
-                        disabled={!isExist('variant')}
-                        checked={status}
-                        onChange={(e)=> changeStatusToggle(e)}
-                      />
-                    </td> */}
                     <td>
                       {isExist('variant') && <Dropdown>
                         <Dropdown.Toggle

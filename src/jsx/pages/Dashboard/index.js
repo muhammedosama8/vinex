@@ -1,9 +1,6 @@
-import React, { useState } from "react";
-import { Dropdown, Nav, Tab } from "react-bootstrap";
+import React from "react";
 
 const Home = () => {
-  const [refreshToggle, setRefreshToggle] = useState(false);
-
   return (
         <div className="row">
           <div className="col-lg-4 col-sm-6">

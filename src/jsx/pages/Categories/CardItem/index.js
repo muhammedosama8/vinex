@@ -5,7 +5,6 @@ import CategoriesService from "../../../../services/CategoriesService";
 import DeleteModal from "../../../common/DeleteModal";
 
 const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
-    // const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
@@ -14,7 +13,7 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
 
     const changeIsDeleted = ()=>{
         categoriesService.remove(item.id, { isDeleted: false }).then(res=>{
-            if(res.status === 200){
+            if(res && res?.status === 200){
                 setShouldUpdate(prev=> !prev)
             }
         })
@@ -22,10 +21,6 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
     useEffect(()=>{
         setIsDeleted(item.isDeleted)
     },[item])
-
-    // const changeStatusToggle = (e)=>{
-    //     setStatus(e.target.checked)
-    // }
 
     return(
         <tr key={index} className='text-center'>
@@ -42,15 +37,6 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                         />
                     </td>
             <td>{item.name_en}</td>
-            {/* <td>
-                <Form.Check
-                    type="switch"
-                    id={`custom-switch${index}`}
-                    checked={status}
-                    disabled={!isExist('categories')}
-                    onChange={(e)=> changeStatusToggle(e)}
-                />
-            </td> */}
             <td>
                 {isExist('categories') && <Dropdown>
                     <Dropdown.Toggle

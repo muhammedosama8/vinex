@@ -18,7 +18,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
 
     const changeIsDeleted = ()=>{
       productsService.remove(item.id, { isDeleted: false }).then(res=>{
-          if(res.status === 200){
+          if(res?.status === 200){
               setShouldUpdate(prev=> !prev)
               toast.success('Status Updated Successfully')
           }
@@ -31,7 +31,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
 
     const changeStatusToggle = (e) =>{
       productsService.remove(item.id, { isDeleted: !e.target.checked }).then(res=>{
-        if(res.status === 200){
+        if(res?.status === 200){
             setShouldUpdate(prev=> !prev)
             toast.success('Status Updated Successfully')
         }
@@ -42,7 +42,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
       let data ={
         amount: parseInt(quantity)
       }
-      productsService?.update(item.id, data)?.then(res=>{
+      productsService.update(item.id, data)?.then(res=>{
         if(res.data?.status === 200){
             toast.success('Product Updated Successfully')
             setIndexEdit(null)

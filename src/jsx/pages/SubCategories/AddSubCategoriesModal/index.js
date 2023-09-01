@@ -24,7 +24,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
     const categoriesService = new CategoriesService()
 
     useEffect(()=> {
-        categoriesService?.getList().then(res=>{
+        categoriesService.getList().then(res=>{
             if(res.data?.status === 200){
                 let categories =  res.data?.meta?.data?.map(item=>{
                    return{
@@ -85,7 +85,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
         }
         setLoading(true)
         if(isAdd){
-            subCategoriesService?.create(data)?.then(res=>{
+            subCategoriesService.create(data)?.then(res=>{
                 if(res?.status === 201){
                     toast.success('SubCategory Added Successfully')
                     setAddModal()
@@ -94,7 +94,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                 setLoading(false)
             })
         } else {
-            subCategoriesService?.update(formData?.id, data)?.then(res=>{
+            subCategoriesService.update(formData?.id, data)?.then(res=>{
                 if(res?.status === 200){
                     toast.success('SubCategory Updated Successfully')
                     setAddModal()

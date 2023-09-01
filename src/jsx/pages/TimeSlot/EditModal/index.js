@@ -22,7 +22,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
             return
         }
         setLoading(true)
-        timeSlotService?.create({
+        timeSlotService.create({
             availableDays:[{
                 capacity: parseFloat(formData.capacity),
                 interval_min: parseFloat(formData.interval_min),
@@ -31,7 +31,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                 isOpen: formData.isOpen,
                 id: formData.id
             }]
-        })?.then(res=>{
+        }).then(res=>{
             if(res?.status === 201){
                 toast.success('TimeSlot Updated Successfully')
                 setShouldUpdate(prev=> !prev)

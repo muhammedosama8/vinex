@@ -63,7 +63,7 @@ const AddProducts = () => {
     const Auth = useSelector(state=> state.auth)
 
     useEffect(()=>{
-        categoriesService?.getList().then(res=>{
+        categoriesService.getList().then(res=>{
             if(res.data?.status === 200){
                let categories =  res.data?.meta?.data?.map(item=>{
                   return{
@@ -75,7 +75,7 @@ const AddProducts = () => {
                setCategoriesOptions(categories)
             }
         })
-        brandsService?.getList().then(res=>{
+        brandsService.getList().then(res=>{
             if(res.data?.status === 200){
                let categories =  res.data?.meta?.data?.map(item=>{
                   return{
@@ -91,13 +91,13 @@ const AddProducts = () => {
 
     useEffect(()=>{
         if(!!product?.category){
-           adminService?.getVariant(product?.category?.id)?.then(res=>{
+           adminService.getVariant(product?.category?.id)?.then(res=>{
               if(res?.data?.status === 200){
                 setVariant(res.data?.meta.data)
               }
            })
 
-           subCategoriesService?.getListForCategory(product?.category?.id).then(res=>{
+           subCategoriesService.getListForCategory(product?.category?.id).then(res=>{
                 if(res.data?.status === 200){
                     let subCategories =  res.data?.meta?.data?.map(item=>{
                         return{
@@ -131,8 +131,8 @@ const AddProducts = () => {
 
         if(!!prod_id){
             dispatch(loadingToggleAction(true))
-            productsService?.getProduct(prod_id)?.then(res=>{
-                let response = res.data.data
+            productsService.getProduct(prod_id)?.then(res=>{
+                let response = res.data?.data
                 if(res.data?.status === 200){
                     let data= {
                         ...response?.product,
@@ -177,7 +177,7 @@ const AddProducts = () => {
                         })
                     }
                     productsService.getDynamicVariantOfProducts(prod_id).then(res2=>{
-                        if(res2.status === 200){
+                        if(res2?.status === 200){
                             data['dynamic_variant'] = res2.data.data?.map(item=>{
                                 return{
                                     ...item,
@@ -204,7 +204,7 @@ const AddProducts = () => {
             }
         })
         new BaseService().postUpload(filesData[0]).then(res=>{
-            if(res.data.status){
+            if(res?.data?.status){
                 let updateImages = product?.images.map((item, ind)=>{
                     if(ind === index){
                         return {src: res.data.url}
@@ -217,8 +217,6 @@ const AddProducts = () => {
             }
         })
 		setTimeout(function(){
-			var src = document.getElementById(`saveImageFile${index}`)?.getAttribute("src");
-            
 			setProduct({...product, images: update})
 		}, 200);
     }
@@ -275,7 +273,7 @@ const AddProducts = () => {
         if(!!product.brand) data['brand_id']= product?.brand?.value
 
         if(!!id){
-            productsService?.update(id, data)?.then(res=>{
+            productsService.update(id, data)?.then(res=>{
                 if(res.data?.status === 200){
                     toast.success('Product Updated Successfully')
                     // navigate('/products')
@@ -285,7 +283,7 @@ const AddProducts = () => {
                 setLoadning(false)
             })
         } else {
-            productsService?.create(data)?.then(res=>{
+            productsService.create(data)?.then(res=>{
                 if(res.data?.status === 201){
                     setConfirm(true)
                     toast.success('Product Added Successfully')

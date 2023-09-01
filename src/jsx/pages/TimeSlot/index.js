@@ -17,7 +17,7 @@ const TimeSlot = () =>{
 
     useEffect(()=>{
         timeSlotService.getList().then(res=>{
-            if(res.status === 200){
+            if(res?.status === 200){
                 setTimeSlot(res.data.data)
                 setHasData(1)
             }

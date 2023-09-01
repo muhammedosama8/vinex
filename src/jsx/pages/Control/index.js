@@ -38,10 +38,12 @@ const Control = () => {
 
     useEffect(()=>{
         controlService.getList().then(res=>{
-            setColor(res.data.data.main_color)
-            setDashboardLogo(res.data.data.dashboard_logo)
-            setMobileLogo(res.data.data.mobile_logo)
-            setWebsiteLogo(res.data.data.website_logo)
+            if(res){
+                setColor(res.data.data.main_color)
+                setDashboardLogo(res.data.data.dashboard_logo)
+                setMobileLogo(res.data.data.mobile_logo)
+                setWebsiteLogo(res.data.data.website_logo)
+            }
         })
     }, [])
 
@@ -54,7 +56,7 @@ const Control = () => {
         }
         setLoading(true)
         controlService?.create(data).then(res=>{
-            if(res.data.status === 201){
+            if(res && res?.data?.status === 201){
                 toast.success('Control Updated Successfully')
                 disabled(setLogo(dashboardLogo))
             }

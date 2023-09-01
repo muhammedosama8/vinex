@@ -58,8 +58,8 @@ const AddOrders = () =>{
 
     useEffect(()=>{
         if(type === 'new'){
-            countryiesService?.getList().then(res=>{
-                if(res.status === 200){
+            countryiesService.getList().then(res=>{
+                if(res?.status === 200){
                 let data = res.data.data?.map(item=>{
                     return{
                         label: `${item.name_en} (${item?.country_code || ''})`,
@@ -91,7 +91,6 @@ const AddOrders = () =>{
         let calcTotal = formData.map((res,ind)=>{
             if(!!res.product && res.amount > 0){
                 let total = res.product.price*res.amount + res.dynamicVariant?.map(vari=> vari.amount*vari.price)?.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-                // let data = {} 
                 return {
                     ...res,
                     totalPrice: total
@@ -114,7 +113,7 @@ const AddOrders = () =>{
             let sub_categories = []
             let dynamicVar = []
             let products = []
-            if(response[0].status === 200){
+            if(response[0]?.status === 200){
                 let subCategories = response[0].data?.meta?.data?.map(item=>{
                     return{
                         id: item?.id,
@@ -124,7 +123,7 @@ const AddOrders = () =>{
                 })
                 sub_categories.push(...subCategories)
             }
-            if(response[1].status === 200){
+            if(response[1]?.status === 200){
                 let data = response[1].data?.data?.filter(item => item.available_amount > 0)?.map(item=>{
                     return{
                         ...item,
@@ -134,7 +133,7 @@ const AddOrders = () =>{
                 })
                 dynamicVar.push(...data)
             }
-            if(response[2].status === 200){
+            if(response[2]?.status === 200){
                 let data = response[2].data?.meta?.data?.filter(res=> !res.isDeleted)?.map(res=>{
                     return{
                         ...res,
@@ -145,7 +144,7 @@ const AddOrders = () =>{
                 products.push(...data)
             }
 
-            let update = formData.map((res,ind)=>{
+            let update = formData?.map((res,ind)=>{
                 if(index === ind){
                     return{
                         ...res,
@@ -175,7 +174,7 @@ const AddOrders = () =>{
 
     const getAllProductOptionsBySub = (index, category, sub_category) => {
         new ProductsService().getAllProducts({category_id: category.value, sub_category_id: sub_category.value }).then(res=>{
-            if(res.status === 200){
+            if(res?.status === 200){
                 let update = formData.map((item, ind)=>{
                     if(ind === index){
                         return{
@@ -276,7 +275,7 @@ const AddOrders = () =>{
             }
         })
     }
-console.log(formData)
+
     useEffect(()=>{
         if(!!day){
             let check

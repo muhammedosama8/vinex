@@ -11,7 +11,7 @@ const SendModal = ({modal, setModal, item})=>{
 
     const submit = () =>{
         setLoading(true)
-        notificationService?.send(item?.id)?.then(res=>{
+        notificationService.send(item?.id)?.then(res=>{
             if(res?.status === 200){
                 toast.success('Notification Send Successfully')
                 setLoading(false)

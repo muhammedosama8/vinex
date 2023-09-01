@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
-import { Dropdown, Form } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const CardItem = ({item, index,setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
     const navigate = useNavigate()
-    const Auth = useSelector(state=> state.auth?.auth)
-    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
         setStatus(item.isBlocked)
     },[item])
-
-    const changeStatusToggle = (e)=>{
-        setStatus(e.target.checked)
-    }
     
     return(
         <tr key={index} className='text-center'>

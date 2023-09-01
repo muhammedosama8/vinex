@@ -1,13 +1,12 @@
 
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import Select from 'react-select'
 import { InputTags } from "react-bootstrap-tagsinput";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import CategoriesService from "../../../../services/CategoriesService";
 import VariantService from "../../../../services/VariantService";
-import { useDispatch, useSelector } from "react-redux";
 import Loader from '../../../common/Loader'
 
 const Variant = ()=>{
@@ -25,7 +24,7 @@ const Variant = ()=>{
    const navigate = useNavigate()
 
    useEffect(()=>{
-      categoriesService?.getList().then(res=>{
+      categoriesService.getList().then(res=>{
          if(res.data?.status === 200){
             let categories =  res.data?.meta?.data?.map(item=>{
                return{
@@ -41,7 +40,7 @@ const Variant = ()=>{
 
    useEffect(()=>{
       if(!!formData?.category && !id){
-         variantService?.getVariant(formData?.category?.id)?.then(res=>{
+         variantService.getVariant(formData?.category?.id)?.then(res=>{
             if(res?.status === 200){
                if(res.data?.meta.data?.length > 0){
                   let tags = res.data?.meta.data?.map(tag=> tag.name_en)
@@ -59,7 +58,7 @@ const Variant = ()=>{
    useEffect(()=>{
       if(!!formData?.category || !!variant_id){
          setLoading(true)
-         variantService?.getVariant(Number(variant_id))?.then(res=>{
+         variantService.getVariant(Number(variant_id))?.then(res=>{
             setId(Number(variant_id))
             if(res?.status === 200){
                if(res.data?.meta.data?.length > 0){
@@ -131,7 +130,7 @@ const Variant = ()=>{
       if(isAdd) data['category_id']= formData?.category?.value
 
       if(isAdd){
-         variantService?.addVariant(data).then(res=> {
+         variantService.addVariant(data).then(res=> {
             if(res?.status === 201){
                toast.success('Variant Added Successfully')
                // setFormData({category: '', variant: []})
@@ -139,7 +138,7 @@ const Variant = ()=>{
             }
          })
       } else {
-         variantService?.updateVariant(Number(variant_id), data)?.then(res => {
+         variantService.updateVariant(Number(variant_id), data)?.then(res => {
             if(res?.status === 200){
                toast.success('Variant Updated Successfully')
                // setFormData({category: '', variant: []})

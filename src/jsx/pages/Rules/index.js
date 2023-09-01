@@ -24,7 +24,7 @@ const Permission = () =>{
 
     useEffect(()=>{
         adminService.getList().then(res=>{
-          if(res.status === 200){
+          if(res?.status === 200){
             let admins = res.data?.meta?.data?.map(admin=>{
                 let adminRes = {
                     id: admin.id,
@@ -64,7 +64,7 @@ const Permission = () =>{
             rules: formData.rules
         }
 
-        adminService?.update(id,data).then(res=>{
+        adminService.update(id,data).then(res=>{
             if(res?.status === 200){
                 dispatch(changeAdminRules(formData.rules))
                 localStorage.setItem('LeapAdminRules', JSON.stringify(formData.rules));

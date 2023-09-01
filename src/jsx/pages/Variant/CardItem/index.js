@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { Badge, Dropdown, Form } from "react-bootstrap";
+import { Badge, Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import VariantService from "../../../../services/VariantService";
-import DeleteModal from "../../../common/DeleteModal";
 import ChooseEditModal from "../ChooseEditModal";
 
 const CardItem = ({item, index, setShouldUpdate,shouldUpdate}) =>{
-    // const [status, setStatus] = useState(null)
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
@@ -25,7 +22,7 @@ const CardItem = ({item, index, setShouldUpdate,shouldUpdate}) =>{
                     <td>{item.name_en}</td>
                     <td style={{display: 'grid', gap:'10px',gridTemplateColumns: 'auto auto auto'}}>
                       {item.variants?.map((variant, index)=>{
-                        return <Badge variant="primary light" className="mr-2">
+                        return <Badge key={index} variant="primary light" className="mr-2">
                           {variant?.name_en}
                         </Badge>
                       })}

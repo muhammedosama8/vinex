@@ -21,7 +21,7 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
         }
         setLoading(true)
         ordersService.toggleStatus(item.id, data).then(res=>{
-            if(res && res.status === 200){
+            if(res && res?.status === 200){
                 setShouldUpdate(prev=> !prev)
                 setModal(false)
             }

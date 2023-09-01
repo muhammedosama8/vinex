@@ -64,16 +64,16 @@ const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
             image: formData?.img
         }
         if(isAdd){
-            brandsService?.create(data)?.then(res=>{
-                if(res?.status === 201){
+            brandsService.create(data)?.then(res=>{
+                if(res && res?.status === 201){
                     toast.success('Brand Added Successfully')
                     setShouldUpdate(prev=> !prev)
                     setAddModal()
                 }
             })
         } else {
-            brandsService?.update(formData?.id, data)?.then(res=>{
-                if(res?.status === 200){
+            brandsService.update(formData?.id, data)?.then(res=>{
+                if(res && res?.status === 200){
                     toast.success('Brand Updated Successfully')
                     setShouldUpdate(prev=> !prev)
                     setAddModal()
