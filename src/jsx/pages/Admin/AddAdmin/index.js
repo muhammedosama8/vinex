@@ -103,7 +103,7 @@ const AddAdmin = () => {
       <Card className="p-4">
          <AvForm onValidSubmit={onSubmit}>
          <div className="row">
-            <div className="col-lg-6 mb-3">
+            <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
 						label ='First Name*'
 						name ='first_name'
@@ -120,7 +120,7 @@ const AddAdmin = () => {
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>
-            <div className="col-lg-6 mb-3">
+            <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
 						label ='Last Name*'
 						name ='last_name'
@@ -137,7 +137,7 @@ const AddAdmin = () => {
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>
-           {!location?.state?.edit &&  <div className="col-lg-6 mb-3">
+           {!location?.state?.edit &&  <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
 						label ='Email*'
 						name ='email'
@@ -154,7 +154,7 @@ const AddAdmin = () => {
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>}
-            {!location?.state?.edit && <div className="col-lg-6 mb-3">
+            {!location?.state?.edit && <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
 						label ='Password*'
 						name ='password'
@@ -173,7 +173,7 @@ const AddAdmin = () => {
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>}
-            {!location?.state?.edit && <div className="col-lg-3 mb-3">
+            {!location?.state?.edit && <div className="col-lg-3 col-sm-6 mb-3">
                   <label className="text-label">Country Code*</label>
                   <Select
                      value={formData?.country_code}
@@ -182,7 +182,7 @@ const AddAdmin = () => {
                      onChange={(e)=> setFormData({...formData, country_code: e})}
                   />
             </div>}
-            {!location?.state?.edit && <div className="col-lg-3 mb-3">
+            {!location?.state?.edit && <div className="col-lg-3 col-sm-6 mb-3">
                   <AvField
 						label ='Phone*'
 						name ='phone'

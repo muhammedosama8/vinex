@@ -104,8 +104,8 @@ function Login(props) {
 											onChange={(e) => setPassword(e.target.value)}
 										/>
 										{showPassword ? 
-											<i className="la la-eye-slash position-absolute" style={{top: '50%',right: '5%'}} onClick={()=>setShowPassword(false)}></i> : 
-											<i className="la la-eye position-absolute" style={{top: '50%',right: '5%'}} onClick={()=>setShowPassword(true)}></i>}
+											<i className="la la-eye-slash position-absolute" style={{top: '50%',right: '8%'}} onClick={()=>setShowPassword(false)}></i> : 
+											<i className="la la-eye position-absolute" style={{top: '50%',right: '8%'}} onClick={()=>setShowPassword(true)}></i>}
 									</Col>
 								</Row>
 								

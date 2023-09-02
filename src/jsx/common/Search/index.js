@@ -4,7 +4,7 @@ const Search = ({search, setSearch, placeholder}) =>{
         type="text" 
         style={{borderRadius: '8px', 
         color: 'initial', 
-        padding: '18px 16px'}} 
+        padding: '18px 33px 18px 16px'}} 
         className="form-control" 
         placeholder={placeholder}
         value={search}

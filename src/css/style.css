@@ -794,7 +794,7 @@ pre {
 .offset-11 {
   margin-left: 91.66667%; }
 
-@media (min-width: 576px) {
+/* @media (min-width: 576px) { */
   .col-sm {
     flex-basis: 0;
     flex-grow: 1;
@@ -910,7 +910,7 @@ pre {
   .offset-sm-10 {
     margin-left: 83.33333%; }
   .offset-sm-11 {
-    margin-left: 91.66667%; } }
+    margin-left: 91.66667%; } 
 
 @media (min-width: 768px) {
   .col-md {
@@ -8778,7 +8778,8 @@ a {
     width: 5rem;
     height: 5rem; }
     .nav-header .brand-title {
-      display: none; } }
+      width: 88%; } 
+}
 
 .nav-control {
   cursor: pointer;
@@ -11590,8 +11591,6 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     width: 5rem; } }
 
 @media (max-width: 767px) {
-  .brand-title {
-    display: none; }
   .footer {
     padding-left: 0; }
   .deznav {
@@ -12051,7 +12050,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
         [data-sidebar-style="mini"] .nav-header .nav-control .hamburger .line {
           background-color: #B1B1B1 !important; }
     [data-sidebar-style="mini"] .nav-header .brand-title {
-      display: none; }
+      width: 88% }
     [data-sidebar-style="mini"] .nav-header .hamburger {
       display: none; }
   [data-sidebar-style="mini"] .header .header-content {
@@ -28952,7 +28951,8 @@ table.dataTable thead .sorting {
       .login-wrapper .login-logo {
         position: relative;
         margin-bottom: 20px;
-        display: block; }
+        display: block; 
+        width: 6rem!important;}
       .login-wrapper .social-icons {
         justify-content: center; }
         .login-wrapper .social-icons li {
@@ -28968,7 +28968,12 @@ table.dataTable thead .sorting {
       .login-wrapper .login-aside-left .login-description {
         padding-bottom: 0; }
     .login-wrapper h2, .login-wrapper .h2 {
-      font-size: 1.5rem; }
+      font-size: 1.5rem; 
+      margin-bottom: .75rem;
+    }
+    .login-wrapper .login-description div{
+      margin-top: 1.5rem!important;
+    }
     .login-wrapper h4, .login-wrapper .h4 {
       font-size: 0.8rem; } }
 

@@ -2,7 +2,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 /// Image
-import profile from "../../../images/1.jpg";
+// import profile from "../../../images/1.jpg";
 import { Dropdown } from "react-bootstrap";
 import Logout from '../../pages/Authintication/Logout';
 
@@ -241,8 +241,10 @@ const Header = ({ onNote }) => {
                            variant=""
                            as="a"
                            className="nav-link i-false"
+                           style={{border: '1px solid var(--primary)', padding: '4px', borderRadius: '50%'}}
                         >
-                           <img src={profile} width={20} alt="profile" />
+                           {/* <img src={profile} width={20} alt="profile" /> */}
+                           <i className="la la-user" style={{fontSize: '40px', color: 'var(--primary)'}}></i>
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu align="right" className="mt-2 ">
