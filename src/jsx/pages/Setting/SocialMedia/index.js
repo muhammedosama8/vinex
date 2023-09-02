@@ -48,10 +48,11 @@ const SocialMedia = ()=>{
         if(!!links.tiktok) data['tiktok'] = links.tiktok
         if(!!links.twitter) data['twitter'] = links.twitter
         if(!!links.whatsapp) data['whatsapp'] = links.whatsapp
-        if(!!links.whatsapp) data['telegram'] = links.telegram
-        if(!!links.whatsapp) data['linked_in'] = links.linked_in
-        if(!!links.whatsapp) data['paly_store'] = links.paly_store
-        if(!!links.whatsapp) data['app_store'] = links.app_store
+        if(!!links.telegram) data['telegram'] = links.telegram
+        if(!!links.linked_in) data['linked_in'] = links.linked_in
+        if(!!links.play_store) data['play_store'] = links.play_store
+        if(!!links.app_store) data['app_store'] = links.app_store
+        if(!!links.call_us) data['call_us'] = links.call_us
 
         setLoading(true)
         socialMediaService?.create(data)?.then(res=>{

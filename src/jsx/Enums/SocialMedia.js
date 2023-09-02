@@ -8,7 +8,7 @@ export const SocialMediaLinks =[
     {label: 'Telegram', value: 'telegram'},
     {label: 'Tiktok', value: 'tiktok'},
     {label: 'App Store', value: 'app_store'},
-    {label: 'Play Store', value: 'paly_store'},
+    {label: 'Play Store', value: 'play_store'},
     {label: 'Call Us', value: 'call_us'},
     
 ] 
