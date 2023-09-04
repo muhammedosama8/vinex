@@ -41,19 +41,19 @@ const UserProfile =()=>{
             <Card.Body>
                 <Row>
                     <Col md={6} className='mb-2'>
-                        <h4>{Translate[lang].first_name}</h4>
+                        <h4>{Translate[lang]?.first_name}</h4>
                         <p>{user.f_name}</p>
                     </Col>
                     <Col md={6} className='mb-2'>
-                        <h4>{Translate[lang].last_name}</h4>
+                        <h4>{Translate[lang]?.last_name}</h4>
                         <p>{user.l_name}</p>
                     </Col>
                     <Col md={6} className='mb-2'>
-                        <h4>{Translate[lang].email}</h4>
+                        <h4>{Translate[lang]?.email}</h4>
                         <p className="mb-0">{user.email}</p>
                     </Col>
                     <Col md={6}>
-                        <h4>{Translate[lang].phone}</h4>
+                        <h4>{Translate[lang]?.phone}</h4>
                         <p className="mb-0">{user.phone}</p>
                     </Col>
                 </Row>
@@ -64,7 +64,7 @@ const UserProfile =()=>{
         </Card>}
         {!edit && <Card>
             <Card.Body>
-                <h4>{Translate[lang].orders}</h4>
+                <h4>{Translate[lang]?.orders}</h4>
                 <Row>
                 <Table responsive>
                     <thead>
@@ -122,35 +122,35 @@ const UserProfile =()=>{
                 <form onSubmit={onSubmit}>
                 <Row>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">{Translate[lang].first_name}</label>
+                        <label className="text-label">{Translate[lang]?.first_name}</label>
                         <input 
                             type='text' 
                             className="form-control"
                             name='f_name' 
-                            placeholder={Translate[lang].first_name}
+                            placeholder={Translate[lang]?.first_name}
                             value={user.f_name}
                             required
                             onChange={(e)=> handleInput(e)}
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">{Translate[lang].last_name}</label>
+                        <label className="text-label">{Translate[lang]?.last_name}</label>
                         <input 
                             type='text' 
                             className="form-control"
                             name='l_name' 
-                            placeholder={Translate[lang].last_name}
+                            placeholder={Translate[lang]?.last_name}
                             value={user.l_name}
                             required
                             onChange={(e)=> handleInput(e)}
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">{Translate[lang].email}</label>
+                        <label className="text-label">{Translate[lang]?.email}</label>
                         <input 
                             type='email' 
                             className="form-control"
-                            placeholder={Translate[lang].email}
+                            placeholder={Translate[lang]?.email}
                             name='email' 
                             value={user.email}
                             required
@@ -158,11 +158,11 @@ const UserProfile =()=>{
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">{Translate[lang].phone}</label>
+                        <label className="text-label">{Translate[lang]?.phone}</label>
                         <input 
                             type='number' 
                             className="form-control"
-                            placeholder={Translate[lang].phone}
+                            placeholder={Translate[lang]?.phone}
                             name='phone' 
                             value={user.phone}
                             required
@@ -170,11 +170,11 @@ const UserProfile =()=>{
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">{Translate[lang].address}</label>
+                        <label className="text-label">{Translate[lang]?.address}</label>
                         <input 
                             type='text' 
                             className="form-control"
-                            placeholder={Translate[lang].address}
+                            placeholder={Translate[lang]?.address}
                             name='address' 
                             value={user.address}
                             required
@@ -185,7 +185,7 @@ const UserProfile =()=>{
                     <div className='col-md-12 d-flex justify-content-between mt-4'>
                         <div>
                         <Button variant="secondary" onClick={()=> setEdit(false)}>
-                        {Translate[lang].cancel}
+                        {Translate[lang]?.cancel}
                         </Button>
                         </div>
                         <div>
@@ -193,7 +193,7 @@ const UserProfile =()=>{
                             variant="primary" 
                             className="light"
                             type="submit">
-                            {Translate[lang].submit}
+                            {Translate[lang]?.submit}
                         </Button>
                         </div>
                     </div>

@@ -39,7 +39,7 @@ const Brands = () => {
                 color: 'initial',
                 padding: '18px 33px 18px 16px'}}
                 className="form-control"
-                placeholder={`${Translate[lang].search_by} I.D, ${Translate[lang].name}`}
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}`}
                 value={search}
                 onChange={e=> setSearch(e.target.value)} 
             />
@@ -50,7 +50,7 @@ const Brands = () => {
           {isExist('brands') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
               setItem({})
               setAddModal(true) }}>
-              {Translate[lang].add} {Translate[lang].brands}
+              {Translate[lang]?.add} {Translate[lang]?.brands}
           </Button>}
         </div>
       
@@ -65,10 +65,10 @@ const Brands = () => {
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].image}</strong>
+                      <strong>{Translate[lang]?.image}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].name}</strong>
+                      <strong>{Translate[lang]?.name}</strong>
                     </th>
                     {/* <th>
                       <strong>STATUS</strong>

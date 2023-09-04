@@ -108,7 +108,7 @@ const AddAdmin = () => {
          <div className="row">
             <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
-						label ={`${Translate[lang].first_name}*`}
+						label ={`${Translate[lang]?.first_name}*`}
 						name ='first_name'
 						type='text'
 						value={formData?.first_name}
@@ -119,13 +119,13 @@ const AddAdmin = () => {
 								errorMessage: 'This Field is required'
 							},
 						}}
-						placeholder={`${Translate[lang].first_name}`}
+						placeholder={`${Translate[lang]?.first_name}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>
             <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
-						label ={`${Translate[lang].last_name}*`}
+						label ={`${Translate[lang]?.last_name}*`}
 						name ='last_name'
 						type='text'
 						value={formData?.last_name}
@@ -136,13 +136,13 @@ const AddAdmin = () => {
 								errorMessage: 'This Field is required'
 							},
 						}}
-						placeholder={`${Translate[lang].last_name}`}
+						placeholder={`${Translate[lang]?.last_name}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>
            {!location?.state?.edit &&  <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
-						label ={`${Translate[lang].email}*`}
+						label ={`${Translate[lang]?.email}*`}
 						name ='email'
 						type='email'
 						value={formData?.email}
@@ -159,7 +159,7 @@ const AddAdmin = () => {
             </div>}
             {!location?.state?.edit && <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
-						label ={`${Translate[lang].password}*`}
+						label ={`${Translate[lang]?.password}*`}
 						name ='password'
 						type={`${showPassword ? 'password' : 'text'}`}
 						value={formData?.password}
@@ -172,23 +172,23 @@ const AddAdmin = () => {
 						}}
                   onFocus={(e)=> setShowPassword(false)}
                   onBlur={(e)=> setShowPassword(true)}
-						placeholder={`${Translate[lang].password}`}
+						placeholder={`${Translate[lang]?.password}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>}
             {!location?.state?.edit && <div className="col-lg-3 col-sm-6 mb-3">
-                  <label className="text-label">{Translate[lang].country_code}*</label>
+                  <label className="text-label">{Translate[lang]?.country_code}*</label>
                   <Select
                      value={formData?.country_code}
                      name="country_code"
-                     placeholder={Translate[lang].select}
+                     placeholder={Translate[lang]?.select}
                      options={countriesOptions}
                      onChange={(e)=> setFormData({...formData, country_code: e})}
                   />
             </div>}
             {!location?.state?.edit && <div className="col-lg-3 col-sm-6 mb-3">
                   <AvField
-						label ={`${Translate[lang].phone}*`}
+						label ={`${Translate[lang]?.phone}*`}
 						name ='phone'
 						type='number'
 						value={formData?.phone}
@@ -199,14 +199,14 @@ const AddAdmin = () => {
 								errorMessage: 'This Field is required'
 							},
 						}}
-						placeholder={`${Translate[lang].phone}`}
+						placeholder={`${Translate[lang]?.phone}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>}
          </div>
          <div className="d-flex justify-content-between mt-4">
-            <Button variant="secondary" type="button" onClick={()=> navigate('/admins')}>{Translate[lang].cancel}</Button>
-            <Button variant="primary" type="submit" disabled={loading}>{Translate[lang].submit}</Button>
+            <Button variant="secondary" type="button" onClick={()=> navigate('/admins')}>{Translate[lang]?.cancel}</Button>
+            <Button variant="primary" type="submit" disabled={loading}>{Translate[lang]?.submit}</Button>
          </div>
       </AvForm>
       </Card>

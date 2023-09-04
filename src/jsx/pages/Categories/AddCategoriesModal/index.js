@@ -93,7 +93,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>{isAdd ? Translate[lang].add : Translate[lang].edit} {Translate[lang].category}</Modal.Title>
+            <Modal.Title>{isAdd ? Translate[lang]?.add : Translate[lang]?.edit} {Translate[lang]?.category}</Modal.Title>
             <Button
                 variant=""
                 className="close"
@@ -110,9 +110,9 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                     <Row>
                         <Col md={6}>
                             <AvField
-                                label={Translate[lang].english}
+                                label={Translate[lang]?.english}
                                 type='text'
-                                placeholder={Translate[lang].english}
+                                placeholder={Translate[lang]?.english}
                                 bsSize="lg"
                                 name='en'
                                 validate={{
@@ -132,9 +132,9 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
 
                         <Col md={6}>
                             <AvField
-                                label={Translate[lang].arabic}
+                                label={Translate[lang]?.arabic}
                                 type='text'
-                                placeholder={Translate[lang].arabic}
+                                placeholder={Translate[lang]?.arabic}
                                 value={formData.ar}
                                 name='ar'
                                 validate={{
@@ -152,7 +152,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                         </Col>
                         <Col md={12}>
                                 <div className='form-group w-100'>
-                                    <label className="m-0">{Translate[lang].category_image}</label>
+                                    <label className="m-0">{Translate[lang]?.category_image}</label>
                                     <div className="image-placeholder">	
                                         <div className="avatar-edit">
                                             <input type="file" onChange={(e) => fileHandler(e)} id={`imageUpload`} /> 					
@@ -187,13 +187,13 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setAddModal} variant="danger light">
-            {Translate[lang].close}
+            {Translate[lang]?.close}
             </Button>
             <Button 
                     variant="primary" 
                     type='submit'
                     disabled={loading}
-                >{isAdd ? Translate[lang].add : Translate[lang].edit}</Button>
+                >{isAdd ? Translate[lang]?.add : Translate[lang]?.edit}</Button>
             </Modal.Footer>
             </AvForm>
         </Modal>)

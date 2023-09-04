@@ -11,7 +11,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex align-items-center justify-content-between">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].total_users}</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.total_users}</p>
                     <span className="fs-35 text-black font-w600">
                       93
                     </span>
@@ -26,7 +26,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].total_categories}</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.total_categories}</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -41,7 +41,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].total_sub_categories}</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.total_sub_categories}</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -56,7 +56,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].total_brands}</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.total_brands}</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -71,7 +71,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].total_admins}</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.total_admins}</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -86,7 +86,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].total_orders}</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.total_orders}</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -101,7 +101,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].orders} (<span className="text-primary">{Translate[lang].on_the_way}</span>)</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.orders} (<span className="text-primary">{Translate[lang]?.on_the_way}</span>)</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -116,7 +116,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].orders} (<span className="text-danger">{Translate[lang].canceled}</span>)</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.orders} (<span className="text-danger">{Translate[lang]?.canceled}</span>)</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -131,7 +131,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].orders} (<span className="text-success">{Translate[lang].delivered}</span>)</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.orders} (<span className="text-success">{Translate[lang]?.delivered}</span>)</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -147,7 +147,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].total_sales} </p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.total_sales} </p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>
@@ -162,7 +162,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang].sales} ({Translate[lang].daily})</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.sales} ({Translate[lang]?.daily})</p>
                     <span className="fs-35 text-black font-w600">
                       856
                     </span>

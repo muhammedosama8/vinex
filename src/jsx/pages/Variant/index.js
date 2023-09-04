@@ -32,7 +32,7 @@ const Variant = () =>{
                 color: 'initial',
                 padding: '18px 33px 18px 16px'}}
                 className="form-control"
-                placeholder={`${Translate[lang].search_by} I.D, ${Translate[lang].name}`}
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}`}
                 value={search}
                 onChange={e=> setSearch(e.target.value)} 
             />

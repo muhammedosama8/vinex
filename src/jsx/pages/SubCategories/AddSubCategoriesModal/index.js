@@ -114,7 +114,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>{isAdd ? Translate[lang].add : Translate[lang].edit} {Translate[lang].sub_category}</Modal.Title>
+            <Modal.Title>{isAdd ? Translate[lang]?.add : Translate[lang]?.edit} {Translate[lang]?.sub_category}</Modal.Title>
             <Button
                 variant=""
                 className="close"
@@ -129,11 +129,11 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                     <Row>
                         <Col md={12}>
                             <div className='form-group w-100'>
-                            <label>{Translate[lang].category}</label>
+                            <label>{Translate[lang]?.category}</label>
                             <Select
                                 value={formData.category}
                                 name="categories"
-                                placeholder={Translate[lang].select}
+                                placeholder={Translate[lang]?.select}
                                 options={categoriesOptions}
                                 onChange={(e)=> setFormData({...formData, category: e})}
                             />
@@ -141,9 +141,9 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                         </Col>
                         <Col md={6}>
                             <AvField
-                                    label={Translate[lang].english}
+                                    label={Translate[lang]?.english}
                                     type='text'
-                                    placeholder={Translate[lang].english}
+                                    placeholder={Translate[lang]?.english}
                                     bsSize="lg"
                                     name='en'
                                     validate={{
@@ -163,9 +163,9 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
 
                         <Col md={6}>
                             <AvField
-                                    label={Translate[lang].arabic}
+                                    label={Translate[lang]?.arabic}
                                     type='text'
-                                    placeholder={Translate[lang].arabic}
+                                    placeholder={Translate[lang]?.arabic}
                                     value={formData.ar}
                                     name='ar'
                                     validate={{
@@ -184,7 +184,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
 
                         <Col md={12}>
                                 <div className='form-group w-100'>
-                                    <label className="m-0">{Translate[lang].category_image}</label>
+                                    <label className="m-0">{Translate[lang]?.category_image}</label>
                                     <div className="image-placeholder">	
                                         <div className="avatar-edit">
                                             <input type="file" onChange={(e) => fileHandler(e)} id={`imageUpload`} /> 					
@@ -217,13 +217,13 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setAddModal} variant="danger light">
-            {Translate[lang].close}
+            {Translate[lang]?.close}
             </Button>
             <Button 
                 disabled={loading}
                 variant="primary" 
                 type='submit'
-                >{isAdd ? Translate[lang].add : Translate[lang].edit}</Button>
+                >{isAdd ? Translate[lang]?.add : Translate[lang]?.edit}</Button>
             </Modal.Footer>
             </AvForm>
         </Modal>)

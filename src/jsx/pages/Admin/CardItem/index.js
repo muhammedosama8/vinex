@@ -51,7 +51,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                         onClick={()=>navigate(`/rules/${item?.id}`)}
                         variant={item?.admin_roles.length === Rules?.length ? 'success' : item?.admin_roles.length === 0 ? 'danger' : 'secondary'}
                       >
-                        {item?.admin_roles.length === Rules?.length ? Translate[lang].full_permissions : item?.admin_roles.length === 0 ? Translate[lang].no_permissions : Translate[lang].some_permissions}
+                        {item?.admin_roles.length === Rules?.length ? Translate[lang]?.full_permissions : item?.admin_roles.length === 0 ? Translate[lang]?.no_permissions : Translate[lang]?.some_permissions}
                       </Badge>
                     </td>
                     <td>
@@ -72,8 +72,8 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item onClick={()=> navigate(`/admins/edit-admin/${item.id}/${item.f_name}`, {state: {edit: true, id: item.id, item: item}})}>{Translate[lang].edit}</Dropdown.Item>
-                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].delete}</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> navigate(`/admins/edit-admin/${item.id}/${item.f_name}`, {state: {edit: true, id: item.id, item: item}})}>{Translate[lang]?.edit}</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang]?.delete}</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

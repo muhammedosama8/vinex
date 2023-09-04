@@ -86,11 +86,11 @@ const Permission = () =>{
             <Card.Body>
                 <div className='form-row mb-3'>
                     <div className='form-group w-50'>
-                        <lable>{Translate[lang].admin}</lable>
+                        <lable>{Translate[lang]?.admin}</lable>
                         <Select
                             value={formData.admin}
                             name="admin"
-                            placeholder={Translate[lang].select}
+                            placeholder={Translate[lang]?.select}
                             options={adminsOptions}
                             onChange={(e)=> setFormData({rules: [], admin: e})}
                         />
@@ -100,13 +100,13 @@ const Permission = () =>{
                     <thead>
                         <tr>
                             <th className="w-50">
-                                <strong> {Translate[lang].rule}</strong>
+                                <strong> {Translate[lang]?.rule}</strong>
                             </th>
                             <th className="w-25 text-center"> 
-                                <strong>{Translate[lang].full_permissions}</strong>
+                                <strong>{Translate[lang]?.full_permissions}</strong>
                             </th>
                             <th className="w-25 text-center">
-                                <strong>{Translate[lang].read_only}</strong>
+                                <strong>{Translate[lang]?.read_only}</strong>
                             </th>
                         </tr>
                     </thead>
@@ -151,7 +151,7 @@ const Permission = () =>{
                 </Table>
                 {isExist('rules') &&<div className="d-flex justify-content-end mt-5">
                     <Button variant="primary" type="submit">
-                        {Translate[lang].submit}
+                        {Translate[lang]?.submit}
                     </Button>
                 </div>}
             </Card.Body>

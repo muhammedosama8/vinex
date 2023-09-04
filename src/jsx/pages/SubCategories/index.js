@@ -37,7 +37,7 @@ const SubCategories = () => {
                 color: 'initial',
                 padding: '18px 33px 18px 16px'}}
                 className="form-control"
-                placeholder={`${Translate[lang].search_by} I.D, ${Translate[lang].name}`}
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}`}
                 value={search}
                 onChange={e=> setSearch(e.target.value)} 
             />
@@ -48,7 +48,7 @@ const SubCategories = () => {
           {isExist('sub_categories') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
               setItem({})
               setAddModal(true) }}>
-              {Translate[lang].add} {Translate[lang].sub_categories}
+              {Translate[lang]?.add} {Translate[lang]?.sub_categories}
           </Button>}
         </div>
       
@@ -61,14 +61,14 @@ const SubCategories = () => {
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].image}</strong>
+                      <strong>{Translate[lang]?.image}</strong>
                     </th>
 
                     <th>
-                      <strong>{Translate[lang].name}</strong>
+                      <strong>{Translate[lang]?.name}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].categories}</strong>
+                      <strong>{Translate[lang]?.categories}</strong>
                     </th>
                     {/* <th>
                       <strong>STATUS</strong>

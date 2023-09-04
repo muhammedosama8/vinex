@@ -331,9 +331,9 @@ const AddProducts = () => {
             <Row>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label={`${Translate[lang].english_title}*`}
+                                label={`${Translate[lang]?.english_title}*`}
                                 type='text'
-                                placeholder={Translate[lang].english}
+                                placeholder={Translate[lang]?.english}
                                 bsSize="lg"
                                 name='name_en'
                                 validate={{
@@ -352,9 +352,9 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label={`${Translate[lang].arabic_title}*`}
+                                label={`${Translate[lang]?.arabic_title}*`}
                                 type='text'
-                                placeholder={Translate[lang].arabic}
+                                placeholder={Translate[lang]?.arabic}
                                 value={product.name_ar}
                                 name='name_ar'
                                 validate={{
@@ -371,7 +371,7 @@ const AddProducts = () => {
                                 />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">{Translate[lang].english_description}*</label>
+                        <label className="text-label">{Translate[lang]?.english_description}*</label>
                         <textarea  
                             name="description_en" 
                             style={{
@@ -381,7 +381,7 @@ const AddProducts = () => {
                             }}
                             className="form-control"
                             required
-                            placeholder={Translate[lang].english}
+                            placeholder={Translate[lang]?.english}
                             value={product.description_en}
                             onChange={(e)=> {
                                 setErrors({
@@ -395,7 +395,7 @@ const AddProducts = () => {
                         {errors['desc_en'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">{Translate[lang].arabic_description}*</label>
+                        <label className="text-label">{Translate[lang]?.arabic_description}*</label>
                         <textarea  
                             name="description_ar" 
                             style={{
@@ -404,7 +404,7 @@ const AddProducts = () => {
                                 height: '150px'
                             }}
                             className="form-control"
-                            placeholder={Translate[lang].arabic}
+                            placeholder={Translate[lang]?.arabic}
                             value={product.description_ar}
                             onChange={(e)=> {
                                 setErrors({
@@ -418,21 +418,21 @@ const AddProducts = () => {
                         {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">{Translate[lang].category}*</label>
+                        <label className="text-label">{Translate[lang]?.category}*</label>
                         <Select
                             value={product.category}
                             name="category"
-                            placeholder={Translate[lang].select}
+                            placeholder={Translate[lang]?.select}
                             options={categoriesOptions}
                             onChange={(e)=> setProduct({...product, category: e, dynamic_variant: [],variant: [], sub_category: ''})}
                         />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">{Translate[lang].sub_categories}</label>
+                        <label className="text-label">{Translate[lang]?.sub_categories}</label>
                         <Select
                             value={product.sub_category}
                             name="sub_category"
-                            placeholder={Translate[lang].select}
+                            placeholder={Translate[lang]?.select}
                             options={subCategoriesOptions}
                             onChange={(e)=> setProduct({...product, sub_category: e})}
                         />
@@ -459,20 +459,20 @@ const AddProducts = () => {
                             />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">{Translate[lang].brands}</label>
+                        <label className="text-label">{Translate[lang]?.brands}</label>
                         <Select
                             value={product.brand}
                             name="brand"
-                            placeholder={Translate[lang].select}
+                            placeholder={Translate[lang]?.select}
                             options={brandOptions}
                             onChange={(e)=> setProduct({...product, brand: e})}
                         />
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label={`${Translate[lang].price}*`}
+                                label={`${Translate[lang]?.price}*`}
                                 type='number'
-                                placeholder={Translate[lang].price}
+                                placeholder={Translate[lang]?.price}
                                 bsSize="lg"
                                 name='price'
                                 min='0.0000000000001'
@@ -488,9 +488,9 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                     <AvField
-                                label={`${Translate[lang].cost}*`}
+                                label={`${Translate[lang]?.cost}*`}
                                 type='number'
-                                placeholder={Translate[lang].cost}
+                                placeholder={Translate[lang]?.cost}
                                 bsSize="lg"
                                 name='cost'
                                 validate={{
@@ -506,9 +506,9 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                     <AvField
-                                label={`${Translate[lang].quantity}*`}
+                                label={`${Translate[lang]?.quantity}*`}
                                 type='number'
-                                placeholder={Translate[lang].quantity}
+                                placeholder={Translate[lang]?.quantity}
                                 bsSize="lg"
                                 name='amount'
                                 validate={{
@@ -524,9 +524,9 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label={Translate[lang].weight}
+                                label={Translate[lang]?.weight}
                                 type='number'
-                                placeholder={Translate[lang].weight}
+                                placeholder={Translate[lang]?.weight}
                                 bsSize="lg"
                                 name='weight'
                                 min='0.0000000000001'
@@ -542,9 +542,9 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                            label={Translate[lang].offer_price}
+                            label={Translate[lang]?.offer_price}
                             type='number'
-                            placeholder={Translate[lang].offer_price}
+                            placeholder={Translate[lang]?.offer_price}
                             min='0.0000000000001'
                             bsSize="lg"
                             name='offerPrice'
@@ -554,7 +554,7 @@ const AddProducts = () => {
                 </Col>
                 <Col md={2} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
-                        <label className="text-label">{Translate[lang].best_seller}</label>
+                        <label className="text-label">{Translate[lang]?.best_seller}</label>
                         <Form.Check
                         type="switch"
                         id={`bestSeller`}
@@ -565,7 +565,7 @@ const AddProducts = () => {
                 </Col>
                 <Col md={2} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
-                        <label className="text-label">{Translate[lang].new_in}</label>
+                        <label className="text-label">{Translate[lang]?.new_in}</label>
                         <Form.Check
                         type="switch"
                         id={`newIn`}
@@ -575,7 +575,7 @@ const AddProducts = () => {
                     {/* </div> */}
                 </Col>
                 <Col md={2} className="mb-3">
-                        <label className="text-label">{Translate[lang].offer}</label>
+                        <label className="text-label">{Translate[lang]?.offer}</label>
                         <Form.Check
                         type="switch"
                         id={`offer`}
@@ -700,12 +700,12 @@ const AddProducts = () => {
             </Row>
             {dynamicVariant?.length > 0 && <Row>
             <Col md={12}>
-                <label className="text-label mb-2 mt-2 d-block">{Translate[lang].dynamic_variant}</label>
+                <label className="text-label mb-2 mt-2 d-block">{Translate[lang]?.dynamic_variant}</label>
                 <Select 
                     options={dynamicVariant?.filter(res=> !product.dynamic_variant?.some(res2=> res.label === res2.label))}
                     name='dynamic_variant'
                     isMulti={true}
-                    placeholder={Translate[lang].select}
+                    placeholder={Translate[lang]?.select}
                     value={product.dynamic_variant}
                     onChange={e=>{
                         setProduct({...product, dynamic_variant: e})
@@ -744,7 +744,7 @@ const AddProducts = () => {
                 })} */}
             </Row>}
 
-            <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>{Translate[lang].images}</label>
+            <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>{Translate[lang]?.images}</label>
             <Row>
                 {product?.images?.map((data, index)=>{
                     return <Col md={3} className='mb-3' key={index}>
@@ -778,11 +778,11 @@ const AddProducts = () => {
                 variant="secondary"
                 type="button"
                 onClick={()=> navigate('/products')}
-            >{Translate[lang].cancel}</Button>
+            >{Translate[lang]?.cancel}</Button>
             <Button 
                 variant="primary"
                 loading={loading}
-                type="submit">{Translate[lang].submit}</Button>
+                type="submit">{Translate[lang]?.submit}</Button>
             </div>
         </AvForm>
         {confirm && <ConfirmModal 

@@ -42,22 +42,22 @@ const Users = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].name}</strong>
+                      <strong>{Translate[lang]?.name}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].email}</strong>
+                      <strong>{Translate[lang]?.email}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].phone}</strong>
+                      <strong>{Translate[lang]?.phone}</strong>
                     </th>
                     {/* <th>
                       <strong>Count Orders</strong>
                     </th> */}
                     <th>
-                      <strong>{Translate[lang].status}</strong>
+                      <strong>{Translate[lang]?.status}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].deleted}</strong>
+                      <strong>{Translate[lang]?.deleted}</strong>
                     </th>
                   </tr>
                 </thead>

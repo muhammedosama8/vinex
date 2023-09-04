@@ -32,7 +32,7 @@ const Products = () =>{
                 color: 'initial',
                 padding: '18px 33px 18px 16px'}}
                 className="form-control"
-                placeholder={`${Translate[lang].search_by} I.D, ${Translate[lang].name}`}
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}`}
                 value={search}
                 onChange={e=> setSearch(e.target.value)} 
             />
@@ -41,15 +41,15 @@ const Products = () =>{
             ></div>
           </div>
           {isExist('products') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/products/add-products')}>
-              {Translate[lang].add} {Translate[lang].products}
+              {Translate[lang]?.add} {Translate[lang]?.products}
           </Button>}
         </div>
         <div className="d-flex align-items-center mb-3 ">
           <Button variant={isDeleted ? 'secondary' : 'primary'} className='mx-2' onClick={()=> setIsDeleted(false)}>
-            {Translate[lang].active}
+            {Translate[lang]?.active}
           </Button>
           <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
-            {Translate[lang].not_active}
+            {Translate[lang]?.not_active}
           </Button>
         </div>
         <Card>
@@ -61,22 +61,22 @@ const Products = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].image}</strong>
+                      <strong>{Translate[lang]?.image}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].name}</strong>
+                      <strong>{Translate[lang]?.name}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].category}</strong>
+                      <strong>{Translate[lang]?.category}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].price}</strong>
+                      <strong>{Translate[lang]?.price}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].in_stoke}</strong>
+                      <strong>{Translate[lang]?.in_stoke}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].status}</strong>
+                      <strong>{Translate[lang]?.status}</strong>
                     </th>
                     <th></th>
                   </tr>

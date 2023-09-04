@@ -30,7 +30,7 @@ const Admins = () =>{
                 color: 'initial',
                 padding: '18px 33px 18px 16px'}}
                 className="form-control"
-                placeholder={`${Translate[lang].search_by} I.D, ${Translate[lang].name}, ${Translate[lang].phone} `}
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}, ${Translate[lang]?.phone} `}
                 value={search}
                 onChange={e=> setSearch(e.target.value)} 
             />
@@ -39,7 +39,7 @@ const Admins = () =>{
             ></div>
           </div> 
           {isExist('admin') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/admins/add-admins')}>
-              {Translate[lang].add_admin}
+              {Translate[lang]?.add_admin}
           </Button>}
         </div>
 
@@ -52,19 +52,19 @@ const Admins = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th className="px-2">
-                      <strong>{Translate[lang].name}</strong>
+                      <strong>{Translate[lang]?.name}</strong>
                     </th>
                     <th className="px-2">
-                      <strong>{Translate[lang].email}</strong>
+                      <strong>{Translate[lang]?.email}</strong>
                     </th>
                     <th className="px-2">
-                      <strong>{Translate[lang].phone}</strong>
+                      <strong>{Translate[lang]?.phone}</strong>
                     </th>
                     <th className="px-2">
-                      <strong>{Translate[lang].permissions}</strong>
+                      <strong>{Translate[lang]?.permissions}</strong>
                     </th>
                     <th className="px-2">
-                      <strong>{Translate[lang].status}</strong>
+                      <strong>{Translate[lang]?.status}</strong>
                     </th>
                     <th></th>
                   </tr>

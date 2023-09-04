@@ -40,7 +40,7 @@ const Categories = () => {
                 color: 'initial',
                 padding: '18px 33px 18px 16px'}}
                 className="form-control"
-                placeholder={`${Translate[lang].search_by} I.D, ${Translate[lang].name}`}
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}`}
                 value={search}
                 onChange={e=> setSearch(e.target.value)} 
             />
@@ -51,15 +51,15 @@ const Categories = () => {
           {isExist('categories') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
               setItem({})
               setAddModal(true) }}>
-              {Translate[lang].add_categories}
+              {Translate[lang]?.add_categories}
           </Button>}
         </div>
         <div className="d-flex align-items-center mb-3 ">
           <Button variant={isDeleted ? 'secondary' : 'primary'} className='mx-2' onClick={()=> setIsDeleted(false)}>
-            {Translate[lang].active}
+            {Translate[lang]?.active}
           </Button>
           <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
-            {Translate[lang].not_active}
+            {Translate[lang]?.not_active}
           </Button>
         </div>
       <Row>
@@ -73,10 +73,10 @@ const Categories = () => {
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].image}</strong>
+                      <strong>{Translate[lang]?.image}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang].name}</strong>
+                      <strong>{Translate[lang]?.name}</strong>
                     </th>
                     {/* <th>
                       <strong>STATUS</strong>

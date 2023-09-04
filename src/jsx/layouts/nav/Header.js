@@ -52,7 +52,7 @@ const Header = ({ onNote }) => {
                            ? "Dashboard"
                            : finalName.join(" ")} */}
                         {finalName.join(" ").length === 0
-                           ? Translate[lang].dashboard
+                           ? Translate[lang]?.dashboard
                            : Translate[lang][finalName.join(" ")]}
                      </div>
                   </div>
@@ -124,7 +124,7 @@ const Header = ({ onNote }) => {
                                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                                  <circle cx={12} cy={7} r={4} />
                               </svg>
-                              <span className={lang ==='en' ? "ml-2" : "mr-2"}>{Translate[lang].profile} </span>
+                              <span className={lang ==='en' ? "ml-2" : "mr-2"}>{Translate[lang]?.profile} </span>
                            </Link>
                            <Logout />
                         </Dropdown.Menu>

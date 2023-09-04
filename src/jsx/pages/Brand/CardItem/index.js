@@ -47,8 +47,8 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                         <Dropdown.Item onClick={()=> {
                             setItem(item)
                             setAddModal(true)
-                        }}> {Translate[lang].edit}</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].delete}</Dropdown.Item>
+                        }}> {Translate[lang]?.edit}</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang]?.delete}</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>}
             </td>

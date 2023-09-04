@@ -34,11 +34,11 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
         return(
             <Row className="pagination mt-3 px-2">
                 <Col md={12} className="d-flex justify-content-between">
-                    <span>{Translate[lang].page}{' '}
-                        <strong> {page} {Translate[lang].of} {totalPages}</strong>
+                    <span>{Translate[lang]?.page}{' '}
+                        <strong> {page} {Translate[lang]?.of} {totalPages}</strong>
                     </span>
                     <span className="table-index">
-                        {Translate[lang].go_to_page}: {' '}
+                        {Translate[lang]?.go_to_page}: {' '}
                             <input 
                                 type="number" 
                                 className="ml-2"
@@ -76,13 +76,13 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
                             setPage(prev=> parseInt(prev)-1)
                             setPageShow(page-1)
                         }} disabled={parseInt(page) === 1 }>
-                            {Translate[lang].previous}
+                            {Translate[lang]?.previous}
                         </button>
                         <button className="next-button" onClick={() => {
                             setPage(prev=> parseInt(prev)+1)
                             setPageShow(page+1)
                         }} disabled={parseInt(page) === totalPages}>
-                            {Translate[lang].next}
+                            {Translate[lang]?.next}
                         </button>
                         <button className=" next-button" onClick={() => {
                             setPage(parseInt(totalPages))
