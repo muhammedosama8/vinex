@@ -109,7 +109,11 @@ export function checkAutoLogin(dispatch, navigate) {
     // }
     dispatch(loginConfirmedAction(tokenDetails));
     dispatch(changeAdminRules(rules));
-    dispatch(setLang(adminLang || 'en'));
+    if(adminLang === 'en'){
+        dispatch(setLang('en'))
+    } else {
+        dispatch(setLang('ar'))
+    }
 	
     // const timer = expireDate.getTime() - todaysDate.getTime();
     // runLogoutTimer(dispatch, timer, navigate);
