@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 
 import {MenuList} from '../../Enums/Menu';
 import {useScrollPosition} from "@n8tb1t/use-scroll-position";
-import { useSelector } from "react-redux";
-import { Translate } from "../../Enums/Tranlate";
 
 const reducer = (previousState, updatedState) => ({
   ...previousState,
@@ -23,7 +21,6 @@ const initialState = {
 
 const SideBar = (props) => {
   const [state, setState] = useReducer(reducer, initialState);	
-  const lang = useSelector(state=> state.auth?.lang)
   
  //For scroll
  	const [hideOnScroll, setHideOnScroll] = useState(true)
@@ -85,7 +82,7 @@ const SideBar = (props) => {
                                   onClick={() => {handleMenuActive(data.title)}}
                                 >								
                                     {data.iconStyle}
-                                    <span className="nav-text">{Translate[lang][data.text]}</span>
+                                    <span className="nav-text">{data.title}</span>
                                 </Link>
                                   <Collapse in={state.active === data.title ? true :false}>
                                     <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
@@ -99,14 +96,14 @@ const SideBar = (props) => {
                                                     <Link to={data.to} className={data.hasMenu ? 'has-arrow' : ''}
                                                       onClick={() => { handleSubmenuActive(data.title)}}
                                                     >
-                                                      {Translate[lang][data.text]}
+                                                      {data.title}
                                                     </Link>
                                                     <Collapse in={state.activeSubmenu === data.title ? true :false}>
                                                         <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
                                                           {data.content && data.content.map((data,index) => {
                                                             return(	
                                                                 <li key={index}>
-                                                                  <Link className={`${path === data.to ? "mm-active" : ""}`} to={data.to}>{Translate[lang][data.text]}</Link>
+                                                                  <Link className={`${path === data.to ? "mm-active" : ""}`} to={data.to}>{data.title}</Link>
                                                                 </li>
                                                             )
                                                           })}
@@ -115,7 +112,7 @@ const SideBar = (props) => {
                                                   </>
                                                 :
                                                 <Link to={data.to}>
-                                                  {Translate[lang][data.text]}
+                                                  {data.title}
                                                 </Link>
                                               }
                                               
@@ -130,9 +127,7 @@ const SideBar = (props) => {
                           :
                             <Link to={data.to} onClick={() => handleMenuActive(data.title)}>
                                 {data.iconStyle}
-                                <span className="nav-text">
-                                 {Translate[lang][data.text]}
-                                </span>
+                                <span className="nav-text">{data.title}</span>
                             </Link>
                           }
                         </li>	
