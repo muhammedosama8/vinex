@@ -6,6 +6,7 @@ import AdminService from "../../../services/AdminService";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
+import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
 const Admins = () =>{
@@ -17,13 +18,28 @@ const Admins = () =>{
     const adminService = new AdminService()
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    const lang = useSelector(state=> state.auth?.lang)
 
     return(
         <>
-        <div className="d-flex justify-content-between mb-3 align-items-center">
-          <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />    
+        <div className="d-flex justify-content-between mb-3 align-items-center"> 
+          <div className="input-group w-50">
+            <input 
+                type="text" 
+                style={{borderRadius: '8px',
+                color: 'initial',
+                padding: '18px 33px 18px 16px'}}
+                className="form-control"
+                placeholder={`${Translate[lang].search_by} I.D, ${Translate[lang].name}, ${Translate[lang].phone} `}
+                value={search}
+                onChange={e=> setSearch(e.target.value)} 
+            />
+            <div className="flaticon-381-search-2"
+              style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+            ></div>
+          </div> 
           {isExist('admin') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/admins/add-admins')}>
-              Add Admin
+              {Translate[lang].add_admin}
           </Button>}
         </div>
 
@@ -36,19 +52,19 @@ const Admins = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th className="px-2">
-                      <strong>Name</strong>
+                      <strong>{Translate[lang].name}</strong>
                     </th>
                     <th className="px-2">
-                      <strong>Email</strong>
+                      <strong>{Translate[lang].email}</strong>
                     </th>
                     <th className="px-2">
-                      <strong>Phone</strong>
+                      <strong>{Translate[lang].phone}</strong>
                     </th>
                     <th className="px-2">
-                      <strong>Permission</strong>
+                      <strong>{Translate[lang].permissions}</strong>
                     </th>
                     <th className="px-2">
-                      <strong>STATUS</strong>
+                      <strong>{Translate[lang].status}</strong>
                     </th>
                     <th></th>
                   </tr>

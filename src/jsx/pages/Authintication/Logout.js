@@ -1,9 +1,10 @@
 import React  from 'react';
-import {connect, useDispatch } from 'react-redux';
+import {connect, useDispatch, useSelector } from 'react-redux';
 import {  useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Logout } from '../../../store/actions/AuthActions';
 
 import { isAuthenticated } from '../../../store/selectors/AuthSelectors';
+import { Translate } from '../../Enums/Tranlate';
 
 function withRouter(Component) {
     function ComponentWithRouterProp(props) {
@@ -24,6 +25,7 @@ function withRouter(Component) {
 function LogoutPage(props){
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const lang = useSelector(state=> state.auth.lang)
     function onLogout() {
        dispatch(Logout(navigate));
        // window.location.reload();
@@ -40,7 +42,7 @@ function LogoutPage(props){
                     <polyline points="16 17 21 12 16 7" />
                     <line x1={21} y1={12} x2={9} y2={12} />
                 </svg>
-                <span className="ml-2" >Logout </span>
+                <span className={lang ==='en' ? "ml-2" : "mr-2"} >{Translate[lang].logout} </span>
             </button>
         </>
     )

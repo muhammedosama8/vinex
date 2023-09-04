@@ -16,6 +16,7 @@ import BrandsService from "../../../../services/BrandsService";
 import { loadingToggleAction } from "../../../../store/actions/AuthActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from '../../../common/Loader'
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddProducts = () => {
     const [product, setProduct]= useState({
@@ -35,6 +36,7 @@ const AddProducts = () => {
         code: '',
         brand: '',
         variant: [],
+        cost: '',
         dynamic_variant: [],
         images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]
     })
@@ -61,6 +63,7 @@ const AddProducts = () => {
     const productsService = new ProductsService()
     const brandsService = new BrandsService()
     const Auth = useSelector(state=> state.auth)
+    const lang = useSelector(state=> state.auth.lang)
 
     useEffect(()=>{
         categoriesService.getList().then(res=>{
@@ -69,7 +72,7 @@ const AddProducts = () => {
                   return{
                      id: item?.id,
                      value: item?.id,
-                     label: item.name_en
+                     label: lang === 'en' ? item.name_en : item.name_ar
                   }
                })
                setCategoriesOptions(categories)
@@ -81,7 +84,7 @@ const AddProducts = () => {
                   return{
                      id: item?.id,
                      value: item?.id,
-                     label: item.name_en
+                     label: lang === 'en' ? item.name_en : item.name_ar
                   }
                })
                setBrandOptions(categories)
@@ -103,7 +106,7 @@ const AddProducts = () => {
                         return{
                             id: item?.id,
                             value: item?.id,
-                            label: item.name_en
+                            label: lang === 'en' ? item.name_en : item.name_ar
                         }
                     })
                     setSubCategoriesOptions(subCategories)
@@ -115,7 +118,7 @@ const AddProducts = () => {
                     let data = res.data?.data?.map(item=>{
                         return{
                             ...item,
-                            label: item.name_en,
+                            label: lang === 'en' ? item.name_en : item.name_ar,
                             value: item.id,
                         }
                     })
@@ -136,16 +139,16 @@ const AddProducts = () => {
                 if(res.data?.status === 200){
                     let data= {
                         ...response?.product,
-                        offerPrice: response.product.offerPrice || '',
+                        offerPrice: !!Number(response.product.offerPrice    ) ? response.product.offerPrice : '',
                         category: {
                             ...response?.product.category,
                             id: response?.product.category_id,
                             value: response.product?.category_id,
-                            label: response.product?.category?.name_en
+                            label: lang === 'en' ? response.product?.category?.name_en : response.product?.category?.name_ar
                         },
                         brand: response.product.brand?.name_en ? {
                             ...response.product.brand,
-                            label: response.product.brand?.name_en,
+                            label: lang === 'en' ? response.product.brand?.name_en : response.product.brand?.name_ar,
                             value: response.product.brand_id
                         } : '',
                         images: product?.images?.map((_,index)=> {
@@ -162,7 +165,7 @@ const AddProducts = () => {
                         }),
                         sub_category: response.product?.sub_category?.name_en ? {
                             ...response.product?.sub_category,
-                            label: response.product?.sub_category?.name_en,
+                            label: lang === 'en' ? response.product?.sub_category?.name_en : response.product?.sub_category?.name_ar,
                             value: response.product?.sub_category_id,
                             id: response.product?.sub_category_id,
                         } : '',
@@ -181,7 +184,7 @@ const AddProducts = () => {
                             data['dynamic_variant'] = res2.data.data?.map(item=>{
                                 return{
                                     ...item,
-                                    label: item.name_en
+                                    label: lang === 'en' ? item.name_en : item.name_ar
                                 }
                             })
                             setProduct({...data})
@@ -267,7 +270,8 @@ const AddProducts = () => {
             bestSeller: product.bestSeller,
             newIn: product.newIn,
             offer: product.offer,
-            offerPrice: parseFloat(product.offerPrice)
+            offerPrice: parseFloat(product.offerPrice),
+            cost : product?.cost
         }
         if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
         if(!!product.brand) data['brand_id']= product?.brand?.value
@@ -327,9 +331,9 @@ const AddProducts = () => {
             <Row>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='English Title*'
+                                label={`${Translate[lang].english_title}*`}
                                 type='text'
-                                placeholder='English'
+                                placeholder={Translate[lang].english}
                                 bsSize="lg"
                                 name='name_en'
                                 validate={{
@@ -348,9 +352,9 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='Arabic Title*'
+                                label={`${Translate[lang].arabic_title}*`}
                                 type='text'
-                                placeholder='الاسم'
+                                placeholder={Translate[lang].arabic}
                                 value={product.name_ar}
                                 name='name_ar'
                                 validate={{
@@ -367,7 +371,7 @@ const AddProducts = () => {
                                 />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">English Description*</label>
+                        <label className="text-label">{Translate[lang].english_description}*</label>
                         <textarea  
                             name="description_en" 
                             style={{
@@ -377,7 +381,7 @@ const AddProducts = () => {
                             }}
                             className="form-control"
                             required
-                            placeholder="Enter Description"
+                            placeholder={Translate[lang].english}
                             value={product.description_en}
                             onChange={(e)=> {
                                 setErrors({
@@ -391,7 +395,7 @@ const AddProducts = () => {
                         {errors['desc_en'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">Arabic Description*</label>
+                        <label className="text-label">{Translate[lang].arabic_description}*</label>
                         <textarea  
                             name="description_ar" 
                             style={{
@@ -400,7 +404,7 @@ const AddProducts = () => {
                                 height: '150px'
                             }}
                             className="form-control"
-                            placeholder="Enter Description"
+                            placeholder={Translate[lang].arabic}
                             value={product.description_ar}
                             onChange={(e)=> {
                                 setErrors({
@@ -414,19 +418,21 @@ const AddProducts = () => {
                         {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">Category*</label>
+                        <label className="text-label">{Translate[lang].category}*</label>
                         <Select
                             value={product.category}
                             name="category"
+                            placeholder={Translate[lang].select}
                             options={categoriesOptions}
                             onChange={(e)=> setProduct({...product, category: e, dynamic_variant: [],variant: [], sub_category: ''})}
                         />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">SubCategory</label>
+                        <label className="text-label">{Translate[lang].sub_categories}</label>
                         <Select
                             value={product.sub_category}
                             name="sub_category"
+                            placeholder={Translate[lang].select}
                             options={subCategoriesOptions}
                             onChange={(e)=> setProduct({...product, sub_category: e})}
                         />
@@ -453,19 +459,20 @@ const AddProducts = () => {
                             />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">Brand</label>
+                        <label className="text-label">{Translate[lang].brands}</label>
                         <Select
                             value={product.brand}
                             name="brand"
+                            placeholder={Translate[lang].select}
                             options={brandOptions}
                             onChange={(e)=> setProduct({...product, brand: e})}
                         />
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='Price*'
+                                label={`${Translate[lang].price}*`}
                                 type='number'
-                                placeholder='Price'
+                                placeholder={Translate[lang].price}
                                 bsSize="lg"
                                 name='price'
                                 min='0.0000000000001'
@@ -481,9 +488,27 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                     <AvField
-                                label='Quantity*'
+                                label={`${Translate[lang].cost}*`}
                                 type='number'
-                                placeholder='Quantity'
+                                placeholder={Translate[lang].cost}
+                                bsSize="lg"
+                                name='cost'
+                                validate={{
+                                    required: {
+                                        value: true,
+                                        errorMessage: 'This Field is required'
+                                    }
+                                }}
+                                min='1'
+                                value={product.cost}
+                                onChange={(e)=> handlerText(e)}
+                            />
+                </Col>
+                <Col md={6} className="mb-3">
+                    <AvField
+                                label={`${Translate[lang].quantity}*`}
+                                type='number'
+                                placeholder={Translate[lang].quantity}
                                 bsSize="lg"
                                 name='amount'
                                 validate={{
@@ -499,27 +524,27 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='Weight*'
+                                label={Translate[lang].weight}
                                 type='number'
-                                placeholder='Weight'
+                                placeholder={Translate[lang].weight}
                                 bsSize="lg"
                                 name='weight'
                                 min='0.0000000000001'
-                                validate={{
-                                    required: {
-                                        value: true,
-                                        errorMessage: 'This Field is required'
-                                    }
-                                }}
+                                // validate={{
+                                //     required: {
+                                //         value: true,
+                                //         errorMessage: 'This Field is required'
+                                //     }
+                                // }}
                                 value={product.weight}
                                 onChange={(e)=> handlerText(e)}
                             />
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                            label='Offer Price'
+                            label={Translate[lang].offer_price}
                             type='number'
-                            placeholder='Offer Price'
+                            placeholder={Translate[lang].offer_price}
                             min='0.0000000000001'
                             bsSize="lg"
                             name='offerPrice'
@@ -529,7 +554,7 @@ const AddProducts = () => {
                 </Col>
                 <Col md={2} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
-                        <label className="text-label">Best Seller</label>
+                        <label className="text-label">{Translate[lang].best_seller}</label>
                         <Form.Check
                         type="switch"
                         id={`bestSeller`}
@@ -540,7 +565,7 @@ const AddProducts = () => {
                 </Col>
                 <Col md={2} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
-                        <label className="text-label">New In</label>
+                        <label className="text-label">{Translate[lang].new_in}</label>
                         <Form.Check
                         type="switch"
                         id={`newIn`}
@@ -550,7 +575,7 @@ const AddProducts = () => {
                     {/* </div> */}
                 </Col>
                 <Col md={2} className="mb-3">
-                        <label className="text-label">Offer</label>
+                        <label className="text-label">{Translate[lang].offer}</label>
                         <Form.Check
                         type="switch"
                         id={`offer`}
@@ -562,7 +587,7 @@ const AddProducts = () => {
                 {variant?.length > 0 && variant?.map((item, index)=>{
                     let findInd = product?.variant?.findIndex(res=> res.name_en === item.name_en)
                     return <Col md={6} className="mb-3">
-                    <label className="text-label">{item.name_en}</label>
+                    <label className="text-label">{lang === 'en' ? item.name_en : item.name_ar}</label>
                     <div className="d-grid mt-2" style={{gridTemplateColumns: 'auto auto auto auto'}}>
                         {item?.variant_values?.map(value=>{
                             if(item?.name_en === 'color'){
@@ -666,7 +691,7 @@ const AddProducts = () => {
                                     // }
                                 }}
                             />
-                                {value?.value_en }
+                                {lang === 'en' ? value?.value_en : value?.value_ar }
                             </label>
                         })}
                     </div>
@@ -675,11 +700,12 @@ const AddProducts = () => {
             </Row>
             {dynamicVariant?.length > 0 && <Row>
             <Col md={12}>
-                <label className="text-label mb-2 mt-2 d-block">Dynamic Variant</label>
+                <label className="text-label mb-2 mt-2 d-block">{Translate[lang].dynamic_variant}</label>
                 <Select 
                     options={dynamicVariant?.filter(res=> !product.dynamic_variant?.some(res2=> res.label === res2.label))}
                     name='dynamic_variant'
                     isMulti={true}
+                    placeholder={Translate[lang].select}
                     value={product.dynamic_variant}
                     onChange={e=>{
                         setProduct({...product, dynamic_variant: e})
@@ -718,7 +744,7 @@ const AddProducts = () => {
                 })} */}
             </Row>}
 
-            <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>Images</label>
+            <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>{Translate[lang].images}</label>
             <Row>
                 {product?.images?.map((data, index)=>{
                     return <Col md={3} className='mb-3' key={index}>
@@ -752,11 +778,11 @@ const AddProducts = () => {
                 variant="secondary"
                 type="button"
                 onClick={()=> navigate('/products')}
-            >Cancel</Button>
+            >{Translate[lang].cancel}</Button>
             <Button 
                 variant="primary"
                 loading={loading}
-                type="submit">Submit</Button>
+                type="submit">{Translate[lang].submit}</Button>
             </div>
         </AvForm>
         {confirm && <ConfirmModal 

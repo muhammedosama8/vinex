@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 /// Components
 import Index from './jsx/index';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import {  Route, Routes, useLocation , useNavigate , useParams } from 'react-router-dom';
 // action
 import { checkAutoLogin } from './services/AuthService';
@@ -39,20 +39,16 @@ function withRouter(Component) {
 function App (props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    http.setInterceptors(navigate)
-    
+    http.setInterceptors(navigate);
+    const lang = useSelector(state=> state.auth.lang)
+
     useEffect(() => {
         checkAutoLogin(dispatch, navigate);
     }, []);
-    
-    let routeblog = (  
-        <Routes>
-            <Route path='/login' element={<Login />} />
-        </Routes>
-    );
+
     if (props.isAuthenticated) {
 		return (
-			<>
+			<div className={`${lang}`}>
                 <Suspense fallback={
                     <div id="preloader">
                         <div className="sk-three-bounce">
@@ -66,7 +62,7 @@ function App (props) {
                     <ToastContainer />
                     <Index />
                 </Suspense>
-            </>
+            </div>
         );
 	
 	}else{
@@ -82,7 +78,9 @@ function App (props) {
                     </div>
                   }
                 >
-                    {routeblog}
+                    <Routes>
+                        <Route path='/login' element={<Login />} />
+                    </Routes>
                 </Suspense>
 			</div>
 		);

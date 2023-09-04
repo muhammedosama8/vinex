@@ -8,6 +8,8 @@ import SubCategoriesService from "../../../../services/SubCategoriesService";
 import CategoriesService from "../../../../services/CategoriesService";
 import BaseService from "../../../../services/BaseService";
 import Loader from "../../../common/Loader";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [files, setFiles] = useState([{}])
@@ -22,6 +24,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
     const [ categoriesOptions, setCategoriesOptions] = useState([])
     const subCategoriesService = new SubCategoriesService()
     const categoriesService = new CategoriesService()
+    const lang = useSelector(state=> state.auth.lang)
 
     useEffect(()=> {
         categoriesService.getList().then(res=>{
@@ -30,7 +33,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                    return{
                       id: item?.id,
                       value: item?.id,
-                      label: item.name_en
+                      label: lang === 'en' ? item.name_en : item?.name_ar,
                    }
                 })
                 setCategoriesOptions(categories)
@@ -46,7 +49,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             setFormData({
                 category: {
                     ...item.category,
-                    label: `${item.category?.name_en}`,
+                    label: lang === 'en' ? item.category?.name_en : item.category?.name_ar,
                     value: item.category.id
                 },
                 id: item?.id,
@@ -106,15 +109,16 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
     }
 
     return(
-        <Modal className="fade" show={addModal} onHide={setAddModal}>
+        <Modal className={lang === 'en' ? "en fade" : "ar fade"} style={{textAlign: lang === 'en' ? 'left' : 'right'}} show={addModal} onHide={setAddModal}>
             <AvForm
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>{isAdd ? 'Add': 'Edit'} Sub Category</Modal.Title>
+            <Modal.Title>{isAdd ? Translate[lang].add : Translate[lang].edit} {Translate[lang].sub_category}</Modal.Title>
             <Button
                 variant=""
                 className="close"
+                style={{right: lang === 'en' ? '0' : 'auto', left: lang === 'ar' ? '0' : 'auto'}}
                 onClick={setAddModal}
                 >
                 <span>&times;</span>
@@ -125,10 +129,11 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                     <Row>
                         <Col md={12}>
                             <div className='form-group w-100'>
-                            <label>Category</label>
+                            <label>{Translate[lang].category}</label>
                             <Select
                                 value={formData.category}
                                 name="categories"
+                                placeholder={Translate[lang].select}
                                 options={categoriesOptions}
                                 onChange={(e)=> setFormData({...formData, category: e})}
                             />
@@ -136,9 +141,9 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                         </Col>
                         <Col md={6}>
                             <AvField
-                                    label='English'
+                                    label={Translate[lang].english}
                                     type='text'
-                                    placeholder='Name'
+                                    placeholder={Translate[lang].english}
                                     bsSize="lg"
                                     name='en'
                                     validate={{
@@ -158,9 +163,9 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
 
                         <Col md={6}>
                             <AvField
-                                    label='Arabic'
+                                    label={Translate[lang].arabic}
                                     type='text'
-                                    placeholder='الاسم'
+                                    placeholder={Translate[lang].arabic}
                                     value={formData.ar}
                                     name='ar'
                                     validate={{
@@ -179,7 +184,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
 
                         <Col md={12}>
                                 <div className='form-group w-100'>
-                                    <label className="m-0">Category Image</label>
+                                    <label className="m-0">{Translate[lang].category_image}</label>
                                     <div className="image-placeholder">	
                                         <div className="avatar-edit">
                                             <input type="file" onChange={(e) => fileHandler(e)} id={`imageUpload`} /> 					
@@ -212,13 +217,13 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setAddModal} variant="danger light">
-                Close
+            {Translate[lang].close}
             </Button>
             <Button 
                 disabled={loading}
                 variant="primary" 
                 type='submit'
-                >{isAdd ? "Add" : "Edit"}</Button>
+                >{isAdd ? Translate[lang].add : Translate[lang].edit}</Button>
             </Modal.Footer>
             </AvForm>
         </Modal>)

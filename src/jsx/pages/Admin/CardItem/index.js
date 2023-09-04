@@ -6,6 +6,7 @@ import AdminService from "../../../../services/AdminService";
 import { useSelector } from "react-redux";
 import { Rules } from "../../../Enums/Rules";
 import { toast } from "react-toastify";
+import { Translate } from "../../../Enums/Tranlate";
 
 const CardItem = ({item, index,setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
@@ -14,6 +15,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
     const adminService = new AdminService()
     const Auth = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    const lang = useSelector(state=> state.auth?.lang)
 
     useEffect(()=>{
         setStatus(!item.isBlocked)
@@ -41,7 +43,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                       {item?.email}
                     </td>
                     <td>
-                      {item?.user_phones?.filter(res=> !!res.is_default)[0]?.country_code}{item?.user_phones?.filter(res=> !!res.is_default)[0]?.phone}
+                      {item?.user_phones?.filter(res=> !!res.is_default)[0]?.country_code}{item?.user_phones?.filter(res=> !!res.is_default)[0]?.phone || '-'}
                     </td>
                     <td>
                       <Badge 
@@ -49,7 +51,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                         onClick={()=>navigate(`/rules/${item?.id}`)}
                         variant={item?.admin_roles.length === Rules?.length ? 'success' : item?.admin_roles.length === 0 ? 'danger' : 'secondary'}
                       >
-                        {item?.admin_roles.length === Rules?.length ? 'Full' : item?.admin_roles.length === 0 ? 'No' : 'Some'}
+                        {item?.admin_roles.length === Rules?.length ? Translate[lang].full_permissions : item?.admin_roles.length === 0 ? Translate[lang].no_permissions : Translate[lang].some_permissions}
                       </Badge>
                     </td>
                     <td>
@@ -70,8 +72,8 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item onClick={()=> navigate(`/admins/edit-admin/${item.id}/${item.f_name}`, {state: {edit: true, id: item.id, item: item}})}>Edit</Dropdown.Item>
-                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> navigate(`/admins/edit-admin/${item.id}/${item.f_name}`, {state: {edit: true, id: item.id, item: item}})}>{Translate[lang].edit}</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].delete}</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

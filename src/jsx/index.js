@@ -12,7 +12,7 @@ import Footer from './layouts/Footer'
 
 
 /// Pages
-import Login from './pages/Authintication/Login'
+// import Login from './pages/Authintication/Login'
 import Error404 from './common/Error404'
 
 //Scroll To Top
@@ -52,6 +52,7 @@ import AddOrders from './pages/Orders/AddOrders'
 import DigitalProducts from './pages/DigitalProducts'
 import AddDigitalProducts from './pages/DigitalProducts/AddDigitalProducts'
 import Delivery from './pages/Setting/Delivery'
+import Payment from './pages/Setting/Payment'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -64,10 +65,9 @@ const Markup = () => {
     /// Dashboard
     { url: "", component: <Home/> },
     { url: "dashboard", component: <Home/> },
-    
 
-    /// pages
-    { url: 'login', component: <Login/> },
+    // /// pages
+    // { url: 'login', component: <Login/> },
 
     // Admins
     { url: 'admins', component: <Admins /> },
@@ -142,6 +142,7 @@ const Markup = () => {
     {url: 'pages/privacy', component: <Static />},
     {url: 'pages/faqs', component: <Static />},
     {url: 'delivery', component: <Delivery />},
+    {url: 'payment', component: <Payment />},
 
     //Profile
     {url: 'profile', component: <Profile />},

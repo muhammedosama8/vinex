@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { changeAdminRules } from "../../../store/actions/AuthActions";
 import { useNavigate } from "react-router-dom";
+import { Translate } from "../../Enums/Tranlate";
 
 const Permission = () =>{
     const [formData, setFormData]= useState({
@@ -18,6 +19,7 @@ const Permission = () =>{
     const navigate = useNavigate()
     const adminService = new AdminService()
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state?.auth.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const [shouldUpdate, setShouldUpdate]= useState(false)
     let id = window.location.pathname.split('/rules/')[1]
@@ -84,10 +86,11 @@ const Permission = () =>{
             <Card.Body>
                 <div className='form-row mb-3'>
                     <div className='form-group w-50'>
-                        <lable>Admin</lable>
+                        <lable>{Translate[lang].admin}</lable>
                         <Select
                             value={formData.admin}
                             name="admin"
+                            placeholder={Translate[lang].select}
                             options={adminsOptions}
                             onChange={(e)=> setFormData({rules: [], admin: e})}
                         />
@@ -97,13 +100,13 @@ const Permission = () =>{
                     <thead>
                         <tr>
                             <th className="w-50">
-                                <strong> Rule</strong>
+                                <strong> {Translate[lang].rule}</strong>
                             </th>
                             <th className="w-25 text-center"> 
-                                <strong>Full Permission</strong>
+                                <strong>{Translate[lang].full_permissions}</strong>
                             </th>
                             <th className="w-25 text-center">
-                                <strong>Read Only</strong>
+                                <strong>{Translate[lang].read_only}</strong>
                             </th>
                         </tr>
                     </thead>
@@ -148,7 +151,7 @@ const Permission = () =>{
                 </Table>
                 {isExist('rules') &&<div className="d-flex justify-content-end mt-5">
                     <Button variant="primary" type="submit">
-                        Submit
+                        {Translate[lang].submit}
                     </Button>
                 </div>}
             </Card.Body>

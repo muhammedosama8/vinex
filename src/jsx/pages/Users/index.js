@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import UserService from "../../../services/UserService";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
+import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
 const Users = () =>{
@@ -12,15 +14,16 @@ const Users = () =>{
     const [search, setSearch] =useState(null)
     // const [isDeleted, setIsDeleted] =useState(false)
     const [shouldUpdate, setShouldUpdate] =useState(false)
+    const lang = useSelector(state=> state?.auth.lang)
     const userService = new UserService()
 
     return(
         <>
           <div className="d-flex mb-3 justify-content-between">
             <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />
-            <Button variant="secondary">
+            {/* <Button variant="secondary">
               Export Sheet
-            </Button>
+            </Button> */}
           </div>
           {/* <div className="d-flex align-items-center mb-3 ">
           <Button variant={isDeleted ? 'secondary' : 'primary'} className='mr-2' onClick={()=> setIsDeleted(false)}>
@@ -39,22 +42,22 @@ const Users = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>Name</strong>
+                      <strong>{Translate[lang].name}</strong>
                     </th>
                     <th>
-                      <strong>Email</strong>
+                      <strong>{Translate[lang].email}</strong>
                     </th>
                     <th>
-                      <strong>Mobile</strong>
+                      <strong>{Translate[lang].phone}</strong>
                     </th>
                     {/* <th>
                       <strong>Count Orders</strong>
                     </th> */}
                     <th>
-                      <strong>Active</strong>
+                      <strong>{Translate[lang].status}</strong>
                     </th>
                     <th>
-                      <strong>Deleted</strong>
+                      <strong>{Translate[lang].deleted}</strong>
                     </th>
                   </tr>
                 </thead>

@@ -7,6 +7,8 @@ import {useLocation} from 'react-router-dom';
 import Select from 'react-select';
 import CountryiesService from "../../../../services/CountriesService";
 import {AvField, AvForm} from "availity-reactstrap-validation";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddAdmin = () => {
    const location = useLocation();
@@ -25,6 +27,7 @@ const AddAdmin = () => {
    const navigate = useNavigate()
    const adminService = new AdminService()
    const countryiesService = new CountryiesService()
+   const lang = useSelector(state=> state.auth?.lang)
 
    useEffect(()=>{
       if(location?.state?.edit){
@@ -42,7 +45,7 @@ const AddAdmin = () => {
             if(res && res?.status === 200){
                let data = res.data.data?.map(item=>{
                   return{
-                     label: `${item.name_en} (${item?.country_code || ''})`,
+                     label: `${lang === 'en' ? item.name_en : item.name_ar} (${item?.country_code || ''})`,
                      name_en: item.name_en,
                      country_code: item?.country_code,
                      type: item.type
@@ -105,10 +108,10 @@ const AddAdmin = () => {
          <div className="row">
             <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
-						label ='First Name*'
+						label ={`${Translate[lang].first_name}*`}
 						name ='first_name'
 						type='text'
-						value={formData.first_name}
+						value={formData?.first_name}
 						errorMessage="Please enter a valid First Name"
 						validate={{
 							required: {
@@ -116,16 +119,16 @@ const AddAdmin = () => {
 								errorMessage: 'This Field is required'
 							},
 						}}
-						placeholder='First Name'
+						placeholder={`${Translate[lang].first_name}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>
             <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
-						label ='Last Name*'
+						label ={`${Translate[lang].last_name}*`}
 						name ='last_name'
 						type='text'
-						value={formData.last_name}
+						value={formData?.last_name}
 						errorMessage="Please enter a valid Last Name"
 						validate={{
 							required: {
@@ -133,16 +136,16 @@ const AddAdmin = () => {
 								errorMessage: 'This Field is required'
 							},
 						}}
-						placeholder='Last Name'
+						placeholder={`${Translate[lang].last_name}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>
            {!location?.state?.edit &&  <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
-						label ='Email*'
+						label ={`${Translate[lang].email}*`}
 						name ='email'
 						type='email'
-						value={formData.email}
+						value={formData?.email}
 						errorMessage="Please enter a valid Email"
 						validate={{
 							required: {
@@ -156,10 +159,10 @@ const AddAdmin = () => {
             </div>}
             {!location?.state?.edit && <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
-						label ='Password*'
+						label ={`${Translate[lang].password}*`}
 						name ='password'
 						type={`${showPassword ? 'password' : 'text'}`}
-						value={formData.password}
+						value={formData?.password}
 						errorMessage="Please enter a valid Password"
 						validate={{
 							required: {
@@ -169,25 +172,26 @@ const AddAdmin = () => {
 						}}
                   onFocus={(e)=> setShowPassword(false)}
                   onBlur={(e)=> setShowPassword(true)}
-						placeholder='Password'
+						placeholder={`${Translate[lang].password}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>}
             {!location?.state?.edit && <div className="col-lg-3 col-sm-6 mb-3">
-                  <label className="text-label">Country Code*</label>
+                  <label className="text-label">{Translate[lang].country_code}*</label>
                   <Select
                      value={formData?.country_code}
                      name="country_code"
+                     placeholder={Translate[lang].select}
                      options={countriesOptions}
                      onChange={(e)=> setFormData({...formData, country_code: e})}
                   />
             </div>}
             {!location?.state?.edit && <div className="col-lg-3 col-sm-6 mb-3">
                   <AvField
-						label ='Phone*'
+						label ={`${Translate[lang].phone}*`}
 						name ='phone'
 						type='number'
-						value={formData.phone}
+						value={formData?.phone}
 						errorMessage="Please enter a valid Phone"
 						validate={{
 							required: {
@@ -195,14 +199,14 @@ const AddAdmin = () => {
 								errorMessage: 'This Field is required'
 							},
 						}}
-						placeholder='Phone'
+						placeholder={`${Translate[lang].phone}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>}
          </div>
          <div className="d-flex justify-content-between mt-4">
-            <Button variant="secondary" type="button" onClick={()=> navigate('/admins')}>Cancel</Button>
-            <Button variant="primary" type="submit" disabled={loading}>Submit</Button>
+            <Button variant="secondary" type="button" onClick={()=> navigate('/admins')}>{Translate[lang].cancel}</Button>
+            <Button variant="primary" type="submit" disabled={loading}>{Translate[lang].submit}</Button>
          </div>
       </AvForm>
       </Card>

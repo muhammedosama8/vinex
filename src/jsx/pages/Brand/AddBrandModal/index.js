@@ -6,6 +6,8 @@ import uploadImg from '../../../../images/upload-img.png';
 import BaseService from "../../../../services/BaseService";
 import BrandsService from "../../../../services/BrandsService";
 import Loader from "../../../common/Loader";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [files, setFiles] = useState([])
@@ -17,6 +19,7 @@ const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [isAdd, setIsAdd] = useState(false)
     const [loading, setLoading] = useState(false)
     const brandsService = new BrandsService()
+    const lang = useSelector(state=> state.auth.lang)
 
     useEffect(() => {
         if(Object.keys(item)?.length === 0){
@@ -83,17 +86,18 @@ const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     }
 
     return(
-        <Modal className="fade" show={addModal} onHide={()=>{
+        <Modal className={lang === 'en' ? "en fade" : "ar fade"} style={{textAlign: lang === 'en' ? 'left' : 'right'}} show={addModal} onHide={()=>{
             setAddModal()
             }}>
                 <AvForm
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>{isAdd ? 'Add': 'Edit'} Brand</Modal.Title>
+            <Modal.Title>{isAdd ? Translate[lang].add : Translate[lang].edit} {Translate[lang].brand}</Modal.Title>
             <Button
                 variant=""
                 className="close"
+                style={{right: lang === 'en' ? '0' : 'auto', left: lang === 'ar' ? '0' : 'auto'}}
                 onClick={()=>{
                     setAddModal()
                 }}
@@ -106,9 +110,9 @@ const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                     <Row>
                         <Col md={6}>
                             <AvField
-                                label='English'
+                                label={Translate[lang].english}
                                 type='text'
-                                placeholder='Name'
+                                placeholder={Translate[lang].english}
                                 bsSize="lg"
                                 name='en'
                                 validate={{
@@ -128,9 +132,9 @@ const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
 
                         <Col md={6}>
                             <AvField
-                                label='Arabic'
+                                label={Translate[lang].arabic}
                                 type='text'
-                                placeholder='الاسم'
+                                placeholder={Translate[lang].arabic}
                                 value={formData.ar}
                                 name='ar'
                                 validate={{
@@ -148,7 +152,7 @@ const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                         </Col>
                         <Col md={12}>
                                 <div className='form-group w-100'>
-                                    <label className="m-0">Brand Image</label>
+                                    <label className="m-0">{Translate[lang].image}</label>
                                     <div className="image-placeholder">	
                                         <div className="avatar-edit">
                                             <input type="file" onChange={(e) => fileHandler(e)} id={`imageUpload`} /> 					
@@ -183,13 +187,13 @@ const AddBrandModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setAddModal} variant="danger light">
-                Close
+            {Translate[lang].close}
             </Button>
             <Button 
                     variant="primary" 
                     type='submit'
                     disabled={loading}
-                >{isAdd ? "Add" : "Edit"}</Button>
+                >{isAdd ? Translate[lang].add : Translate[lang].edit}</Button>
             </Modal.Footer>
             </AvForm>
         </Modal>)

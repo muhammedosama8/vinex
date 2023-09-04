@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
 import { Col, Row } from "react-bootstrap"
+import { useSelector } from "react-redux"
+import { Translate } from "../../Enums/Tranlate"
 import './style.scss'
 
 const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
     const [pageShow, setPageShow] = useState(1)
+    const lang = useSelector(state=> state.auth.lang)
 
     useEffect(()=> {
         service?.getList({offset: (page-1)*10, limit: 10, isDeleted: isDeleted}).then(res=>{
@@ -31,11 +34,11 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
         return(
             <Row className="pagination mt-3 px-2">
                 <Col md={12} className="d-flex justify-content-between">
-                    <span>Page{' '}
-                        <strong> {page} of {totalPages}</strong>
+                    <span>{Translate[lang].page}{' '}
+                        <strong> {page} {Translate[lang].of} {totalPages}</strong>
                     </span>
                     <span className="table-index">
-                        Go to page : {' '}
+                        {Translate[lang].go_to_page}: {' '}
                             <input 
                                 type="number" 
                                 className="ml-2"
@@ -73,13 +76,13 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
                             setPage(prev=> parseInt(prev)-1)
                             setPageShow(page-1)
                         }} disabled={parseInt(page) === 1 }>
-                            Previous
+                            {Translate[lang].previous}
                         </button>
                         <button className="next-button" onClick={() => {
                             setPage(prev=> parseInt(prev)+1)
                             setPageShow(page+1)
                         }} disabled={parseInt(page) === totalPages}>
-                            Next
+                            {Translate[lang].next}
                         </button>
                         <button className=" next-button" onClick={() => {
                             setPage(parseInt(totalPages))

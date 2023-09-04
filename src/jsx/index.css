@@ -807,8 +807,9 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
   background-color: var(--bg-primary)!important;
   transition: background-color .8s ease-in-out;
   /* border-radius: 32px 0 0 32px ; */
-  border-right: 3px solid;
 }
+.en .metismenu .mm-active > a{ border-right: 3px solid;}
+.ar .metismenu .mm-active > a{ border-left: 3px solid;}
 .table-responsive .table .dropdown button{
   background: none;
   border: none;

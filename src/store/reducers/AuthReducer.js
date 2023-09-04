@@ -7,10 +7,12 @@ import {
     SIGNUP_FAILED_ACTION,
     LOGIN,
     CHANGE_RULES,
-    SET_LOGO
+    SET_LOGO,
+    SET_LANG
 } from '../actions/AuthActions';
 
 const initialState = {
+    lang: '',
     email:'',
     password: '',
     auth: {
@@ -41,7 +43,8 @@ export function AuthReducer(state = initialState, action) {
         return {
             ...state,
             email: action.payload.email,
-            password: action.payload.password
+            password: action.payload.password,
+            lang: 'en'
         };
     }
     if (action.type === LOGIN_CONFIRMED_ACTION) {
@@ -107,6 +110,12 @@ export function AuthReducer(state = initialState, action) {
         return {
             ...state,
             logo: action.payload
+        };
+    }
+    if (action.type === SET_LANG) {
+        return {
+            ...state,
+            lang: action.payload
         };
     }
     return state;

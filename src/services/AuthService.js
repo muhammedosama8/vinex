@@ -5,6 +5,7 @@ import {
     changeAdminRules,
     loginConfirmedAction,
     Logout,
+    setLang,
 } from '../store/actions/AuthActions';
 
 const tokenKey = "token";
@@ -73,6 +74,7 @@ export function saveTokenInLocalStorage(tokenDetails) {
     //     new Date().getTime() + tokenDetails.expiresIn * 1000,
     // );
 
+    localStorage.setItem('adminLang', 'en');
     localStorage.setItem('userDetails', JSON.stringify(tokenDetails));
     localStorage.setItem(tokenKey, tokenDetails.accessToken);
     localStorage.setItem('LeapAdminRules', JSON.stringify(tokenDetails.admin.admin_roles?.map(item => item.role)));
@@ -88,6 +90,7 @@ export function saveTokenInLocalStorage(tokenDetails) {
 export function checkAutoLogin(dispatch, navigate) {
     const tokenDetailsString = localStorage.getItem('userDetails');
     const adminRules = localStorage.getItem('LeapAdminRules');
+    const adminLang = localStorage.getItem('adminLang');
     let tokenDetails = '';
 
     if (!tokenDetailsString) {
@@ -106,6 +109,7 @@ export function checkAutoLogin(dispatch, navigate) {
     // }
     dispatch(loginConfirmedAction(tokenDetails));
     dispatch(changeAdminRules(rules));
+    dispatch(setLang(adminLang));
 	
     // const timer = expireDate.getTime() - todaysDate.getTime();
     // runLogoutTimer(dispatch, timer, navigate);

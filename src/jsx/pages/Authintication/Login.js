@@ -75,8 +75,7 @@ function Login(props) {
 											name ='email'
 											type="email" 
 											value={email}
-											pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
-											errorMessage="Please enter a valid value"
+											errorMessage="Please Enter a Valid Value"
 											validate={{
 												required: {
 													value:true,

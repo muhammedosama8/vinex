@@ -4,7 +4,16 @@
 @import url("./../icons/line-awesome/css/line-awesome.min.css");
 @import url("./../icons/flaticon/flaticon.css");
 @import url('./perfect-scrollbar.css');
-
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800&display=swap');
+.ar{
+  direction: rtl;
+  font-family: 'Cairo', sans-serif;
+  text-align: right;
+}
+.en{
+  direction: ltr;
+  text-align: left;
+}
 .gradient_one {
   background-image: linear-gradient(to right, rgba(186, 1, 181, 0.85) 0%, rgba(103, 25, 255, 0.85) 100%); }
 
@@ -2653,6 +2662,8 @@ input[type="button"].btn-block {
   white-space: nowrap;
   background-color: transparent;
   border: 0; }
+  .en .dropdown-item { text-align: left;}
+  .ar .dropdown-item { text-align: right;}
   .dropdown-item:hover, .dropdown-item:focus {
     color: #16181b;
     text-decoration: none;
@@ -8724,12 +8735,13 @@ a {
   display: inline-block;
   text-align: left;
   position: absolute;
-  left: 0;
   top: 0;
   background-color: #fff;
   border-bottom: 1px solid #EEEEEE;
   transition: all .2s ease;
   z-index: 5; }
+.en .nav-header { left: 0;}
+.ar .nav-header { right: 0;}
   .nav-header .logo-abbr {
     max-width: 52px; }
     @media only screen and (max-width: 575px) {
@@ -8767,9 +8779,10 @@ a {
         padding-right: 0;
         justify-content: center; } }
   .nav-header .brand-title {
-    margin-left: 10px;
+    margin-left: 0px;
     max-width: 120px;
-    margin-top: 0px; }
+    margin-top: auto;
+    margin-bottom: auto ; }
     [data-theme-version="dark"] .nav-header .brand-title {
       background-position: 0 120%; }
 
@@ -8784,7 +8797,6 @@ a {
 .nav-control {
   cursor: pointer;
   position: absolute;
-  right: -3.0625rem;
   text-align: center;
   top: 50%;
   transform: translateY(-50%);
@@ -8792,6 +8804,12 @@ a {
   font-size: 1.4rem;
   padding: 2px 0.5rem 0;
   border-radius: 2px; }
+  .en .nav-control {
+    right: -3.0625rem;
+  }
+  .ar .nav-control {
+    left: 1rem;
+  }
   @media only screen and (max-width: 767px) {
     .nav-control {
       right: -2.75rem; } }
@@ -8895,11 +8913,14 @@ a {
   background-color: #fff;
   z-index: 4;
   border-bottom: 1px solid #EEEEEE;
-  padding-left: 21.563rem;
   transition: all .2s ease; }
+.en .header { padding-left: 21.563rem; }
+.ar .header { padding-right: 21.563rem; }
   @media only screen and (max-width: 1400px) {
-    .header {
-      padding-left: 17rem; } }
+    .en .header {
+      padding-left: 17rem; }
+    .ar .header {
+      padding-right: 17rem; } }
   .header .header-content {
     height: 100%;
     padding-left: 3.5rem;
@@ -9194,17 +9215,25 @@ svg.pulse-svg {
       display: flex;
       align-items: center;
       border-left: 1px solid #F4F5F9; }
-  .header-right > li:not(:first-child) {
+  .en .header-right > li:not(:first-child) {
     padding-left: 2rem; }
+  .ar .header-right > li:not(:first-child) {
+    padding-right: 2rem; }
     @media only screen and (max-width: 1600px) {
-      .header-right > li:not(:first-child) {
-        padding-left: 1.3rem; } }
+      .en .header-right > li:not(:first-child) {
+        padding-left: 1.3rem; } 
+      .ar .header-right > li:not(:first-child) {
+        padding-right: 1.3rem; } }
     @media only screen and (max-width: 1400px) {
-      .header-right > li:not(:first-child) {
-        padding-left: 1rem; } }
+      .en .header-right > li:not(:first-child) {
+        padding-left: 1rem; } 
+      .ar .header-right > li:not(:first-child) {
+        padding-right: 1rem; } }
     @media only screen and (max-width: 575px) {
-      .header-right > li:not(:first-child) {
-        padding-left: 0.5rem; } }
+      .en .header-right > li:not(:first-child) {
+        padding-left: 0.5rem; } 
+      .ar .header-right > li:not(:first-child) {
+        padding-right: 0.5rem; } }
   @media only screen and (max-width: 767px) {
     .header-right .notification_dropdown {
       position: static; } }
@@ -9353,8 +9382,8 @@ svg.pulse-svg {
   display: inline-block; }
 
 .notification_dropdown .dropdown-menu-right {
-  min-width: 310px;
-  padding: 0rem 0 1rem;
+  min-width: 150px;
+  /* padding: 0rem 0 1rem; */
   top: 100%; }
   .notification_dropdown .dropdown-menu-right .notification_title {
     background: var(--primary);
@@ -11284,9 +11313,9 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   position: absolute;
   right: 2.8125rem;
   top: 0.625rem; }
-
+.ar .content-body { margin-right: 21.563rem;}
+.en .content-body { margin-left: 21.563rem;}
 .content-body {
-  margin-left: 21.563rem;
   z-index: 0;
   transition: all .2s ease; }
   @media only screen and (min-width: 1200px) and (max-width: 1400px) {
@@ -11503,7 +11532,10 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
         -webkit-transition: all 0.5s;
         -ms-transition: all 0.5s;
         transition: all 0.5s;
-        margin-right: 15px; }
+        margin-right: 15px; 
+        }
+        .en .deznav .metismenu > li a > i {margin-right: 15px;}
+        .ar .deznav .metismenu > li a > i {margin-left: 15px;}
         [data-sidebar-style="compact"] .deznav .metismenu > li a > i {
           display: block;
           padding: 0; }
@@ -11551,8 +11583,9 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
         padding-top: .5rem;
         padding-bottom: .5rem;
         position: relative;
-        font-size: 16px;
-        padding-left: 5.7rem; }
+        font-size: 16px;}
+        .en .deznav .metismenu ul a { padding-left: 5.7rem; text-align: left;}
+        .ar .deznav .metismenu ul a { padding-right: 5.7rem; text-align: right;}
         @media only screen and (max-width: 1400px) {
           .deznav .metismenu ul a {
             padding-left: 3.9rem;
@@ -11837,6 +11870,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   padding: 0  0 0 0; 
   cursor: pointer;
 }
+.ar .deznav .metismenu > li > a{
+  text-align: right;
+}
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
     font-size: 16px;
     padding: 20px 50px;
@@ -11852,12 +11888,11 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
         font-size: 16px; 
       } 
 }
-[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a:before {
+[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a:before {
       position: absolute;
       height: 100%;
       width: 11px;
       top: 0;
-      border-radius: 0px 10px 10px 0;
       left: -11px;
       content: "";
       background: var(--primary);
@@ -11865,14 +11900,19 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       -ms-transition: all 0.5s;
       transition: all 0.5s; 
 }
+[data-sidebar-style="full"][data-layout="vertical"] .en .deznav .metismenu > li.mm-active > a:before { border-radius: 0px 10px 10px 0; }
+[data-sidebar-style="full"][data-layout="vertical"] .ar .deznav .metismenu > li.mm-active > a:before { border-radius: 10px 0 0 10px; }
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a {
     color: var(--primary); 
 }
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a i {
       color: var(--primary); 
 }
-[data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a:before {
+[data-sidebar-style="full"][data-layout="vertical"] .en .deznav .metismenu > li.mm-active > a:before {
       left: 0; 
+}
+[data-sidebar-style="full"][data-layout="vertical"] .ar .deznav .metismenu > li.mm-active > a:before {
+      right: 0; 
 }
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li .has-arrow:after {
     right: 2.5rem; 
@@ -23538,7 +23578,8 @@ svg text {
     box-shadow: none;
     background: #fff;
   }
-
+.en .form-control {text-align: left;}
+.ar .form-control {text-align: right;}
 .input-rounded {
   border-radius: 100px; }
 
@@ -28461,6 +28502,8 @@ code {
 
 .table:not(.table-bordered) thead th {
   border-top: none; }
+.en .table th, .en .table tr, .en .table td {text-align: left; }
+.ar .table th, .ar .table tr, .ar .table td  {text-align: right; }
 
 .table .thead-primary th {
   background-color: var(--primary);

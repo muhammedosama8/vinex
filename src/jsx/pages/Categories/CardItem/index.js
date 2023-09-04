@@ -3,11 +3,13 @@ import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import CategoriesService from "../../../../services/CategoriesService";
 import DeleteModal from "../../../common/DeleteModal";
+import { Translate } from "../../../Enums/Tranlate";
 
 const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const categoriesService = new CategoriesService()
 
@@ -36,7 +38,7 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                           alt={item.id}
                         />
                     </td>
-            <td>{item.name_en}</td>
+            <td>{lang === 'en' ? item.name_en : item.name_ar}</td>
             <td>
                 {isExist('categories') && <Dropdown>
                     <Dropdown.Toggle
@@ -49,9 +51,9 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                         <Dropdown.Item onClick={()=> {
                             setItem(item)
                             setAddModal(true)
-                        }}> Edit</Dropdown.Item>
-                        {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>Deactive</Dropdown.Item>}
-                        {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>Active</Dropdown.Item>}
+                        }}> {Translate[lang].edit}</Dropdown.Item>
+                        {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].deactive}</Dropdown.Item>}
+                        {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>{Translate[lang].active}</Dropdown.Item>}
                     </Dropdown.Menu>
                 </Dropdown>}
             </td>

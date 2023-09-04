@@ -1,346 +1,3 @@
-// export const MenuList = [
-//     //Dashboard
-//     {
-//         title: 'Dashboard',	
-//         classsChange: 'mm-collapse',		
-//         iconStyle: <i className="flaticon-381-networking" />,
-//         content: [            
-//             {
-//                 title: 'Dashboard',
-//                 to: 'dashboard',					
-//             },
-//             {
-//                 title: 'Event',
-//                 to: 'event',					
-//             },
-//             {
-//                 title: 'Event Detail',
-//                 to: 'event-detail',
-//             },
-//             {
-//                 title: 'Customers',
-//                 to: 'customers',
-//             },
-//             {
-//                 title: 'Analytics',
-//                 to: 'analytics',
-//             },
-//             {
-//                 title: 'Reviews',
-//                 to: 'reviews',
-//             },
-//             {
-//                 title: 'Task',
-//                 to: 'task',                
-//             },
-//         ],
-//     },
-   
-    
-//     //Apps
-//     {
-//         title: 'Apps',	
-//         classsChange: 'mm-collapse',
-//         iconStyle:  <i className="flaticon-381-television" />,
-//         content: [
-//             {
-//                 title: 'Profile',
-//                 to: 'app-profile'
-//             },
-          
-//             {
-//                 title: 'Post Details',
-//                 to: 'post-details'
-//             },
-//             {
-//                 title: 'Email',
-//                 //to: './',
-//                 hasMenu : true,
-//                 content: [
-//                     {
-//                         title: 'Compose',
-//                         to: 'email-compose',
-//                     },
-//                     {
-//                         title: 'Index',
-//                         to: 'email-inbox',
-//                     },
-//                     {
-//                         title: 'Read',
-//                         to: 'email-read',
-//                     }
-//                 ],
-//             },
-//             {
-//                 title:'Calendar',
-//                 to: 'app-calender'
-//             },
-//             {
-//                 title: 'Shop',
-//                 //to: './',
-//                 hasMenu : true,
-//                 content: [
-//                     {
-//                         title: 'Product Grid',
-//                         to: 'ecom-product-grid',
-//                     },
-//                     {
-//                         title: 'Product List',
-//                         to: 'ecom-product-list',
-//                     },
-//                     {
-//                         title: 'Product Details',
-//                         to: 'ecom-product-detail',
-//                     },
-//                     {
-//                         title: 'Order',
-//                         to: 'ecom-product-order',
-//                     },
-//                     {
-//                         title: 'Checkout',
-//                         to: 'ecom-checkout',
-//                     },
-//                     {
-//                         title: 'Invoice',
-//                         to: 'ecom-invoice',
-//                     },
-//                     {
-//                         title: 'Customers',
-//                         to: 'ecom-customers',
-//                     },
-//                 ],
-//             },
-//         ],
-//     },
-//     //Charts
-//     {
-//         title: 'Charts',	
-//         classsChange: 'mm-collapse',
-//         iconStyle: <i className="flaticon-381-controls-3" />,
-//         content: [
-            
-//             {
-//                 title: 'RechartJs',
-//                 to: 'chart-rechart',					
-//             },
-//             {
-//                 title: 'Chartjs',
-//                 to: 'chart-chartjs',					
-//             },
-//             {
-//                 title: 'Sparkline',
-//                 to: 'chart-sparkline',					
-//             },
-//             {
-//                 title: 'Apexchart',
-//                 to: 'chart-apexchart',					
-//             },
-//         ]
-//     },
-//     //Boosttrap
-//     {
-//         title: 'Bootstrap',	
-//         classsChange: 'mm-collapse',
-//         iconStyle: <i className="flaticon-381-internet" />,	
-//         content: [
-//             {
-//                 title: 'Accordion',
-//                 to: 'ui-accordion',					
-//             },
-//             {
-//                 title: 'Alert',
-//                 to: 'ui-alert',					
-//             },
-//             {
-//                 title: 'Badge',
-//                 to: 'ui-badge',					
-//             },
-//             {
-//                 title: 'Button',
-//                 to: 'ui-button',					
-//             },
-//             {
-//                 title: 'Modal',
-//                 to: 'ui-modal',					
-//             },
-//             {
-//                 title: 'Button Group',
-//                 to: 'ui-button-group',					
-//             },
-//             {
-//                 title: 'List Group',
-//                 to: 'ui-list-group',					
-//             },
-//             {
-//                 title: 'Cards',
-//                 to: 'ui-card',					
-//             },
-//             {
-//                 title: 'Carousel',
-//                 to: 'ui-carousel',					
-//             },
-//             {
-//                 title: 'Dropdown',
-//                 to: 'ui-dropdown',					
-//             },
-//             {
-//                 title: 'Popover',
-//                 to: 'ui-popover',					
-//             },
-//             {
-//                 title: 'Progressbar',
-//                 to: 'ui-progressbar',					
-//             },
-//             {
-//                 title: 'Tab',
-//                 to: 'ui-tab',					
-//             },
-//             {
-//                 title: 'Typography',
-//                 to: 'ui-typography',					
-//             },
-//             {
-//                 title: 'Pagination',
-//                 to: 'ui-pagination',					
-//             },
-//             {
-//                 title: 'Grid',
-//                 to: 'ui-grid',					
-//             },
-//         ]
-//     },
-//     //plugins
-//     {
-//         title:'Plugins',
-//         classsChange: 'mm-collapse',
-//         iconStyle : <i className="flaticon-381-heart" />,
-//         content : [
-//             {
-//                 title:'Select 2',
-//                 to: 'uc-select2',
-//             },
-//             // {
-//             //     title:'Noui Slider',
-//             //     to: 'uc-noui-slider',
-//             // },
-//             {
-//                 title:'Sweet Alert',
-//                 to: 'uc-sweetalert',
-//             },
-//             {
-//                 title:'Toastr',
-//                 to: 'uc-toastr',
-//             },
-//             {
-//                 title:'Jqv Map',
-//                 to: 'map-jqvmap',
-//             },
-//             {
-//                 title:'Light Gallery',
-//                 to: 'uc-lightgallery',
-//             },
-//         ]
-//     },
-//     //Widget
-//     {   
-//         title:'Widget',
-//         classsChange: 'mm-collapse',
-//         iconStyle: <i className="flaticon-381-settings-2" />,
-//         to: 'widget-basic',
-//     },
-//     //Forms
-//     {
-//         title:'Forms',
-//         classsChange: 'mm-collapse',
-//         iconStyle: <i className="flaticon-381-notepad" />,
-//         content : [
-//             {
-//                 title:'Form Elements',
-//                 to: 'form-element',
-//             },
-//             {
-//                 title:'Wizard',
-//                 to: 'form-wizard',
-//             },
-//             {
-//                 title:'CkEditor',
-//                 to: 'form-ckeditor',
-//             },
-//             {
-//                 title:'Pickers',
-//                 to: 'form-pickers',
-//             },
-//             {
-//                 title:'Form Validate',
-//                 to: 'form-validation',
-//             },
-
-//         ]
-//     },
-//     //Table
-//     {
-//         title:'Table',
-//         classsChange: 'mm-collapse',
-//         iconStyle: <i className="flaticon-381-network" />,
-//         content : [
-//             {
-//                 title:'Table Filtering',
-//                 to: 'table-filtering',
-//             },
-//             {
-//                 title:'Table Sorting',
-//                 to: 'table-sorting',
-//             },
-//             {
-//                 title:'Bootstrap',
-//                 to: 'table-bootstrap-basic',
-//             },
-           
-
-//         ]
-//     },
-//     //Pages
-//     {
-//         title:'Pages',
-//         classsChange: 'mm-collapse',
-//         iconStyle: <i className="flaticon-381-layer-1" />,
-//         content : [
-//             {
-//                 title:'Error',
-//                 hasMenu : true,
-//                 content : [
-//                     {
-//                         title: 'Error 400',
-//                         to : 'page-error-400',
-//                     },
-//                     {
-//                         title: 'Error 403',
-//                         to : 'page-error-403',
-//                     },
-//                     {
-//                         title: 'Error 404',
-//                         to : 'page-error-404',
-//                     },
-//                     {
-//                         title: 'Error 500',
-//                         to : 'page-error-500',
-//                     },
-//                     {
-//                         title: 'Error 503',
-//                         to : 'page-error-503',
-//                     },
-//                 ],
-//             },
-//             {
-//                 title:'Lock Screen',
-//                 to: 'page-lock-screen',
-//             },
-
-//         ]
-//     },
-    
-// ]
-
 export const MenuList = [
     //Dashboard
     {   
@@ -348,6 +5,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className="flaticon-381-networking" />,
         to: 'dashboard',
+        text: 'dashboard',
     },
     //Admins
     {   
@@ -355,6 +13,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-user-shield'></i>,
         to: 'admins',
+        text: 'admins',
     },
     //Rules
     {   
@@ -362,6 +21,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-shield'></i>,
         to: 'rules',
+        text: 'rules',
     },
     //Users
     {   
@@ -369,6 +29,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-users'></i>,
         to: 'users',
+        text: 'users',
     },
     //Categories
     {   
@@ -376,6 +37,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-cubes'></i>,
         to: 'categories',
+        text: 'categories',
     },
     //SubCategories
     {   
@@ -383,6 +45,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-cube'></i>,
         to: 'sub-categories',
+        text: 'sub_categories',
     },
     //Brands
     {   
@@ -390,6 +53,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-file-text'></i>,
         to: 'brands',
+        text: 'brands',
     },
     //Variant
     {   
@@ -397,6 +61,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className="la la-slack" />,
         to: 'variant',
+        text: 'variant',
     },
     //DynamicVariant
     {   
@@ -404,6 +69,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className="la la-simplybuilt" />,
         to: 'dynamic-variant',
+        text: 'dynamic_variant',
     },
     //Products
     {   
@@ -411,6 +77,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className="flaticon-381-notepad" />,
         to: 'products',
+        text: 'products',
     },
     //Digital Products
     {   
@@ -418,6 +85,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className="la la-qrcode"></i>,
         to: 'digital-products',
+        text: 'digital_products',
     },
     //Orders
     {   
@@ -425,6 +93,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-truck'></i>,
         to: 'orders',
+        text: 'orders',
     },
     //Reports
     {   
@@ -432,6 +101,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-pie-chart'></i> ,
         to: 'reports',
+        text: 'reports',
     },
     // Notification
     {   
@@ -439,6 +109,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-bell'></i>,
         to: 'notification',
+        text: 'notification',
     },
      //Promo Codes
      {   
@@ -446,6 +117,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-dollar'></i>,
         to: 'promo-codes',
+        text: 'promo_codes',
     },
      //Time Slot
      {   
@@ -453,6 +125,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-clock'></i>,
         to: 'time-slot',
+        text: 'time_slot',
     },
     //Banners
     {   
@@ -460,6 +133,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className="flaticon-381-television" />,
         to: 'banners',
+        text: 'banners',
     },
     //Ad Screen
     {   
@@ -467,6 +141,7 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className="la la-thumb-tack" />,
         to: 'ad-screen',
+        text: 'ad_screen',
     },
     //Control
     {   
@@ -474,28 +149,39 @@ export const MenuList = [
         classsChange: 'mm-collapse',
         iconStyle: <i className="la la-wrench" />,
         to: 'control',
+        text: 'control',
     },
    
     //Setting
     {
         title:'Setting',
+        text:'setting',
         classsChange: 'mm-collapse',
         iconStyle: <i className='la la-cog'></i>,
         content : [
             {
                 title:'Delivery',
+                text:'delivery',
                 to: 'delivery',
             },
             {
                 title:'Social Media',
+                text:'social_media',
                 to: 'social',
             },
             {
                 title:'Currency',
+                text: 'currency',
                 to: 'currency',
             },
             {
+                title:'Payment',
+                text: 'payment',
+                to: 'payment',
+            },
+            {
                 title:'Pages',
+                text: 'pages',
                 to: 'pages',
             },
         ]

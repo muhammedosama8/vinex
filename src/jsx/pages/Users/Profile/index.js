@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Badge, Button, Card, Col, Row, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 import '../style.scss'
 
 const UserProfile =()=>{
@@ -8,6 +9,7 @@ const UserProfile =()=>{
     const [orders, setOrders] = useState([])
     const [user, setUser] = useState({})
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
@@ -39,19 +41,19 @@ const UserProfile =()=>{
             <Card.Body>
                 <Row>
                     <Col md={6} className='mb-2'>
-                        <h4>First Name</h4>
+                        <h4>{Translate[lang].first_name}</h4>
                         <p>{user.f_name}</p>
                     </Col>
                     <Col md={6} className='mb-2'>
-                        <h4>Last Name</h4>
+                        <h4>{Translate[lang].last_name}</h4>
                         <p>{user.l_name}</p>
                     </Col>
                     <Col md={6} className='mb-2'>
-                        <h4>Email</h4>
+                        <h4>{Translate[lang].email}</h4>
                         <p className="mb-0">{user.email}</p>
                     </Col>
                     <Col md={6}>
-                        <h4>Phone</h4>
+                        <h4>{Translate[lang].phone}</h4>
                         <p className="mb-0">{user.phone}</p>
                     </Col>
                 </Row>
@@ -62,7 +64,7 @@ const UserProfile =()=>{
         </Card>}
         {!edit && <Card>
             <Card.Body>
-                <h4>Orders</h4>
+                <h4>{Translate[lang].orders}</h4>
                 <Row>
                 <Table responsive>
                     <thead>
@@ -120,35 +122,35 @@ const UserProfile =()=>{
                 <form onSubmit={onSubmit}>
                 <Row>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">First Name</label>
+                        <label className="text-label">{Translate[lang].first_name}</label>
                         <input 
                             type='text' 
                             className="form-control"
                             name='f_name' 
-                            placeholder="First Name"
+                            placeholder={Translate[lang].first_name}
                             value={user.f_name}
                             required
                             onChange={(e)=> handleInput(e)}
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">Last Name</label>
+                        <label className="text-label">{Translate[lang].last_name}</label>
                         <input 
                             type='text' 
                             className="form-control"
                             name='l_name' 
-                            placeholder="Last Name"
+                            placeholder={Translate[lang].last_name}
                             value={user.l_name}
                             required
                             onChange={(e)=> handleInput(e)}
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">Email</label>
+                        <label className="text-label">{Translate[lang].email}</label>
                         <input 
                             type='email' 
                             className="form-control"
-                            placeholder="Email"
+                            placeholder={Translate[lang].email}
                             name='email' 
                             value={user.email}
                             required
@@ -156,11 +158,11 @@ const UserProfile =()=>{
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">Phone</label>
+                        <label className="text-label">{Translate[lang].phone}</label>
                         <input 
                             type='number' 
                             className="form-control"
-                            placeholder="Phone"
+                            placeholder={Translate[lang].phone}
                             name='phone' 
                             value={user.phone}
                             required
@@ -168,11 +170,11 @@ const UserProfile =()=>{
                         />
                     </Col>
                     <Col md={6} className='mb-3'>
-                        <label className="text-label">Address</label>
+                        <label className="text-label">{Translate[lang].address}</label>
                         <input 
                             type='text' 
                             className="form-control"
-                            placeholder="Address"
+                            placeholder={Translate[lang].address}
                             name='address' 
                             value={user.address}
                             required
@@ -183,7 +185,7 @@ const UserProfile =()=>{
                     <div className='col-md-12 d-flex justify-content-between mt-4'>
                         <div>
                         <Button variant="secondary" onClick={()=> setEdit(false)}>
-                            Cancel
+                        {Translate[lang].cancel}
                         </Button>
                         </div>
                         <div>
@@ -191,7 +193,7 @@ const UserProfile =()=>{
                             variant="primary" 
                             className="light"
                             type="submit">
-                            Submit
+                            {Translate[lang].submit}
                         </Button>
                         </div>
                     </div>

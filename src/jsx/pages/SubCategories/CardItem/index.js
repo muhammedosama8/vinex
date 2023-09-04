@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Badge, Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import DeleteModal from "../../../common/DeleteModal";
+import { Translate } from "../../../Enums/Tranlate";
 
 const CardItem = ({item, setItem, index, setAddModal,subCategoriesService, setShouldUpdate}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     return(
@@ -22,9 +24,9 @@ const CardItem = ({item, setItem, index, setAddModal,subCategoriesService, setSh
                           alt={item.id}
                         />
                     </td>
-            <td>{item.name_en}</td>
+            <td>{lang === 'en' ? item.name_en : item.name_ar}</td>
             <td>
-                <Badge variant="primary light">{item.category.name_en}</Badge>
+                <Badge variant="primary light">{lang === 'en' ? item.category.name_en : item.category.name_ar}</Badge>
             </td>
             {/* <td>
                 <Form.Check
@@ -47,8 +49,8 @@ const CardItem = ({item, setItem, index, setAddModal,subCategoriesService, setSh
                         <Dropdown.Item onClick={()=> {
                             setItem(item)
                             setAddModal(true)
-                        }}> Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                        }}> {Translate[lang].edit}</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].delete}</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>}
             </td>

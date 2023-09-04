@@ -6,6 +6,7 @@ import {
     saveTokenInLocalStorage,
     signUp,
 } from '../../services/AuthService';
+import { isAuthenticated } from '../selectors/AuthSelectors';
 
 
 export const SIGNUP_CONFIRMED_ACTION = '[signup action] confirmed signup';
@@ -17,6 +18,7 @@ export const LOADING_TOGGLE_ACTION = '[Loading action] toggle loading';
 export const LOGOUT_ACTION = '[Logout action] logout action';
 export const CHANGE_RULES = 'change rules';
 export const SET_LOGO = 'change logo';
+export const SET_LANG = 'change lang';
 
 
 export function signupAction(email, password, navigate) {
@@ -27,7 +29,6 @@ export function signupAction(email, password, navigate) {
             // runLogoutTimer(
             //     dispatch,
             //     response.data.expiresIn * 1000,
-            //     //history,
             // );
             dispatch(confirmedSignupAction(response.data));
             navigate('/dashboard');
@@ -42,6 +43,8 @@ export function signupAction(email, password, navigate) {
 export function Logout(navigate) {
 	localStorage.removeItem('userDetails');
 	localStorage.removeItem('LeapAdminRules');
+	localStorage.removeItem('adminLang');
+    isAuthenticated(false)
     navigate('/login');
     
 	return {
@@ -132,6 +135,13 @@ export function changeAdminRules(status) {
 export function setLogo(status) {
     return {
         type: SET_LOGO,
+        payload: status,
+    };
+}
+export function setLang(status) {
+    localStorage.setItem('adminLang' , status)
+    return {
+        type: SET_LANG,
         payload: status,
     };
 }
