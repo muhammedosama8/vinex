@@ -499,7 +499,7 @@ const AddProducts = () => {
                                         errorMessage: 'This Field is required'
                                     }
                                 }}
-                                min='1'
+                                min='0.0000000000001'
                                 value={product.cost}
                                 onChange={(e)=> handlerText(e)}
                             />
