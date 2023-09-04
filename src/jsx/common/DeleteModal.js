@@ -2,9 +2,12 @@ import React ,{useState} from 'react'
 import { Modal } from "react-bootstrap";
 import PropTypes from "prop-types"
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { Translate } from '../Enums/Tranlate';
 
 function DeleteModal(props) {
     const [loading, setLoading] = useState(false)
+    const lang = useSelector(state=> state.auth.lang)
 
     const handleDeletedItem = async () => {
         setLoading(true)
@@ -35,7 +38,7 @@ function DeleteModal(props) {
         <Modal show={props.open}  onHide={()=> props.onCloseModal(false)} >
             <div className="modal-header border-0">
                 <h5 className="modal-title mt-0" id="myModalLabel">
-                    <i className='la la-trash text-danger' style={{fontSize: '20px'}}></i> Delete {props.titleMsg}
+                    <i className='la la-trash text-danger' style={{fontSize: '20px'}}></i> {Translate[lang].delete} {props.titleMsg}
                 </h5>
                 <button
                     type="button"
@@ -49,7 +52,7 @@ function DeleteModal(props) {
             </div>
             <div className="modal-body border-0">
                 <p>
-                    {`Kindly note that this action can't be undone and the ${props.titleMsg} details will get deleted.`}
+                    {Translate[lang].delete_message}
                 </p>
             </div>
             <div className="modal-footer border-0">
@@ -59,7 +62,7 @@ function DeleteModal(props) {
                     className="btn me-auto btn-secondary waves-effect waves-light"
                     data-dismiss="modal"
                 >
-                    Cancel
+                    {Translate[lang].cancel}
             </button>
                 <button
                     onClick={handleDeletedItem}
@@ -68,7 +71,7 @@ function DeleteModal(props) {
                     disabled={loading ? true : false}
 
                 >
-                    Delete
+                    {Translate[lang].delete}
             </button>
             </div>
         </Modal>

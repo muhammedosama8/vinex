@@ -137,4 +137,8 @@ export const Arabic = {
     or: "أو",
     serial_number: 'الرقم التسلسلي',
     serial_image: 'الصورة التسلسلية',
+    title: 'العنوان',
+    message: 'الرساله',
+    send: 'إرسال',
+    delete_message: 'يرجى ملاحظة أنه لا يمكن التراجع عن هذا الإجراء وسيتم حذف التفاصيل.'
 }

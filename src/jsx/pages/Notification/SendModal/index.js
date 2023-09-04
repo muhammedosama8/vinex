@@ -3,11 +3,13 @@ import { Button, Col, Modal, Row } from "react-bootstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
 import NotificationService from "../../../../services/NotificationService";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const SendModal = ({modal, setModal, item})=>{
     const [loading, setLoading]= useState()
     const notificationService = new NotificationService()
-
+    const lang = useSelector(state=> state.auth?.lang)
 
     const submit = () =>{
         setLoading(true)
@@ -28,7 +30,7 @@ const SendModal = ({modal, setModal, item})=>{
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>Send {item.title_en}</Modal.Title>
+            <Modal.Title>{Translate[lang].send}</Modal.Title>
             <Button
                 variant=""
                 className="close"
@@ -43,9 +45,9 @@ const SendModal = ({modal, setModal, item})=>{
                 <Row>
                         <Col md={6}>
                             <AvField
-                                label='English Title'
+                                label={Translate[lang].english_title}
                                 type='text'
-                                placeholder='Name'
+                                placeholder={Translate[lang].english_title}
                                 bsSize="lg"
                                 name='name_en'
                                 disabled
@@ -55,16 +57,16 @@ const SendModal = ({modal, setModal, item})=>{
 
                         <Col md={6}>
                             <AvField
-                                label='Arabic Title'
+                                label={Translate[lang].arabic_title}
                                 type='text'
-                                placeholder='الاسم'
+                                placeholder={Translate[lang].arabic_title}
                                 value={item.title_ar}
                                 name='name_ar'
                                 disabled
                             />
                         </Col>
                         <Col md={6}>
-                            <label className="d-block">English Description</label>
+                            <label className="d-block">{Translate[lang].english_description}</label>
                             <textarea
                                 style={{
                                     border: '1px solid hsl(0, 0%, 80%)',
@@ -79,11 +81,11 @@ const SendModal = ({modal, setModal, item})=>{
                                 type="text" 
                                 value={item.description_en}
                                 disabled
-                                placeholder='Description'
+                                placeholder={Translate[lang].english_description}
                             />
                         </Col>
                         <Col md={6}>
-                            <label className="d-block">Arabic Description</label>
+                            <label className="d-block">{Translate[lang].arabic_description}</label>
                             <textarea
                                 style={{
                                     border: '1px solid hsl(0, 0%, 80%)',
@@ -104,13 +106,13 @@ const SendModal = ({modal, setModal, item})=>{
             </Modal.Body>
             <Modal.Footer className="justify-content-between">
             <Button onClick={setModal} variant="danger light">
-                Close
+            {Translate[lang].cancel}
             </Button>
             <Button 
                     variant="primary" 
                     type='submit'
                     disabled={loading}
-                >Send</Button>
+                >{Translate[lang].send}</Button>
             </Modal.Footer>
             </AvForm>
         </Modal>)

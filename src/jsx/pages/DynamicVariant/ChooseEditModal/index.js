@@ -69,7 +69,7 @@ const ChooseEditModal = ({modal, setModal, dynamicVariants,isEdit, setShouldUpda
             </AvForm>
             {deleteModal && <DeleteModal
                       open={deleteModal}
-                      titleMsg={choose.name_en}
+                      titleMsg={lang==='en' ? choose.name_en : choose.name_ar}
                       deletedItem={choose}
                       modelService={dynamicVariantService}
                       setShouldUpdate={setShouldUpdate}

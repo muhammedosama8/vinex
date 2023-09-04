@@ -137,4 +137,8 @@ export const English = {
     or: "Or",
     serial_number: 'Serial Number',
     serial_image: 'Serial Image',
+    title: 'Title',
+    message: 'Message',
+    send: 'Send',
+    delete_message: 'Kindly note that this action can`t be undone and the details will get deleted.'
 }

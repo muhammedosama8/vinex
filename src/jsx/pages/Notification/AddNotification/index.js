@@ -4,6 +4,8 @@ import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import NotificationService from "../../../../services/NotificationService";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddNotification = ()=>{
     const [formData, setFormData] = useState({
@@ -15,6 +17,7 @@ const AddNotification = ()=>{
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const notificationService = new NotificationService()
+    const lang = useSelector(state=> state.auth.lang)
 
 
     const submit = () =>{
@@ -47,9 +50,9 @@ const AddNotification = ()=>{
                     <Row>
                         <Col md={6}>
                             <AvField
-                                label='English Title'
+                                label={Translate[lang].english_title}
                                 type='text'
-                                placeholder='Name'
+                                placeholder={Translate[lang].english_title}
                                 bsSize="lg"
                                 name='title_en'
                                 validate={{
@@ -69,9 +72,9 @@ const AddNotification = ()=>{
 
                         <Col md={6}>
                             <AvField
-                                label='Arabic Title'
+                                label={Translate[lang].arabic_title}
                                 type='text'
-                                placeholder='الاسم'
+                                placeholder={Translate[lang].arabic_title}
                                 value={formData.title_ar}
                                 name='title_ar'
                                 validate={{
@@ -88,7 +91,7 @@ const AddNotification = ()=>{
                             />
                         </Col>
                         <Col md={6}>
-                            <label className="d-block">English Description</label>
+                            <label className="d-block">{Translate[lang].english_description}</label>
                             <textarea
                                 style={{
                                     border: '1px solid hsl(0, 0%, 80%)',
@@ -103,12 +106,12 @@ const AddNotification = ()=>{
                                 type="text" 
                                 value={formData.description_en}
                                 required
-                                placeholder='Description'
+                                placeholder={Translate[lang].english_description}
                                 onChange={(e) => setFormData({...formData, description_en: e.target.value})}
                             />
                         </Col>
                         <Col md={6}>
-                            <label className="d-block">Arabic Description</label>
+                            <label className="d-block">{Translate[lang].arabic_description}</label>
                             <textarea
                                 style={{
                                     border: '1px solid hsl(0, 0%, 80%)',
@@ -123,21 +126,21 @@ const AddNotification = ()=>{
                                 type="text" 
                                 value={formData.description_ar}
                                 required
-                                placeholder='Description'
+                                placeholder={Translate[lang].arabic_description}
                                 onChange={(e) => setFormData({...formData, description_ar: e.target.value})}
                             />
                         </Col>
                     </Row>
             </Card.Body>
-            <Modal.Footer>
+            <Modal.Footer className="justify-content-between">
                 <Button onClick={()=>navigate('/notification')} variant="danger light">
-                    Close
+                {Translate[lang].cancel}
                 </Button>
                 <Button 
                     variant="primary" 
                     type='submit'
                     disabled={loading}
-                >Add</Button>
+                >{Translate[lang].send}</Button>
             </Modal.Footer>
             </AvForm>
         </Card>)

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import NotificationService from "../../../services/NotificationService";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
+import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
 const Notification = ()=>{
@@ -12,6 +13,7 @@ const Notification = ()=>{
     const [hasData, setHasData] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
     const notificationService = new NotificationService()
@@ -24,7 +26,7 @@ const Notification = ()=>{
                 onClick={()=>{
                     navigate('add-notification')
                 }}>
-                Add Notification
+                {Translate[lang].add} {Translate[lang].notification}
             </Button>}
         </div>
         <Card>
@@ -36,10 +38,10 @@ const Notification = ()=>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>Title</strong>
+                      <strong>{Translate[lang].title}</strong>
                     </th>
                     <th>
-                      <strong>Message</strong>
+                      <strong>{Translate[lang].message}</strong>
                     </th>
                     <th></th>
                   </tr>

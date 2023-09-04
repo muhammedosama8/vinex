@@ -54,7 +54,7 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
             </td>
             {deleteModal && <DeleteModal
                       open={deleteModal}
-                      titleMsg={item.name_en}
+                      titleMsg={lang==='en' ? item.name_en : item.name_ar}
                       deletedItem={item}
                       modelService={brandsService}
                       onCloseModal={setDeleteModal}

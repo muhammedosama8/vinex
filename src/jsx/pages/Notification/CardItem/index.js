@@ -3,12 +3,14 @@ import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import NotificationService from "../../../../services/NotificationService";
 import DeleteModal from "../../../common/DeleteModal";
+import { Translate } from "../../../Enums/Tranlate";
 import SendModal from "../SendModal";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
     const [send, setSend] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const notificationService = new NotificationService()
 
@@ -17,9 +19,9 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
             <td>
                 {item.id}
             </td>
-            <td>{item.title_en}</td>
+            <td>{lang==='en' ? item.title_en : item.title_ar}</td>
             <td>
-                {item.description_en}
+                {lang==='en' ? item.description_en : item.description_ar}
             </td>
             <td>
                 {isExist('notification') && <Dropdown>
@@ -30,15 +32,15 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                         <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={()=> setSend(true)}> Send </Dropdown.Item>
-                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> setSend(true)}> {Translate[lang].send} </Dropdown.Item>
+                        <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].delete}</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>}
             </td>
 
             {deleteModal && <DeleteModal
                       open={deleteModal}
-                      titleMsg={item.title_en}
+                      titleMsg={lang==='en' ? item.title_en : item.title_ar}
                       deletedItem={item}
                       modelService={notificationService}
                       onCloseModal={setDeleteModal}
