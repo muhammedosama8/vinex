@@ -7,7 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800&display=swap');
 .ar{
   direction: rtl;
-  font-family: 'Cairo', sans-serif;
+  font-family: 'Cairo', sans-serif!important;
   text-align: right;
 }
 .en{
@@ -27049,12 +27049,12 @@ code {
     padding: 0.875rem 1.815rem;
     margin: 0;
     position: absolute;
-    right: 0;
     float: none;
     top: 0;
     font-size: 30px;
     font-weight: 100; }
-
+    .ar .modal-header .close{ left: 0 !important; right: auto!important}
+    .en .modal-header .close{ right: 0!important; left: auto!important}
 .modal-body {
   padding: 1.875rem; }
 

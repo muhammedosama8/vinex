@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap"
 import { Orders } from "../../../Enums/Orders";
 import OrdersService from "../../../../services/OrdersService";
+import { Translate } from "../../../Enums/Tranlate";
+import { useSelector } from "react-redux";
 
 const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
     const [itemStatus, setItemStatus] = useState(null)
     const [loading, setLoading] = useState(false)
     const ordersService = new OrdersService()
+    const lang = useSelector(state=> state.auth.lang)
 
     useEffect(() => {
         setItemStatus(item.status)
@@ -53,21 +56,21 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
                                 onChange={()=> changeStatus(order.toLowerCase())}
                                 id={order}
                             />
-                            <label for={order} className='mx-2'>{order}</label>
+                            <label for={order} className='mx-2'>{Translate[lang][order.toLowerCase()]}</label>
                         </div>
                     })}
                 </div>
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={()=> setModal(false)} variant="danger light">
-                Close
+                {Translate[lang].cancel}
             </Button>
             <Button 
                     variant="primary" 
                     type='submit'
                     disabled={loading}
                     onClick={()=> submit()}
-                >Submit</Button>
+                >{Translate[lang].submit}</Button>
             </Modal.Footer>
         </Modal>)
 }

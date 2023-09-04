@@ -41,7 +41,6 @@ export function signUp(email, password) {
 }
 
 export function formatError(errorResponse) {
-    console.log(errorResponse)
     switch (errorResponse?.message) {
         case 'EMAIL_EXISTS':
             //return 'Email already exists';

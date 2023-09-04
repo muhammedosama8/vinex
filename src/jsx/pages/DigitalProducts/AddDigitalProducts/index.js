@@ -15,6 +15,7 @@ import BrandsService from "../../../../services/BrandsService";
 import { loadingToggleAction } from "../../../../store/actions/AuthActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from '../../../common/Loader'
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddDigitalProducts = () => {
     const [product, setProduct]= useState({
@@ -56,6 +57,7 @@ const AddDigitalProducts = () => {
     const productsService = new ProductsService()
     const brandsService = new BrandsService()
     const Auth = useSelector(state=> state.auth)
+    const lang = useSelector(state=> state.auth.lang)
 
     useEffect(()=>{
         categoriesService.getList().then(res=>{
@@ -64,7 +66,7 @@ const AddDigitalProducts = () => {
                   return{
                      id: item?.id,
                      value: item?.id,
-                     label: item.name_en
+                     label: lang==='en' ? item.name_en : item.name_ar
                   }
                })
                setCategoriesOptions(categories)
@@ -76,13 +78,13 @@ const AddDigitalProducts = () => {
                   return{
                      id: item?.id,
                      value: item?.id,
-                     label: item.name_en
+                     label: lang==='en' ? item.name_en : item.name_ar
                   }
                })
                setBrandOptions(categories)
             }
         })
-    },[])
+    },[lang])
 
     useEffect(()=>{
         if(!!product?.category){
@@ -92,7 +94,7 @@ const AddDigitalProducts = () => {
                         return{
                             id: item?.id,
                             value: item?.id,
-                            label: item.name_en
+                            label: lang==='en' ? item.name_en : item.name_ar
                         }
                     })
                     setSubCategoriesOptions(subCategories)
@@ -104,7 +106,7 @@ const AddDigitalProducts = () => {
                     let data = res.data?.data?.map(item=>{
                         return{
                             ...item,
-                            label: item.name_en,
+                            label: lang==='en' ? item.name_en : item.name_ar,
                             value: item.id,
                         }
                     })
@@ -129,11 +131,11 @@ const AddDigitalProducts = () => {
                             ...response?.product.category,
                             id: response?.product.category_id,
                             value: response.product?.category_id,
-                            label: response.product?.category?.name_en
+                            label: lang==='en' ? response.product?.category?.name_en : response.product?.category?.name_ar
                         },
                         brand: response.product.brand?.name_en ? {
                             ...response.product.brand,
-                            label: response.product.brand?.name_en,
+                            label: lang==='en' ? response.product.brand?.name_en : response.product?.category?.name_ar,
                             value: response.product.brand_id
                         } : '',
                         images: product?.images?.map((_,index)=> {
@@ -150,7 +152,7 @@ const AddDigitalProducts = () => {
                         }),
                         sub_category: response.product?.sub_category?.name_en ? {
                             ...response.product?.sub_category,
-                            label: response.product?.sub_category?.name_en,
+                            label: lang==='en' ? response.product?.sub_category?.name_en : response.product?.category?.name_ar,
                             value: response.product?.sub_category_id,
                             id: response.product?.sub_category_id,
                         } : '',
@@ -315,9 +317,9 @@ const AddDigitalProducts = () => {
             <Row>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='English Title*'
+                                label={`${Translate[lang].english_name}*`}
                                 type='text'
-                                placeholder='English'
+                                placeholder={Translate[lang].english_name}
                                 bsSize="lg"
                                 name='name_en'
                                 validate={{
@@ -336,9 +338,9 @@ const AddDigitalProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='Arabic Title*'
+                                label={`${Translate[lang].arabic_name}*`}
                                 type='text'
-                                placeholder='الاسم'
+                                placeholder={Translate[lang].arabic_name}
                                 value={product.name_ar}
                                 name='name_ar'
                                 validate={{
@@ -355,7 +357,7 @@ const AddDigitalProducts = () => {
                                 />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">English Description*</label>
+                        <label className="text-label">{`${Translate[lang].english_description}*`}</label>
                         <textarea  
                             name="description_en" 
                             style={{
@@ -365,7 +367,7 @@ const AddDigitalProducts = () => {
                             }}
                             className="form-control"
                             required
-                            placeholder="Enter Description"
+                            placeholder={Translate[lang].english_description}
                             value={product.description_en}
                             onChange={(e)=> {
                                 setErrors({
@@ -379,7 +381,7 @@ const AddDigitalProducts = () => {
                         {errors['desc_en'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">Arabic Description*</label>
+                        <label className="text-label">{`${Translate[lang].arabic_description}*`}</label>
                         <textarea  
                             name="description_ar" 
                             style={{
@@ -388,7 +390,7 @@ const AddDigitalProducts = () => {
                                 height: '150px'
                             }}
                             className="form-control"
-                            placeholder="Enter Description"
+                            placeholder={Translate[lang].arabic_description}
                             value={product.description_ar}
                             onChange={(e)=> {
                                 setErrors({
@@ -402,37 +404,40 @@ const AddDigitalProducts = () => {
                         {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">Category*</label>
+                        <label className="text-label">{`${Translate[lang].category}*`}</label>
                         <Select
                             value={product.category}
                             name="category"
+                            placeholder={Translate[lang].select}
                             options={categoriesOptions}
                             onChange={(e)=> setProduct({...product, category: e, dynamic_variant: [],variant: [], sub_category: ''})}
                         />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">SubCategory</label>
+                        <label className="text-label">{Translate[lang].sub_category}</label>
                         <Select
                             value={product.sub_category}
                             name="sub_category"
+                            placeholder={Translate[lang].select}
                             options={subCategoriesOptions}
                             onChange={(e)=> setProduct({...product, sub_category: e})}
                         />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">Brand</label>
+                        <label className="text-label">{Translate[lang].brand}</label>
                         <Select
                             value={product.brand}
                             name="brand"
+                            placeholder={Translate[lang].select}
                             options={brandOptions}
                             onChange={(e)=> setProduct({...product, brand: e})}
                         />
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                                label='Price*'
+                                label={`${Translate[lang].price}*`}
                                 type='number'
-                                placeholder='Price'
+                                placeholder={Translate[lang].price}
                                 bsSize="lg"
                                 name='price'
                                 validate={{
@@ -451,9 +456,9 @@ const AddDigitalProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                     <AvField
-                                label='Quantity*'
+                                label={`${Translate[lang].quantity}*`}
                                 type='number'
-                                placeholder='Quantity'
+                                placeholder={Translate[lang].quantity}
                                 bsSize="lg"
                                 name='amount'
                                 validate={{
@@ -472,9 +477,9 @@ const AddDigitalProducts = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                         <AvField
-                            label='Offer Price'
+                            label={Translate[lang].offer_price}
                             type='number'
-                            placeholder='Offer Price'
+                            placeholder={Translate[lang].offer_price}
                             bsSize="lg"
                             name='offerPrice'
                             value={product.offerPrice}
@@ -483,7 +488,7 @@ const AddDigitalProducts = () => {
                 </Col>
                 <Col md={2} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
-                        <label className="text-label">Best Seller</label>
+                        <label className="text-label">{Translate[lang].best_seller}</label>
                         <Form.Check
                         type="switch"
                         id={`bestSeller`}
@@ -494,7 +499,7 @@ const AddDigitalProducts = () => {
                 </Col>
                 <Col md={2} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
-                        <label className="text-label">New In</label>
+                        <label className="text-label">{Translate[lang].new_in}</label>
                         <Form.Check
                         type="switch"
                         id={`newIn`}
@@ -504,7 +509,7 @@ const AddDigitalProducts = () => {
                     {/* </div> */}
                 </Col>
                 <Col md={2} className="mb-3">
-                        <label className="text-label">Offer</label>
+                        <label className="text-label">{Translate[lang].offer}</label>
                         <Form.Check
                         type="switch"
                         id={`offer`}
@@ -513,11 +518,12 @@ const AddDigitalProducts = () => {
                       />
                 </Col>
                 {dynamicVariant?.length > 0 && <Col md={6}>
-                <label className="text-label mb-2 d-block">Dynamic Variant</label>
+                <label className="text-label mb-2 d-block">{Translate[lang].dynamic_variant}</label>
                 <Select 
                     options={dynamicVariant?.filter(res=> !product.dynamic_variant?.some(res2=> res.label === res2.label))}
                     name='dynamic_variant'
                     isMulti={true}
+                    placeholder={Translate[lang].select}
                     value={product.dynamic_variant}
                     onChange={e=>{
                         setProduct({...product, dynamic_variant: e})
@@ -530,9 +536,9 @@ const AddDigitalProducts = () => {
             <Row>
                 <Col md={6}>
                     <AvField
-                        label='Serial Number'
+                        label={Translate[lang].serial_number}
                         type='text'
-                        placeholder='Serial Number'
+                        placeholder={Translate[lang].serial_number}
                         bsSize="lg"
                         name='serial_number'
                         value={product.serial_number}
@@ -541,8 +547,8 @@ const AddDigitalProducts = () => {
                 </Col>
                 <Col md={6}></Col>
                 <Col md={3} className='mb-3'>
-                        <label className="text-label text-center d-block or"> Or</label>
-                        <label className="text-label">Serial Image</label>
+                        <label className="text-label text-center d-block or"> {Translate[lang].or}</label>
+                        <label className="text-label">{Translate[lang].serial_image}</label>
                         <div className="image-placeholder">	
                             <div className="avatar-edit">
                                 <input type="file" onChange={(e) => serialFileHandler(e)} id={`imageUpload`} /> 					
@@ -568,7 +574,7 @@ const AddDigitalProducts = () => {
                 </Col>
             </Row>
 
-            <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>Images</label>
+            <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>{Translate[lang].images}</label>
             <Row>
                 {product?.images?.map((data, index)=>{
                     return <Col md={3} className='mb-3' key={index}>
@@ -602,11 +608,11 @@ const AddDigitalProducts = () => {
                 variant="secondary"
                 type="button"
                 onClick={()=> navigate('/digital-products')}
-            >Cancel</Button>
+            >{Translate[lang].cancel}</Button>
             <Button 
                 variant="primary"
                 loading={loading}
-                type="submit">Submit</Button>
+                type="submit">{Translate[lang].submit}</Button>
             </div>
         </AvForm>
         {confirm && <ConfirmModal 

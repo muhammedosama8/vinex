@@ -6,6 +6,7 @@ import OrdersService from "../../../services/OrdersService";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
+import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
 import OrdersStatus from "./OrdersStatus";
 
@@ -19,18 +20,30 @@ const Orders = () =>{
     const navigate= useNavigate()
     const ordersService = new OrdersService()
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     return(
         <>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
-          <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />
+          <div className="input-group w-50">
+            <input 
+                type="text" 
+                style={{borderRadius: '8px',
+                color: 'initial',
+                padding: '18px 33px 18px 16px'}}
+                className="form-control"
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}, ${Translate[lang]?.phone}`}
+                value={search}
+                onChange={e=> setSearch(e.target.value)} 
+            />
+            <div className="flaticon-381-search-2"
+              style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+            ></div>
+          </div>
           <div>
-            {/* <Button variant="secondary" className='mx-2 h-75' onClick={()=> exportTable()}>
-                Export
-            </Button> */}
             {isExist('order') && <Button variant="primary" className='mx-2 h-75' onClick={()=> navigate('/orders/add-orders')}>
-              Add Order
+              {Translate[lang].add} {Translate[lang].orders}
             </Button>}
           </div>
         </div>
@@ -44,22 +57,22 @@ const Orders = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>Customer Name</strong>
+                      <strong>{Translate[lang]?.customer_name}</strong>
                     </th>
                     <th>
-                      <strong>Customer Email</strong>
+                      <strong>{Translate[lang]?.email}</strong>
                     </th>
                     <th>
-                      <strong>Customer Phone</strong>
+                      <strong>{Translate[lang]?.phone}</strong>
                     </th>
                     <th>
-                      <strong>Total Price</strong>
+                      <strong>{Translate[lang]?.total_price}</strong>
                     </th>
                     <th>
-                      <strong>Payment Method</strong>
+                      <strong>{Translate[lang]?.payment_method}</strong>
                     </th>
                     <th>
-                      <strong>STATUS</strong>
+                      <strong>{Translate[lang]?.status}</strong>
                     </th>
                     <th></th>
                   </tr>

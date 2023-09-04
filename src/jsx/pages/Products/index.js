@@ -73,7 +73,7 @@ const Products = () =>{
                       <strong>{Translate[lang]?.price}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.in_stoke}</strong>
+                      <strong>{Translate[lang]?.in_stock}</strong>
                     </th>
                     <th>
                       <strong>{Translate[lang]?.status}</strong>

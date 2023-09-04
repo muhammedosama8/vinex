@@ -140,6 +140,8 @@ export function setLogo(status) {
 }
 export function setLang(status) {
     localStorage.setItem('adminLang' , status)
+    document.body.className= status
+
     return {
         type: SET_LANG,
         payload: status,

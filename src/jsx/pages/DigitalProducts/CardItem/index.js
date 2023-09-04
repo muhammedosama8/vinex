@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ProductsService from "../../../../services/ProductsService";
 import DeleteModal from "../../../common/DeleteModal";
+import { Translate } from "../../../Enums/Tranlate";
 
 const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
@@ -12,6 +13,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
     const [quantity, setQuantity] = useState(item.amount)
     
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.auth)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
     const productsService = new ProductsService()
@@ -64,9 +66,9 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                           alt={item.id}
                         />
                     </td>
-                    <td>{item.name_en}</td>
+                    <td>{lang==='en' ? item.name_en : item.name_ar}</td>
                     <td>
-                      <Badge variant="success light">{item.category?.name_en}</Badge>
+                      <Badge variant="success light">{lang==='en' ? item.category?.name_en : item.category?.name_ar}</Badge>
                     </td>
                     <td>{item.price}</td>
                     <td>
@@ -113,9 +115,9 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={()=>{
                             navigate(`/digital-products/add-products/${item.id}`)
-                          }}>Edit</Dropdown.Item>
-                          {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>Deactive</Dropdown.Item>}
-                        {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>Active</Dropdown.Item>}
+                          }}>{Translate[lang].edit}</Dropdown.Item>
+                          {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].deactice}</Dropdown.Item>}
+                        {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>{Translate[lang].active}</Dropdown.Item>}
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Badge, Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import DeleteModal from "../../../common/DeleteModal";
+import { Translate } from "../../../Enums/Tranlate";
 
 const CardItem = ({item, index, setModal, setItem}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     const changeStatusToggle = ()=>{
@@ -37,7 +39,7 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                                   item.status === 'process' ? 'warning' :
                                   item.status === 'shipped' ? 'info' : ''} light`}
                       >
-                        {item.status}
+                        {Translate[lang][item.status]}
                       </Badge>
                     </td>
                     <td>
@@ -50,7 +52,7 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           {/* <Dropdown.Item>Edit</Dropdown.Item> */}
-                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].delete}</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

@@ -1,20 +1,17 @@
 const Users = ({item, index}) =>{
     return(
         <tr key={index} className='text-center'>
-                    <td>
+                    <td style={{padding: '12px 20px'}}>
                       <strong>{item.id}</strong>
                     </td>
                     <td>
-                      {/* <Link to={`/users/${item.id}/${item.name}`} 
-                        style={{fontWeight: '800', textDecoration:'underline', textTransform: 'capitalize'}}> */}
-                        {item.name}
-                      {/* </Link> */}
+                      {item.f_name || '-'} {item.l_name}
                     </td>
                     <td>
-                      {item.email}
+                      {item.email || '-'}
                     </td>
-                    <td>{item.phone}</td>
-                    <td>{item.count_orders}</td>
+                    <td style={{direction: 'ltr'}}>{item.user_phones?.filter(res=> res.is_default)[0].country_code}{item.user_phones?.filter(res=> res.is_default)[0].phone}</td>
+                    <td>{item.count_orders || '0'}</td>
                   </tr>
     )
 }

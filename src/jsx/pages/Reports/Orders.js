@@ -1,25 +1,37 @@
+import { useEffect, useState } from "react";
 import { Badge } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { Translate } from "../../Enums/Tranlate";
 
-const Orders = ({item, index}) =>{
+const Orders = ({item, index,type}) =>{
+    const [cost, setCost] = useState()
+    const lang = useSelector(state=> state.auth.lang)
+
+    useEffect(()=>{
+        let calcCost = item?.sub_carts?.map(res=> res.product?.cost).reduce((total, cost) => total + cost, 0);
+        setCost(calcCost)
+    },[])
+
     return(
         <tr key={index} className='text-center'>
             <td>
                 <strong>{item.id}</strong>
             </td>                    
-            <td>{item.customer_name}</td>
-            <td>{item.customer_email}</td>
-            <td>{item.customer_phone}</td>
-            <td>{item.total_price}</td>
-            <td>{item.payment_status}</td>
+            <td>{item.user.f_name || '-'} {item.user.l_name}</td>
+            <td>{item.user.email || '-'}</td>
+            <td style={{direction: 'ltr'}}>{item.user.country_code}{item.user.phone}</td>
+            <td>{item.total}</td>
+            {type==='sales' && <td>{item.total-cost}</td>}
+            <td>{Translate[lang][item.payment_method]}</td>
             <td>
                 <Badge
-                    variant={`${item.status === 'Delivered' ? 'success' : 
-                                item.status === 'Canceled' ? 'danger' :
-                                item.status === 'Ordered' ? 'primary' :
-                                item.status === 'Processing' ? 'warning' :
-                                item.status === 'Shipped' ? 'info' : ''}  light`}
+                    variant={`${item.status === 'delivered' ? 'success' : 
+                                item.status === 'canceled' ? 'danger' :
+                                item.status === 'ordered' ? 'primary' :
+                                item.status === 'processing' ? 'warning' :
+                                item.status === 'shipped' ? 'info' : ''}  light`}
                 >
-                    {item.status}
+                    {Translate[lang][item.status]}
                 </Badge>
             </td>
         </tr>

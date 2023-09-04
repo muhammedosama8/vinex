@@ -12,8 +12,11 @@ import UserService from "../../../../services/UserService";
 import { toast } from "react-toastify";
 import TimeSlotService from "../../../../services/TimeSlotService";
 import BlockDateService from "../../../../services/BlockDateService";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddOrders = () =>{
+    const lang = useSelector(state=> state.auth.lang)
     const [steps, setSteps] = useState(1)
     const [type, setType] = useState('exist')
     const [search, setSearch] = useState('')
@@ -24,7 +27,7 @@ const AddOrders = () =>{
         sub_category: '',
         subCategoryOptions: [],
         product: '',
-        productsOptions: '',
+        productsOptions: [],
         quantity: '',
         dynamicVariantOptions: [],
         variant: [],
@@ -62,7 +65,7 @@ const AddOrders = () =>{
                 if(res?.status === 200){
                 let data = res.data.data?.map(item=>{
                     return{
-                        label: `${item.name_en} (${item?.country_code || ''})`,
+                        label: lang==='en' ? `${item.name_en} (${item?.country_code || ''})` : `${item.name_ar} (${item?.country_code || ''})`,
                         name_en: item.name_en,
                         country_code: item?.country_code,
                         type: item.type
@@ -79,13 +82,13 @@ const AddOrders = () =>{
                   return{
                      id: item?.id,
                      value: item?.id,
-                     label: item.name_en
+                     label: lang==='en' ? item.name_en : item.name_ar
                   }
                })
                setCategoriesOptions(categories)
             }
         })
-    },[])
+    },[lang])
 
     useEffect(()=>{
         let calcTotal = formData.map((res,ind)=>{
@@ -118,7 +121,7 @@ const AddOrders = () =>{
                     return{
                         id: item?.id,
                         value: item?.id,
-                        label: item.name_en
+                        label: lang==='en' ? item.name_en : item.name_ar
                     }
                 })
                 sub_categories.push(...subCategories)
@@ -127,7 +130,7 @@ const AddOrders = () =>{
                 let data = response[1].data?.data?.filter(item => item.available_amount > 0)?.map(item=>{
                     return{
                         ...item,
-                        label: `${item.name_en}`,
+                        label: lang==='en' ? item.name_en : item.name_ar,
                         value: item.id,
                     }
                 })
@@ -137,7 +140,7 @@ const AddOrders = () =>{
                 let data = response[2].data?.meta?.data?.filter(res=> !res.isDeleted)?.map(res=>{
                     return{
                         ...res,
-                        label: res.name_en,
+                        label: lang==='en' ? res.name_en : res.name_ar,
                         value: res.id,
                     }
                 })
@@ -183,7 +186,7 @@ const AddOrders = () =>{
                             productsOptions: [...res.data.meta?.data?.filter(res2=> !res2.isDeleted)?.map(res3=>{
                                 return{
                                     ...res3,
-                                    label: res3.name_en,
+                                    label: lang==='en' ? res3.name_en : res3.name_ar,
                                     value: res3.id,
                                 }
                             })]
@@ -229,7 +232,6 @@ const AddOrders = () =>{
                     }
                 })
               }
-              console.log(data)
         } else {
             let update = formData.filter(res=> !!res.product)
             setFormData(update)
@@ -312,7 +314,7 @@ const AddOrders = () =>{
                         cursor: 'pointer'
                     }}>
                     <Card.Body className="text-center">
-                        <h3 className="m-0" style={{color: type === 'exist' ? '#fff' : '#3d4465'}}>Exist User</h3>
+                        <h3 className="m-0" style={{color: type === 'exist' ? '#fff' : '#3d4465'}}>{Translate[lang].exist_user}</h3>
                         <i className="la la-user" style={{fontSize: '3rem', color: type === 'exist' ? '#fff' : '#3d4465'}}></i>
                     </Card.Body>
                 </Card >
@@ -323,7 +325,7 @@ const AddOrders = () =>{
                         cursor: 'pointer'
                     }} >
                     <Card.Body className="text-center">
-                        <h3 className="m-0" style={{color: type === 'new' ? '#fff' : '#3d4465'}}>New User</h3>
+                        <h3 className="m-0" style={{color: type === 'new' ? '#fff' : '#3d4465'}}>{Translate[lang].new_user}</h3>
                         <i className="la la-user-plus" style={{fontSize: '3rem', color: type === 'new' ? '#fff' : '#3d4465'}}></i>
                     </Card.Body>
                 </Card>
@@ -333,8 +335,8 @@ const AddOrders = () =>{
             <AvForm onValidSubmit={firstNext}>
                     <Row>
                         <Col md={10}>
-                            <AvField label='Search'
-                                placeholder='Search by Email or Phone'
+                            <AvField label={Translate[lang].search}
+                                placeholder={`${Translate[lang].search_by} ${Translate[lang].email}, ${Translate[lang].phone}`}
                                 type='text' value={search} name='search'
                                 onChange={(e)=> setSearch(e.target.value)}
                             />
@@ -345,7 +347,7 @@ const AddOrders = () =>{
                                 type="button" 
                                 onClick={searchHandler}
                                 disabled={!search}>
-                                Search
+                                {Translate[lang].search}
                             </Button>
                         </Col>
                         {!!Object.keys(selectedUser).length && <Col md={6} >
@@ -356,7 +358,7 @@ const AddOrders = () =>{
                                 <label className="m-0 d-flex p-4" style={{gap: '16px'}}>
                                     <input type='radio' checked={true} />
                                     <div>
-                                        <i className="la la-user mr-2" style={{fontSize: '1.3rem'}}></i>
+                                        <i className="la la-user mx-2" style={{fontSize: '1.3rem'}}></i>
                                         <span>{selectedUser.type}</span>
                                     </div>
                                 </label>
@@ -365,10 +367,10 @@ const AddOrders = () =>{
                     </Row>
                     <Row className="mt-3 justify-content-between p-3">
                         <Button variant="secondary" type="button" onClick={()=> navigate('/orders')}>
-                            Cancel
+                            {Translate[lang].cancel}
                         </Button>
                         <Button variant="primary" type="submit" disabled={!Object.keys(selectedUser).length}>
-                            Next
+                            {Translate[lang].next}
                         </Button>
                     </Row>
                 </AvForm>
@@ -378,8 +380,8 @@ const AddOrders = () =>{
                     <Row>
                         <Col md={6}>
                             <AvField 
-                                label='First Name'
-                                placeholder='First Name'
+                                label={Translate[lang].first_name}
+                                placeholder={Translate[lang].first_name}
                                 type='text'
                                 value={user.f_name}
                                 name='f_name'
@@ -398,8 +400,8 @@ const AddOrders = () =>{
                         <Col md={6}>
                             <AvField 
                                 type='text'
-                                label='Last Name'
-                                placeholder='Last Name'
+                                label={Translate[lang].last_name}
+                                placeholder={Translate[lang].last_name}
                                 value={user.l_name}
                                 name='l_name'
                                 errorMessage="Please enter a valid Name"
@@ -417,8 +419,8 @@ const AddOrders = () =>{
                         <Col md={6}>
                             <AvField 
                                 type='email'
-                                label='Email'
-                                placeholder='Email'
+                                label={Translate[lang].email}
+                                placeholder={Translate[lang].email}
                                 value={user.email}
                                 name='email'
                                 errorMessage="Please enter a valid Email"
@@ -434,10 +436,11 @@ const AddOrders = () =>{
                             />
                         </Col>
                         <Col md={3}>
-                            <label className="text-label">Country Code</label>
+                            <label className="text-label">{Translate[lang].country_code}</label>
                             <Select
                                 value={user?.country_code}
                                 name="country_code"
+                                placeholder={Translate[lang].select}
                                 options={countriesOptions}
                                 onChange={(e)=> setUser({...user, country_code: e})}
                             />
@@ -445,8 +448,8 @@ const AddOrders = () =>{
                         <Col md={3}>
                             <AvField 
                                 type='number'
-                                label='Phone'
-                                placeholder='Phone'
+                                label={Translate[lang].phone}
+                                placeholder={Translate[lang].phone}
                                 value={user.phone}
                                 name='phone'
                                 errorMessage="Please enter a valid Phone"
@@ -483,10 +486,10 @@ const AddOrders = () =>{
                     </Row>
                     <Row className="mt-3 justify-content-between p-3">
                         <Button variant="secondary" type="button" onClick={()=> navigate('/orders')}>
-                            Cancel
+                        {Translate[lang].cancel}
                         </Button>
                         <Button variant="primary" type="submit">
-                            Next
+                        {Translate[lang].next}
                         </Button>
                     </Row>
                 </AvForm>
@@ -509,7 +512,8 @@ const AddOrders = () =>{
                             }}
                             style={{
                                 position: 'absolute',
-                                right: '21px',
+                                right: lang==='en' ? '21px' : 'auto',
+                                left: lang==='ar' ? '21px' : 'auto',
                                 zIndex: '2',
                                 top: '12px',
                                 background: 'var(--danger)',
@@ -520,10 +524,11 @@ const AddOrders = () =>{
                             <i className="la la-times" style={{color: '#fff'}}></i>
                         </button>}
                         <Col md={6} className="mb-3">
-                            <label className="text-label">Category</label>
+                            <label className="text-label">{Translate[lang].category}</label>
                             <Select
                                 value={data.category}
                                 name="category"
+                                placeholder={Translate[lang].select}
                                 options={categoriesOptions}
                                 onChange={(e)=> {
                                     getAllProductOptions(index, e)
@@ -531,10 +536,11 @@ const AddOrders = () =>{
                             />
                         </Col>
                         <Col md={6} className="mb-3">
-                            <label className="text-label">SubCategory</label>
+                            <label className="text-label">{Translate[lang].sub_category}</label>
                             <Select
                                 value={data.sub_category}
                                 name="sub_category"
+                                placeholder={Translate[lang].select}
                                 options={[...data.subCategoryOptions]}
                                 noOptionsMessage={()=> 'Select Category First'}
                                 onChange={(e)=> {
@@ -543,11 +549,12 @@ const AddOrders = () =>{
                             />
                         </Col>
                         <Col md={6} className="mb-3">
-                            <label className="text-label">Product</label>
+                            <label className="text-label">{Translate[lang].product}</label>
                             <Select
                                 value={data.product}
                                 name="product"
                                 options={data.productsOptions}
+                                placeholder={Translate[lang].select}
                                 noOptionsMessage={()=> 'Select Category First'}
                                 onChange={(e)=> {
                                     let update = formData.map((res, ind)=>{
@@ -568,10 +575,10 @@ const AddOrders = () =>{
                         </Col>
                         <Col md={6} className="mb-3">
                             <AvField
-                                label='Quantity'
+                                label={Translate[lang].quantity}
                                 type='number'
                                 name='amount'
-                                placeholder='Quantity'
+                                placeholder={Translate[lang].quantity}
                                 value={data.amount}
                                 min={0}
                                 max={data.product?.amount}
@@ -600,20 +607,20 @@ const AddOrders = () =>{
 
                         {data?.product?.variant?.map(variant=>{
                             return <Col md={3}>
-                                <label className="text-label mb-1 text-capitalize">{variant.variant.name_en} :</label>
-                                <p style={{color:'#222'}}>{variant.variant_value?.value_en}</p>
+                                <label className="text-label mb-1 text-capitalize">{lang==='en' ? variant.variant.name_en : variant.variant.name_ar} :</label>
+                                <p style={{color:'#222'}}>{lang==='en' ? variant.variant_value?.value_en : variant.variant_value?.value_ar}</p>
                             </Col>
                         })}
-                        {!!data.product && <Col md={2}>
-                            <label className="text-label mb-1 text-capitalize">Weight :</label>
+                        {!!data.product.weight && <Col md={2}>
+                            <label className="text-label mb-1 text-capitalize"> {Translate[lang].weight}:</label>
                             <p style={{color:'#222'}}>{data.product.weight}</p>
                         </Col>}
                         
-                        {data.dynamicVariantOptions?.length > 0 && <Col md={12}><label className="text-label mb-2 d-block">Dynamic Variant</label></Col>}
+                        {data.dynamicVariantOptions?.length > 0 && <Col md={12}><label className="text-label mb-2 d-block">{Translate[lang].dynamic_variant}</label></Col>}
 
                         {data.dynamicVariantOptions?.length > 0 &&  data.dynamicVariantOptions.map((vari, ind)=>{
                                     return <Col md={6} key={ind} className='d-flex justify-content-between'>
-                                        <label className="text-label m-0">{vari.name_en}</label>
+                                        <label className="text-label m-0">{lang==='en' ? vari.name_en : vari.name_ar}</label>
 
                                         <div style={{fontSize: '19px', width: '5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                             <i 
@@ -683,12 +690,12 @@ const AddOrders = () =>{
                         
                         {!!data.product && <Col md={12} className='mt-4'>
                         <div className="p-3 d-flex justify-content-between" style={{backgroundColor: 'var(--light)', borderRadius: '8px'}}>
-                            <span style={{fontSize: '20px', fontWeight: '500'}}>
+                            <span style={{fontSize: '20px', fontWeight: '500', direction: 'ltr'}}>
                                 {data.product?.price} x{data?.amount} {data.dynamicVariant?.filter(vari=> !!(vari.amount*vari.price))?.length > 0 && 
                                 <span className="text"> + {data.dynamicVariant?.map(vari=> vari.amount*vari.price)?.reduce((accumulator, currentValue) => accumulator + currentValue, 0)}</span>}
                             </span>
                             <span style={{fontSize: '20px'}}>
-                                Total :  <span className="text-primary" style={{fontWeight: '600'}}>{data.totalPrice}</span>
+                            {Translate[lang].total}:  <span className="text-primary" style={{fontWeight: '600'}}>{data.totalPrice}</span>
                             </span>
                         </div>
                         </Col>}
@@ -698,7 +705,7 @@ const AddOrders = () =>{
                 <Row className="px-2 py-4 mt-3" style={{backgroundColor: 'var(--light)'}}>
                     <Col md={6}>
                         <div className="form-group mb-3">
-                            <label className="text-label">Order Day</label>
+                            <label className="text-label">{Translate[lang].order_day}</label>
                             <input
                                 type="date"
                                 className="form-control"
@@ -723,8 +730,8 @@ const AddOrders = () =>{
                                         borderRadius: '8px',
                                         cursor: 'pointer'
                                     }}>
-                                    <span className="d-block">From: <b>{hour.from}</b></span>
-                                    <span>to: <b>{hour.to}</b></span>
+                                    <span className="d-block">{Translate[lang].from}: <b>{hour.from}</b></span>
+                                    <span>{Translate[lang].to}: <b>{hour.to}</b></span>
                                 </div>
                             </Col>
                         })}
@@ -732,14 +739,17 @@ const AddOrders = () =>{
                 </Row>}
 
                 {!!formData.filter(res=> !!res.product)?.length && <Row className="px-2 py-4 mt-3" style={{backgroundColor: 'var(--light)'}}>
-                        <Col md={6} style={{borderRight: '1px solid #dedede'}}>
+                        <Col md={6} style={{
+                            borderRight: lang==='en' ? '1px solid #dedede' : '',
+                            borderLeft: lang==='ar' ? '1px solid #dedede' : '',
+                            }}>
                             <Row>
                                 <Col md={9} className='pr-0'>
                                     <AvField
-                                        label='Coupon'
+                                        label={Translate[lang].coupon}
                                         type='text'
                                         name='promoCode'
-                                        placeholder='Enter Coupon Code'
+                                        placeholder={`${Translate[lang].enter} ${Translate[lang].coupon}`}
                                         value={promoCode}
                                         onChange={(e)=> setPromoCode(e.target.value)}
                                     />
@@ -753,15 +763,17 @@ const AddOrders = () =>{
                                         type='button'
                                         onClick={getPromoCode}
                                         >
-                                        Apply
+                                        {Translate[lang].apply}
                                     </Button>
                                 </Col>
                                 <Col md={12}>
-                                    <label className="text-label">Payment Method</label>
+                                    <label className="text-label">{Translate[lang].payment_method}</label>
                                     <Select
                                         value={paymentMethod}
                                         name="paymentMethod"
-                                        options={[{label:'Cash', value:'cash'}, {label:'Visa', value:'visa'}]}
+                                        placeholder={Translate[lang].select}
+                                        options={[{label: lang === 'en' ? 'Cash' : 'كاش', value:'cash', en: 'Cash', ar:'كاش'}, 
+                                                    {label: lang === 'en' ? 'Visa' : 'فيزا', value:'visa', en: 'Visa', ar: 'فيزا'}]}
                                         onChange={(e)=> {
                                             setPaymentMethod(e)
                                         }}
@@ -771,11 +783,11 @@ const AddOrders = () =>{
                         </Col>
                         <Col md={6}>
                             {!!paymentMethod && <div className="mt-1 d-flex justify-content-between">
-                                <label className="text-label">Payment Method</label>
-                                <p className="mb-0">{paymentMethod?.label}</p>
+                                <label className="text-label">{Translate[lang].payment_method}</label>
+                                <p className="mb-0">{paymentMethod[lang]}</p>
                             </div>}
                             <div className="mt-1 d-flex justify-content-between">
-                                <label className="text-label">SubTotal ({formData.filter(res=> !!res.product)?.length})</label>
+                                <label className="text-label">{Translate[lang].sub_price} ({formData.filter(res=> !!res.product)?.length})</label>
                                 <p className="mb-0">{formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0)}</p>
                             </div>
                             <div className="mt-1 d-flex justify-content-between">
@@ -783,13 +795,13 @@ const AddOrders = () =>{
                                 <p className="mb-0">30</p>
                             </div>
                             {!!promoCodeData && <div className="mt-1 d-flex justify-content-between">
-                                <label className="text-label">Coupon</label>
+                                <label className="text-label">{Translate[lang].coupon}</label>
                                 <p className="text-danger mb-0">{promoCodeData.type === "percentage" ? `${promoCodeData.value}%` : `-${promoCodeData.value}`}</p>
                             </div>}
                             <div className="my-2" style={{height: '1px', background: '#dedede'}}></div>
 
                             <div className="mt-1 d-flex justify-content-between">
-                                <label className="text-label" style={{fontWeight: '600'}}>Total</label>
+                                <label className="text-label" style={{fontWeight: '600'}}>{Translate[lang].total_price}</label>
                                 {!promoCodeData && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) +30}</p>}
                                 {(!!promoCodeData && promoCodeData?.type === "percentage") && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) -(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) * (promoCodeData.value/100)) +30)}</p>}
                                 {(!!promoCodeData && promoCodeData?.type !== "percentage") && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) - promoCodeData.value +30)}</p>}
@@ -818,19 +830,19 @@ const AddOrders = () =>{
                     type='button'
                     variant="outline-primary" 
                     className="mt-3">
-                    Add New Product
+                    {Translate[lang].add_new_product}
                 </Button>
                 
                 <div className="mt-4 d-flex justify-content-between">
                     <Button variant="secondary" type="button" onClick={()=> navigate('/orders')}>
-                        Cancel
+                    {Translate[lang].cancel}
                     </Button>
                     <Button 
                         variant="primary" 
                         type="submit"
                         disabled={!formData.filter(res=> !!res.product).length}
                     >
-                        {paymentMethod?.value === 'cash' ? 'Submit' : 'Next'}
+                        {paymentMethod?.value === 'cash' ? Translate[lang].submit : Translate[lang].next}
                     </Button>
                 </div>
             </AvForm>
@@ -840,7 +852,7 @@ const AddOrders = () =>{
     {steps === 3 && <Card>
         <Card.Body>
             <h4>
-                <i className="la la-cc-visa" style={{fontSize: '24px'}}></i> Payment Method
+                <i className="la la-cc-visa" style={{fontSize: '24px'}}></i> {Translate[lang].payment_method}
             </h4>
         </Card.Body>
     </Card>}
