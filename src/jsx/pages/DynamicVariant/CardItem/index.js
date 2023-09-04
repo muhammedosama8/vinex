@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Badge, Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 import ChooseEditModal from "../ChooseEditModal";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const [chooseModal, setChooseModal] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
@@ -14,11 +16,11 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                     <td>
                       <strong>{item.id}</strong>
                     </td>
-                    <td>{item.name_en}</td>
+                    <td>{lang==='en' ? item.name_en : item.name_ar}</td>
                     <td style={{display: 'grid', gap:'10px',gridTemplateColumns: 'auto auto auto'}}>
                       {item.dynamic_variants?.map((variant, index)=>{
                         return <Badge variant="primary light" className="mr-2">
-                          {variant?.name_en}
+                          {lang ==='en' ? variant?.name_en : variant?.name_ar}
                         </Badge>
                       })}
                     </td>
@@ -34,12 +36,12 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                           <Dropdown.Item onClick={()=> {
                             setIsEdit(true)
                             setChooseModal(true)}}>
-                            Edit
+                            {Translate[lang]?.edit}
                           </Dropdown.Item>
                           <Dropdown.Item onClick={()=> {
                             setIsEdit(false)
                             setChooseModal(true)
-                            }}>Delete</Dropdown.Item>
+                            }}>{Translate[lang]?.delete}</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

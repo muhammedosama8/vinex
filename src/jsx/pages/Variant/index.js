@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import VariantService from "../../../services/VariantService";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
-import Search from "../../common/Search";
 import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
 import './style.scss'
@@ -41,7 +40,7 @@ const Variant = () =>{
             ></div>
           </div>
             {isExist('variant') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/variant/add-variant')}>
-              Add Variant
+             {Translate[lang].add} {Translate[lang].variant}
           </Button>}
           </div>
         <Card>
@@ -53,10 +52,10 @@ const Variant = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>Name</strong>
+                      <strong>{Translate[lang].name}</strong>
                     </th>
                     <th>
-                      <strong>Variant</strong>
+                      <strong>{Translate[lang].variant}</strong>
                     </th>
                     {/* <th>
                       <strong>STATUS</strong>

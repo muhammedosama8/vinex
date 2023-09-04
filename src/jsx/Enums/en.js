@@ -81,7 +81,9 @@ export const English = {
     price: 'Price',
     in_stoke: 'In Stock',
     english_title: 'English Title',
+    english_name: 'English Name',
     arabic_title: 'Arabic Title',
+    arabic_name: 'Arabic Name',
     english_description: 'English Description',
     arabic_description: 'Arabic Description',
     code: 'Code',
@@ -92,5 +94,12 @@ export const English = {
     best_seller: 'Best Seller',
     new_in: 'New In',
     offer: 'Offer',
-    images: 'Images'
+    images: 'Images',
+    create: 'Create',
+    types_by_english: 'Types by English',
+    types_by_arabic: 'Types by Arabic',
+    add_new_value: 'Add New Value',
+    chosse: "Chosse",
+    has_amount: "Has Amount",
+    available_amount: "Available Amount",
 }

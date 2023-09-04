@@ -270,6 +270,7 @@ const AddProducts = () => {
             bestSeller: product.bestSeller,
             newIn: product.newIn,
             offer: product.offer,
+            type: "normal",
             offerPrice: parseFloat(product.offerPrice),
             cost : product?.cost
         }

@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Badge, Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Translate } from "../../../Enums/Tranlate";
 import ChooseEditModal from "../ChooseEditModal";
 
 const CardItem = ({item, index, setShouldUpdate,shouldUpdate}) =>{
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
     const [chooseModal, setChooseModal] = useState(false)
@@ -19,11 +21,11 @@ const CardItem = ({item, index, setShouldUpdate,shouldUpdate}) =>{
                     <td>
                       <strong>{item.id}</strong>
                     </td>
-                    <td>{item.name_en}</td>
+                    <td>{lang === 'en' ? item.name_en : item.name_ar}</td>
                     <td style={{display: 'grid', gap:'10px',gridTemplateColumns: 'auto auto auto'}}>
                       {item.variants?.map((variant, index)=>{
                         return <Badge key={index} variant="primary light" className="mr-2">
-                          {variant?.name_en}
+                          {lang === 'en' ? variant?.name_en : variant?.name_ar}
                         </Badge>
                       })}
                     </td>
@@ -46,9 +48,9 @@ const CardItem = ({item, index, setShouldUpdate,shouldUpdate}) =>{
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={()=> navigate(`/variant/add-variant/${item.id}`)}>
-                            Edit
+                            {Translate[lang].edit}
                           </Dropdown.Item>
-                          <Dropdown.Item onClick={()=> setChooseModal(true)}>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> setChooseModal(true)}>{Translate[lang].delete}</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

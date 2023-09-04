@@ -44,7 +44,7 @@ export function AuthReducer(state = initialState, action) {
             ...state,
             email: action.payload.email,
             password: action.payload.password,
-            lang: 'en'
+            lang: 'ar'
         };
     }
     if (action.type === LOGIN_CONFIRMED_ACTION) {

@@ -24,7 +24,7 @@ function Login(props) {
     }
 
 	useEffect(()=>{
-        controlService.getList().then(res=>{
+        controlService.getDashboardLogo().then(res=>{
             if(res){
                 setDashboardLogo(res.data.data.dashboard_logo)
             }

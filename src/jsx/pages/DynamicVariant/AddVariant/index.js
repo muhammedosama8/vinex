@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import CategoriesService from "../../../../services/CategoriesService";
 import DynamicVariantService from "../../../../services/DynamicVariantService";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddDynamicVariant = ()=>{
    const [formData, setFormData] =useState({category: ''})
@@ -25,6 +27,7 @@ const AddDynamicVariant = ()=>{
    const categoriesService = new CategoriesService()
    const dynamicVariantService = new DynamicVariantService()
    const navigate = useNavigate()
+   const lang = useSelector(state => state.auth.lang)
 
    useEffect(()=>{
       if(window.history.state?.usr){
@@ -37,30 +40,22 @@ const AddDynamicVariant = ()=>{
          setDynamicVariant([window.history.state?.usr])
          return
       }
+   }, [])
+
+   useEffect(()=>{
       categoriesService.getList().then(res=>{
          if(res.data?.status === 200){
             let categories =  res.data?.meta?.data?.map(item=>{
                return{
                   id: item?.id,
                   value: item?.id,
-                  label: item.name_en
+                  label: lang === 'en' ? item.name_en : item.name_ar
                }
             })
             setCategoriesOptions(categories)
          }
       })
-
-   }, [])
-
-   // useEffect(()=>{
-   //    if(!!formData?.category || !!dynamic_variant_id){
-   //       dynamicVariantService?.getList(Number(dynamic_variant_id)).then(res=>{
-   //          if(res?.status === 200){
-   //             setDynamicVariant([...res.data?.meta.data])
-   //          }
-   //       })
-   //    }
-   // },[window.location.pathname])
+   },[lang])
 
    const onSubmit = (e) =>{
       e.preventDefault()
@@ -101,15 +96,16 @@ const AddDynamicVariant = ()=>{
             <div className="row">
                {!dynamic_variant_id && <div className="col-lg-6 mb-2">
                   <div className="form-group mb-3">
-                     <label className="text-label">Category</label>
+                     <label className="text-label">{Translate[lang].category}</label>
                      <Select
-                     value={formData.category}
-                     name="category"
-                     options={categoriesOptions}
-                     onChange={(e)=> {
-                        setFormData({category: e})
-                     }}
-                  />
+                        value={formData.category}
+                        name="category"
+                        placeholder={Translate[lang].select}
+                        options={categoriesOptions}
+                        onChange={(e)=> {
+                           setFormData({category: e})
+                        }}
+                     />
                   </div>
                </div>}
 
@@ -119,7 +115,10 @@ const AddDynamicVariant = ()=>{
                            className="position-absolute"
                            type='button' 
                            style={{
-                              height: 'fit-content', right: '16px', top: '16px',zIndex: '2',
+                              height: 'fit-content', 
+                              right: lang === 'en' ? '16px' : 'auto', 
+                              left: lang === 'ar' ? '16px' : 'auto', 
+                              top: '16px',zIndex: '2',
                               padding: '2px 8px', backgroundColor: 'var(--danger)',
                               color: '#fff', border: 'none', borderRadius: '8px'
                            }}
@@ -131,12 +130,12 @@ const AddDynamicVariant = ()=>{
                      <Row>
                         <Col lg={6} md={6} className='mb-3'>
                            <div className="form-group">
-                              <label className="text-label">English Name</label>
+                              <label className="text-label">{Translate[lang].english_name}</label>
                               <input
                               type="text"
                               name="en"
                               className="form-control"
-                              placeholder="English Name"
+                              placeholder={Translate[lang].english_name}
                               required
                               // pattern="[\u0600-\u06FF\s]+"
                               value={item?.name_en}
@@ -157,12 +156,12 @@ const AddDynamicVariant = ()=>{
                            </div>
                         </Col>
                         <Col md={6} className='mb-3'>
-                           <label>Arabic Name</label>
+                           <label>{Translate[lang].arabic_name}</label>
                            <input
                               type="text"
                               name="ar"
                               className="form-control"
-                              placeholder="Arabic Name"
+                              placeholder={Translate[lang].arabic_name}
                               required
                               // pattern="[\u0600-\u06FF\s]+"
                               value={item?.name_ar}
@@ -182,7 +181,7 @@ const AddDynamicVariant = ()=>{
                            />
                         </Col>
                         <Col md={2}>
-                           <label className="text-label">Has Amount</label>
+                           <label className="text-label">{Translate[lang].has_amount}</label>
                            <Form.Check
                            type="switch"
                            id={`has_amount${itemIndex}`}
@@ -203,12 +202,12 @@ const AddDynamicVariant = ()=>{
                            />
                         </Col>
                         <Col md={4}>
-                           <label>Available Amount</label>
+                           <label>{Translate[lang].available_amount}</label>
                            <input
                               type="number"
                               name="avilable_amount"
                               className="form-control"
-                              placeholder="Available Amount"
+                              placeholder={Translate[lang].available_amount}
                               required
                               // pattern="[\u0600-\u06FF\s]+"
                               value={item?.available_amount}
@@ -228,12 +227,12 @@ const AddDynamicVariant = ()=>{
                            />
                         </Col>
                         <Col md={6}>
-                           <label>Price</label>
+                           <label>{Translate[lang].price}</label>
                            <input
                               type="number"
                               name="price"
                               className="form-control"
-                              placeholder="Price"
+                              placeholder={Translate[lang].price}
                               required
                               // pattern="[\u0600-\u06FF\s]+"
                               value={item?.price}
@@ -267,13 +266,13 @@ const AddDynamicVariant = ()=>{
                            has_amount: false,
                            price: ''
                         }])}
-                     >Add New Dynamic Variant</Button>}
+                     >{Translate[lang].add_new_value}</Button>}
                   </div>
             </div>
             <div className="d-flex justify-content-between">
                <div></div>
                <div>
-                  <Button variant="primary" type="submit">Submit</Button>
+                  <Button variant="primary" type="submit">{Translate[lang].submit}</Button>
                </div>
             </div>
             </form>

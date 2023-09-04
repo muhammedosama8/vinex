@@ -5,12 +5,15 @@ import { useNavigate } from "react-router-dom";
 import DeleteModal from "../../../common/DeleteModal";
 import DynamicVariantService from "../../../../services/DynamicVariantService";
 import { toast } from "react-toastify";
+import { Translate } from "../../../Enums/Tranlate";
+import { useSelector } from "react-redux";
 
 const ChooseEditModal = ({modal, setModal, dynamicVariants,isEdit, setShouldUpdate})=>{
     const [choose, setChoose] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const navigate = useNavigate()
     const dynamicVariantService= new DynamicVariantService()
+    const lang = useSelector(state=> state.auth.lang)
 
     const submit = () =>{
         if(!choose){
@@ -30,7 +33,7 @@ const ChooseEditModal = ({modal, setModal, dynamicVariants,isEdit, setShouldUpda
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>Chosse DynamicVariant</Modal.Title>
+            <Modal.Title>{Translate[lang]?.chosse} {Translate[lang]?.dynamic_variant}</Modal.Title>
             <Button
                 variant=""
                 className="close"
@@ -45,7 +48,7 @@ const ChooseEditModal = ({modal, setModal, dynamicVariants,isEdit, setShouldUpda
                             return <Col md={12}>
                                 <label className="w-100">
                                     <input type='radio' name='dynamicVariant' className="mr-3" onChange={()=>setChoose(variant)} />
-                                    {variant?.name_en}
+                                    {lang==='en' ? variant?.name_en : variant.name_ar}
                                 </label>
                             </Col>
                         })}
@@ -54,13 +57,13 @@ const ChooseEditModal = ({modal, setModal, dynamicVariants,isEdit, setShouldUpda
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setModal} variant="danger light">
-                Close
+                {Translate[lang]?.close}
             </Button>
             <Button 
                 variant="primary" 
                 type='submit'
                 >
-                    {isEdit ? 'Edit' : 'Delete'}
+                    {isEdit ? Translate[lang]?.edit : Translate[lang]?.delete}
                 </Button>
             </Modal.Footer>
             </AvForm>
