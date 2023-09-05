@@ -312,7 +312,9 @@ ol.go2441762052 {
   border-left: 0 !important;
   border-right: 0 !important;
 }
-
+.rdw-dropdown-selectedtext{
+  direction: ltr;
+}
 /* Button */
 button:focus,
 a:focus {

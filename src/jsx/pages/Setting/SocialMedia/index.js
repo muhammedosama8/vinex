@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import SocialMediaService from "../../../../services/SocialMediaService";
 import { SocialMediaLinks } from "../../../Enums/SocialMedia";
+import { Translate } from "../../../Enums/Tranlate";
 
 const SocialMedia = ()=>{
     const [links, setLinks] = useState({})
@@ -11,6 +12,7 @@ const SocialMedia = ()=>{
     const [isAdd, setIsAdd] = useState(false)
     // const [selectedSocial, setSelectedSocial] = useState([])
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const socialMediaService = new SocialMediaService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
@@ -90,7 +92,7 @@ const SocialMedia = ()=>{
                                     }
                                 }}
                             /> */}
-                            {link.label}:
+                            {Translate[lang][link.value]} :
                         </label>
                         <input
                             type="text"
@@ -100,7 +102,7 @@ const SocialMedia = ()=>{
                                 background: !isAdd ? 'rgb(238 238 238)' : '#fff'
                             }}
                             className="form-control"
-                            placeholder={`${link.label} Link`}
+                            placeholder={`${Translate[lang][link.value]} Link`}
                             value={links[link?.value]}
                             onChange={(e)=> inputHandler(e)}
                         />
@@ -109,10 +111,10 @@ const SocialMedia = ()=>{
                 </Row>
             {isExist('social_media') && <div className="d-flex justify-content-end">
                 {isAdd && <Button variant="primary" type="submit" disabled={loading}>
-                    Submit
+                    {Translate[lang].submit}
                 </Button>}
                 {!isAdd && <Button variant="primary" type="button" onClick={()=> setIsAdd(true)}>
-                    Edit
+                    {Translate[lang].edit}
                 </Button>}
             </div>}
             </form>

@@ -11,6 +11,7 @@ import '../style.scss'
 import StaticPagesServices from "../../../../../services/StaticPagesService";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { Translate } from "../../../../Enums/Tranlate";
 
 const Static = () =>{
     const [formData, setFormData] =useState([
@@ -22,6 +23,7 @@ const Static = () =>{
         }
     ])
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const [isEdit, setIsEdit] = useState()
     const staticPagesServices = new StaticPagesServices()
@@ -96,7 +98,7 @@ const Static = () =>{
                     </button>}
                 <Col md={6} className="form-group mb-2">
 					<AvField
-						label ='English Title'
+						label ={Translate[lang].english_title}
 						name ={`title_en${index}`}
 						type="text" 
 						value={item.title_en}
@@ -107,13 +109,13 @@ const Static = () =>{
 								errorMessage: 'This Field is required'
 							},
 						}}
-						placeholder='Title'
+						placeholder={Translate[lang].english_title}
 						onChange={(e) => changeInput(e,'title_en',index)}
 					/>
 				</Col>
                 <Col md={6} className="form-group mb-2">
 					<AvField
-						label ='Arabic Title'
+						label ={Translate[lang].arabic_title}
 					    name ={`title_ar${index}`}
 						type="text" 
                         disabled={isEdit}
@@ -124,12 +126,12 @@ const Static = () =>{
 								errorMessage: 'This Field is required'
 							},
 						}}
-						placeholder='Title'
+						placeholder={Translate[lang].arabic_title}
 						onChange={(e) => changeInput(e,'title_ar',index)}
 					/>
 				</Col>
                 <Col md={6} className="form-group mb-2">
-                    <label className="d-block">English Description</label>
+                    <label className="d-block">{Translate[lang].english_description}</label>
                     <div className="editorField">
                         <Editor
                             // editorState ={editorState}
@@ -157,7 +159,7 @@ const Static = () =>{
                     </div>
 				</Col>
                 <Col md={6} className="form-group mb-2">
-                    <label className="d-block">Arabic Description</label>
+                    <label className="d-block">{Translate[lang].arabic_description}</label>
                     <div className="editorField">
                         <Editor
                             // editorState ={editorState}
@@ -199,13 +201,13 @@ const Static = () =>{
                         description_en: EditorState.createEmpty(),
                     }])
                 }}>
-                    Add New Details
+                    {Translate[lang].add_new_value}
                 </Button>
                 {!isEdit && <Button variant="primary" type="submit">
-                    Submit
+                    {Translate[lang].submit}
                 </Button>}
                 {isEdit && <Button variant="primary" type="button" onClick={()=>setIsEdit(false)}>
-                    Edit
+                    {Translate[lang].edit}
                 </Button>}
             </div>}
         </AvForm>

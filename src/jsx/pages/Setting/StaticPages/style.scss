@@ -21,14 +21,15 @@
 }
 .delete{
     position: absolute;
-    top: 0px;
-    right: 5px;
+    top: -5px;
     z-index: 2;
     background: red;
     color: #fff;
     padding: 2px 6px;
     border-radius: 50%
 }
+.ar .delete { left: 5px;}
+.en .delete { right: 5px;}
 .DraftEditor-editorContainer{
     height: 13rem!important;
 }

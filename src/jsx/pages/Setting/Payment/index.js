@@ -1,12 +1,15 @@
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import React, { useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import PaymentService from "../../../../services/Payment";
+import { Translate } from "../../../Enums/Tranlate";
 
 const Payment = () =>{
     const [iban, setIban] = useState('')
     const paymentService = new PaymentService()
+    const lang = useSelector(state=> state.auth.lang)
 
     const submit = ()=> {
         let data ={
@@ -25,10 +28,10 @@ const Payment = () =>{
                 <Row className="my-3">
                     <Col md={8}>
                         <AvField
-                            label='Iban'
+                            label={Translate[lang].iban}
                             name='iban'
                             type='text'
-                            placeholder='Enter Iben'
+                            placeholder={Translate[lang].iban}
                             value={iban}
                             validate={{
                                 required: {
@@ -43,7 +46,7 @@ const Payment = () =>{
                 <div className="d-flex justify-content-between">
                     <div></div>
                     <Button variant="primary">
-                        Submit
+                    {Translate[lang].submit}
                     </Button>
                 </div>
             </AvForm>

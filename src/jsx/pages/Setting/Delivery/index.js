@@ -5,6 +5,7 @@ import AreasService from "../../../../services/AreasServices";
 import SettingService from "../../../../services/SettingServices";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const inital = {
     delivery_possibility: true,
@@ -21,6 +22,7 @@ const Delivery = () => {
     const areasService = new AreasService()
     const settingService = new SettingService()
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     const formDataHandler = (e)=>{
@@ -93,7 +95,8 @@ const Delivery = () => {
                         border: 'none',
                         fontSize: '28px',
                         position: 'absolute',
-                        right: '12px',
+                        right: lang==='en' ? '12px' : 'auto',
+                        left: lang==='ar' ? '12px' : 'auto',
                         top: '12px',
                         zIndex: '1'
                     }}
@@ -103,7 +106,7 @@ const Delivery = () => {
                 </button>}
                 <Row className="mb-3">
                     <Col md={6}>
-                        <label className="text-label">Possible Delivery</label>
+                        <label className="text-label">{Translate[lang].possible_delivery}</label>
                         <Form.Check
                             type="switch"
                             id={`delivery_possibility`}
@@ -113,9 +116,9 @@ const Delivery = () => {
                         />
                     </Col>
                     {formData.delivery_possibility && <Col md={6}>
-                        <label className="text-label">Type of Area</label>
+                        <label className="text-label">{Translate[lang].type_of_area}</label>
                         <div className="d-flex mt-2" style={{gap: '24px'}}>
-                            <label className="text-label">Per Area</label>
+                            <label className="text-label">{Translate[lang].per_area}</label>
                             <Form.Check
                                 type="switch"
                                 id={`delivery_all_area`}
@@ -123,15 +126,15 @@ const Delivery = () => {
                                 checked={formData.delivery_all_area}
                                 onChange={(e)=> setFormData({...formData, delivery_all_area: e.target.checked})}
                             />
-                            <label className="text-label">All Area</label>
+                            <label className="text-label">{Translate[lang].all_area}</label>
                         </div>
                     </Col>}
                 </Row>
                 {formData.delivery_possibility && <Row>
                     <Col md={6}>
                         <AvField
-                            label='Cash in Delivery Fees'
-                            placeholder='Cash in Delivery Fees'
+                            label={Translate[lang].cash_in_delivery_fees}
+                            placeholder={Translate[lang].cash_in_delivery_fees}
                             type='number'
                             name='cash_in_delivery'
                             disabled={!isAdd}
@@ -148,8 +151,8 @@ const Delivery = () => {
                     </Col>
                     <Col md={6}>
                         <AvField
-                            label='Delivery Fees'
-                            placeholder='Delivery Fees'
+                            label={Translate[lang].delivery_fees}
+                            placeholder={Translate[lang].delivery_fees}
                             type='number'
                             name='delivery_fee'
                             disabled={!isAdd}
@@ -166,8 +169,8 @@ const Delivery = () => {
                     </Col>
                     <Col md={6}>
                         <AvField
-                            label='Shipping Fee: (Price per Kg)'
-                            placeholder='Shipping Fee (Price per Kg)'
+                            label={`${Translate[lang].shipping_fee}: (${Translate[lang].price_per_kg})`}
+                            placeholder={`${Translate[lang].shipping_fee}: (${Translate[lang].price_per_kg})`}
                             type='number'
                             name='shipping_fee'
                             disabled={!isAdd}
@@ -186,8 +189,8 @@ const Delivery = () => {
                         {formData.areas?.map((area,index)=>{
                         return <Col md={3}>
                             <AvField
-                            label={area.name_en}
-                            placeholder='Delivery Fee'
+                            label={lang==='en'? area.name_en : area.name_ar}
+                            placeholder={Translate[lang].delivery_fees}
                             type='number'
                             disabled={!isAdd}
                             name={`${area.delivery_fee}`}
@@ -238,7 +241,7 @@ const Delivery = () => {
                 {isExist('delivery') && <div className="d-flex justify-content-between mt-4">
                     {/* <Button variant="secondary" type="button" onClick={()=> setFormData(inital)}>Cancel</Button> */}
                     <div></div>
-                    {isAdd && <Button variant="primary" type="submit" onClick={submit} disabled={loading}>Submit</Button>}
+                    {isAdd && <Button variant="primary" type="submit" onClick={submit} disabled={loading}>{Translate[lang].submit}</Button>}
                 </div>}
             </AvForm>
         </Card.Body>
