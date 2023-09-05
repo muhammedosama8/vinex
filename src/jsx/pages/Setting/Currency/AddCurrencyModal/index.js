@@ -5,6 +5,8 @@ import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
 import CountryiesService from "../../../../../services/CountriesService";
 import CurrencyService from "../../../../../services/CurrencyService";
+import { Translate } from "../../../../Enums/Tranlate";
+import { useSelector } from "react-redux";
 
 const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [loading, setLoading] = useState(false)
@@ -16,6 +18,7 @@ const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [ countriesOptions, setCountriesOptions] = useState([])
     const countriesService = new CountryiesService()
     const currencyService = new CurrencyService()
+    const lang = useSelector(state=> state.auth.lang)
 
     useEffect(()=> {
         countriesService?.getList().then(res=>{
@@ -24,13 +27,13 @@ const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                    return{
                       id: item?.id,
                       value: item?.id,
-                      label: item.name_en
+                      label: lang === 'en' ? item.name_en : item.name_ar
                    }
                 })
                 setCountriesOptions(countries)
              }
         })
-    },[])
+    },[lang])
 
     useEffect(() => {
         if(Object.keys(item).length === 0){
@@ -92,7 +95,7 @@ const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>{isAdd ? 'Add': 'Edit'} Currency</Modal.Title>
+            <Modal.Title>{isAdd ? Translate[lang]?.add : Translate[lang]?.edit} {Translate[lang]?.currency}</Modal.Title>
             <Button
                 variant=""
                 className="close"
@@ -106,10 +109,11 @@ const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                     <Row>
                         <Col md={12}>
                             <div className='form-group w-100'>
-                            <label>Country</label>
+                            <label>{Translate[lang]?.country}</label>
                             <Select
                                 value={formData.country}
                                 name="country"
+                                placeholder={Translate[lang]?.select}
                                 options={countriesOptions}
                                 onChange={(e)=> setFormData({...formData, country: e})}
                             />
@@ -117,9 +121,9 @@ const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                         </Col>
                         <Col md={12}>
                             <AvField
-                                    label='Rate'
+                                    label={Translate[lang]?.rate}
                                     type='number'
-                                    placeholder='Rate'
+                                    placeholder={Translate[lang]?.rate}
                                     bsSize="lg"
                                     name='rate'
                                     validate={{
@@ -137,13 +141,13 @@ const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setAddModal} variant="danger light">
-                Close
+            {Translate[lang]?.close}
             </Button>
             <Button 
                 disabled={loading}
                 variant="primary" 
                 type='submit'
-                >{isAdd ? "Add" : "Edit"}</Button>
+                >{isAdd ? Translate[lang]?.add : Translate[lang]?.edit}</Button>
             </Modal.Footer>
             </AvForm>
         </Modal>)

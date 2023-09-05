@@ -3,12 +3,14 @@ import { Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import TimeSlotService from "../../../../services/TimeSlotService";
+import { Translate } from "../../../Enums/Tranlate";
 import EditTimeSlotModal from "../EditModal";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
     const [editModal, setEditModal] = useState(false)
     const [loading, setLoading] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const timeSlotService = new TimeSlotService()
 
@@ -75,7 +77,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={()=> {
                             setEditModal(true)
-                        }}> Edit</Dropdown.Item>
+                        }}> {Translate[lang].edit}</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>}
             </td>

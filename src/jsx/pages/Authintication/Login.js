@@ -6,6 +6,7 @@ import login from "../../../images/reg-bg.jpg";
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { loadingToggleAction, loginAction } from "../../../store/actions/AuthActions";
 import ControlService from "../../../services/ControlServices";
+import { Translate } from "../../Enums/Tranlate";
 
 function Login(props) {
 	const navigate = useNavigate()
@@ -15,6 +16,7 @@ function Login(props) {
 	const [dashboardLogo, setDashboardLogo] = useState('');
     const dispatch = useDispatch();
 	const Auth = useSelector(state=> state.auth)
+	const lang = useSelector(state=> state.auth.lang)
 	const controlService = new ControlService()
 
     function onLogin(e) {
@@ -33,15 +35,14 @@ function Login(props) {
 
   return (
 		<div className="login-wrapper">
-			<div className="login-aside-left" style={{backgroundImage:"url("+ login +")"}}>
-				<div className="login-logo" style={{width: '8rem'}}>
+			<div className="login-aside-left position-relative" style={{backgroundImage:"url("+ login +")"}}>
+				<div className="login-logo position-absolute" style={{width: '22rem', left: '50%', top: '35%', transform: 'translate(-50%, -40%)'}}>
 					<img src={dashboardLogo} alt="logo" className="w-100"/>
 				  </div>
 				<div className="login-description">
-					<h2 className="text-white mb-4">Check the Status</h2>
-					<p className="fs-12">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
+					<h3 className="text-white">{Translate[lang].text} ✌️</h3>
 
-					<div className="mt-5">
+					<div className="mt-2">
 						<a href='/' className="text-white">© 2023 Leap</a>
 					</div>
 				</div>
@@ -54,9 +55,9 @@ function Login(props) {
 						<div className="col-xl-12">
 						  <div className="auth-form">
 							<div className=" mb-3">
-							  <h2 className="text-primary">Welcome Back</h2>
+							  <h2 className="text-primary">{Translate[lang].welcome_back}</h2>
 							</div>
-							<h4 className=" mb-4 ">Sign in by entering information below</h4>
+							<h4 className=" mb-4 ">{Translate[lang].sign_text}</h4>
                             {props.errorMessage && (
                                 <div className='text-danger'>
                                     {props.errorMessage}
@@ -71,7 +72,7 @@ function Login(props) {
 								<Row>
 									<Col md={12} className="form-group mb-2">
 										<AvField
-											label ='Email'
+											label ={Translate[lang].email}
 											name ='email'
 											type="email" 
 											value={email}
@@ -82,13 +83,13 @@ function Login(props) {
 													errorMessage: 'This Field is required'
 												},
 											}}
-											placeholder='Email'
+											placeholder={Translate[lang].email}
 											onChange={(e) => setEmail(e.target.value)}
 										/>
 									</Col>
 									<Col md={12} className="form-group position-relative">
 										<AvField
-											label ='Password'
+											label ={Translate[lang].password}
 											name ='password'
 											type={showPassword ? 'text' : 'password'}
 											value={password}
@@ -99,12 +100,12 @@ function Login(props) {
 													errorMessage: 'This Field is required'
 												},
 											}}
-											placeholder='Password'
+											placeholder={Translate[lang].password}
 											onChange={(e) => setPassword(e.target.value)}
 										/>
 										{showPassword ? 
-											<i className="la la-eye-slash position-absolute" style={{top: '50%',right: '8%'}} onClick={()=>setShowPassword(false)}></i> : 
-											<i className="la la-eye position-absolute" style={{top: '50%',right: '8%'}} onClick={()=>setShowPassword(true)}></i>}
+											<i className="la la-eye-slash position-absolute" style={{top: '50%',right: lang==='en' ? '8%' : 'auto',left: lang==='ar' ? '8%' : 'auto'}} onClick={()=>setShowPassword(false)}></i> : 
+											<i className="la la-eye position-absolute" style={{top: '50%',right: lang==='en' ? '8%' : 'auto',left: lang==='ar' ? '8%' : 'auto'}} onClick={()=>setShowPassword(true)}></i>}
 									</Col>
 								</Row>
 								
@@ -132,7 +133,7 @@ function Login(props) {
 								  className="btn btn-primary btn-block"
 								  disabled={Auth?.showLoading}
 								>
-								  Sign In
+								  {Translate[lang].sign_in}
 								</button>
 							  </div>
 							</AvForm>

@@ -9,6 +9,7 @@ import ProductsService from "../../../services/ProductsService";
 import BaseService from "../../../services/BaseService";
 import BannerService from "../../../services/BannerService";
 import Loader from "../../common/Loader";
+import { Translate } from "../../Enums/Tranlate";
 
 const Banners = () =>{
     const [files, setFiles] = useState([{},{},{},{},{}])
@@ -17,6 +18,7 @@ const Banners = () =>{
     const [loading, setLoading] = useState(false)
     const [submitLoading, setSumbitLoading] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const productsService = new ProductsService()
     const bannerService = new BannerService()
@@ -37,13 +39,13 @@ const Banners = () =>{
                     return{
                         id: prod?.id,
                         value: prod?.id,
-                        label: prod?.name_en
+                        label: lang==='en' ? prod?.name_en : prod?.name_ar
                     }
                 })
                 setProductsOptions([...products])
             }
         })
-    },[])
+    },[lang])
 
     useEffect(()=>{
         bannerService?.getList()?.then(res=>{
@@ -167,7 +169,7 @@ const Banners = () =>{
             return <Card className="p-4" key={index}>
                     <Row>
                     <Col md={12}>
-                    <h4>Banner {index+1}</h4>
+                    <h4>{Translate[lang].banner} {index+1}</h4>
                     <div className="image-placeholder">	
                         <div className="avatar-edit">
                             <input type="file" 
@@ -215,11 +217,12 @@ const Banners = () =>{
                     </div>
                     <div className='form-row mt-3'>
                         <div className='form-group w-100 d-flex align-items-center m-0'>
-                            <label style={{width: '65px'}} className='m-0'>Link {index+1}:</label>
+                            <label style={{width: '65px'}} className='m-0'>{Translate[lang].link} {index+1}:</label>
                             <Select
                                 value={data?.product}
                                 name="category"
                                 options={productsOptions}
+                                placeholder={Translate[lang].select}
                                 className='w-50'
                                 onChange={(e)=> {
                                     let updateFormData = formData.map((item, ind)=>{
@@ -266,7 +269,7 @@ const Banners = () =>{
                 className="px-5"
                 disabled={submitLoading}
                 onClick={()=> onSubmit()}
-            >Submit</Button>
+            >{Translate[lang].submit}</Button>
         </div>}
     </>)
 }

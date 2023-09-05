@@ -32,6 +32,7 @@ const AddDigitalProducts = () => {
         category: '',
         sub_category: '',
         brand: '',
+        cost: '',
         dynamic_variant: [],
         serial_number:'',
         serial_image: {src: ''},
@@ -43,6 +44,7 @@ const AddDigitalProducts = () => {
         images: 0
     })
     const dispatch = useDispatch()
+    const [id, setId]= useState(null)
     const [confirm, setConfirm]= useState(false)
     const [loading, setLoadning]= useState(false)
     const [categoriesOptions, setCategoriesOptions] = useState([])
@@ -118,7 +120,7 @@ const AddDigitalProducts = () => {
 
     useEffect(()=>{
         let prod_id = window.location.pathname.split('/digital-products/add-products/')[1]
-
+        setId(prod_id)
         if(!!prod_id){
             dispatch(loadingToggleAction(true))
             productsService?.getProduct(prod_id)?.then(res=>{
@@ -251,6 +253,7 @@ const AddDigitalProducts = () => {
             bestSeller: product.bestSeller,
             newIn: product.newIn,
             offer: product.offer,
+            cost: product.cost,
             offerPrice: parseFloat(product.offerPrice),
         }
         if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
@@ -258,26 +261,26 @@ const AddDigitalProducts = () => {
         if(!!product.serial_image.src) data['serial_number']= product?.serial_image?.src
         if(!!product.serial_number) data['serial_number']= product?.serial_number
 
-        // if(!!id){
-            // productsService?.update(id, data)?.then(res=>{
-            //     if(res.data?.status === 200){
-            //         toast.success('Product Updated Successfully')
-            //         // navigate('/products')
-            //         setConfirm(true)
-            //         setProduct({...product, images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]})
-            //     }
-            //     setLoadning(false)
-            // })
-        // } else {
-            // productsService?.create(data)?.then(res=>{
-            //     if(res.data?.status === 201){
-            //         setConfirm(true)
-            //         toast.success('Product Added Successfully')
-            //         // navigate('/products')
-            //     }
-            //     setLoadning(false)
-            // })
-        //}
+        if(!!id){
+            productsService?.update(id, data)?.then(res=>{
+                if(res.data?.status === 200){
+                    toast.success('Product Updated Successfully')
+                    // navigate('/products')
+                    setConfirm(true)
+                    setProduct({...product, images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]})
+                }
+                setLoadning(false)
+            })
+        } else {
+            productsService?.create(data)?.then(res=>{
+                if(res.data?.status === 201){
+                    setConfirm(true)
+                    toast.success('Product Added Successfully')
+                    // navigate('/products')
+                }
+                setLoadning(false)
+            })
+        }
         
     }
 
@@ -424,7 +427,7 @@ const AddDigitalProducts = () => {
                         />
                 </Col>
                 <Col md={6} className="mb-3">
-                        <label className="text-label">{Translate[lang].brand}</label>
+                        <label className="text-label">{Translate[lang].brands}</label>
                         <Select
                             value={product.brand}
                             name="brand"
@@ -440,17 +443,32 @@ const AddDigitalProducts = () => {
                                 placeholder={Translate[lang].price}
                                 bsSize="lg"
                                 name='price'
+                                min='0'
                                 validate={{
                                     required: {
                                         value: true,
                                         errorMessage: 'This Field is required'
-                                    },
-                                    pattern: {
-                                        value: "^[0-9]+$",
-                                        errorMessage: `English format is invalid`
                                     }
                                 }}
                                 value={product.price}
+                                onChange={(e)=> handlerText(e)}
+                            />
+                </Col>
+                <Col md={6} className="mb-3">
+                        <AvField
+                                label={`${Translate[lang].cost}*`}
+                                type='number'
+                                placeholder={Translate[lang].cost}
+                                bsSize="lg"
+                                name='cost'
+                                min= '0'
+                                validate={{
+                                    required: {
+                                        value: true,
+                                        errorMessage: 'This Field is required'
+                                    }
+                                }}
+                                value={product.cost}
                                 onChange={(e)=> handlerText(e)}
                             />
                 </Col>

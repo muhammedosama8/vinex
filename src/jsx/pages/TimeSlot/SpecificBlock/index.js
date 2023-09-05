@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import BlockDateService from "../../../../services/BlockDateService";
 import NoData from "../../../common/NoData";
+import { Translate } from "../../../Enums/Tranlate";
 import AddSpecificBlockModal from "../AddSpecificBlockModal";
 
 const SpecificBlock = () =>{
@@ -10,6 +12,7 @@ const SpecificBlock = () =>{
     const [modal, setModal] = useState(false)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const blockDateService = new BlockDateService()
+    const lang = useSelector(state=> state.auth.lang)
 
     useEffect(()=>{
         blockDateService.getList().then(res=>{
@@ -32,7 +35,7 @@ const SpecificBlock = () =>{
     <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div></div>
           <Button variant="primary" className='me-2 h-75' onClick={()=> setModal(true)}>
-              Add Specific Block
+          {Translate[lang].add} {Translate[lang].specific_block}
           </Button>
         </div>
     <Card>
@@ -50,7 +53,8 @@ const SpecificBlock = () =>{
                     style={{
                         position: 'absolute',
                         top: '10px',
-                        right: '8px',
+                        right: lang==='en' ? '8px' : 'auto',
+                        left: lang==='en' ? 'auto' : '8px',
                         padding: '2px 6px',
                         borderRadius: '50%'
                     }}  

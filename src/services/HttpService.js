@@ -10,14 +10,14 @@ axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
 function setInterceptors(navigate){
   axios.interceptors.response.use(null, async (error) => {
     console.log(error)
-    if(error.response.data?.message === "not authorized" || error.response.data?.message === "not authorized (old Token)." || error.response.data?.message === "غير مصرح به (رمز قديم)"){
+    if(error?.response?.data?.message === "not authorized" || error?.response?.data?.message === "not authorized (old Token)." || error?.response?.data?.message === "غير مصرح به (رمز قديم)"){
       Logout(navigate);
-    } else if(error.response?.data.message ===  "المستخدم غير موجود" || error.response?.data.message === 'User not Exist.'){
+    } else if(error?.response?.data?.message ===  "المستخدم غير موجود" || error?.response?.data?.message === 'User not Exist.'){
       swal("Oops", "Email not found", "error",{ button: "Try Again!",});
-    } else if(error.response?.data.message === 'كلمة سر خاطئة' || error.response?.data.message === "Incorrect Password."){
+    } else if(error?.response?.data?.message === 'كلمة سر خاطئة' || error?.response?.data?.message === "Incorrect Password."){
       swal("Oops", "Incorrect Password", "error",{ button: "Try Again!",});
-    } else if(error.response){
-      toast.error(`${error.response.data.message}`)
+    } else if(error?.response){
+      toast.error(`${error?.response?.data?.message}`)
     } else {
       toast.error(error.message)
     }

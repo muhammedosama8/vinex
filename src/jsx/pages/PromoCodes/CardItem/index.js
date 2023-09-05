@@ -5,11 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PromoCodeService from "../../../../services/PromoCodeService";
 import DeleteModal from "../../../common/DeleteModal";
+import { Translate } from "../../../Enums/Tranlate";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const promoCodeService = new PromoCodeService()
     const navigate = useNavigate()
@@ -36,7 +38,8 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                     <td>
                       {item.amount}
                     </td>
-                    <td>{item.Type}</td>
+                    <td>{Translate[lang][item.Type]}</td>
+                    <td>{item.createdAt.split('T')[0]}</td>
                     <td>{item.end_date.split('T')[0]}</td>
                     <td>{item.max_usage}</td>
                     <td>{item.count_usage}</td>
@@ -58,8 +61,8 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                           <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <Dropdown.Item onClick={()=> navigate('/promo-codes/edit-promo-codes', {state: {item: item}})}>Edit</Dropdown.Item>
-                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> navigate('/promo-codes/edit-promo-codes', {state: {item: item}})}>{Translate[lang]?.edit}</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang]?.delete}</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>

@@ -3,6 +3,8 @@ import { Button, Col, Modal, Row } from "react-bootstrap"
 import {AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
 import BlockDateService from "../../../../services/BlockDateService";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddSpecificBlockModal = ({modal, setModal, setShouldUpdate})=>{
     const [loading, setLoading] = useState(false)
@@ -10,6 +12,7 @@ const AddSpecificBlockModal = ({modal, setModal, setShouldUpdate})=>{
         ''
     ])
     const blockDateService = new BlockDateService()
+    const lang = useSelector(state=> state.auth.lang)
 
     const submit = () =>{
         let data ={
@@ -32,7 +35,7 @@ const AddSpecificBlockModal = ({modal, setModal, setShouldUpdate})=>{
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>Add SpecificBlock</Modal.Title>
+            <Modal.Title>{Translate[lang].add} {Translate[lang].specific_block}</Modal.Title>
             <Button
                 variant=""
                 className="close"
@@ -44,15 +47,15 @@ const AddSpecificBlockModal = ({modal, setModal, setShouldUpdate})=>{
             <Modal.Body>
                 
             <Row>
-                <label>SpecificBlock</label>
+                <label>{Translate[lang].specific_block}</label>
                 {formData.map((item, index)=>{
                     return <Col md={12} key={index}>
                     <div className='form-group w-100'>
                             <input 
                                 type='date' 
                                 style={{
-                                    width: '90%',
-                                    padding: '5px',
+                                    width: '85%',
+                                    padding: '8px 12px',
                                     border: '1px solid #dedede',
                                     borderRadius: '5px'
                                 }}
@@ -75,6 +78,7 @@ const AddSpecificBlockModal = ({modal, setModal, setShouldUpdate})=>{
                                     color:' #fff',
                                     border: '0',
                                     marginLeft: '8px',
+                                    marginRight: '8px',
                                     borderRadius: '50%',
                                     padding: '2px 6px'
                                 }}   
@@ -98,20 +102,20 @@ const AddSpecificBlockModal = ({modal, setModal, setShouldUpdate})=>{
                     }}
                     onClick={()=>setFormData([...formData, ''])}
                 >
-                    Add New Block
+                    {Translate[lang].add_new_value}
                 </button>
             </Row>
                 
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setModal} variant="danger light">
-                Close
+            {Translate[lang].close}
             </Button>
             <Button 
                 disabled={loading}
                 variant="primary" 
                 type='submit'
-                >Add</Button>
+                >{Translate[lang].add}</Button>
             </Modal.Footer>
             </AvForm>
         </Modal>)

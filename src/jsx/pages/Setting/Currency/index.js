@@ -15,6 +15,7 @@ import Search from "../../../common/Search";
 import AddCurrencyModal from "./AddCurrencyModal";
 import CardItem from "./CardItem";
 import './style.scss'
+import { Translate } from "../../../Enums/Tranlate";
 
 const Currency = () => {
     const [currency, setCurrency] = useState([])
@@ -24,17 +25,32 @@ const Currency = () => {
     const [search, setSearch] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const currencyService = new CurrencyService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
   return (
     <Fragment>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
-          <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name' />
+        <div className="input-group w-50">
+            <input 
+                type="text" 
+                style={{borderRadius: '8px',
+                color: 'initial',
+                padding: '18px 33px 18px 16px'}}
+                className="form-control"
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}`}
+                value={search}
+                onChange={e=> setSearch(e.target.value)} 
+            />
+            <div className="flaticon-381-search-2"
+              style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+            ></div>
+          </div>
           {isExist('currency') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
               setItem({})
               setAddModal(true) }}>
-              Add Currency
+              {Translate[lang]?.add} {Translate[lang]?.currency}
           </Button>}
         </div>
       
@@ -49,10 +65,10 @@ const Currency = () => {
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>Country Name</strong>
+                      <strong>{Translate[lang]?.country_name}</strong>
                     </th>
                     <th>
-                      <strong>Rate</strong>
+                      <strong>{Translate[lang]?.rate}</strong>
                     </th>
                     <th></th>
                   </tr>

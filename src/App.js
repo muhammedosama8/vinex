@@ -12,6 +12,7 @@ import { isAuthenticated } from './store/selectors/AuthSelectors';
 // import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
 import "./css/style.css";
 import http from './services/HttpService';
+import { setLang } from './store/actions/AuthActions';
 
 const Login = lazy(() => {
     return new Promise(resolve => {
@@ -41,6 +42,7 @@ function App (props) {
     const navigate = useNavigate();
     http.setInterceptors(navigate);
     const lang = useSelector(state=> state.auth.lang)
+    setLang(lang)
 
     useEffect(() => {
         checkAutoLogin(dispatch, navigate);

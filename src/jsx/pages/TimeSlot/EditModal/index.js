@@ -3,6 +3,8 @@ import { Button, Col, Form, Modal, Row } from "react-bootstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
 import TimeSlotService from "../../../../services/TimeSlotService";
+import { useSelector } from "react-redux";
+import { Translate } from "../../../Enums/Tranlate";
 
 const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
     const [formData, setFormData] = useState({
@@ -15,6 +17,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
     })
     const [loading, setLoading] = useState(false)
     const timeSlotService = new TimeSlotService()
+    const lang = useSelector(state=> state.auth.lang)
 
     const submit = () =>{
         if(!formData.from || !formData.to){
@@ -49,7 +52,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                     className='form-horizontal'
                     onValidSubmit={submit}>
             <Modal.Header>
-            <Modal.Title>Edit {item.name}</Modal.Title>
+            <Modal.Title>{Translate[lang].edit} {item.name}</Modal.Title>
             <Button
                 variant=""
                 className="close"
@@ -65,9 +68,9 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                     <Row>
                         <Col md={6}>
                             <AvField
-                                label='Capacity'
+                                label={Translate[lang].capacity}
                                 type='number'
-                                placeholder='Capacity'
+                                placeholder={Translate[lang].capacity}
                                 bsSize="lg"
                                 name='capacity'
                                 validate={{
@@ -86,19 +89,15 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                         </Col>
                         <Col md={6}>
                             <AvField
-                                label='Interval'
+                                label={Translate[lang].interval}
                                 type='number'
-                                placeholder='Interval'
+                                placeholder={Translate[lang].interval}
                                 bsSize="lg"
                                 name='interval_min'
                                 validate={{
                                     required: {
                                         value: true,
                                         errorMessage: 'This Field is required'
-                                    },
-                                    pattern: {
-                                        value: '/^[0-9 ]+$/',
-                                        errorMessage: `Interval format is invalid`
                                     }
                                 }}
                                 value={formData.interval_min}
@@ -106,7 +105,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                             />
                         </Col>
                         <Col md={6}>
-                            <label className="d-block">From</label>
+                            <label className="d-block">{Translate[lang].form}</label>
                             <input
                                 type='time'
                                 name='from'
@@ -124,7 +123,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                             />
                         </Col>
                         <Col md={6}>
-                            <label className="d-block">To</label>
+                            <label className="d-block">{Translate[lang].to}</label>
                             <input
                                 type='time'
                                 name='to'
@@ -143,7 +142,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                             />
                         </Col>
                         <Col md={3} className='mt-3'>
-                            <label>Open</label>
+                            <label>{Translate[lang].open}</label>
                             <Form.Check
                                 type="switch"
                                 id={`custom-switch`}
@@ -155,13 +154,13 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
             </Modal.Body>
             <Modal.Footer>
             <Button onClick={setModal} variant="danger light">
-                Close
+            {Translate[lang].close}
             </Button>
             <Button 
                     variant="primary" 
                     type='submit'
                     disabled={loading}
-                >Edit</Button>
+                >{Translate[lang].edit}</Button>
             </Modal.Footer>
             </AvForm>
         </Modal>)

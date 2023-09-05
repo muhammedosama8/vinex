@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from 'react-select'
 import { toast } from "react-toastify";
 import PromoCodeService from "../../../../services/PromoCodeService";
+import { Translate } from "../../../Enums/Tranlate";
 
 const AddPromoCodes = () => {
    const location = useLocation();
@@ -21,6 +23,7 @@ const AddPromoCodes = () => {
    const promoCodeService = new PromoCodeService()
    const navigate = useNavigate()
    const [ typesOptions, setTypesOptions]= useState([])
+   const lang = useSelector(state=> state.auth.lang)
 
    const handlerText = (e)=>{
       setFormData({...formData, [e.target.name]: e.target.value})
@@ -28,8 +31,8 @@ const AddPromoCodes = () => {
 
    useEffect(()=>{
       setTypesOptions([
-         {label: 'Percentage', value: 'percentage'},
-         {label: 'Fixed Amount', value: 'fixed'},
+         {label: Translate[lang].percentage, value: 'percentage'},
+         {label: Translate[lang].fixed, value: 'fixed'},
       ])
       if(stateData){
          setFormData({
@@ -44,7 +47,7 @@ const AddPromoCodes = () => {
       } else {
          setIsAdd(true)
       }
-   },[])
+   },[lang])
 
    const onSubmit = (e) =>{
         e.preventDefault()
@@ -82,12 +85,12 @@ const AddPromoCodes = () => {
          <div className="row">
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">Name*</label>
+                  <label className="text-label">{Translate[lang]?.name}*</label>
                   <input
                      type="text"
                      name="name"
                      className="form-control"
-                     placeholder="Name"
+                     placeholder={Translate[lang]?.name}
                      required
                      value={formData.name}
                      onChange={(e)=> handlerText(e)}
@@ -96,12 +99,12 @@ const AddPromoCodes = () => {
             </div>
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">Amount*</label>
+                  <label className="text-label">{Translate[lang]?.amount}*</label>
                   <input
                      type="number"
                      className="form-control"
                      name="amount"
-                     placeholder="Amount"
+                     placeholder={Translate[lang]?.amount}
                      required
                      value={formData.amount}
                      onChange={(e)=> handlerText(e)}
@@ -110,10 +113,11 @@ const AddPromoCodes = () => {
             </div>
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">Type*</label>
+                  <label className="text-label">{Translate[lang]?.type}*</label>
                   <Select
                      value={formData.type}
                       name="type"
+                      placeholder={Translate[lang]?.select}
                       options={typesOptions}
                       onChange={(e)=> setFormData({...formData, type: e})}
                   />
@@ -121,7 +125,7 @@ const AddPromoCodes = () => {
             </div>
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">End Date</label>
+                  <label className="text-label">{Translate[lang]?.end_date}</label>
                   <input
                      type="date"
                      className="form-control"
@@ -134,11 +138,11 @@ const AddPromoCodes = () => {
             </div>
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">Max Usage</label>
+                  <label className="text-label">{Translate[lang]?.max_usage}</label>
                   <input
                      type="number"
                      className="form-control"
-                     placeholder="Max Usage"
+                     placeholder={Translate[lang]?.max_usage}
                      name="max_usage"
                      value={formData.max_usage}
                      onChange={(e)=> handlerText(e)}
@@ -147,11 +151,11 @@ const AddPromoCodes = () => {
             </div>
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">Count Usage</label>
+                  <label className="text-label">{Translate[lang]?.count_usage}</label>
                   <input
                      type="number"
                      className="form-control"
-                     placeholder="Count Usage"
+                     placeholder={Translate[lang]?.count_usage}
                      name="count_usage"
                      value={formData.count_usage}
                      onChange={(e)=> handlerText(e)}
@@ -160,7 +164,7 @@ const AddPromoCodes = () => {
             </div>
          </div>
          <div className="d-flex justify-content-end">
-            <Button variant="primary" disabled={loading} type="submit">Submit</Button>
+            <Button variant="primary" disabled={loading} type="submit">{Translate[lang]?.submit}</Button>
          </div>
       </form>
       </Card.Body>

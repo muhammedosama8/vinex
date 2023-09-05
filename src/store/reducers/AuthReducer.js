@@ -12,7 +12,7 @@ import {
 } from '../actions/AuthActions';
 
 const initialState = {
-    lang: '',
+    lang: 'ar',
     email:'',
     password: '',
     auth: {

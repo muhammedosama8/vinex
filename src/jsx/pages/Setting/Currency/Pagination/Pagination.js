@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
 import { Col, Row } from "react-bootstrap"
+import { useSelector } from "react-redux"
+import { Translate } from "../../../../Enums/Tranlate"
 import './style.scss'
 
 const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
+    const lang= useSelector(state=> state.auth.lang)
 
     useEffect(()=> {
         service?.getList().then(res=>{
@@ -29,11 +32,11 @@ const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
         return(
             <Row className="pagination mt-3 px-2">
                 <Col md={12} className="d-flex justify-content-between">
-                    <span>Page{' '}
-                        <strong> {page} of {totalPages}</strong>
+                    <span>{Translate[lang].page}{' '}
+                        <strong> {page} {Translate[lang].of} {totalPages}</strong>
                     </span>
                     <span className="table-index">
-                        Go to page : {' '}
+                    {Translate[lang].go_to_page} : {' '}
                             <input 
                                 type="number" 
                                 className="ml-2"
@@ -63,10 +66,10 @@ const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
                         <button className=" previous-button" onClick={() => setPage(1)} disabled={page === 1 }>{'<<'}</button>
                                     
                         <button className="previous-button" onClick={() => setPage(prev=> prev-1)} disabled={page === 1}>
-                            Previous
+                            {Translate[lang].previous}
                         </button>
                         <button className="next-button" onClick={() => setPage(prev=> prev+1)} disabled={page === totalPages}>
-                            Next
+                            {Translate[lang].next}
                         </button>
                         <button className=" next-button" onClick={() => setPage(totalPages)} disabled={page === totalPages}>{'>>'}</button>
                     </div>

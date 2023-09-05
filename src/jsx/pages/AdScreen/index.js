@@ -7,6 +7,7 @@ import uploadImg from '../../../images/upload-img.png';
 import BaseService from "../../../services/BaseService";
 import ProductsService from "../../../services/ProductsService";
 import ScreenService from "../../../services/ScreenService";
+import { Translate } from "../../Enums/Tranlate";
 
 const AdScreen = () =>{
     const [files, setFiles] = useState([{}])
@@ -18,6 +19,7 @@ const AdScreen = () =>{
         {src:'', product: ''}
     ])
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
@@ -27,7 +29,7 @@ const AdScreen = () =>{
                     return{
                         id: prod?.id,
                         value: prod?.id,
-                        label: prod?.name_en
+                        label: lang==='en' ? prod?.name_en : prod?.name_ar
                     }
                 })
                 setProductsOptions([...products])
@@ -125,7 +127,7 @@ const AdScreen = () =>{
                     marginBottom: '2rem'
                 }}>
                 <div className='d-flex justify-content-between align-items-center mb-1'>
-                    <p style={{fontSize: '21px', marginBottom: '0'}}>Ad</p>
+                    <p style={{fontSize: '21px', marginBottom: '0'}}>{Translate[lang].ad}</p>
                     {index > 0 && <button 
                         className='btn btn-danger p-2'
                         onClick={()=>{
@@ -191,10 +193,11 @@ const AdScreen = () =>{
                 </div>
                 <div className='form-row mt-3'>
                     <div className='form-group w-100 d-flex align-items-center m-0'>
-                        <label  className='m-0 mr-3'>Product:</label>
+                        <label  className='m-0 mr-3'>{Translate[lang].product} :</label>
                         <Select
                             value={data?.product}
                             name="category"
+                            placeholder={Translate[lang].select}
                             options={productsOptions}
                             className='w-50'
                             onChange={(e)=> {
@@ -221,12 +224,12 @@ const AdScreen = () =>{
             variant="secondary" 
             className="px-5"
             onClick={()=> setFormData([...formData, {src:'', product: ''}])}
-        >Add New Screen</Button>
+        >{Translate[lang].add_new_screen}</Button>
         <Button
             variant="primary" 
             className="px-5"
             onClick={()=> onSubmit()}
-        >Submit</Button>
+        >{Translate[lang].submit}</Button>
     </div>}
     </Card.Body>
 </Card>)

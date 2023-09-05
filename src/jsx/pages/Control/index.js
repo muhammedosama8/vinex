@@ -4,9 +4,10 @@ import BaseService from "../../../services/BaseService";
 import uploadImg from '../../../images/upload-img.png';
 import { toast } from "react-toastify";
 import ControlService from "../../../services/ControlServices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogo } from "../../../store/actions/AuthActions";
 import Loader from "../../common/Loader";
+import { Translate } from "../../Enums/Tranlate";
 
 const Control = () => {
     const [websiteLogo, setWebsiteLogo] = useState('')
@@ -21,6 +22,7 @@ const Control = () => {
     const [lodingImg3, setLoadingImg3] = useState(null)
     const disabled = useDispatch()
     const controlService = new ControlService()
+    const lang = useSelector(state=> state.auth.lang)
 
     const fileHandler = (e, setLogo, setLoadingImg) => {
         setLoadingImg(true)
@@ -84,11 +86,11 @@ const Control = () => {
     <Card.Body>
         <Row>
             <Col md={6} className='mb-5'>
-                <label className="d-block">Website Title</label>
+                <label className="d-block">{Translate[lang].website_title}</label>
                 <input
                     type='text'
                     value={title}
-                    placeholder='Title'
+                    placeholder={Translate[lang].website_title}
                     style={{
                         padding: '8px',
                         border: '1px solid #dedede',
@@ -100,7 +102,7 @@ const Control = () => {
             </Col>
             <Col md={6} className='mb-5 d-flex' style={{justifyContent: 'space-evenly'}}>
                 <div className='form-group'>
-                    <label className="d-block">Color</label>
+                    <label className="d-block">{Translate[lang].color}</label>
                     <input 
                         type='color' 
                         value={color} 
@@ -111,7 +113,7 @@ const Control = () => {
                         onChange={(e)=> setColor(e.target.value)} />
                 </div>
                 <div className='form-group'>
-                    <label className="d-block">Label Color</label>
+                    <label className="d-block">{Translate[lang].label_color}</label>
                     <input 
                         type='color' 
                         value={labelColor} 
@@ -125,7 +127,7 @@ const Control = () => {
             
             <Col md={4}>
                 <div className='form-group w-100'>
-                    <label className="m-0">Website Logo</label>
+                    <label className="m-0">{Translate[lang].website_logo}</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
                             <input type="file" onChange={(e) => fileHandler(e, setWebsiteLogo, setLoadingImg1)} id={`imageUpload1`} /> 					
@@ -169,7 +171,7 @@ const Control = () => {
             </Col>
             <Col md={4}>
                 <div className='form-group w-100'>
-                    <label className="m-0">Mobile Logo</label>
+                    <label className="m-0">{Translate[lang].mobile_logo}</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
                             <input type="file" onChange={(e) => fileHandler(e, setMobileLogo, setLoadingImg2)} id={`imageUpload2`} /> 					
@@ -215,7 +217,7 @@ const Control = () => {
             </Col>
             <Col md={4}>
                 <div className='form-group w-100'>
-                    <label className="m-0">Dashoard Logo</label>
+                    <label className="m-0">{Translate[lang].dashboard_logo}</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
                         <div className="avatar-edit">
                             <input type="file" onChange={(e) => fileHandler(e, setDashboardLogo, setLoadingImg3)} id={`imageUpload3`} /> 					
@@ -260,7 +262,7 @@ const Control = () => {
         </Row>
         <div className="d-flex justify-content-end mt-5">
            <Button variant="primary" onClick={submit} disabled={loding}>
-                Submit
+           {Translate[lang].submit}
            </Button>
         </div>
     </Card.Body>

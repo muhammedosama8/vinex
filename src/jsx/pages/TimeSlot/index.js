@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import TimeSlotService from "../../../services/TimeSlotService"
 import NoData from "../../common/NoData"
+import { Translate } from "../../Enums/Tranlate"
 import CardItem from "./CardItem"
 
 const TimeSlot = () =>{
@@ -12,6 +13,7 @@ const TimeSlot = () =>{
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth?.lang)
     const timeSlotService = new TimeSlotService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
@@ -29,7 +31,7 @@ const TimeSlot = () =>{
         <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div></div>
           {isExist('time_slot') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/time-slot/specific-block')}>
-              specific block
+              {Translate[lang].specific_block}
           </Button>}
         </div>
       <Row>
@@ -43,19 +45,19 @@ const TimeSlot = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>Name</strong>
+                      <strong>{Translate[lang].name}</strong>
                     </th>
                     <th>
-                      <strong>From</strong>
+                      <strong>{Translate[lang].from}</strong>
                     </th>
                     <th>
-                      <strong>To</strong>
+                      <strong>{Translate[lang].to}</strong>
                     </th>
                     <th>
-                      <strong>Capacity</strong>
+                      <strong>{Translate[lang].capacity}</strong>
                     </th>
                     <th>
-                      <strong>STATUS</strong>
+                      <strong>{Translate[lang].status}</strong>
                     </th>
                     <th></th>
                   </tr>
