@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import logoText from "../../../images/logo-full.png";
 import ControlService from "../../../services/ControlServices";
 
 export function  NavMenuToggle(){

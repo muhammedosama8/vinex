@@ -32585,5 +32585,11 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   }
   .login-wrapper .login-description div {
     margin-top: 0.5rem!important;
-}
+  }
+  .dashboard .card .card-body .fs-35 {
+    font-size: 24px !important;
+  }
+  .dashboard .card .card-body .la {
+    font-size: 2rem!important;
+  }
 }

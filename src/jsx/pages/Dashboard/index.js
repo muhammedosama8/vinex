@@ -5,7 +5,7 @@ import { Translate } from "../../Enums/Tranlate";
 const Home = () => {
   const lang = useSelector(state=> state.auth.lang)
   return (
-        <div className="row">
+        <div className="row dashboard">
           <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
