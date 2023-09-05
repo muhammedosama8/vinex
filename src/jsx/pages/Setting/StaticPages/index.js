@@ -16,7 +16,7 @@ const StaticPages = () =>{
         <Card.Body>
             <Row>
                 {pages?.map((page,index)=>{
-                    return <Col key={index} md={6}>
+                    return <Col key={index} md={6} className={index !== pages.length-1 ? 'col-sm-6' : 'col-sm-12 '}>
                         <Card className="pages-card" onClick={()=> navigate(page.path, {state: page.type})}>
                             <h1>{Translate[lang][page.label]}</h1>
                         </Card>

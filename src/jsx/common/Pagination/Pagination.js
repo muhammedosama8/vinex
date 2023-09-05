@@ -33,7 +33,7 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData})=>{
     if(totalPages > 1){
         return(
             <Row className="pagination mt-3 px-2">
-                <Col md={12} className="d-flex justify-content-between">
+                <Col md={12} className="d-flex justify-content-between align-items-center">
                     <span>{Translate[lang]?.page}{' '}
                         <strong> {page} {Translate[lang]?.of} {totalPages}</strong>
                     </span>

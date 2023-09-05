@@ -42,7 +42,7 @@ const SpecificBlock = () =>{
         <Card.Body>
             <Row>
             {specificBlock?.length > 0 ? specificBlock?.map((item, index)=> {
-                return <Col md={3}><Card className='position-relative' style={{border: '1px solid #dedede'}}>
+                return <Col md={3} className='col-sm-6'><Card className='position-relative' style={{border: '1px solid #dedede'}}>
                 <Card.Body>
                   <Card.Title>{index+1}</Card.Title>
                   <Card.Text>

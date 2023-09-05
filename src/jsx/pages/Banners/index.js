@@ -223,7 +223,7 @@ const Banners = () =>{
                                 name="category"
                                 options={productsOptions}
                                 placeholder={Translate[lang].select}
-                                className='w-50'
+                                className='w-50 select-banner'
                                 onChange={(e)=> {
                                     let updateFormData = formData.map((item, ind)=>{
                                         if(ind === index){

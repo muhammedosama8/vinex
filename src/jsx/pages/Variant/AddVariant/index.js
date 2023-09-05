@@ -265,15 +265,15 @@ const Variant = ()=>{
                               }}
                            />
                         </Col>
-                        {!typeVal && <Col md={6}>
+                        {!typeVal && <Col md={6} sm={6}>
                            <label className="text-label">{Translate[lang]?.types_by_english}</label>
                         </Col>}
-                        {!typeVal && <Col md={6}>
+                        {!typeVal && <Col md={6} sm={6}>
                            <label className="text-label">{Translate[lang]?.types_by_arabic}</label>
                         </Col>}
                         {item?.variant_values?.map((val,ind)=>{
                            return <>
-                              <Col lg={typeVal ? 11 : 6} md={12}>
+                              <Col lg={typeVal ? 11 : 6} md={12} sm={5}>
                                  <div className='form-group'>
                                     <div className="input-group">
                                        <input
@@ -317,7 +317,7 @@ const Variant = ()=>{
                                     </div>
                                  </div>
                               </Col>
-                              {!typeVal && <Col lg={5} md={12}>
+                              {!typeVal && <Col lg={5} md={12} sm={5}>
                                  <div className='form-group'>
                                     <div className="input-group">
                                        <input
@@ -354,7 +354,7 @@ const Variant = ()=>{
                                     </div>
                                  </div>
                               </Col>}
-                              {ind > 0 && <Col md={1}>
+                              {ind > 0 && <Col md={1} sm={1}>
                                  <button type='button' 
                                     style={{
                                        height: 'fit-content',
@@ -377,7 +377,7 @@ const Variant = ()=>{
                                     }}
                                  >X</button>
                               </Col>}
-                              {ind === item?.variant_values?.length-1 && <Col md={12} className='justify-content-end d-flex'>
+                              {ind === item?.variant_values?.length-1 && <Col md={12} sm={6} className='justify-content-end d-flex'>
                                  <button 
                                     className="border-0"
                                     style={{

@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 /// Scroll
-import PerfectScrollbar from "react-perfect-scrollbar";
+// import PerfectScrollbar from "react-perfect-scrollbar";
 import Collapse from 'react-bootstrap/Collapse';
 /// Link
 import { Link } from "react-router-dom";
@@ -64,7 +64,7 @@ const SideBar = (props) => {
 
     return (
       <div className="deznav">
-        <PerfectScrollbar className="deznav-scroll">
+        <div className="deznav-scroll">
           <ul className="metismenu" id="menu">
                 {MenuList.map((data, index)=>{
                   let menuClass = data.classsChange;
@@ -140,7 +140,7 @@ const SideBar = (props) => {
                   }
                 })}          
           </ul>
-		    </PerfectScrollbar>
+		    </div>
       </div>
     );
   

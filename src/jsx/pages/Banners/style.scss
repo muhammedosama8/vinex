@@ -13,6 +13,7 @@
             top: 50% !important;
             transform: translate(-50%, -50%) !important;
         }
+
     }
     .imagePreview{
         border: 2px dashed rgb(202, 223, 247);
@@ -33,6 +34,7 @@
         position: absolute;
         background-color: #fff;
         border: none;
+        width: 39px;
         padding: 1px 8px;
         border-radius: 50%;
         top: 18px;
@@ -40,7 +42,15 @@
         z-index: 2;
         font-size: 24px;
     }
-    
+    @media only screen and (max-width: 500px){
+        .avatar-preview{
+            height: 10rem !important;
+        }
+        .delete{
+            left: 18px !important;
+            right: auto !important;
+        }
+    }
 }
 .delete2{
     // position: absolute;
@@ -56,4 +66,9 @@
 }
 img{
     border-radius: 30px;
+}
+@media only screen and (max-width: 500px){
+    .select-banner{
+        width: 90%!important;  
+    }
 }

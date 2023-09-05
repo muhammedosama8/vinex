@@ -6,7 +6,7 @@ const Home = () => {
   const lang = useSelector(state=> state.auth.lang)
   return (
         <div className="row">
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex align-items-center justify-content-between">
@@ -21,7 +21,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -36,7 +36,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -51,7 +51,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -66,7 +66,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -81,7 +81,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -96,7 +96,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -111,7 +111,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -126,7 +126,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -142,7 +142,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
@@ -157,7 +157,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-sm-6">
+          <div className="col-md-4 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">

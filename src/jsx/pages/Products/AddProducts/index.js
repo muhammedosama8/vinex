@@ -418,7 +418,7 @@ const AddProducts = () => {
                         </textarea>
                         {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                         <label className="text-label">{Translate[lang]?.category}*</label>
                         <Select
                             value={product.category}
@@ -428,7 +428,7 @@ const AddProducts = () => {
                             onChange={(e)=> setProduct({...product, category: e, dynamic_variant: [],variant: [], sub_category: ''})}
                         />
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                         <label className="text-label">{Translate[lang]?.sub_categories}</label>
                         <Select
                             value={product.sub_category}
@@ -438,7 +438,7 @@ const AddProducts = () => {
                             onChange={(e)=> setProduct({...product, sub_category: e})}
                         />
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                         <AvField
                                 label='Code*'
                                 type='text'
@@ -459,7 +459,7 @@ const AddProducts = () => {
                                 onChange={(e)=> handlerText(e)}
                             />
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                         <label className="text-label">{Translate[lang]?.brands}</label>
                         <Select
                             value={product.brand}
@@ -469,7 +469,7 @@ const AddProducts = () => {
                             onChange={(e)=> setProduct({...product, brand: e})}
                         />
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                         <AvField
                                 label={`${Translate[lang]?.price}*`}
                                 type='number'
@@ -487,7 +487,7 @@ const AddProducts = () => {
                                 onChange={(e)=> handlerText(e)}
                             />
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                     <AvField
                                 label={`${Translate[lang]?.cost}*`}
                                 type='number'
@@ -505,7 +505,7 @@ const AddProducts = () => {
                                 onChange={(e)=> handlerText(e)}
                             />
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                     <AvField
                                 label={`${Translate[lang]?.quantity}*`}
                                 type='number'
@@ -523,7 +523,7 @@ const AddProducts = () => {
                                 onChange={(e)=> handlerText(e)}
                             />
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                         <AvField
                                 label={Translate[lang]?.weight}
                                 type='number'
@@ -541,7 +541,7 @@ const AddProducts = () => {
                                 onChange={(e)=> handlerText(e)}
                             />
                 </Col>
-                <Col md={6} className="mb-3">
+                <Col md={6} sm={6} className="mb-3">
                         <AvField
                             label={Translate[lang]?.offer_price}
                             type='number'
@@ -553,7 +553,7 @@ const AddProducts = () => {
                             onChange={(e)=> handlerText(e)}
                         />
                 </Col>
-                <Col md={2} className="mb-3">
+                <Col md={2} sm={3} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
                         <label className="text-label">{Translate[lang]?.best_seller}</label>
                         <Form.Check
@@ -564,7 +564,7 @@ const AddProducts = () => {
                       />
                     {/* </div> */}
                 </Col>
-                <Col md={2} className="mb-3">
+                <Col md={2} sm={3} className="mb-3">
                     {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
                         <label className="text-label">{Translate[lang]?.new_in}</label>
                         <Form.Check
@@ -575,7 +575,7 @@ const AddProducts = () => {
                       />
                     {/* </div> */}
                 </Col>
-                <Col md={2} className="mb-3">
+                <Col md={2} sm={3} className="mb-3">
                         <label className="text-label">{Translate[lang]?.offer}</label>
                         <Form.Check
                         type="switch"
@@ -587,7 +587,7 @@ const AddProducts = () => {
                
                 {variant?.length > 0 && variant?.map((item, index)=>{
                     let findInd = product?.variant?.findIndex(res=> res.name_en === item.name_en)
-                    return <Col md={6} className="mb-3">
+                    return <Col md={6} sm={6} className="mb-3">
                     <label className="text-label">{lang === 'en' ? item.name_en : item.name_ar}</label>
                     <div className="d-grid mt-2" style={{gridTemplateColumns: 'auto auto auto auto'}}>
                         {item?.variant_values?.map(value=>{
@@ -748,7 +748,7 @@ const AddProducts = () => {
             <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>{Translate[lang]?.images}</label>
             <Row>
                 {product?.images?.map((data, index)=>{
-                    return <Col md={3} className='mb-3' key={index}>
+                    return <Col md={3} sm={6} className='mb-3' key={index}>
                         <div className="image-placeholder">	
                             <div className="avatar-edit">
                                 <input type="file" onChange={(e) => fileHandler(e,index)} id={`imageUpload${index}`} /> 					

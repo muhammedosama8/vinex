@@ -20,7 +20,21 @@ const Users = () =>{
     return(
         <>
           <div className="d-flex mb-3 justify-content-between">
-            <Search search={search} setSearch={setSearch} placeholder='Search by I.D, Name, Phone' />
+          <div className="input-group w-50">
+            <input 
+                type="text" 
+                style={{borderRadius: '8px',
+                color: 'initial',
+                padding: '18px 33px 18px 16px'}}
+                className="form-control"
+                placeholder={`${Translate[lang]?.search_by} I.D, ${Translate[lang]?.name}, ${Translate[lang]?.phone}`}
+                value={search}
+                onChange={e=> setSearch(e.target.value)} 
+            />
+            <div className="flaticon-381-search-2"
+              style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+            ></div>
+          </div>
             {/* <Button variant="secondary">
               Export Sheet
             </Button> */}

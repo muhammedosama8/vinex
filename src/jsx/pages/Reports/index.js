@@ -80,7 +80,7 @@ const Reports = ()=> {
 
     return(
         <>
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="reports d-flex justify-content-between align-items-center">
             <div>
                 <div className="rangeDatePicker">
                     <label>{Translate[lang].date_range}</label>
@@ -93,7 +93,7 @@ const Reports = ()=> {
                     {FilterReport.map(data=>{
                         return <Button  
                                     variant={data === reportType ? 'success' : 'outline-success'} 
-                                    className='h-75 mr-3' 
+                                    className='h-75 mr-3 mb-2' 
                                     onClick={()=> setReportType(data)}>
                                     {Translate[lang][data]}
                             </Button>
