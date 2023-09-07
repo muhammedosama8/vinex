@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import UserService from "../../../services/UserService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
@@ -14,6 +15,7 @@ const Users = () =>{
     const [search, setSearch] =useState(null)
     // const [isDeleted, setIsDeleted] =useState(false)
     const [shouldUpdate, setShouldUpdate] =useState(false)
+    const [loading, setLoading] =useState(false)
     const lang = useSelector(state=> state?.auth.lang)
     const userService = new UserService()
 
@@ -49,7 +51,10 @@ const Users = () =>{
         </div> */}
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+              {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -94,6 +99,7 @@ const Users = () =>{
                   service={userService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  setLoading={setLoading}
                   // isDeleted={isDeleted}
                 />
             </Card.Body>

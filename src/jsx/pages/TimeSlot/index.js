@@ -3,6 +3,7 @@ import { Button, Card, Col, Row, Table } from "react-bootstrap"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import TimeSlotService from "../../../services/TimeSlotService"
+import Loader from "../../common/Loader"
 import NoData from "../../common/NoData"
 import { Translate } from "../../Enums/Tranlate"
 import CardItem from "./CardItem"
@@ -11,6 +12,7 @@ const TimeSlot = () =>{
     const [timeSlot, setTimeSlot] = useState([])
     const [hasData, setHasData] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
+    const [loading, setLoading] =useState(false)
     const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
@@ -18,11 +20,13 @@ const TimeSlot = () =>{
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
-        timeSlotService.getList().then(res=>{
+      setLoading(true)
+          timeSlotService.getList().then(res=>{
             if(res?.status === 200){
                 setTimeSlot(res.data.data)
                 setHasData(1)
             }
+            setLoading(false)
         })
     },[shouldUpdate])
 
@@ -38,7 +42,10 @@ const TimeSlot = () =>{
         <Col lg={12}>
           <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+            {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading)&& <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>

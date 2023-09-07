@@ -83,10 +83,10 @@ const Reports = ()=> {
         <div className="reports d-flex justify-content-between align-items-center">
             <div>
                 <div className="rangeDatePicker">
-                    <label>{Translate[lang].date_range}</label>
+                    {/* <label>{Translate[lang].date_range}</label>
                     <DateRangePicker initialSettings={{ startDate: startDate, endDate: endDate }} >
                         <input type="text" className="form-control w-100 input-daterange-timepicker" />
-                    </DateRangePicker>
+                    </DateRangePicker> */}
                 </div>
                 
                 <div className="mt-3">

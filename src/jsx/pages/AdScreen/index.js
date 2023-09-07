@@ -8,6 +8,7 @@ import BaseService from "../../../services/BaseService";
 import ProductsService from "../../../services/ProductsService";
 import ScreenService from "../../../services/ScreenService";
 import { Translate } from "../../Enums/Tranlate";
+import Loader from "../../common/Loader";
 
 const AdScreen = () =>{
     const [files, setFiles] = useState([{}])
@@ -15,6 +16,7 @@ const AdScreen = () =>{
     const screenService = new ScreenService()
     const [productsOptions, setProductsOptions] = useState([])
     const [isAdd, setIsAdd] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState([
         {src:'', product: ''}
     ])
@@ -23,6 +25,7 @@ const AdScreen = () =>{
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
+        setLoading(true)
         productsService?.getList()?.then(res=>{
             if(res?.status === 200){
                 let products = res.data?.meta?.data?.map(prod=>{
@@ -34,6 +37,7 @@ const AdScreen = () =>{
                 })
                 setProductsOptions([...products])
             }
+            setLoading(false)
         })
     },[])
 
@@ -116,6 +120,13 @@ const AdScreen = () =>{
         
     }
 
+    if(loading){
+        return <Card className="py-5" style={{height: '300px'}}>
+            <Card.Body>
+                <Loader />
+            </Card.Body>
+      </Card>
+    }
     return(<Card>
         <Card.Body>
         {formData?.map((data, index)=>{

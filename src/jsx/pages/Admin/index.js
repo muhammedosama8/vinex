@@ -3,9 +3,9 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AdminService from "../../../services/AdminService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
-import Search from "../../common/Search";
 import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
@@ -14,6 +14,7 @@ const Admins = () =>{
     const [hasData, setHasData] =useState(null)
     const [search, setSearch] =useState(null)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
+    const [loading, setLoading] =useState(false)
     const navigate = useNavigate()
     const adminService = new AdminService()
     const Auth = useSelector(state=> state.auth?.auth)
@@ -45,7 +46,10 @@ const Admins = () =>{
 
         <Card>
             <Card.Body className={`${hasData === 0 ? 'text-center' :''}`}>
-              {hasData === 1 && <Table responsive>
+              {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr>
                     <th className="px-2">
@@ -86,6 +90,7 @@ const Admins = () =>{
                   service={adminService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  setLoading={setLoading}
                 />
             </Card.Body>
           </Card>

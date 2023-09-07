@@ -10,7 +10,7 @@ const Users = ({item, index}) =>{
                     <td>
                       {item.email || '-'}
                     </td>
-                    <td style={{direction: 'ltr'}}>{item.user_phones?.filter(res=> res.is_default)[0].country_code}{item.user_phones?.filter(res=> res.is_default)[0].phone}</td>
+                    <td style={{direction: 'ltr'}}>{item.user_phones?.filter(res=> res?.is_default)[0]?.country_code}{item.user_phones?.filter(res=> res?.is_default)[0]?.phone}</td>
                     <td>{item.count_orders || '0'}</td>
                   </tr>
     )

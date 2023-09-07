@@ -3,6 +3,7 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import NotificationService from "../../../services/NotificationService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import { Translate } from "../../Enums/Tranlate";
@@ -13,6 +14,7 @@ const Notification = ()=>{
     const [hasData, setHasData] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
+    const [loading, setLoading] =useState(false)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
@@ -31,7 +33,10 @@ const Notification = ()=>{
         </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+            {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -64,6 +69,7 @@ const Notification = ()=>{
                   service={notificationService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  setLoading={setLoading}
               />
             </Card.Body>
         </Card>

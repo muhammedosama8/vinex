@@ -3,12 +3,14 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import SocialMediaService from "../../../../services/SocialMediaService";
+import Loader from "../../../common/Loader";
 import { SocialMediaLinks } from "../../../Enums/SocialMedia";
 import { Translate } from "../../../Enums/Tranlate";
 
 const SocialMedia = ()=>{
     const [links, setLinks] = useState({})
     const [loading, setLoading] = useState(false)
+    const [loadingData, setLoadingData] = useState(false)
     const [isAdd, setIsAdd] = useState(false)
     // const [selectedSocial, setSelectedSocial] = useState([])
     const Auth = useSelector(state=> state.auth?.auth)
@@ -17,6 +19,7 @@ const SocialMedia = ()=>{
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
     useEffect(()=>{
+        setLoadingData(true)
         socialMediaService?.getList()?.then(res=>{
             if(res.status === 200 && res.data?.data){
                 setLinks({...res.data?.data})
@@ -27,6 +30,7 @@ const SocialMedia = ()=>{
                 setLinks({...values})
                 setIsAdd(true)
             }
+            setLoadingData(false)
         })
     },[])
 
@@ -64,6 +68,14 @@ const SocialMedia = ()=>{
             }
             setLoading(false)
         }).catch(error=> toast.error(error))
+    }
+
+    if(loadingData){
+        return <Card className="py-5" style={{height: '300px'}}>
+            <Card.Body>
+                <Loader />
+            </Card.Body>
+      </Card>
     }
 
     return(<>

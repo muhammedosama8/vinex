@@ -14,14 +14,45 @@ import TimeSlotService from "../../../../services/TimeSlotService";
 import BlockDateService from "../../../../services/BlockDateService";
 import { useSelector } from "react-redux";
 import { Translate } from "../../../Enums/Tranlate";
+import AreasService from "../../../../services/AreasServices";
+import OrdersService from "../../../../services/OrdersService";
+import { types } from "../../../Enums/Orders";
 
+const initial = {
+    email: "",
+    f_name: "",
+    l_name: "",
+    country_code: "",
+    phone: "",
+    address: {
+      addressName: "",
+      block: "",
+      street: "",
+      country_id: 0,
+      area_id: 0,
+      type: "",
+      avenue: "",
+      buildingNumber: "",
+      floorNumber: "",
+      officeNumber: "",
+      houseNumber: "",
+      aptNumber: "",
+    //   phone_id: 0,
+      otherInstructions: "",
+    //   longitude: 0,
+    //   latitude: 0
+    }
+}
 const AddOrders = () =>{
     const lang = useSelector(state=> state.auth.lang)
     const [steps, setSteps] = useState(1)
     const [type, setType] = useState('exist')
+    const [locationTypesOptions, setLocationTypesOptions] = useState()
     const [search, setSearch] = useState('')
     const [calc, setCalc] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [categoriesOptions, setCategoriesOptions] = useState([])
+    const [areasOptions, setAreasOptions] = useState([])
     const [formData, setFormData] = useState([{
         category: '',
         sub_category: '',
@@ -42,17 +73,11 @@ const AddOrders = () =>{
     const [selectedUser, setSelectedUser] = useState({})
     const [intervalHours, setIntervalHours] = useState([])
     const [selectedIntervalHours, setSelectedIntervalHours] = useState({})
-    const [user, setUser] = useState({
-        f_name:'',
-        l_name:'',
-        email:'',
-        phone:'',
-        address:'',
-        country_code: ''
-    })
+    const [user, setUser] = useState(initial)
     const navigate = useNavigate()
     const [countriesOptions, setCountriesOptions] = useState([])
     const countryiesService = new CountryiesService()
+    const areasService = new AreasService()
     const categoriesService = new CategoriesService()
     const promoCodeService = new PromoCodeService()
     const userService = new UserService()
@@ -68,27 +93,60 @@ const AddOrders = () =>{
                         label: lang==='en' ? `${item.name_en} (${item?.country_code || ''})` : `${item.name_ar} (${item?.country_code || ''})`,
                         name_en: item.name_en,
                         country_code: item?.country_code,
-                        type: item.type
+                        type: item.type,
+                        value: item.id,
+                        id: item.id
                     }
                 })
                 setCountriesOptions(data)
                 }
-            }) 
+            })
         }
 
-        categoriesService.getList().then(res=>{
-            if(res.data?.status === 200){
-               let categories =  res.data?.meta?.data?.map(item=>{
-                  return{
-                     id: item?.id,
-                     value: item?.id,
-                     label: lang==='en' ? item.name_en : item.name_ar
-                  }
-               })
-               setCategoriesOptions(categories)
-            }
-        })
+        if(steps === 1){
+            let data = types.map(res=>{
+                return{
+                    ...res,
+                    label: lang==='en' ? res.label : res.ar
+                }
+            })
+            setLocationTypesOptions([...data])
+        }
+        if(steps === 2){
+            categoriesService.getList().then(res=>{
+                if(res.data?.status === 200){
+                   let categories =  res.data?.meta?.data?.map(item=>{
+                      return{
+                         id: item?.id,
+                         value: item?.id,
+                         label: lang==='en' ? item.name_en : item.name_ar
+                      }
+                   })
+                   setCategoriesOptions(categories)
+                }
+            })
+        }
+    },[lang, type, steps])
+
+    useEffect(()=>{
+        setUser(initial)
     },[lang])
+
+    useEffect(()=>{
+        if(!!user.country_code){
+            areasService.getList(user.country_code.id).then(res=>{
+                let data = res?.data?.data?.map(are=>{
+                    return{
+                        ...are,
+                        label: lang==='en' ? are.name_en : are.name_ar,
+                        value: are.id,
+                        id: are.id,
+                    }
+                })
+                setAreasOptions([...data])
+            })
+        }
+    },[user.country_code])
 
     useEffect(()=>{
         let calcTotal = formData.map((res,ind)=>{
@@ -201,7 +259,48 @@ const AddOrders = () =>{
     }
 
     const firstNext = () => {
-        setSteps(2)
+        if(type === 'exist') {
+            setSteps(2)
+            return
+        }
+        if(!user.address.type){
+            toast.error('Select Type First')
+            return
+        }
+        if(!user.country_code){
+            toast.error('Select Country First')
+            return
+        }
+        let data={
+            ...user,
+            country_code: user.country_code.country_code,
+            address: {
+                addressName: user.address.addressName,
+                block: user.address.block,
+                street: user.address.street,
+                avenue: user.address.avenue,
+                area_id: user.address.area_id.id,
+                type: user.address.type.value,
+                country_id: user.country_code.id
+            }
+        }
+        if(user.address.type.value === 'house') data.address['houseNumber'] = user.address.houseNumber
+        if(user.address.type.value === 'office') data.address['officeNumber'] = user.address.officeNumber
+        if(user.address.type.value === 'building'){
+            data.address['buildingNumber'] = user.address.buildingNumber
+            data.address['floorNumber'] = user.address.floorNumber
+            data.address['aptNumber'] = user.address.aptNumber
+        }
+        if(!!user.address.otherInstructions) data.address['otherInstructions'] = user.address.otherInstructions
+        
+        setLoading(true)
+        userService.create(data).then(res=>{
+            if(res && res?.status === 201){
+                let search = !!data.email ? data.email : data.phone
+                searchHandler(search)
+            }
+            setLoading(false)
+        })
     }
 
     const secondNext = () => {
@@ -214,9 +313,9 @@ const AddOrders = () =>{
         if(paymentMethod?.value === 'cash'){
             let data = {
                 day: day.split('T')[0],
-                payment_method: "cash",
+                payment_method: 'cash',
                 user_id: selectedUser.id,
-                user_address_id: 0,
+                user_address_id: selectedUser.user_addresses?.filter(address=> address.is_default)[0]?.id,
                 interval_hours_id: selectedIntervalHours.id,
                 promoCode: !!promoCodeData ? promoCode : '',
                 products: formData.map(data=> {
@@ -231,7 +330,13 @@ const AddOrders = () =>{
                         product_id: data.product.id
                     }
                 })
-              }
+            }
+            new OrdersService().create(data).then(res=>{
+                if(res && res?.status === 201){
+                    toast.success('Order Added Successfully.')
+                    navigate('/orders')
+                }
+            })
         } else {
             let update = formData.filter(res=> !!res.product)
             setFormData(update)
@@ -239,18 +344,19 @@ const AddOrders = () =>{
         }
     }
 
-    const searchHandler = () => {
+    const searchHandler = (searchText) => {
         let params ={}
-        if(search.includes('.com')){
-            params['email'] = search
+        if(searchText.includes('.com')){
+            params['email'] = searchText
         } else {
-            params['phone'] = search
+            params['phone'] = searchText
         }
         
         userService.searchUser(params).then(res=>{
             if(res.data.data?.length > 0){
                 let data = res.data.data[0]
                 setSelectedUser({...data, phone: data.user_phones?.filter(phone=> phone.is_default)[0].phone, type: search})
+                if(type === 'new') setSteps(2)  
             } else {
                 toast.error("User Not Found")
                 setSelectedUser({})
@@ -345,7 +451,7 @@ const AddOrders = () =>{
                             <Button 
                                 variant="primary"
                                 type="button" 
-                                onClick={searchHandler}
+                                onClick={()=>searchHandler(search)}
                                 disabled={!search}>
                                 {Translate[lang].search}
                             </Button>
@@ -467,11 +573,10 @@ const AddOrders = () =>{
                         <Col md={12}>
                             <AvField 
                                 type='text'
-                                label='Address'
-                                placeholder='Address'
-                                value={user.address}
+                                label={Translate[lang].address_name}
+                                placeholder={Translate[lang].address_name}
+                                value={user.address.addressName}
                                 name='address'
-                                errorMessage="Please enter a valid Address"
                                 validate={{
                                     required: {
                                         value:true,
@@ -479,7 +584,184 @@ const AddOrders = () =>{
                                     },
                                 }}
                                 onChange={(e)=>{
-                                    setUser({...user, address: e.target.value})
+                                    setUser({...user, address: {...user.address, addressName: e.target.value}})
+                                }}
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].block}
+                                placeholder={Translate[lang].block}
+                                value={user.address.block}
+                                name='block'
+                                validate={{
+                                    required: {
+                                        value:true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                }}
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, block: e.target.value}})
+                                }}
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].street}
+                                placeholder={Translate[lang].street}
+                                value={user.address.street}
+                                name='street'
+                                validate={{
+                                    required: {
+                                        value:true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                }}
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, street: e.target.value}})
+                                }}
+                            />
+                        </Col>
+                        <Col md={3}>
+                            <label className="text-label">{Translate[lang].area}</label>
+                            <Select
+                                value={user.address?.area_id}
+                                name="area"
+                                placeholder={Translate[lang].select}
+                                options={areasOptions}
+                                noOptionsMessage={()=> `${Translate[lang].select} ${Translate[lang].area} ${Translate[lang].first}`}
+                                onChange={(e)=> setUser({...user, address: {...user.address, area_id: e}})}
+                            />
+                        </Col>
+                        <Col md={3}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].avenue}
+                                placeholder={Translate[lang].avenue}
+                                value={user.address.avenue}
+                                name='avenue'
+                                validate={{
+                                    required: {
+                                        value:true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                }}
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, avenue: e.target.value}})
+                                }}
+                            />
+                        </Col>
+                        <Col md={3}>
+                            <label className="text-label">{Translate[lang].type}</label>
+                            <Select
+                                value={user.address?.type}
+                                name="type"
+                                placeholder={Translate[lang].select}
+                                options={locationTypesOptions}
+                                onChange={(e)=> setUser({...user, address: {...user.address, type: e}})}
+                            />
+                        </Col>
+                        {user.address.type?.value === 'building' && <Col md={3}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].building_number}
+                                placeholder={Translate[lang].building_number}
+                                value={user.address.buildingNumber}
+                                name='buildingNumber'
+                                validate={{
+                                    required: {
+                                        value:true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                }}
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, buildingNumber: e.target.value}})
+                                }}
+                            />
+                        </Col>}
+                        {user.address.type?.value === 'building' && <Col md={3}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].floor_number}
+                                placeholder={Translate[lang].floor_number}
+                                value={user.address.floorNumber}
+                                name='floorNumber'
+                                validate={{
+                                    required: {
+                                        value:true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                }}
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, floorNumber: e.target.value}})
+                                }}
+                            />
+                        </Col>}
+                        {user.address.type?.value === 'building' && <Col md={3}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].apt_number}
+                                placeholder={Translate[lang].apt_number}
+                                value={user.address.aptNumber}
+                                name='aptNumber'
+                                validate={{
+                                    required: {
+                                        value:true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                }}
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, aptNumber: e.target.value}})
+                                }}
+                            />
+                        </Col>}
+                        {user.address.type?.value === 'office' && <Col md={3}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].office_number}
+                                placeholder={Translate[lang].office_number}
+                                value={user.address.officeNumber}
+                                name='officeNumber'
+                                validate={{
+                                    required: {
+                                        value:true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                }}
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, officeNumber: e.target.value}})
+                                }}
+                            />
+                        </Col>}
+                        {user.address.type?.value === 'house' && <Col md={3}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].house_number}
+                                placeholder={Translate[lang].house_number}
+                                value={user.address.houseNumber}
+                                name='houseNumber'
+                                validate={{
+                                    required: {
+                                        value:true,
+                                        errorMessage: 'This Field is required'
+                                    },
+                                }}
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, houseNumber: e.target.value}})
+                                }}
+                            />
+                        </Col>}
+                        <Col md={12}>
+                            <AvField 
+                                type='text'
+                                label={Translate[lang].other_instructions}
+                                placeholder={Translate[lang].other_instructions}
+                                value={user.address.otherInstructions}
+                                name='otherInstructions'
+                                onChange={(e)=>{
+                                    setUser({...user, address: {...user.address, otherInstructions: e.target.value}})
                                 }}
                             />
                         </Col>
@@ -488,7 +770,7 @@ const AddOrders = () =>{
                         <Button variant="secondary" type="button" onClick={()=> navigate('/orders')}>
                         {Translate[lang].cancel}
                         </Button>
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" disabled={loading}>
                         {Translate[lang].next}
                         </Button>
                     </Row>

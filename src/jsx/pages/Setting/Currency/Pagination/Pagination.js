@@ -4,12 +4,13 @@ import { useSelector } from "react-redux"
 import { Translate } from "../../../../Enums/Tranlate"
 import './style.scss'
 
-const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
+const Pagination = ({setData, service,shouldUpdate, setHasData, setLoading})=>{
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
     const lang= useSelector(state=> state.auth.lang)
 
     useEffect(()=> {
+        setLoading(true)
         service?.getList().then(res=>{
             if(res?.status === 200){
                 setData([...res.data?.data]) 
@@ -21,6 +22,7 @@ const Pagination = ({setData, service,shouldUpdate, setHasData})=>{
                     setHasData(0)
                 }
             }
+            setLoading(false)
           })
     },[page, shouldUpdate])
 

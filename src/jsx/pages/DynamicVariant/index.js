@@ -3,6 +3,7 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DynamicVariantService from "../../../services/DynamicVariantService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
@@ -16,6 +17,7 @@ const DynamicVariant = () =>{
     const [hasData, setHasData] =useState(null)
     const [shouldUpdate, setShouldUpdate] =useState(false)
     const navigate = useNavigate()
+    const [loading, setLoading] =useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
@@ -46,7 +48,10 @@ const DynamicVariant = () =>{
           </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+            {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr>
                     <th>
@@ -83,6 +88,7 @@ const DynamicVariant = () =>{
                   service={dynamicVariantService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  setLoading={setLoading}
                 />
             </Card.Body>
           </Card>

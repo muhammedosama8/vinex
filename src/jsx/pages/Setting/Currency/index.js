@@ -16,6 +16,7 @@ import AddCurrencyModal from "./AddCurrencyModal";
 import CardItem from "./CardItem";
 import './style.scss'
 import { Translate } from "../../../Enums/Tranlate";
+import Loader from "../../../common/Loader";
 
 const Currency = () => {
     const [currency, setCurrency] = useState([])
@@ -23,6 +24,7 @@ const Currency = () => {
     const [item, setItem] = useState({})
     const [hasData, setHasData] = useState(null)
     const [search, setSearch] = useState(null)
+    const [loading, setLoading] =useState(false)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
@@ -58,7 +60,10 @@ const Currency = () => {
         <Col lg={12}>
           <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+            {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -93,6 +98,7 @@ const Currency = () => {
                   service={currencyService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  setLoading={setLoading}
               />
             </Card.Body>
           </Card>

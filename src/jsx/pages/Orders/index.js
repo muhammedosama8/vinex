@@ -3,6 +3,7 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import OrdersService from "../../../services/OrdersService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
@@ -15,6 +16,7 @@ const Orders = () =>{
     const [item, setItem] =useState({})
     const [modal, setModal] =useState(false)
     const [hasData, setHasData] =useState(null)
+    const [loading, setLoading] =useState(false)
     const [search, setSearch] =useState(null)
     const [shouldUpdate, setShouldUpdate] =useState(false)
     const navigate= useNavigate()
@@ -50,7 +52,10 @@ const Orders = () =>{
 
         <Card>
             <Card.Body className={`${hasData === 0 ? 'text-center' :''}`}>
-              {hasData === 1 && <Table responsive>
+            {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -95,6 +100,7 @@ const Orders = () =>{
                   service={ordersService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  setLoading={setLoading}
                 />
             </Card.Body>
           </Card>

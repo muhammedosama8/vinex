@@ -6,6 +6,7 @@ import SettingService from "../../../../services/SettingServices";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Translate } from "../../../Enums/Tranlate";
+import Loader from "../../../common/Loader";
 
 const inital = {
     delivery_possibility: true,
@@ -19,6 +20,7 @@ const Delivery = () => {
     const [formData, setFormData] = useState(inital)
     const [loading, setLoading] = useState(false)
     const [isAdd, setIsAdd] = useState(false)
+    const [loadingData, setLoadingData] = useState(false)
     const areasService = new AreasService()
     const settingService = new SettingService()
     const Auth = useSelector(state=> state.auth?.auth)
@@ -30,6 +32,7 @@ const Delivery = () => {
     }
 
     useEffect(()=>{
+        setLoadingData(true)
         settingService.getList().then(res=>{
             let response = res?.data?.data
             if(response){
@@ -45,6 +48,7 @@ const Delivery = () => {
             } else {
                 setIsAdd(true)
             }
+            setLoadingData(false)
         })
     },[])
 
@@ -86,6 +90,13 @@ const Delivery = () => {
         })
     }
 
+    if(loadingData){
+        return <Card className="py-5" style={{height: '300px'}}>
+            <Card.Body>
+                <Loader />
+            </Card.Body>
+      </Card>
+    }
     return <Card>
         <Card.Body>
             <AvForm>

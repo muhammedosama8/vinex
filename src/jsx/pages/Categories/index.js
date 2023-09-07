@@ -9,9 +9,9 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import CategoriesService from "../../../services/CategoriesService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
-import Search from "../../common/Search";
 import { Translate } from "../../Enums/Tranlate";
 import AddCategoriesModal from "./AddCategoriesModal";
 import CardItem from "./CardItem";
@@ -24,6 +24,7 @@ const Categories = () => {
     const [hasData, setHasData] = useState(null)
     const [search, setSearch] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [isDeleted, setIsDeleted] =useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
@@ -66,7 +67,10 @@ const Categories = () => {
         <Col lg={12}>
           <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+              {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -105,6 +109,7 @@ const Categories = () => {
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   isDeleted={isDeleted}
+                  setLoading={setLoading}
               />
             </Card.Body>
           </Card>

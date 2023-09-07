@@ -9,9 +9,9 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import BrandsService from "../../../services/BrandsService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
-import Search from "../../common/Search";
 import { Translate } from "../../Enums/Tranlate";
 import AddBrandModal from "./AddBrandModal";
 import CardItem from "./CardItem";
@@ -23,6 +23,7 @@ const Brands = () => {
     const [item, setItem] = useState({})
     const [hasData, setHasData] = useState(null)
     const [search, setSearch] = useState(null)
+    const [loading, setLoading] = useState(false)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
@@ -58,7 +59,10 @@ const Brands = () => {
         <Col lg={12}>
           <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+            {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -96,6 +100,7 @@ const Brands = () => {
                   service={brandsService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  setLoading={setLoading}
               />
             </Card.Body>
           </Card>

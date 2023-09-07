@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeAdminRules } from "../../../store/actions/AuthActions";
 import { useNavigate } from "react-router-dom";
 import { Translate } from "../../Enums/Tranlate";
+import Loader from "../../common/Loader";
 
 const Permission = () =>{
     const [formData, setFormData]= useState({
@@ -15,6 +16,7 @@ const Permission = () =>{
         rules: []
     })
     const [adminsOptions, setAdminsOptions]= useState([])
+    const [loading, setLoading]= useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const adminService = new AdminService()
@@ -25,6 +27,7 @@ const Permission = () =>{
     let id = window.location.pathname.split('/rules/')[1]
 
     useEffect(()=>{
+        setLoading(true)
         adminService.getList().then(res=>{
           if(res?.status === 200){
             let admins = res.data?.meta?.data?.map(admin=>{
@@ -42,6 +45,7 @@ const Permission = () =>{
             })
             setAdminsOptions(admins)
           }
+          setLoading(false)
         })
     },[shouldUpdate])
 
@@ -81,6 +85,13 @@ const Permission = () =>{
         })
     }
 
+    if(loading){
+        return <Card style={{height: '300px'}}>
+            <Card.Body>
+                <Loader />
+            </Card.Body>
+        </Card>
+    }
     return<form onSubmit={onSubmit}>
         <Card>
             <Card.Body>

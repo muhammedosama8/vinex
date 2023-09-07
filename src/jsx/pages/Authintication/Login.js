@@ -34,7 +34,7 @@ function Login(props) {
     }, [])
 
   return (
-		<div className="login-wrapper">
+		<div className={`login-wrapper ${lang}`}>
 			<div className="login-aside-left position-relative" style={{backgroundImage:"url("+ login +")"}}>
 				<div className="login-logo position-absolute" style={{width: '22rem', left: '50%', top: '35%', transform: 'translate(-50%, -40%)'}}>
 					<img src={dashboardLogo} alt="logo" className="w-100"/>

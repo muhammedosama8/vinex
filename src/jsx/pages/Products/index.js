@@ -3,9 +3,9 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ProductsService from "../../../services/ProductsService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
-import Search from "../../common/Search";
 import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
@@ -13,6 +13,7 @@ const Products = () =>{
     const [products, setProducts] =useState([])
     const [hasData, setHasData] =useState(null)
     const [search, setSearch] =useState(null)
+    const [loading, setLoading] =useState(false)
     const [indexEdit, setIndexEdit] = useState(null)
     const [isDeleted, setIsDeleted] =useState(false)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
@@ -54,7 +55,10 @@ const Products = () =>{
         </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+            {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -101,6 +105,7 @@ const Products = () =>{
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   isDeleted={isDeleted}
+                  setLoading={setLoading}
                 />
             </Card.Body>
           </Card>

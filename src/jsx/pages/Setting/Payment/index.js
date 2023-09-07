@@ -4,10 +4,12 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import PaymentService from "../../../../services/Payment";
+import Loader from "../../../common/Loader";
 import { Translate } from "../../../Enums/Tranlate";
 
 const Payment = () =>{
     const [iban, setIban] = useState('')
+    const [loading, setLoading] = useState(false)
     const paymentService = new PaymentService()
     const lang = useSelector(state=> state.auth.lang)
 
@@ -20,6 +22,14 @@ const Payment = () =>{
                 toast.success('Iban Updated Successfully')
             }
         })
+    }
+
+    if(loading){
+        return <Card className="py-5" style={{height: '300px'}}>
+            <Card.Body>
+                <Loader />
+            </Card.Body>
+      </Card>
     }
 
     return <Card>

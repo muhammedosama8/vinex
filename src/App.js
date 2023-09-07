@@ -42,7 +42,8 @@ function App (props) {
     const navigate = useNavigate();
     http.setInterceptors(navigate);
     const lang = useSelector(state=> state.auth.lang)
-    setLang(lang)
+    // const lang = localStorage.getItem('adminLang')
+    // setLang(lang)
 
     useEffect(() => {
         checkAutoLogin(dispatch, navigate);

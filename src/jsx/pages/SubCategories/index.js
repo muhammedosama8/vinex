@@ -7,9 +7,9 @@ import {
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import SubCategoriesService from "../../../services/SubCategoriesService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
-import Search from "../../common/Search";
 import { Translate } from "../../Enums/Tranlate";
 import AddSubCategoriesModal from "./AddSubCategoriesModal";
 import CardItem from "./CardItem";
@@ -18,6 +18,7 @@ import './style.scss'
 const SubCategories = () => {
     const [subCategories, setSubCategories] = useState([])
     const [addModal, setAddModal] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [item, setItem] = useState({})
     const [search, setSearch] = useState(null)
     const [hasData, setHasData] = useState(null)
@@ -54,7 +55,10 @@ const SubCategories = () => {
       
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+              {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -96,6 +100,7 @@ const SubCategories = () => {
                   service={subCategoriesService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
+                  setLoading={setLoading}
                 />
             </Card.Body>
         </Card>

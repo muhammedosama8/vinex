@@ -12,6 +12,7 @@ import StaticPagesServices from "../../../../../services/StaticPagesService";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Translate } from "../../../../Enums/Tranlate";
+import Loader from "../../../../common/Loader";
 
 const Static = () =>{
     const [formData, setFormData] =useState([
@@ -26,6 +27,7 @@ const Static = () =>{
     const lang = useSelector(state=> state.auth.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const [isEdit, setIsEdit] = useState()
+    const [loading, setLoading] = useState()
     const staticPagesServices = new StaticPagesServices()
 
     const changeInput = (e,name,index) =>{
@@ -44,6 +46,7 @@ const Static = () =>{
 
     useEffect(()=>{
         let params = {type: window.history?.state.usr}
+        setLoading(true)
         staticPagesServices.getList(params).then(res=>{
             if(res.status === 200){
                 if(res.data.data?.length === 0){
@@ -61,6 +64,7 @@ const Static = () =>{
                     setFormData(data)
                 }
             }
+            setLoading(false)
         })
     },[])
     const submit = () =>{
@@ -82,6 +86,14 @@ const Static = () =>{
                 setIsEdit(true)
             }
         })
+    }
+
+    if(loading){
+        return <Card className="py-5" style={{height: '300px'}}>
+            <Card.Body>
+                <Loader />
+            </Card.Body>
+      </Card>
     }
 
     return<>

@@ -40,12 +40,15 @@ export function signupAction(email, password, navigate) {
     };
 }
 
-export function Logout(navigate) {
+export function Logout() {
 	localStorage.removeItem('userDetails');
 	localStorage.removeItem('LeapAdminRules');
 	localStorage.removeItem('adminLang');
     isAuthenticated(false)
-    navigate('/login');
+    
+    if(!window.location.pathname.includes('login')) {
+        window.location.href= '/login';
+    }
     
 	return {
         type: LOGOUT_ACTION,
