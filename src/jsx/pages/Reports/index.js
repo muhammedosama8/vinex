@@ -62,7 +62,7 @@ const Reports = ()=> {
 
     let data = {
         orders:{
-            rows: ['customer_name','email', 'phone', 'total_price', 'payment_method', 'status']
+            rows: ['customer_name','email', 'phone', 'total_price', 'delivery_day', 'from', 'to', 'payment_method', 'status']
         },
         products:{
             rows: ['image','name', 'category', 'price', 'in_stock']
@@ -74,7 +74,7 @@ const Reports = ()=> {
             rows: ['name', 'quantity', 'type', 'start_date', 'end_date', 'max_usage', 'count_usage']
         },
         sales:{
-            rows: ['customer_name','email', 'phone', 'total_price', 'net_profit', 'payment_method', 'status']
+            rows: ['customer_name','email', 'phone', 'total_price', 'net_profit', 'delivery_day', 'from', 'to', 'payment_method', 'status']
         },
     }
 

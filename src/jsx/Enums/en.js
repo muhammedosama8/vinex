@@ -198,4 +198,6 @@ export const English = {
     house_number: 'House Number',
     apt_number: 'Apt Number',
     other_instructions: 'Other Instructions',
+    delivery_day: 'Delivery Day',
+    time: 'Time'
 }

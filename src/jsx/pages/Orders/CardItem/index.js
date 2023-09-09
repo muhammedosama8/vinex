@@ -27,6 +27,10 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                     <td>{item.user.email || '-'}</td>
                     <td>{item.user.country_code}{item.user.phone}</td>
                     <td>{item.total}</td>
+                    <td>{item.day.split('T')[0]}</td>
+                    <td>{item.interval_hour.from.split(':')[0]}:{item.interval_hour.from.split(':')[1]}</td>
+                    <td>{item.interval_hour.to.split(':')[0]}:{item.interval_hour.to.split(':')[1]}</td>
+                    <td>{item.total}</td>
                     <td className="text-capitalize">{item.payment_method}</td>
                     <td>
                       <Badge

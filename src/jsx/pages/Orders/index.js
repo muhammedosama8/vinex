@@ -74,6 +74,15 @@ const Orders = () =>{
                       <strong>{Translate[lang]?.total_price}</strong>
                     </th>
                     <th>
+                      <strong>{Translate[lang]?.delivery_day}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.from}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.to}</strong>
+                    </th>
+                    <th>
                       <strong>{Translate[lang]?.payment_method}</strong>
                     </th>
                     <th>

@@ -198,4 +198,6 @@ export const Arabic = {
     house_number: 'رقم المنزل',
     apt_number: 'رقم الشقة',
     other_instructions: 'تعليمات أخرى',
+    delivery_day: 'يوم التوصيل',
+    time: 'الوقت'
 }
