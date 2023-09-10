@@ -73,7 +73,7 @@ export function saveTokenInLocalStorage(tokenDetails) {
     //     new Date().getTime() + tokenDetails.expiresIn * 1000,
     // );
 
-    localStorage.setItem('adminLang', 'en');
+    localStorage.setItem('adminLang', 'ar');
     localStorage.setItem('userDetails', JSON.stringify(tokenDetails));
     localStorage.setItem(tokenKey, tokenDetails.accessToken);
     localStorage.setItem('LeapAdminRules', JSON.stringify(tokenDetails.admin.admin_roles?.map(item => item.role)));
@@ -108,6 +108,7 @@ export function checkAutoLogin(dispatch, navigate) {
     // }
     dispatch(loginConfirmedAction(tokenDetails));
     dispatch(changeAdminRules(rules));
+
     if(adminLang === 'en'){
         dispatch(setLang('en'))
     } else {
