@@ -56,10 +56,10 @@ const Categories = () => {
           </Button>}
         </div>
         <div className="d-flex align-items-center mb-3 ">
-          <Button variant={isDeleted ? 'secondary' : 'primary'} className='mx-2' onClick={()=> setIsDeleted(false)}>
+          <Button variant={isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(false)}>
             {Translate[lang]?.active}
           </Button>
-          <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
+          <Button variant={!isDeleted ? 'secondary' : 'primary'} className='mx-2' onClick={()=> setIsDeleted(true)}>
             {Translate[lang]?.not_active}
           </Button>
         </div>

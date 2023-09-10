@@ -21,7 +21,7 @@ const Products = ({item, index}) =>{
                     <td>
                       <Badge variant="success light">{lang ==='en' ? item.category.name_en :item.category.name_ar}</Badge>
                     </td>
-                    <td>{item.price} LE</td>
+                    <td>{item.price}</td>
                     <td>{item.amount}</td>
                   </tr>
     )
