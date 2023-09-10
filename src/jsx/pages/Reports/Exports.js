@@ -2,9 +2,11 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { Translate } from '../../Enums/Tranlate';
+import { useSelector } from 'react-redux';
 
 export const ExportCSV = ({ csvData, fileName }) => {
-
+    const lang = useSelector(state=> state.auth.lang)
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';
 
@@ -17,6 +19,6 @@ export const ExportCSV = ({ csvData, fileName }) => {
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(csvData, fileName)}>Export</Button>
+        <Button variant="warning" onClick={(e) => exportToCSV(csvData, fileName)}>{Translate[lang].export}</Button>
     )
 };

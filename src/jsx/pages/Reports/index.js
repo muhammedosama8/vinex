@@ -192,9 +192,7 @@ console.log(exportData)
                 <ExportCSV 
                     fileName={reportType}
                     csvData={exportData}
-                >
-                    {Translate[lang].export}
-                </ExportCSV>
+                />
             </div>
         </div>
         {loading ? <Card style={{padding: '10rem 0'}} className="mt-4">
