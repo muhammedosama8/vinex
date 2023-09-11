@@ -67,8 +67,14 @@
 img{
     border-radius: 30px;
 }
+@media (max-width: 768px){
+    .image-placeholder .avatar-preview {
+        height: 16rem !important;}
+}
 @media only screen and (max-width: 500px){
     .select-banner{
         width: 90%!important;  
     }
+    .image-placeholder .avatar-preview {
+        height: 12rem !important;}
 }

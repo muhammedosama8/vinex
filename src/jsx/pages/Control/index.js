@@ -85,7 +85,7 @@ const Control = () => {
     return<Card>
     <Card.Body>
         <Row>
-            <Col md={6} className='mb-5'>
+            <Col sm={6} className='mb-5'>
                 <label className="d-block">{Translate[lang].website_title}</label>
                 <input
                     type='text'
@@ -100,7 +100,7 @@ const Control = () => {
                     onChange={(e)=> setTitle(e.target.value)}
                 />
             </Col>
-            <Col md={6} className='mb-5 d-flex' style={{justifyContent: 'space-evenly'}}>
+            <Col sm={6} className='mb-5 d-flex' style={{justifyContent: 'space-evenly'}}>
                 <div className='form-group'>
                     <label className="d-block">{Translate[lang].color}</label>
                     <input 
@@ -125,7 +125,7 @@ const Control = () => {
                 </div>
             </Col>
             
-            <Col md={4}>
+            <Col sm={6} md={4}>
                 <div className='form-group w-100'>
                     <label className="m-0">{Translate[lang].website_logo}</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
@@ -169,7 +169,7 @@ const Control = () => {
                         </div>
                     </div>
             </Col>
-            <Col md={4}>
+            <Col sm={6} md={4}>
                 <div className='form-group w-100'>
                     <label className="m-0">{Translate[lang].mobile_logo}</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	
@@ -215,7 +215,7 @@ const Control = () => {
                         </div>
                     </div>
             </Col>
-            <Col md={4}>
+            <Col sm={6} md={4}>
                 <div className='form-group w-100'>
                     <label className="m-0">{Translate[lang].dashboard_logo}</label>
                     <div className="image-placeholder ml-0" style={{width: '15rem'}}>	

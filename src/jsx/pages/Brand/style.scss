@@ -27,3 +27,22 @@
         transform: translate(-50%, -50%) !important;
     }
 }
+  
+@media (max-width: 768px) {
+    .avatar-preview2 {
+        height: 10rem!important;
+        width: 10rem!important;
+        img{
+            width: 75%!important;
+        }
+    }
+}
+@media (max-width: 500px) {
+    .avatar-preview2 {
+        height: 10rem!important;
+        width: 100%!important;
+        img{
+            width: 75%!important;
+        }
+    }
+}

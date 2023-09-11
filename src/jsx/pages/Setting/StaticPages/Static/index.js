@@ -45,10 +45,10 @@ const Static = () =>{
     }
 
     useEffect(()=>{
-        let params = {type: window.history?.state.usr}
+        let params = {type: window.location.pathname.split('/')[2] === 'privacy' ? 'Privacy' : window.location.pathname.split('/')[2]}
         setLoading(true)
         staticPagesServices.getList(params).then(res=>{
-            if(res.status === 200){
+            if(res?.status === 200){
                 if(res.data.data?.length === 0){
                     setIsEdit(false)
                 } else {
@@ -69,7 +69,7 @@ const Static = () =>{
     },[])
     const submit = () =>{
         let data ={
-            type: window.history?.state.usr,
+            type: window.location.pathname.split('/')[2],
             static_page: formData.map(res=>{
                 let en = draftToHtml(convertToRaw(res.description_en.getCurrentContent()))
                 let ar = draftToHtml(convertToRaw(res.description_ar.getCurrentContent()))
@@ -81,7 +81,7 @@ const Static = () =>{
             })
         }
         staticPagesServices.create(data).then(res=>{
-            if(res.status === 201){
+            if(res?.status === 201){
                 toast.success("Update Data Successfullly")
                 setIsEdit(true)
             }
