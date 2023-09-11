@@ -26,8 +26,9 @@ const Static = () =>{
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    const [isEdit, setIsEdit] = useState()
+    // const [isEdit, setIsEdit] = useState()
     const [loading, setLoading] = useState()
+    const [submitLoading, setSubmitLoading] = useState(false)
     const staticPagesServices = new StaticPagesServices()
 
     const changeInput = (e,name,index) =>{
@@ -50,7 +51,7 @@ const Static = () =>{
         staticPagesServices.getList(params).then(res=>{
             if(res?.status === 200){
                 if(res.data.data?.length === 0){
-                    setIsEdit(false)
+                    // setIsEdit(false)
                 } else {
                     let data = res.data.data?.map(item =>{
                         return{
@@ -60,7 +61,7 @@ const Static = () =>{
                             description_en: EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(item.description_en))),
                         }
                     })
-                    setIsEdit(true)
+                    // setIsEdit(true)
                     setFormData(data)
                 }
             }
@@ -80,11 +81,13 @@ const Static = () =>{
                 }
             })
         }
+        setSubmitLoading(true)
         staticPagesServices.create(data).then(res=>{
             if(res?.status === 201){
                 toast.success("Update Data Successfullly")
-                setIsEdit(true)
+                // setIsEdit(true)
             }
+            setSubmitLoading(false)
         })
     }
 
@@ -102,7 +105,7 @@ const Static = () =>{
         <AvForm onValidSubmit={submit}>
             {formData?.map((item, index)=>{
                 return <Row className="mb-5 position-relative" key={index}>
-                    {index > 0 && <button className="delete border-0" disabled={isEdit} type="button" onClick={()=>{
+                    {index > 0 && <button className="delete border-0"  type="button" onClick={()=>{
                         let update = formData.filter((_,ind) => ind !== index)
                         setFormData(update)
                     }}>
@@ -114,7 +117,7 @@ const Static = () =>{
 						name ={`title_en${index}`}
 						type="text" 
 						value={item.title_en}
-                        disabled={isEdit}
+                        // disabled={isEdit}
 						validate={{
 							required: {
 								value:true,
@@ -130,7 +133,7 @@ const Static = () =>{
 						label ={Translate[lang].arabic_title}
 					    name ={`title_ar${index}`}
 						type="text" 
-                        disabled={isEdit}
+                        // disabled={isEdit}
 						value={item.title_ar}
 						validate={{
 							required: {
@@ -152,9 +155,9 @@ const Static = () =>{
                             wrapperClassName="wrapperClassName"
                             editorClassName="editorClassName"
                             onEditorStateChange={(e) => {
-                                if(isEdit){
-                                    return
-                                }
+                                // if(isEdit){
+                                //     return
+                                // }
                                 let update = formData.map((item,ind)=>{
                                     if(index === ind){
                                         return{
@@ -180,9 +183,9 @@ const Static = () =>{
                             wrapperClassName="wrapperClassName"
                             editorClassName="editorClassName"
                             onEditorStateChange={(e) => {
-                                if(isEdit){
-                                    return
-                                }
+                                // if(isEdit){
+                                //     return
+                                // }
                                 let update = formData.map((item,ind)=>{
                                     if(index === ind){
                                         return{
@@ -203,7 +206,7 @@ const Static = () =>{
             
             {isExist('static_pages') && <div className="d-flex justify-content-between">
                 <Button 
-                    disabled={isEdit}
+                    // disabled={isEdit}
                     variant="secondary" 
                     onClick={()=>{
                     setFormData([...formData, {
@@ -215,12 +218,12 @@ const Static = () =>{
                 }}>
                     {Translate[lang].add_new_value}
                 </Button>
-                {!isEdit && <Button variant="primary" type="submit">
+                <Button variant="primary" disabled={submitLoading} type="submit">
                     {Translate[lang].submit}
-                </Button>}
-                {isEdit && <Button variant="primary" type="button" onClick={()=>setIsEdit(false)}>
+                </Button>
+                {/* {isEdit && <Button variant="primary" type="button" onClick={()=>setIsEdit(false)}>
                     {Translate[lang].edit}
-                </Button>}
+                </Button>} */}
             </div>}
         </AvForm>
         </Card.Body>
