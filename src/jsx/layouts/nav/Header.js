@@ -38,6 +38,7 @@ const Header = ({ onNote }) => {
       : filterName.includes("editor")
       ? filterName.filter((f) => f !== "editor")
       : filterName;
+
    return (
       <div className="header">
          <div className="header-content">
@@ -48,12 +49,9 @@ const Header = ({ onNote }) => {
                         className="dashboard_bar"
                         style={{ textTransform: "capitalize" }}
                      >
-                        {/* {finalName.join(" ").length === 0
-                           ? "Dashboard"
-                           : finalName.join(" ")} */}
                         {finalName.join(" ").length === 0
                            ? Translate[lang]?.dashboard
-                           : Translate[lang][finalName.join(" ")]}
+                           : Translate[lang][finalName.join("_")]}
                      </div>
                   </div>
                   <ul className="navbar-nav header-right p-0">
