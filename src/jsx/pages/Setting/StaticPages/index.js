@@ -14,11 +14,11 @@ const StaticPages = () =>{
     return<>
     <Card>
         <Card.Body>
-            <Row>
+            <Row className="py-5">
                 {pages?.map((page,index)=>{
-                    return <Col key={index} md={6} className={index !== pages.length-1 ? 'col-sm-6' : 'col-sm-12 '}>
-                        <Card className="pages-card" onClick={()=> navigate(page.path, {state: page.type})}>
-                            <h1>{Translate[lang][page.label]}</h1>
+                    return <Col key={index} md={4} className={index !== pages.length-1 ? 'col-sm-6 h-100' : 'col-sm-12 h-100'}>
+                        <Card className="pages-card m-0" onClick={()=> navigate(page.path, {state: page.type})}>
+                            <h1 className="m-0">{Translate[lang][page.label]}</h1>
                         </Card>
                     </Col>
                 })}

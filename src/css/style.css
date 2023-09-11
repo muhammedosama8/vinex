@@ -5,6 +5,7 @@
 @import url("./../icons/flaticon/flaticon.css");
 @import url('./perfect-scrollbar.css');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800&display=swap');
+
 .ar{
   direction: rtl;
   font-family: 'Cairo', sans-serif!important;
@@ -11993,9 +11994,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu li a:before {
         content: none; }
     [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu li > ul {
-      position: absolute;
-      left: 5rem;
-      top: 0;
+      position: fixed;
+      /* top: 20px; */
+      bottom: 8px;
       width: 12rem;
       z-index: 1001;
       display: none;
@@ -12006,6 +12007,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       margin-left: 0;
       border: 0;
       background: #fff; }
+      [data-sidebar-style="full"][data-layout="vertical"] .ar .menu-toggle .deznav .metismenu li > ul {right: 5.1rem;}
+      [data-sidebar-style="full"][data-layout="vertical"] .en .menu-toggle .deznav .metismenu li > ul {left: 5.1rem;}
       [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu li > ul:after {
         content: "";
         position: absolute;
@@ -12016,8 +12019,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
         -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         -moz-transform: rotate(45deg);
-        left: -5px;
-        top: 20px; }
+        bottom: 38px; }
+        [data-sidebar-style="full"][data-layout="vertical"] .en .menu-toggle .deznav .metismenu li > ul:after {left: -5px;}
+        [data-sidebar-style="full"][data-layout="vertical"] .ar .menu-toggle .deznav .metismenu li > ul:after {right: -5px;}
       [direction="rtl"][data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .deznav .metismenu li > ul {
         left: auto;
         right: 3rem; }
@@ -12146,9 +12150,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       [data-sidebar-style="mini"] .deznav .metismenu li a svg {
         margin-right: 0; }
     [data-sidebar-style="mini"] .deznav .metismenu li > ul {
-      position: absolute;
-      left: 5rem;
-      top: 2.9375rem;
+      position: fixed;
+      bottom: 1rem;
+      /* top: 2.9375rem; */
       width: 11.875rem;
       z-index: 1001;
       display: none;
@@ -12157,6 +12161,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       height: auto !important;
       border-radius: 6px;
       background: #fff; }
+      [data-sidebar-style="mini"] .ar .deznav .metismenu li > ul {right: 5rem;}
+      [data-sidebar-style="mini"] .en .deznav .metismenu li > ul {left: 5rem;}
       [direction="rtl"]:not([data-layout="horizontal"])[data-sidebar-style="mini"] .deznav .metismenu li > ul {
         left: auto;
         right: 5rem;
@@ -12245,8 +12251,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       -moz-transform: rotate(45deg);
-      left: -5px;
-      top: 20px; }
+      bottom: 38px; }
+      [data-sidebar-style="mini"][data-layout="vertical"] .en .deznav .metismenu > li:hover > ul:after{ left: -5px;}
+      [data-sidebar-style="mini"][data-layout="vertical"] .ar .deznav .metismenu > li:hover > ul:after{ right: -5px;}
     [data-theme-version="dark"][data-sidebar-style="mini"][data-layout="vertical"] .deznav .metismenu > li:hover > ul {
       box-shadow: 0px 9px 10px 0px rgba(0, 0, 0, 0.1); }
     [direction="rtl"][data-sidebar-style="mini"][data-layout="vertical"] .deznav .metismenu > li:hover > ul {
