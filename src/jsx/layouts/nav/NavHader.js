@@ -29,7 +29,7 @@ const NavHader = () => {
    return (
       <div className="nav-header">
          <Link to="/dashboard" className="brand-logo">
-            <img className="brand-title" src={logo} alt="logo" style={{height: '90%'}} />
+            <img className="brand-title" src={logo} alt="logo" style={{height: '85%'}} />
          </Link>
 
          <div className="nav-control" 
