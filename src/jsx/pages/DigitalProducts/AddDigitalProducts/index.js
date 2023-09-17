@@ -35,7 +35,7 @@ const AddDigitalProducts = () => {
         cost: '',
         dynamic_variant: [],
         serial_number:'',
-        serial_image: {src: ''},
+        // serial_image: {src: ''},
         images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]
     })
     const [errors, setErrors] = useState({
@@ -203,17 +203,17 @@ const AddDigitalProducts = () => {
 			setProduct({...product, images: update})
 		}, 200);
     }
-    const serialFileHandler = (e) => {
-        let filesAll = e.target.files
-        const filesData = Object.values(filesAll)
+    // const serialFileHandler = (e) => {
+    //     let filesAll = e.target.files
+    //     const filesData = Object.values(filesAll)
 
-        new BaseService().postUpload(filesData[0]).then(res=>{
-            if(res.data?.status){
-                setProduct({...product, serial_image: {src: res.data.url}})
-                setFiles([e.target.files[0]])
-            }
-        })
-    }
+    //     new BaseService().postUpload(filesData[0]).then(res=>{
+    //         if(res.data?.status){
+    //             setProduct({...product, serial_image: {src: res.data.url}})
+    //             setFiles([e.target.files[0]])
+    //         }
+    //     })
+    // }
 
     const handlerText = (e)=>{
         setProduct({...product, [e.target.name]: e.target.value})
@@ -229,10 +229,6 @@ const AddDigitalProducts = () => {
         }
         if(product?.images?.filter(res=> !!res?.src)?.length === 0){
             toast.error('Upload Images')
-            return
-        }
-        if(!product?.serial_image.src && !product.serial_number){
-            toast.error('Enter Serial Number or Upload Serial Image')
             return
         }
         setLoadning(true)
@@ -258,7 +254,7 @@ const AddDigitalProducts = () => {
         }
         if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
         if(!!product.brand) data['brand_id']= product?.brand?.value
-        if(!!product.serial_image.src) data['serial_number']= product?.serial_image?.src
+        // if(!!product.serial_image.src) data['serial_number']= product?.serial_image?.src
         if(!!product.serial_number) data['serial_number']= product?.serial_number
 
         if(!!id){
@@ -305,10 +301,10 @@ const AddDigitalProducts = () => {
             } )
 		setProduct({...product, images: update})
     }
-    const deleteSerialImg = () =>{
-        setSerialFiles([])
-		setProduct({...product, serial_image: {src: ''}})
-    }
+    // const deleteSerialImg = () =>{
+    //     setSerialFiles([])
+	// 	setProduct({...product, serial_image: {src: ''}})
+    // }
 
     if(Auth.showLoading){
         return <Card className="p-4" style={{minHeight: '30rem'}}>
@@ -561,9 +557,20 @@ const AddDigitalProducts = () => {
                         name='serial_number'
                         value={product.serial_number}
                         onChange={(e)=> handlerText(e)}
+                        validate={{
+                            required: {
+                                value: true,
+                                errorMessage: 'This Field is required'
+                            },
+                            // pattern: {
+                            //     value: "^[0-9]+$",
+                            //     errorMessage: `English format is invalid`
+                            // }
+                        }}
+
                     />
                 </Col>
-                <Col md={6}></Col>
+                {/* <Col md={6}></Col>
                 <Col md={3} className='mb-3'>
                         <label className="text-label text-center d-block or"> {Translate[lang].or}</label>
                         <label className="text-label">{Translate[lang].serial_image}</label>
@@ -589,7 +596,7 @@ const AddDigitalProducts = () => {
                                 </div>}
                             </div>
                         </div>
-                </Col>
+                </Col> */}
             </Row>
 
             <label className="text-label mb-0 mt-4" style={{marginLeft: '8px'}}>{Translate[lang].images}</label>
