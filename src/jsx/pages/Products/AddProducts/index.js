@@ -789,9 +789,9 @@ const AddProducts = () => {
         </AvForm>
         {confirm && <ConfirmModal 
             open={confirm}
-            title='Confirm Added'
-            body='You can add another product by change some information'
-            button='Add More Same Product'
+            title={Translate[lang]?.confirm_added}
+            body={Translate[lang]?.confirm_des}
+            button={Translate[lang]?.add_more_products}
             onCloseModal={()=> navigate('/products')}
             submitButton={()=> setConfirm(false)}
         />}

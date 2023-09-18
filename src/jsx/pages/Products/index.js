@@ -106,6 +106,7 @@ const Products = () =>{
                   setHasData={setHasData}
                   isDeleted={isDeleted}
                   setLoading={setLoading}
+                  type={'normal'}
                 />
             </Card.Body>
           </Card>

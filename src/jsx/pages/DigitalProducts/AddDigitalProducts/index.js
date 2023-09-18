@@ -643,9 +643,9 @@ const AddDigitalProducts = () => {
         </AvForm>
         {confirm && <ConfirmModal 
             open={confirm}
-            title='Confirm Added'
-            body='You Can Add Another Product by Change some Information'
-            button='Add More Same Product'
+            title={Translate[lang]?.confirm_added}
+            body={Translate[lang]?.confirm_des}
+            button={Translate[lang]?.add_more_products}
             onCloseModal={()=> navigate('/digital-products')}
             submitButton={()=> setConfirm(false)}
         />}

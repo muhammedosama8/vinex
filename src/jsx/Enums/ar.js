@@ -199,5 +199,8 @@ export const Arabic = {
     apt_number: 'رقم الشقة',
     other_instructions: 'تعليمات أخرى',
     delivery_day: 'يوم التوصيل',
-    time: 'الوقت'
+    time: 'الوقت',
+    confirm_added: 'تأكيد الإضافة',
+    confirm_des: 'يمكنك إضافة منتج آخر عن طريق تغيير بعض المعلومات',
+    add_more_products: 'أضف المزيد من نفس المنتج'
 }

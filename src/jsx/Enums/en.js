@@ -199,5 +199,9 @@ export const English = {
     apt_number: 'Apt Number',
     other_instructions: 'Other Instructions',
     delivery_day: 'Delivery Day',
-    time: 'Time'
+    time: 'Time',
+    confirm_added: 'Confirm Added',
+    confirm_des: 'You can add another product by change some information',
+    add_more_products: 'Add More Same Product'
+    
 }

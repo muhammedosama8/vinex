@@ -13,7 +13,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
     const [quantity, setQuantity] = useState(item.amount)
     
     const Auth = useSelector(state=> state.auth?.auth)
-    const lang = useSelector(state=> state.auth?.auth)
+    const lang = useSelector(state=> state.auth.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
     const productsService = new ProductsService()
@@ -116,7 +116,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                           <Dropdown.Item onClick={()=>{
                             navigate(`/digital-products/add-products/${item.id}`)
                           }}>{Translate[lang].edit}</Dropdown.Item>
-                          {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].deactice}</Dropdown.Item>}
+                          {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang].deactive}</Dropdown.Item>}
                         {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>{Translate[lang].active}</Dropdown.Item>}
                         </Dropdown.Menu>
                       </Dropdown>}

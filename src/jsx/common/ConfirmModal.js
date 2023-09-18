@@ -1,8 +1,12 @@
 import React from 'react'
 import { Modal } from "react-bootstrap";
 import ModalHeader from 'react-bootstrap/esm/ModalHeader';
+import { useSelector } from 'react-redux';
+import { Translate } from '../Enums/Tranlate';
 
 function ConfirmModal(props) {
+    const lang = useSelector(state=> state.auth.lang)
+
     return (
         <Modal show={props.open}  onHide={props.onCloseModal} >
             <ModalHeader >
@@ -31,7 +35,7 @@ function ConfirmModal(props) {
                     className="btn me-auto btn-secondary waves-effect waves-light"
                     data-dismiss="modal"
                 >
-                    Cancel
+                    {Translate[lang].cancel}
             </button>
                 <button
                     onClick={props.submitButton}

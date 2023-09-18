@@ -3,6 +3,7 @@ import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ProductsService from "../../../services/ProductsService";
+import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import Search from "../../common/Search";
@@ -15,6 +16,7 @@ const DigitalProducts = () =>{
     const [search, setSearch] =useState(null)
     const [indexEdit, setIndexEdit] = useState(null)
     const [isDeleted, setIsDeleted] =useState(false)
+    const [loading, setLoading] =useState(false)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
@@ -54,7 +56,10 @@ const DigitalProducts = () =>{
         </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-              {hasData === 1 && <Table responsive>
+            {loading && <div style={{height: '300px'}}>
+                <Loader />
+              </div>}
+              {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
@@ -94,14 +99,16 @@ const DigitalProducts = () =>{
                   })}
                 </tbody>
               </Table>}
-              {hasData === 0 && <NoData />}
-              {/* <Pagination
+              {(hasData === 0 && !loading) && <NoData />}
+              <Pagination
                   setData={setProducts}
                   service={productsService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   isDeleted={isDeleted}
-                /> */}
+                  setLoading={setLoading}
+                  type={'digital'}
+                />
             </Card.Body>
           </Card>
         </>

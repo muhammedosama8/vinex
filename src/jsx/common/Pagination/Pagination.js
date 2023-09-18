@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { Translate } from "../../Enums/Tranlate"
 import './style.scss'
 
-const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoading})=>{
+const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoading, type})=>{
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
     const [pageShow, setPageShow] = useState(1)
@@ -12,7 +12,14 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoad
 
     useEffect(()=> {
         setLoading(true)
-        service?.getList({offset: (page-1)*10, limit: 10, isDeleted: isDeleted}).then(res=>{
+        let params = {
+            offset: (page-1)*10,
+            limit: 10,
+            isDeleted: isDeleted,
+        }
+        if(!!type) params['type'] = type
+
+        service?.getList({...params}).then(res=>{
             if(res?.status === 200){
                 setData([...res.data?.meta?.data]) 
                 let total= Math.ceil(res.data?.meta?.totalLength / 10)
