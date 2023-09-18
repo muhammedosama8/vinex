@@ -1,9 +1,9 @@
 import {AvField, AvForm} from "availity-reactstrap-validation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import PaymentService from "../../../../services/Payment";
+import PaymentService from "../../../../services/PaymentService";
 import Loader from "../../../common/Loader";
 import { Translate } from "../../../Enums/Tranlate";
 
@@ -13,7 +13,15 @@ const Payment = () =>{
     const paymentService = new PaymentService()
     const lang = useSelector(state=> state.auth.lang)
 
+    useEffect(()=>{
+        paymentService.getList().then(res=>{
+            if(res && res.status === 200){
+                if(!!res.data.data) setIban(res.data.data?.iban)
+            }
+        })
+    },[])
     const submit = ()=> {
+        setLoading(true)
         let data ={
             iban: iban
         }
@@ -21,6 +29,7 @@ const Payment = () =>{
             if(res?.status === 201){
                 toast.success('Iban Updated Successfully')
             }
+            setLoading(false)
         })
     }
 
@@ -55,7 +64,7 @@ const Payment = () =>{
                 </Row>
                 <div className="d-flex justify-content-between">
                     <div></div>
-                    <Button variant="primary">
+                    <Button variant="primary" type="submit">
                     {Translate[lang].submit}
                     </Button>
                 </div>
