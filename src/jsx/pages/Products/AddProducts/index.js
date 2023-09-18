@@ -249,6 +249,7 @@ const AddProducts = () => {
             name_en: product.name_en,
             name_ar: product.name_ar,
             price: parseFloat(product.price),
+            type: 'normal',
             code: product.code,
             category_id: product.category?.value,
             images: product?.images?.filter(res=> !!res?.src)?.map(item=> item?.src),
@@ -440,9 +441,9 @@ const AddProducts = () => {
                 </Col>
                 <Col md={6} sm={6} className="mb-3">
                         <AvField
-                                label='Code*'
+                                label={Translate[lang]?.code}
                                 type='text'
-                                placeholder='Code'
+                                placeholder={Translate[lang]?.code}
                                 bsSize="lg"
                                 name='code'
                                 validate={{

@@ -52,7 +52,7 @@ const AddDigitalProducts = () => {
     const [subCategoriesOptions, setSubCategoriesOptions] = useState([])
     const [dynamicVariant, setDynamicVariant] = useState([])
     const [files, setFiles] = useState([{},{},{},{},{}])
-    const [serialFile, setSerialFiles] = useState([{}])
+    // const [serialFile, setSerialFiles] = useState([{}])
     const navigate = useNavigate()
     const categoriesService = new CategoriesService()
     const subCategoriesService = new SubCategoriesService()
@@ -157,7 +157,7 @@ const AddDigitalProducts = () => {
                             label: lang==='en' ? response.product?.sub_category?.name_en : response.product?.category?.name_ar,
                             value: response.product?.sub_category_id,
                             id: response.product?.sub_category_id,
-                        } : '',
+                        } : ''
                     }
                     productsService.getDynamicVariantOfProducts(prod_id).then(res2=>{
                         if(res2.status === 200){
@@ -245,17 +245,18 @@ const AddDigitalProducts = () => {
             }),
             amount: parseFloat(product.amount),
             description_en: product.description_en,
+            type: 'digital',
             description_ar: product.description_ar,
             bestSeller: product.bestSeller,
             newIn: product.newIn,
             offer: product.offer,
             cost: product.cost,
             offerPrice: parseFloat(product.offerPrice),
+            serial_number: product?.serial_number
         }
         if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
         if(!!product.brand) data['brand_id']= product?.brand?.value
         // if(!!product.serial_image.src) data['serial_number']= product?.serial_image?.src
-        if(!!product.serial_number) data['serial_number']= product?.serial_number
 
         if(!!id){
             productsService?.update(id, data)?.then(res=>{
