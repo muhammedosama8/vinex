@@ -67,7 +67,10 @@ const SocialMedia = ()=>{
                 setIsAdd(false)
             }
             setLoading(false)
-        }).catch(error=> toast.error(error))
+        }).catch(error=> {
+            toast.error(error)
+            setLoading(false)
+        })
     }
 
     if(loadingData){
