@@ -15,9 +15,11 @@ export const English = {
     product: 'Product',
     digital_products:'Digital Products',
     orders: 'Orders',
+    order: 'Order',
     reports: 'Reports',
     notification: 'Notification',
     promo_codes: 'Promo Codes',
+    promo_code: 'Promo Codes',
     time_slot: 'Time Slot',
     banners: 'Banners',
     ad_screen: 'Ad Screen',
@@ -202,6 +204,11 @@ export const English = {
     time: 'Time',
     confirm_added: 'Confirm Added',
     confirm_des: 'You can add another product by change some information',
-    add_more_products: 'Add More Same Product'
-    
+    add_more_products: 'Add More Same Product',
+    reference_id: 'Reference Id',
+    invoice_id: 'Invoice Id',
+    post_date: 'Post Date',
+    createdAt: 'CreatedAt',
+    order_id: 'Order Id',
+    static_pages: 'Static Pages'
 }

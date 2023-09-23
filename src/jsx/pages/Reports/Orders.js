@@ -26,6 +26,10 @@ const Orders = ({item, index,type}) =>{
             <td>{item.interval_hour.from.split(':')[0]}:{item.interval_hour.from.split(':')[1]}</td>
             <td>{item.interval_hour.to.split(':')[0]}:{item.interval_hour.to.split(':')[1]}</td>
             <td>{Translate[lang][item.payment_method]}</td>
+            <td>{item?.payments[0]?.Ref || '-'}</td>
+            <td>{item?.payments[0]?.invoice_id || '-'}</td>
+            <td>{item?.payments[0]?.PostDate || '-'}</td>
+            <td>{item?.payments[0]?.createdAt.split('T')[0] || '-'}</td>
             <td>
                 <Badge
                     variant={`${item.status === 'delivered' ? 'success' : 

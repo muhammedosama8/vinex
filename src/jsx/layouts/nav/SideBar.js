@@ -24,7 +24,9 @@ const initialState = {
 const SideBar = (props) => {
   const [state, setState] = useReducer(reducer, initialState);	
   const lang = useSelector(state=> state.auth?.lang)
-  
+  const Auth = useSelector(state=> state.auth?.auth)
+  const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+
  //For scroll
  	const [hideOnScroll, setHideOnScroll] = useState(true)
 	useScrollPosition(
@@ -89,7 +91,7 @@ const SideBar = (props) => {
                                 </Link>
                                   <Collapse in={state.active === data.title ? true :false}>
                                     <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
-                                      {data.content && data.content.map((data,index) => {									
+                                      {data.content && data.content?.filter(res=> isExist(res.rule))?.map((data,index) => {		
                                         return(	
                                             <li key={index}
                                               className={`${ state.activeSubmenu === data.title ? "mm-active" : ""}`}                                    

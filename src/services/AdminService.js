@@ -5,11 +5,15 @@ import { API_BASE_URL_ENV } from "../jsx/common/common";
 const apiEndpoint = API_BASE_URL_ENV() + "/admin";
 const apiTogglle = API_BASE_URL_ENV() +"/admin/block"
 const apiCategories = API_BASE_URL_ENV() +"/categories"
+const apiDashboard = API_BASE_URL_ENV() +"/admin/dashboard"
+
 export default class AdminService extends BaseService {
     constructor() {
         super(apiEndpoint);
     }
-    
+    getDashboard=()=>{
+        return http.get(apiDashboard)
+    }
     addVariant=(data)=>{
         return http.post(`${apiCategories}/addVariant`, data) 
     }

@@ -15,9 +15,11 @@ export const Arabic = {
     product: 'المنتج',
     digital_products:'المنتجات الرقمية',
     orders: 'طلبات',
+    order: 'طلبات',
     reports: 'التقارير',
     notification: 'الاشعارات',
     promo_codes: 'اكواد الخصم',
+    promo_code: 'اكواد الخصم',
     time_slot: 'اوقات العمل',
     banners: 'لافتات',
     ad_screen: 'اعلانات',
@@ -202,5 +204,11 @@ export const Arabic = {
     time: 'الوقت',
     confirm_added: 'تأكيد الإضافة',
     confirm_des: 'يمكنك إضافة منتج آخر عن طريق تغيير بعض المعلومات',
-    add_more_products: 'أضف المزيد من نفس المنتج'
+    add_more_products: 'أضف المزيد من نفس المنتج',
+    reference_id: 'الرقم المرجعي',
+    invoice_id: 'رقم الفاتورة',
+    post_date: 'التاريخ',
+    createdAt: 'أنشئت في',
+    order_id: 'رقم الطلب',
+    static_pages: 'الصفحات الثابته'
 }

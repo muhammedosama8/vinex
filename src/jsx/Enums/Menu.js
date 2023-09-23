@@ -163,26 +163,31 @@ export const MenuList = [
                 title:'Delivery',
                 text:'delivery',
                 to: 'delivery',
+                rule: 'delivery',
             },
             {
                 title:'Social Media',
                 text:'social_media',
                 to: 'social',
+                rule: 'social_media',
             },
             {
                 title:'Currency',
                 text: 'currency',
                 to: 'currency',
+                rule: 'currency',
             },
             {
                 title:'Payment',
                 text: 'payment',
                 to: 'payment',
+                rule: 'payment',
             },
             {
                 title:'Pages',
                 text: 'pages',
                 to: 'pages',
+                rule: 'static_pages',
             },
         ]
     },

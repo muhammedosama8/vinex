@@ -125,7 +125,7 @@ const Permission = () =>{
                         {Rules?.map((rul,index)=>{
                             return <tr key={index}>
                                 <th>
-                                    <strong>{rul.label}</strong>
+                                    <strong>{Translate[lang][rul.value]}</strong>
                                 </th>
                                 <th className="text-center">
                                     <input 

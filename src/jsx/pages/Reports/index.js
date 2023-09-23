@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
-// import DateRangePicker from "react-bootstrap-daterangepicker";
+import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import Orders from "./Orders";
 import Products from "./Products";
@@ -19,7 +19,7 @@ import Loader from "../../common/Loader";
 const FilterReport = ['products', 'orders', 'users', 'promo_codes', 'sales']
 const data = {
     orders:{
-        rows: ['customer_name','email', 'phone', 'total_price', 'delivery_day', 'from', 'to', 'payment_method', 'status']
+        rows: ['customer_name','email', 'phone', 'total_price', 'delivery_day', 'from', 'to', 'payment_method', 'reference_id', 'invoice_id', 'post_date', 'createdAt', 'status']
     },
     products:{
         rows: ['image','name', 'category', 'price', 'in_stock']
@@ -43,26 +43,33 @@ const Reports = ()=> {
     let [promoCodes, setPromoCodes] = useState([])
     let [exportData, setExportData] = useState([])
     let [hasData, setHasData] = useState(null)
+    let [search, setSearch] = useState('')
     let [loading, setLoading] = useState(false)
+    let date = new Date()
+    let [rangeDate, setRangeDate] = useState({
+        from: '',
+        to: ''
+    })
     const lang = useSelector(state=> state.auth.lang)
-    // let date = new Date()
-    // let startDate = new Date(`1/${date.getMonth()+1}/${date.getFullYear()}`)
-    // let endDate = new Date(`1/${date.getMonth()+2}/${date.getFullYear()}`)
     const productsService = new ProductsService()
     const ordersService = new OrdersService()
     const userService = new UserService()
     const promoCodeService = new PromoCodeService()
-
-    // { Dessert: 'Cupcake', Calories: 305, Fat: 3.7, Carbs: 67, Protein: 4.3 },
-    // { Dessert: 'Donut', Calories: 452, Fat: 25.0, Carbs: 51, Protein: 4.9 },
-    // { Dessert: 'Eclair', Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
+    const range = useRef()
 
     useEffect(()=>{
         setHasData(null)
         setLoading(true)
+        let params = {}
+        if(!!rangeDate.from && !!rangeDate.to){
+            params={
+                from: `${rangeDate.from}T00:00:00`,
+                to: `${rangeDate.to}T00:00:00`
+            }
+        }
         
         if(reportType === 'products'){
-            productsService.getList().then(res=>{
+            productsService.getList(params).then(res=>{
                 if(res.status === 200){
                     setProducts(res.data?.meta?.data)
                     if(res.data?.meta?.data.length){
@@ -72,6 +79,7 @@ const Reports = ()=> {
                     }
                     const exData = res.data?.meta?.data?.map(item=>{
                         return {
+                            id: item.id, 
                             name: lang ==='en' ? item.name_en : item.name_ar, 
                             category: lang ==='en' ? item.category.name_en :item.category.name_ar, 
                             price: item.price, 
@@ -84,7 +92,7 @@ const Reports = ()=> {
             })
         }
         if(reportType === 'orders' || reportType === 'sales'){
-            ordersService.getList().then(res=>{
+            ordersService.getList(params).then(res=>{
                 if(res.status === 200){
                     if(res.data?.meta?.data.length){
                         setHasData(2)
@@ -95,6 +103,7 @@ const Reports = ()=> {
 
                     const exData = res.data?.meta?.data?.map(item=>{
                         let obj = {
+                            order_id: item.id, 
                             customer_name: item.user.f_name ? `${item.user.f_name} ${item.user.l_name}` : '-', 
                             email: item.user.email || '-', 
                             phone: `${item.user.country_code}${item.user.phone}`, 
@@ -114,7 +123,7 @@ const Reports = ()=> {
             })
         }
         if(reportType === 'users'){
-            userService.getList().then(res=>{
+            userService.getList(params).then(res=>{
                 if(res.status === 200){
                     if(res.data?.meta?.data.length){
                         setHasData(2)
@@ -125,6 +134,7 @@ const Reports = ()=> {
 
                     const exData = res.data?.meta?.data?.map(item=>{
                         return {
+                            id: item.id, 
                             name: item.f_name ? `${item.f_name} ${item.l_name}` : '-', 
                             email: item.email || '-', 
                             phone: item.user_phones?.filter(res=> res?.is_default)[0] ? `${item.user_phones?.filter(res=> res?.is_default)[0]?.country_code}${item.user_phones?.filter(res=> res?.is_default)[0]?.phone}` : '-', 
@@ -136,7 +146,7 @@ const Reports = ()=> {
             })
         }
         if(reportType === 'promo_codes'){
-            promoCodeService.getList().then(res=>{
+            promoCodeService.getList(params).then(res=>{
                 if(res.status === 200){
                     if(res.data?.meta?.data.length){
                         setHasData(2)
@@ -147,6 +157,7 @@ const Reports = ()=> {
 
                     const exData = res.data?.meta?.data?.map(item=>{
                         return {
+                            id: item.id, 
                             name: item.name, 
                             quantity: item.amount, 
                             type: Translate[lang][item.Type], 
@@ -161,29 +172,86 @@ const Reports = ()=> {
                 setLoading(false)
             })
         }
-    },[reportType])
-console.log(exportData)
+    },[reportType, rangeDate])
+
+    const getDate= (theDate)=>{
+        const date = new Date(theDate);
+
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are 0-indexed, so add 1
+        const year = date.getFullYear();
+
+        if(month<10 && day < 10){
+            return `${year}-0${month}-0${day}`;
+        }
+        if(month<10){
+            return `${year}-0${month}-${day}`;
+        }
+        if(day<10){
+            return `${year}-${month}-0${day}`;
+        }
+        return `${year}-${month}-${day}`;
+    }
+
+    const handleCallback=(start, end)=> {
+        let startDate = start?._d
+        let endDate = end?._d
+
+        setRangeDate({
+            from: getDate(startDate),
+            to: getDate(endDate),
+        })
+    }
+
     return(
         <>
         <div className="reports d-flex justify-content-between align-items-center">
-            <div>
-                <div className="rangeDatePicker">
-                    {/* <label>{Translate[lang].date_range}</label>
-                    <DateRangePicker initialSettings={{ startDate: startDate, endDate: endDate }} >
-                        <input type="text" className="form-control w-100 input-daterange-timepicker" />
-                    </DateRangePicker> */}
-                </div>
-                
-                <div className="mt-3">
-                    {FilterReport.map(data=>{
-                        return <Button  
-                                    variant={data === reportType ? 'success' : 'outline-success'} 
-                                    className='h-75 mr-3 mb-2' 
-                                    onClick={()=> setReportType(data)}>
-                                    {Translate[lang][data]}
-                            </Button>
-                    })}
-                </div>
+            <div className="input-grou w-50 position-relative">
+                {(reportType === 'orders' || reportType === 'sales') && <><input 
+                    type="text" 
+                    style={{borderRadius: '8px',
+                    color: 'initial',
+                    padding: '18px 33px 18px 16px'}}
+                    className="form-control"
+                    placeholder={`${Translate[lang]?.search_by} ${Translate[lang]?.order_id}, ${Translate[lang]?.invoice_id}`}
+                    value={search}
+                    onChange={e=> setSearch(e.target.value)} 
+                />
+                <div className="flaticon-381-search-2"
+                style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+                ></div>
+                </>}
+            </div>
+            <div className="rangeDatePicker w-25 position-relative">
+                <DateRangePicker onCallback={handleCallback} ref={range} >
+                    <input type="text" className="form-control w-100 input-daterange-timepicker" />
+                </DateRangePicker>
+                <i 
+                    className="la la-times position-absolute" 
+                    style={{ top: '50%', left: '6px',cursor: 'pointer', transform: 'translate(0px, -50%)'}}
+                    onClick={()=> {
+                        range.current.setStartDate(`${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`)
+                        range.current.setEndDate(`${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`)
+                        if(!!rangeDate.from && !!rangeDate.to) setRangeDate({form:'', to:''})
+                    }}
+                ></i>
+            </div>
+        </div>
+        <div className="reports d-flex justify-content-between align-items-center">
+            <div className="mt-3">
+                {FilterReport.map(data=>{
+                    return <Button  
+                                variant={data === reportType ? 'success' : 'outline-success'} 
+                                className='h-75 mr-3 mb-2' 
+                                onClick={()=> {
+                                    setReportType(data)
+                                    setRangeDate({from: '', to: ''})
+                                    range.current.setStartDate(`${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`)
+                                    range.current.setEndDate(`${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`)
+                                }}>
+                                {Translate[lang][data]}
+                    </Button>
+                })}
             </div>
             <div>
                 {/* <Button variant="primary" className='mx-2' onClick={()=> {}}>
@@ -200,12 +268,13 @@ console.log(exportData)
                 <Loader/>
             </Card.Body>
         </Card> : <Card className="mt-4">
-            <Card.Body>
-              <Table responsive>
+            <Card.Body className='text-center'>
+              {hasData === 1 && <NoData />}
+              {hasData === 2 && <Table responsive>
                 <thead>
                   <tr className='text-center'>
                     <th>
-                      <strong>I.D</strong>
+                      <strong>{(reportType === 'orders' || reportType === 'sales') ? Translate[lang]?.order_id : 'I.D'}</strong>
                     </th>
                     {data[reportType]?.rows?.map((row, index)=>{
                         return <th key={index}>
@@ -218,22 +287,19 @@ console.log(exportData)
                     {(reportType === 'products' && hasData === 2) && products?.map((product, index)=>{
                         return <Products item={product} index={index} />
                     })}
-                    {(reportType === 'products' && hasData === 1) && <NoData />}
-
+                    
                     {((reportType === 'orders' || reportType === 'sales') && hasData === 2)&& orders?.map((order, index)=>{
                         return <Orders item={order} index={index} type={reportType} />
                     })}
-                    {((reportType === 'orders' || reportType === 'sales') && hasData === 1) && <NoData />}
 
                     {(reportType === 'users' && hasData === 2) && users?.map((user, index)=>{
                         return <Users item={user} index={index} />
                     })}
-                    {(reportType === 'users' && hasData === 1) && <NoData />}
 
                     {(reportType === 'promo_codes' && hasData === 2) && promoCodes?.map((code, index)=>{
                         return <PromoCodes item={code} index={index} />
                     })}
-                    {(reportType === 'promo_codes' && hasData === 1) && <NoData />}
+
                   {/* {data[reportType]?.data?.map((item, index)=>{
                     if(reportType === 'Orders'){
                         return <Orders item={item} index={index} />
@@ -246,7 +312,7 @@ console.log(exportData)
                     }
                   })} */}
                 </tbody>
-              </Table>
+              </Table>}
 
               {/* <Pagination 
                   setData={setUsers}

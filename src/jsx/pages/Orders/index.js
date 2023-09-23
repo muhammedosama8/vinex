@@ -59,7 +59,7 @@ const Orders = () =>{
                 <thead>
                   <tr className='text-center'>
                     <th>
-                      <strong>I.D</strong>
+                      <strong>{Translate[lang]?.order_id}</strong>
                     </th>
                     <th>
                       <strong>{Translate[lang]?.customer_name}</strong>
@@ -84,6 +84,18 @@ const Orders = () =>{
                     </th>
                     <th>
                       <strong>{Translate[lang]?.payment_method}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.reference_id}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.invoice_id}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.post_date}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.createdAt}</strong>
                     </th>
                     <th>
                       <strong>{Translate[lang]?.status}</strong>
