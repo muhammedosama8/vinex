@@ -8829,13 +8829,16 @@ a {
     .nav-control {
       right: -2.75rem; } 
     .en .nav-control {
-      right: auto; 
-      left: 6px} 
+      right: auto!important; 
+      left: 6px!important} 
+    .ar .nav-control {
+      left: auto!important; 
+      right: 6px!important} 
   }
-  @media only screen and (max-width: 575px) {
+  /* @media only screen and (max-width: 575px) {
     .nav-control {
       right: -2.75rem; } 
-  }
+  } */
 
 .hamburger {
   display: inline-block;
