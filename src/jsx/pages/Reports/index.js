@@ -70,6 +70,7 @@ const Reports = ()=> {
                 to: `${rangeDate.to}T00:00:00`
             }
         }
+        if(!!search) params['search'] = search
         
         if(reportType === 'products' || reportType === 'digital_products'){
             params['isDeleted'] = false
@@ -177,7 +178,7 @@ const Reports = ()=> {
                 setLoading(false)
             })
         }
-    },[reportType, rangeDate])
+    },[reportType, rangeDate, search])
 
     const getDate= (theDate)=>{
         const date = new Date(theDate);
@@ -212,20 +213,19 @@ const Reports = ()=> {
         <>
         <div className="reports d-flex justify-content-between align-items-center">
             <div className="input-grou w-50 position-relative">
-                {(reportType === 'orders' || reportType === 'sales') && <><input 
+                <input 
                     type="text" 
                     style={{borderRadius: '8px',
                     color: 'initial',
                     padding: '18px 33px 18px 16px'}}
                     className="form-control"
-                    placeholder={`${Translate[lang]?.search_by} ${Translate[lang]?.order_id}, ${Translate[lang]?.invoice_id}`}
+                    placeholder={`${Translate[lang]?.search_by} ${(reportType === 'orders' || reportType === 'sales') ? Translate[lang]?.order_id : 'I.D'}, ${Translate[lang]?.name}`}
                     value={search}
                     onChange={e=> setSearch(e.target.value)} 
                 />
                 <div className="flaticon-381-search-2"
                 style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
                 ></div>
-                </>}
             </div>
             <div className="rangeDatePicker w-25 position-relative">
                 <DateRangePicker onCallback={handleCallback} ref={range} >
@@ -251,6 +251,7 @@ const Reports = ()=> {
                                 onClick={()=> {
                                     setReportType(data)
                                     setRangeDate({from: '', to: ''})
+                                    setSearch('')
                                     range.current.setStartDate(`${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`)
                                     range.current.setEndDate(`${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`)
                                 }}>
