@@ -31,7 +31,7 @@ const data = {
         rows: ['name', 'quantity', 'type', 'start_date', 'end_date', 'max_usage', 'count_usage']
     },
     sales:{
-        rows: ['customer_name','email', 'phone', 'total_price', 'net_profit', 'delivery_day', 'from', 'to', 'payment_method', 'status']
+        rows: ['customer_name','email', 'phone', 'total_price', 'net_profit', 'delivery_day', 'from', 'to', 'payment_method', 'reference_id', 'invoice_id', 'post_date', 'createdAt', 'status']
     },
 }
 

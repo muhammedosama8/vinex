@@ -1077,7 +1077,8 @@ const AddOrders = () =>{
                                         name="paymentMethod"
                                         placeholder={Translate[lang].select}
                                         options={[{label: lang === 'en' ? 'Cash' : 'كاش', value:'cash', en: 'Cash', ar:'كاش'}, 
-                                                    {label: lang === 'en' ? 'Visa' : 'فيزا', value:'visa', en: 'Visa', ar: 'فيزا'}]}
+                                                    {label: lang === 'en' ? 'Visa' : 'فيزا', value:'visa', en: 'Visa', ar: 'فيزا'},
+                                                    {label: lang === 'en' ? 'K net' : 'كي نت', value:'k_net', en: 'k_net', ar: 'كي نت'}]}
                                         onChange={(e)=> {
                                             setPaymentMethod(e)
                                         }}
@@ -1094,11 +1095,11 @@ const AddOrders = () =>{
                                 <label className="text-label">{Translate[lang].sub_price} ({formData.filter(res=> !!res.product)?.length})</label>
                                 <p className="mb-0">{formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0)}</p>
                             </div>
-                            <div className="mt-1 d-flex justify-content-between">
+                            {/* <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label">{Translate[lang].shipping_fee}</label>
                                 {console.log(selectedUser, deliveryData)}
                                 <p className="mb-0">30</p>
-                            </div>
+                            </div> */}
                             {!!promoCodeData && <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label">{Translate[lang].coupon}</label>
                                 <p className="text-danger mb-0">{promoCodeData.type === "percentage" ? `${promoCodeData.value}%` : `-${promoCodeData.value}`}</p>
