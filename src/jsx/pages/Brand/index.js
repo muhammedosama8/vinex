@@ -45,7 +45,7 @@ const Brands = () => {
                 onChange={e=> setSearch(e.target.value)} 
             />
             <div className="flaticon-381-search-2"
-              style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+              style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
           {isExist('brands') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
@@ -101,6 +101,7 @@ const Brands = () => {
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   setLoading={setLoading}
+                  search={search}
               />
             </Card.Body>
           </Card>

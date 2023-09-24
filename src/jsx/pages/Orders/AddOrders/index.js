@@ -17,6 +17,7 @@ import { Translate } from "../../../Enums/Tranlate";
 import AreasService from "../../../../services/AreasServices";
 import OrdersService from "../../../../services/OrdersService";
 import { types } from "../../../Enums/Orders";
+import SettingService from "../../../../services/SettingServices";
 
 const initial = {
     email: "",
@@ -53,6 +54,7 @@ const AddOrders = () =>{
     const [loading, setLoading] = useState(false)
     const [categoriesOptions, setCategoriesOptions] = useState([])
     const [areasOptions, setAreasOptions] = useState([])
+    const [deliveryData, setDeliveryData] = useState({})
     const [formData, setFormData] = useState([{
         category: '',
         sub_category: '',
@@ -83,6 +85,7 @@ const AddOrders = () =>{
     const userService = new UserService()
     const timeSlotService = new TimeSlotService()
     const blockDateService = new BlockDateService()
+    const settingService = new SettingService()
 
     useEffect(()=>{
         if(type === 'new'){
@@ -129,8 +132,24 @@ const AddOrders = () =>{
     },[lang, type, steps])
 
     useEffect(()=>{
-        setUser(initial)
+        if(steps === 1) setUser(initial)
     },[lang])
+
+    useEffect(()=>{
+        settingService.getList().then(res=>{
+            let response = res?.data?.data
+            if(response){
+                let data = {
+                    delivery_possibility: response.delivery_possibility,
+                    delivery_fee: response.delivery_fee,
+                    cash_in_delivery: response.cash_in_delivery,
+                    delivery_all_area: response.delivery_all_area,
+                    shipping_fee: response.shipping_fee
+                }
+                setDeliveryData({...data})
+            }
+        })
+    },[])
 
     useEffect(()=>{
         if(!!user.country_code){
@@ -151,7 +170,7 @@ const AddOrders = () =>{
     useEffect(()=>{
         let calcTotal = formData.map((res,ind)=>{
             if(!!res.product && res.amount > 0){
-                let total = res.product.price*res.amount + res.dynamicVariant?.map(vari=> vari.amount*vari.price)?.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+                let total = (res.product.offer ? Number(res.product.offerPrice ): Number(res.product.price))*res.amount + res.dynamicVariant?.map(vari=> vari.amount*vari.price)?.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
                 return {
                     ...res,
                     totalPrice: total
@@ -304,43 +323,46 @@ const AddOrders = () =>{
     }
 
     const secondNext = () => {
-        if(!paymentMethod){
-            if(!paymentMethod){
-                toast.error('Select Payment First')
-            }
+        if(!paymentMethod) return toast.error('Select Payment First')
+        if(!day) return toast.error('Select Day First')
+        if(!selectedIntervalHours?.id) return toast.error('Select Hour First')
+        setLoading(true)
+        let data = {
+            day: day.split('T')[0],
+            payment_method: paymentMethod?.value,
+            user_id: selectedUser.id,
+            user_address_id: selectedUser.user_addresses?.filter(address=> address.is_default)[0]?.id,
+            interval_hours_id: selectedIntervalHours.id,
+            products: formData.map(data=> {
+                return {
+                    dynamic_variant: data.dynamicVariant?.filter(fi=> !!fi.amount).map(dy=>{
+                        return {
+                            amount: dy.amount,
+                            dynamic_variant_id: dy.dynamic_variant_id
+                        }
+                    }),
+                    amount: data.amount,
+                    product_id: data.product.id
+                }
+            })
         }
+        if(!!promoCodeData) data['promoCode'] = promoCodeData
         
         if(paymentMethod?.value === 'cash'){
-            let data = {
-                day: day.split('T')[0],
-                payment_method: 'cash',
-                user_id: selectedUser.id,
-                user_address_id: selectedUser.user_addresses?.filter(address=> address.is_default)[0]?.id,
-                interval_hours_id: selectedIntervalHours.id,
-                promoCode: !!promoCodeData ? promoCode : '',
-                products: formData.map(data=> {
-                    return {
-                        dynamic_variant: data.dynamicVariant?.filter(fi=> !!fi.amount).map(dy=>{
-                            return {
-                                amount: dy.amount,
-                                dynamic_variant_id: dy.dynamic_variant_id
-                            }
-                        }),
-                        amount: data.amount,
-                        product_id: data.product.id
-                    }
-                })
-            }
             new OrdersService().create(data).then(res=>{
                 if(res && res?.status === 201){
                     toast.success('Order Added Successfully.')
                     navigate('/orders')
                 }
+                setLoading(false)
             })
         } else {
-            let update = formData.filter(res=> !!res.product)
-            setFormData(update)
-            setSteps(3)
+            new OrdersService().create(data).then(res=>{
+                if(res && res?.status === 201){
+                    window.location.href = res.data.data
+                }
+                setLoading(false)
+            })
         }
     }
 
@@ -973,7 +995,7 @@ const AddOrders = () =>{
                         {!!data.product && <Col md={12} className='mt-4'>
                         <div className="p-3 d-flex justify-content-between" style={{backgroundColor: 'var(--light)', borderRadius: '8px'}}>
                             <span style={{fontSize: '20px', fontWeight: '500', direction: 'ltr'}}>
-                                {data.product?.price} x{data?.amount} {data.dynamicVariant?.filter(vari=> !!(vari.amount*vari.price))?.length > 0 && 
+                                {data.product?.offer ? data.product?.offerPrice : data.product?.price} x{data?.amount} {data.dynamicVariant?.filter(vari=> !!(vari.amount*vari.price))?.length > 0 && 
                                 <span className="text"> + {data.dynamicVariant?.map(vari=> vari.amount*vari.price)?.reduce((accumulator, currentValue) => accumulator + currentValue, 0)}</span>}
                             </span>
                             <span style={{fontSize: '20px'}}>
@@ -1005,8 +1027,8 @@ const AddOrders = () =>{
                                 <div 
                                     onClick={()=> setSelectedIntervalHours(hour)}
                                     style={{
-                                        backgroundColor: hour.id === selectedIntervalHours.id ? 'var(--primary)' : 'rgb(222 222 222 / 54%)', 
-                                        color: hour.id === selectedIntervalHours.id ? '#fff' : '#444',
+                                        backgroundColor: hour.id === selectedIntervalHours?.id ? 'var(--primary)' : 'rgb(222 222 222 / 54%)', 
+                                        color: hour.id === selectedIntervalHours?.id ? '#fff' : '#444',
                                         padding: '1rem 0',
                                         textAlign: 'center',
                                         borderRadius: '8px',
@@ -1064,16 +1086,17 @@ const AddOrders = () =>{
                             </Row>
                         </Col>
                         <Col md={6}>
-                            {!!paymentMethod && <div className="mt-1 d-flex justify-content-between">
+                            <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label">{Translate[lang].payment_method}</label>
-                                <p className="mb-0">{paymentMethod[lang]}</p>
-                            </div>}
+                                <p className="mb-0">{!!paymentMethod ? paymentMethod[lang] : '-'}</p>
+                            </div>
                             <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label">{Translate[lang].sub_price} ({formData.filter(res=> !!res.product)?.length})</label>
                                 <p className="mb-0">{formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0)}</p>
                             </div>
                             <div className="mt-1 d-flex justify-content-between">
-                                <label className="text-label">Shipping Fee</label>
+                                <label className="text-label">{Translate[lang].shipping_fee}</label>
+                                {console.log(selectedUser, deliveryData)}
                                 <p className="mb-0">30</p>
                             </div>
                             {!!promoCodeData && <div className="mt-1 d-flex justify-content-between">
@@ -1122,20 +1145,12 @@ const AddOrders = () =>{
                     <Button 
                         variant="primary" 
                         type="submit"
-                        disabled={!formData.filter(res=> !!res.product).length}
+                        disabled={!formData.filter(res=> !!res.product).length || loading}
                     >
                         {paymentMethod?.value === 'cash' ? Translate[lang].submit : Translate[lang].next}
                     </Button>
                 </div>
             </AvForm>
-        </Card.Body>
-    </Card>}
-
-    {steps === 3 && <Card>
-        <Card.Body>
-            <h4>
-                <i className="la la-cc-visa" style={{fontSize: '24px'}}></i> {Translate[lang].payment_method}
-            </h4>
         </Card.Body>
     </Card>}
     </>

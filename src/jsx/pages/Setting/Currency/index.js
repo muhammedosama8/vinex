@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
 import {
   Row,
@@ -10,8 +10,6 @@ import {
 import { useSelector } from "react-redux";
 import CurrencyService from "../../../../services/CurrencyService";
 import NoData from "../../../common/NoData";
-import Pagination from "./Pagination/Pagination";
-import Search from "../../../common/Search";
 import AddCurrencyModal from "./AddCurrencyModal";
 import CardItem from "./CardItem";
 import './style.scss'
@@ -31,6 +29,22 @@ const Currency = () => {
     const currencyService = new CurrencyService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
+    useEffect(()=>{
+      let params = {}
+      if(!!search) params['search'] = search
+      currencyService?.getList(params).then(res=>{
+        if(res?.status === 200){
+            setCurrency([...res.data?.data]) 
+            if(res.data?.data?.length > 0){
+                setHasData(1)
+            } else {
+                setHasData(0)
+            }
+        }
+        setLoading(false)
+    })
+    },[shouldUpdate, search])
+  
   return (
     <Fragment>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
@@ -46,7 +60,7 @@ const Currency = () => {
                 onChange={e=> setSearch(e.target.value)} 
             />
             <div className="flaticon-381-search-2"
-              style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+              style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
           {isExist('currency') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
@@ -93,13 +107,6 @@ const Currency = () => {
                 </tbody>
               </Table>}
               {hasData === 0 && <NoData />}
-              <Pagination
-                  setData={setCurrency}
-                  service={currencyService}
-                  shouldUpdate={shouldUpdate}
-                  setHasData={setHasData}
-                  setLoading={setLoading}
-              />
             </Card.Body>
           </Card>
         </Col>

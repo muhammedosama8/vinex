@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { Translate } from "../../Enums/Tranlate"
 import './style.scss'
 
-const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoading, type})=>{
+const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoading, type, search})=>{
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
     const [pageShow, setPageShow] = useState(1)
@@ -18,6 +18,7 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoad
             isDeleted: isDeleted,
         }
         if(!!type) params['type'] = type
+        if(!!search) params['search'] = search
 
         service?.getList({...params}).then(res=>{
             if(res?.status === 200){
@@ -33,7 +34,7 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoad
             setLoading(false)
         })
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    },[page, isDeleted, shouldUpdate])
+    },[page, isDeleted, shouldUpdate, search])
 
     useEffect(()=>{
         setPage(1)

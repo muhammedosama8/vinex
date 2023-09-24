@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,6 @@ import PromoCodeService from "../../../services/PromoCodeService";
 import Loader from "../../common/Loader";
 import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
-import Search from "../../common/Search";
 import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
@@ -37,7 +36,7 @@ const PromCodes = () =>{
                 onChange={e=> setSearch(e.target.value)} 
             />
             <div className="flaticon-381-search-2"
-              style={{position: 'absolute', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+              style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
             {isExist('promo_code') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/promo-codes/add-promo-codes')}>
@@ -101,6 +100,7 @@ const PromCodes = () =>{
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   setLoading={setLoading}
+                  search={search}
               />
             </Card.Body>
           </Card>
