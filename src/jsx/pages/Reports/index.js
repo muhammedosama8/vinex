@@ -16,12 +16,15 @@ import { ExportCSV } from "./Exports";
 import NoData from "../../common/NoData";
 import Loader from "../../common/Loader";
 
-const FilterReport = ['products', 'orders', 'users', 'promo_codes', 'sales']
+const FilterReport = ['products', 'digital_products', 'orders', 'users', 'promo_codes', 'sales']
 const data = {
     orders:{
         rows: ['customer_name','email', 'phone', 'total_price', 'delivery_day', 'from', 'to', 'payment_method', 'reference_id', 'invoice_id', 'post_date', 'createdAt', 'status']
     },
     products:{
+        rows: ['image','name', 'category', 'price', 'in_stock']
+    },
+    digital_products:{
         rows: ['image','name', 'category', 'price', 'in_stock']
     },
     users: {
@@ -68,7 +71,9 @@ const Reports = ()=> {
             }
         }
         
-        if(reportType === 'products'){
+        if(reportType === 'products' || reportType === 'digital_products'){
+            params['isDeleted'] = false
+            params['type'] = reportType === 'products' ? 'normal' : 'digital'
             productsService.getList(params).then(res=>{
                 if(res.status === 200){
                     setProducts(res.data?.meta?.data)
@@ -284,7 +289,7 @@ const Reports = ()=> {
                   </tr>
                 </thead>
                 <tbody>
-                    {(reportType === 'products' && hasData === 2) && products?.map((product, index)=>{
+                    {((reportType === 'products' || reportType === 'digital_products') && hasData === 2) && products?.map((product, index)=>{
                         return <Products item={product} index={index} />
                     })}
                     

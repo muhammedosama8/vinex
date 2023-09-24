@@ -10,14 +10,14 @@ import SubCategoriesService from "../../../../services/SubCategoriesService";
 import PromoCodeService from "../../../../services/PromoCodeService";
 import UserService from "../../../../services/UserService";
 import { toast } from "react-toastify";
-import TimeSlotService from "../../../../services/TimeSlotService";
-import BlockDateService from "../../../../services/BlockDateService";
+// import TimeSlotService from "../../../../services/TimeSlotService";
+// import BlockDateService from "../../../../services/BlockDateService";
 import { useSelector } from "react-redux";
 import { Translate } from "../../../Enums/Tranlate";
 import AreasService from "../../../../services/AreasServices";
 import OrdersService from "../../../../services/OrdersService";
 import { types } from "../../../Enums/Orders";
-import SettingService from "../../../../services/SettingServices";
+// import SettingService from "../../../../services/SettingServices";
 
 const initial = {
     email: "",
@@ -54,7 +54,7 @@ const AddOrders = () =>{
     const [loading, setLoading] = useState(false)
     const [categoriesOptions, setCategoriesOptions] = useState([])
     const [areasOptions, setAreasOptions] = useState([])
-    const [deliveryData, setDeliveryData] = useState({})
+    // const [deliveryData, setDeliveryData] = useState({})
     const [formData, setFormData] = useState([{
         category: '',
         sub_category: '',
@@ -68,13 +68,13 @@ const AddOrders = () =>{
         amount: '',
         totalPrice: 0
     }])
-    const [day, setDay] = useState('')
+    // const [day, setDay] = useState('')
     const [promoCode, setPromoCode] = useState('')
     const [promoCodeData, setPromoCodeData] = useState(null)
     const [paymentMethod, setPaymentMethod] = useState('')
     const [selectedUser, setSelectedUser] = useState({})
-    const [intervalHours, setIntervalHours] = useState([])
-    const [selectedIntervalHours, setSelectedIntervalHours] = useState({})
+    // const [intervalHours, setIntervalHours] = useState([])
+    // const [selectedIntervalHours, setSelectedIntervalHours] = useState({})
     const [user, setUser] = useState(initial)
     const navigate = useNavigate()
     const [countriesOptions, setCountriesOptions] = useState([])
@@ -83,9 +83,9 @@ const AddOrders = () =>{
     const categoriesService = new CategoriesService()
     const promoCodeService = new PromoCodeService()
     const userService = new UserService()
-    const timeSlotService = new TimeSlotService()
-    const blockDateService = new BlockDateService()
-    const settingService = new SettingService()
+    // const timeSlotService = new TimeSlotService()
+    // const blockDateService = new BlockDateService()
+    // const settingService = new SettingService()
 
     useEffect(()=>{
         if(type === 'new'){
@@ -135,21 +135,21 @@ const AddOrders = () =>{
         if(steps === 1) setUser(initial)
     },[lang])
 
-    useEffect(()=>{
-        settingService.getList().then(res=>{
-            let response = res?.data?.data
-            if(response){
-                let data = {
-                    delivery_possibility: response.delivery_possibility,
-                    delivery_fee: response.delivery_fee,
-                    cash_in_delivery: response.cash_in_delivery,
-                    delivery_all_area: response.delivery_all_area,
-                    shipping_fee: response.shipping_fee
-                }
-                setDeliveryData({...data})
-            }
-        })
-    },[])
+    // useEffect(()=>{
+    //     settingService.getList().then(res=>{
+    //         let response = res?.data?.data
+    //         if(response){
+    //             let data = {
+    //                 delivery_possibility: response.delivery_possibility,
+    //                 delivery_fee: response.delivery_fee,
+    //                 cash_in_delivery: response.cash_in_delivery,
+    //                 delivery_all_area: response.delivery_all_area,
+    //                 shipping_fee: response.shipping_fee
+    //             }
+    //             setDeliveryData({...data})
+    //         }
+    //     })
+    // },[])
 
     useEffect(()=>{
         if(!!user.country_code){
@@ -324,15 +324,15 @@ const AddOrders = () =>{
 
     const secondNext = () => {
         if(!paymentMethod) return toast.error('Select Payment First')
-        if(!day) return toast.error('Select Day First')
-        if(!selectedIntervalHours?.id) return toast.error('Select Hour First')
+        // if(!day) return toast.error('Select Day First')
+        // if(!selectedIntervalHours?.id) return toast.error('Select Hour First')
         setLoading(true)
         let data = {
-            day: day.split('T')[0],
+            // day: day.split('T')[0],
             payment_method: paymentMethod?.value,
             user_id: selectedUser.id,
-            user_address_id: selectedUser.user_addresses?.filter(address=> address.is_default)[0]?.id,
-            interval_hours_id: selectedIntervalHours.id,
+            // user_address_id: selectedUser.user_addresses?.filter(address=> address.is_default)[0]?.id,
+            // interval_hours_id: selectedIntervalHours.id,
             products: formData.map(data=> {
                 return {
                     dynamic_variant: data.dynamicVariant?.filter(fi=> !!fi.amount).map(dy=>{
@@ -353,15 +353,17 @@ const AddOrders = () =>{
                 if(res && res?.status === 201){
                     toast.success('Order Added Successfully.')
                     navigate('/orders')
+                }else{
+                    setLoading(false)
                 }
-                setLoading(false)
             })
         } else {
             new OrdersService().create(data).then(res=>{
                 if(res && res?.status === 201){
                     window.location.href = res.data.data
+                }else{
+                    setLoading(false)
                 }
-                setLoading(false)
             })
         }
     }
@@ -378,6 +380,7 @@ const AddOrders = () =>{
             if(res.data.data?.length > 0){
                 let data = res.data.data[0]
                 setSelectedUser({...data, phone: data.user_phones?.filter(phone=> phone.is_default)[0].phone, type: search})
+
                 if(type === 'new') setSteps(2)  
             } else {
                 toast.error("User Not Found")
@@ -406,30 +409,30 @@ const AddOrders = () =>{
         })
     }
 
-    useEffect(()=>{
-        if(!!day){
-            let check
-            blockDateService.getList().then(res=>{
-                let data = res.data?.data?.map(response=> response.date.split('T')[0])
-                check = data.includes(day)
-            })
-            if(!check){
-                timeSlotService.getIntervalHours({date: day}).then(res=>{
-                    if(res?.status === 200 && res.data?.data?.length > 0){
-                        let data = res.data?.data?.map(response=>{
-                            return{
-                                ...response,
-                                from: response.from.split(':00')[0],
-                                to: response.to.split(':00')[0],
-                            }
-                        })
-                        setIntervalHours(data)
-                        setSelectedIntervalHours(data[0])
-                    }
-                })
-            }
-        }
-    }, [day])
+    // useEffect(()=>{
+    //     if(!!day){
+    //         let check
+    //         blockDateService.getList().then(res=>{
+    //             let data = res.data?.data?.map(response=> response.date.split('T')[0])
+    //             check = data.includes(day)
+    //         })
+    //         if(!check){
+    //             timeSlotService.getIntervalHours({date: day}).then(res=>{
+    //                 if(res?.status === 200 && res.data?.data?.length > 0){
+    //                     let data = res.data?.data?.map(response=>{
+    //                         return{
+    //                             ...response,
+    //                             from: response.from.split(':00')[0],
+    //                             to: response.to.split(':00')[0],
+    //                         }
+    //                     })
+    //                     setIntervalHours(data)
+    //                     setSelectedIntervalHours(data[0])
+    //                 }
+    //             })
+    //         }
+    //     }
+    // }, [day])
 
     return<>
     {steps === 1 && <Card>
@@ -846,7 +849,7 @@ const AddOrders = () =>{
                                 name="sub_category"
                                 placeholder={Translate[lang].select}
                                 options={[...data.subCategoryOptions]}
-                                noOptionsMessage={()=> 'Select Category First'}
+                                noOptionsMessage={()=> !!data.category ? 'No Select' : 'Select Category First'}
                                 onChange={(e)=> {
                                     getAllProductOptionsBySub(index, data.category, e)
                                 }}
@@ -859,7 +862,7 @@ const AddOrders = () =>{
                                 name="product"
                                 options={data.productsOptions}
                                 placeholder={Translate[lang].select}
-                                noOptionsMessage={()=> 'Select Category First'}
+                                noOptionsMessage={()=> !!data.category ? 'No Select' : 'Select Category First'}
                                 onChange={(e)=> {
                                     let update = formData.map((res, ind)=>{
                                         if(ind === index){
@@ -1005,7 +1008,7 @@ const AddOrders = () =>{
                         </Col>}
                     </Row>
                 })}
-                {!!formData.filter(res=> !!res.product)?.length && 
+                {/* {!!formData.filter(res=> !!res.product)?.length && 
                 <Row className="px-2 py-4 mt-3" style={{backgroundColor: 'var(--light)'}}>
                     <Col md={6}>
                         <div className="form-group mb-3">
@@ -1040,7 +1043,7 @@ const AddOrders = () =>{
                             </Col>
                         })}
                     </Row>
-                </Row>}
+                </Row>} */}
 
                 {!!formData.filter(res=> !!res.product)?.length && <Row className="px-2 py-4 mt-3" style={{backgroundColor: 'var(--light)'}}>
                         <Col md={6} style={{
@@ -1097,7 +1100,6 @@ const AddOrders = () =>{
                             </div>
                             {/* <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label">{Translate[lang].shipping_fee}</label>
-                                {console.log(selectedUser, deliveryData)}
                                 <p className="mb-0">30</p>
                             </div> */}
                             {!!promoCodeData && <div className="mt-1 d-flex justify-content-between">
@@ -1108,9 +1110,9 @@ const AddOrders = () =>{
 
                             <div className="mt-1 d-flex justify-content-between">
                                 <label className="text-label" style={{fontWeight: '600'}}>{Translate[lang].total_price}</label>
-                                {!promoCodeData && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) +30}</p>}
-                                {(!!promoCodeData && promoCodeData?.type === "percentage") && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) -(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) * (promoCodeData.value/100)) +30)}</p>}
-                                {(!!promoCodeData && promoCodeData?.type !== "percentage") && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) - promoCodeData.value +30)}</p>}
+                                {!promoCodeData && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0)}</p>}
+                                {(!!promoCodeData && promoCodeData?.type === "percentage") && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) -(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) * (promoCodeData.value/100)))}</p>}
+                                {(!!promoCodeData && promoCodeData?.type !== "percentage") && <p className="text-success mb-0" style={{fontWeight: '600', fontSize: '18px'}}>{(formData.filter(res=> !!res.product).reduce((total, data) => total + data.totalPrice, 0) - promoCodeData.value)}</p>}
                             </div>
                         </Col>
                         
