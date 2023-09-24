@@ -29,6 +29,19 @@ function Login(props) {
         controlService.getDashboardLogo().then(res=>{
             if(res){
                 setDashboardLogo(res.data.data.dashboard_logo)
+
+				const newFavicon = document.createElement('link');
+                newFavicon.rel = 'icon';
+                newFavicon.href = res.data.data.dashboard_logo;
+                newFavicon.type = 'image/x-icon';
+
+                const existingFavicon = document.querySelector("link[rel='icon']");
+
+                if (existingFavicon) {
+                	document.head.removeChild(existingFavicon);
+                }
+
+                document.head.appendChild(newFavicon);
             }
         })
     }, [])
