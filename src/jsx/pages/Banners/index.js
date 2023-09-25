@@ -44,6 +44,7 @@ const Banners = () =>{
                 })
                 setProductsOptions([...products])
             }
+            setLoading(false)
         })
     },[lang])
 

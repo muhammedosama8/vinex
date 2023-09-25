@@ -22,20 +22,22 @@ const NavHader = () => {
    
    useEffect(()=>{
       controlService.getDashboardLogo().then(res=>{
-         setLogo(res.data.data.dashboard_logo)
+         if(res && !!res.data?.data){
+            setLogo(res.data?.data?.dashboard_logo)
 
-         const newFavicon = document.createElement('link');
-         newFavicon.rel = 'icon';
-         newFavicon.href = res.data.data.dashboard_logo;
-         newFavicon.type = 'image/x-icon';
+            const newFavicon = document.createElement('link');
+            newFavicon.rel = 'icon';
+            newFavicon.href = res.data?.data?.dashboard_logo;
+            newFavicon.type = 'image/x-icon';
 
-         const existingFavicon = document.querySelector("link[rel='icon']");
+            const existingFavicon = document.querySelector("link[rel='icon']");
 
-         if (existingFavicon) {
-            document.head.removeChild(existingFavicon);
+            if (existingFavicon) {
+               document.head.removeChild(existingFavicon);
+            }
+
+            document.head.appendChild(newFavicon);
          }
-
-         document.head.appendChild(newFavicon);
       })
    },[Auth.logo])
 

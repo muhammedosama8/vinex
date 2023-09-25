@@ -43,13 +43,13 @@ const Control = () => {
     useEffect(()=>{
         setLoading(true)
         controlService.getList().then(res=>{
-            if(res){
-                setColor(res.data.data.main_color)
-                setDashboardLogo(res.data.data.dashboard_logo)
-                setMobileLogo(res.data.data.mobile_logo)
-                setWebsiteLogo(res.data.data.website_logo)
-                setTitle(res.data.data.website_title)
-                setLabelColor(res.data.data.label_color)
+            if(res && !!res.data?.data){
+                setColor(res.data?.data?.main_color)
+                setDashboardLogo(res.data?.data?.dashboard_logo)
+                setMobileLogo(res.data?.data?.mobile_logo)
+                setWebsiteLogo(res.data?.data?.website_logo)
+                setTitle(res.data?.data?.website_title)
+                setLabelColor(res.data?.data?.label_color)
             }
             setLoading(false)
         })
