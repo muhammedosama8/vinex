@@ -9,7 +9,7 @@ axios.defaults.headers.common["Accept"] = "application/json";
 axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
 function setInterceptors(navigate){
   axios.interceptors.response.use(null, async (error) => {
-    console.log(error)
+    // console.log(error)
     if(error?.response?.data?.message === "not authorized" || error?.response?.data?.message === "not authorized (old Token)." || error?.response?.data?.message === "غير مصرح به (رمز قديم)"){
       Logout(navigate);
     } else if(error?.response?.data?.message ===  "المستخدم غير موجود" || error?.response?.data?.message === 'User not Exist.'){
