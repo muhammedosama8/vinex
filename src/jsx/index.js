@@ -150,8 +150,8 @@ const Markup = () => {
     {url: 'profile', component: <Profile />},
 
 
-    {url: 'admin/order-successful', component: <OrderSuccessful />},
-    {url: 'admin/order-failed', component: <OrderFailed />},
+    {url: 'admin/successful', component: <OrderSuccessful />},
+    {url: 'admin/failed', component: <OrderFailed />},
 
     // Error
     {url: '*', component: <Error404 />},
