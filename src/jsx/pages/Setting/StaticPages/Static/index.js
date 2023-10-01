@@ -121,7 +121,7 @@ const Static = () =>{
 						validate={{
 							required: {
 								value:true,
-								errorMessage: 'This Field is required'
+								errorMessage: Translate[lang].field_required
 							},
 						}}
 						placeholder={Translate[lang].english_title}
@@ -138,7 +138,7 @@ const Static = () =>{
 						validate={{
 							required: {
 								value:true,
-								errorMessage: 'This Field is required'
+								errorMessage: Translate[lang].field_required
 							},
 						}}
 						placeholder={Translate[lang].arabic_title}

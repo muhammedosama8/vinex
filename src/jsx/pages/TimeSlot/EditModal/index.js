@@ -76,7 +76,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[0-9 ]+$/',
@@ -97,7 +97,7 @@ const EditTimeSlotModal = ({modal, setModal, item, setShouldUpdate})=>{
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     }
                                 }}
                                 value={formData.interval_min}

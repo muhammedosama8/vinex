@@ -93,7 +93,7 @@ function Login(props) {
 											validate={{
 												required: {
 													value:true,
-													errorMessage: 'This Field is required'
+													errorMessage: Translate[lang].field_required
 												},
 											}}
 											placeholder={Translate[lang].email}
@@ -110,7 +110,7 @@ function Login(props) {
 											validate={{
 												required: {
 													value:true,
-													errorMessage: 'This Field is required'
+													errorMessage: Translate[lang].field_required
 												},
 											}}
 											placeholder={Translate[lang].password}

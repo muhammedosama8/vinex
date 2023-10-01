@@ -153,7 +153,7 @@ const Delivery = () => {
                             validate={{
                                 required: {
                                     value: true,
-                                    errorMessage: 'This Field is required'
+                                    errorMessage: Translate[lang].field_required
                                 },
                             }}
                             value={formData.cash_in_delivery}
@@ -171,7 +171,7 @@ const Delivery = () => {
                             validate={{
                                 required: {
                                     value: true,
-                                    errorMessage: 'This Field is required'
+                                    errorMessage: Translate[lang].field_required
                                 },
                             }}
                             value={formData.delivery_fee}
@@ -189,7 +189,7 @@ const Delivery = () => {
                             // validate={{
                             //     required: {
                             //         value: true,
-                            //         errorMessage: 'This Field is required'
+                            //         errorMessage: Translate[lang].field_required
                             //     },
                             // }}
                             value={formData.shipping_fee}
@@ -209,7 +209,7 @@ const Delivery = () => {
                             validate={{
                                 required: {
                                     value: true,
-                                    errorMessage: 'This Field is required'
+                                    errorMessage: Translate[lang].field_required
                                 },
                             }}
                             min={0}
@@ -241,7 +241,7 @@ const Delivery = () => {
                             validate={{
                                 required: {
                                     value: true,
-                                    errorMessage: 'This Field is required'
+                                    errorMessage: Translate[lang].field_required
                                 },
                             }}
                             value={formData.amount}

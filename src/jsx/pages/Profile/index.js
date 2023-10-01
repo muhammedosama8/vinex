@@ -5,11 +5,13 @@ import { useState } from "react";
 import AdminService from "../../../services/AdminService";
 import { toast } from "react-toastify";
 import BaseService from "../../../services/BaseService";
+import { Translate } from "../../Enums/Tranlate";
 
 const Profile = () =>{
     const Auth = useSelector(state=> state.auth?.auth?.admin)
     const [admin, setAdmin] = useState(Auth)
     const [isAdd, setIsAdd] = useState(false)
+    const lang = useSelector(state=> state.auth?.lang)
     const adminService = new AdminService()
 
     const handlerText = (e)=>{
@@ -90,7 +92,7 @@ const Profile = () =>{
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[A-Za-z0-9 ]+$/',
@@ -112,7 +114,7 @@ const Profile = () =>{
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[A-Za-z0-9 ]+$/',
@@ -134,7 +136,7 @@ const Profile = () =>{
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     }
                                 }}
                                 value={admin.email}
@@ -152,7 +154,7 @@ const Profile = () =>{
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[0-9 ]+$/',

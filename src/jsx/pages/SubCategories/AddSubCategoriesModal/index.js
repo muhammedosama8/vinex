@@ -149,7 +149,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                                     validate={{
                                         required: {
                                             value: true,
-                                            errorMessage: 'This Field is required'
+                                            errorMessage: Translate[lang].field_required
                                         },
                                         pattern: {
                                             value: '/^[A-Za-z0-9 ]+$/',
@@ -171,7 +171,7 @@ const AddSubCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>
                                     validate={{
                                         required: {
                                             value:true,
-                                            errorMessage: 'This Field is required'
+                                            errorMessage: Translate[lang].field_required
                                         },
                                         pattern: {
                                             value: '/^[\u0621-\u064A0-9 ]+$/',

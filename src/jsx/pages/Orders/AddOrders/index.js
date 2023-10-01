@@ -520,7 +520,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -539,7 +539,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -558,7 +558,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -587,7 +587,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -605,7 +605,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -623,7 +623,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -641,7 +641,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -670,7 +670,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -698,7 +698,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -716,7 +716,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -734,7 +734,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -752,7 +752,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{
@@ -770,7 +770,7 @@ const AddOrders = () =>{
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                 }}
                                 onChange={(e)=>{

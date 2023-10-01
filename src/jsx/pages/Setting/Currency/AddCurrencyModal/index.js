@@ -129,7 +129,7 @@ const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                     validate={{
                                         required: {
                                             value: true,
-                                            errorMessage: 'This Field is required'
+                                            errorMessage: Translate[lang].field_required
                                         }
                                     }}
                                     value={formData.rate}

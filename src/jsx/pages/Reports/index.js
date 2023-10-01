@@ -114,9 +114,9 @@ const Reports = ()=> {
                             email: item.user.email || '-', 
                             phone: `${item.user.country_code}${item.user.phone}`, 
                             total_price: item.total,
-                            delivery_day: item.day.split('T')[0],
-                            from: `${item.interval_hour.from.split(':')[0]}:${item.interval_hour.from.split(':')[1]}`,
-                            to: `${item.interval_hour.to.split(':')[0]}:${item.interval_hour.to.split(':')[1]}`,
+                            delivery_day: item?.day?.split('T')[0],
+                            from: `${item.interval_hour?.from?.split(':')[0]}:${item.interval_hour?.from?.split(':')[1]}`,
+                            to: `${item.interval_hour?.to?.split(':')[0]}:${item.interval_hour?.to?.split(':')[1]}`,
                             payment_method: Translate[lang][item.payment_method],
                             status: Translate[lang][item.status],
                         }
@@ -167,8 +167,8 @@ const Reports = ()=> {
                             name: item.name, 
                             quantity: item.amount, 
                             type: Translate[lang][item.Type], 
-                            start_date: item.createdAt.split('T')[0],
-                            end_date: item.end_date.split('T')[0],
+                            start_date: item?.createdAt?.split('T')[0],
+                            end_date: item?.end_date?.split('T')[0],
                             max_usage: item.max_usage,
                             count_usage: item.count_usage,
                         }

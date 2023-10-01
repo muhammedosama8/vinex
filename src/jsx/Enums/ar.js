@@ -210,5 +210,10 @@ export const Arabic = {
     post_date: 'التاريخ',
     createdAt: 'أنشئت في',
     order_id: 'رقم الطلب',
-    static_pages: 'الصفحات الثابته'
+    static_pages: 'الصفحات الثابته',
+    field_required: 'هذا الحقل مطلوب',
+    ordered_successfully: 'تم الطلب بنجاح',
+    ordered_failed: 'فشل الطلب',
+    failed_msg: 'عمليه الدفع لم تكتمل',
+    back_home: 'العودة إلى الصفحة الرئيسية'
 }

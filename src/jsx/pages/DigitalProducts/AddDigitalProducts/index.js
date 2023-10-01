@@ -21,7 +21,7 @@ const AddDigitalProducts = () => {
     const [product, setProduct]= useState({
         name_en: '',
         name_ar: '',
-        amount: '',
+        amount: 1,
         description_en: '',
         description_ar: '',
         bestSeller: false,
@@ -34,7 +34,7 @@ const AddDigitalProducts = () => {
         brand: '',
         cost: '',
         dynamic_variant: [],
-        serial_number:'',
+        serial_number: [''],
         // serial_image: {src: ''},
         images: [{src: ''} ,{src: ''} ,{src: ''} ,{src: ''} ,{src: ''}]
     })
@@ -325,7 +325,7 @@ const AddDigitalProducts = () => {
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[A-Za-z0-9 ]+$/',
@@ -346,7 +346,7 @@ const AddDigitalProducts = () => {
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[\u0621-\u064A0-9١-٩ ]+$/',
@@ -378,7 +378,7 @@ const AddDigitalProducts = () => {
                             }}
                             rows="6" >
                         </textarea>
-                        {errors['desc_en'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
+                        {errors['desc_en'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>{Translate[lang].field_required}</p>}
                 </Col>
                 <Col md={6} className="mb-3">
                         <label className="text-label">{`${Translate[lang].arabic_description}*`}</label>
@@ -401,7 +401,7 @@ const AddDigitalProducts = () => {
                             }}
                             rows="6" >
                         </textarea>
-                        {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
+                        {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>{Translate[lang].field_required}</p>}
                 </Col>
                 <Col md={6} className="mb-3">
                         <label className="text-label">{`${Translate[lang].category}*`}</label>
@@ -444,7 +444,7 @@ const AddDigitalProducts = () => {
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     }
                                 }}
                                 value={product.price}
@@ -462,7 +462,7 @@ const AddDigitalProducts = () => {
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     }
                                 }}
                                 value={product.cost}
@@ -476,18 +476,28 @@ const AddDigitalProducts = () => {
                                 placeholder={Translate[lang].quantity}
                                 bsSize="lg"
                                 name='amount'
+                                min={1}
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: "^[0-9]+$",
-                                        errorMessage: `English format is invalid`
+                                        errorMessage: `Format is invalid`
                                     }
                                 }}
                                 value={product.amount}
-                                onChange={(e)=> handlerText(e)}
+                                onChange={(e)=> {
+                                    let quantity
+                                    console.log( product.amount , e.target.value, product.serial_number)
+                                    if( product.amount > parseInt(e.target.value)){
+                                        quantity = product.serial_number?.filter((_, ind)=> ind+1 <= e.target.value)
+                                    } else {
+                                        quantity = [...product.serial_number, ...Array.from({ length: e.target.value-product.amount }, (_) => '')]
+                                    }
+                                    setProduct({...product, serial_number: quantity, amount: e.target.value})
+                                }}
                             />
                 </Col>
                 <Col md={6} className="mb-3">
@@ -549,28 +559,35 @@ const AddDigitalProducts = () => {
             
 
             <Row>
-                <Col md={6}>
+                {product?.serial_number?.map((serial, index)=>{
+                    return <Col md={6} key={index}>
                     <AvField
-                        label={Translate[lang].serial_number}
+                        label={`${Translate[lang].serial_number} ${index+1}`}
                         type='text'
-                        placeholder={Translate[lang].serial_number}
+                        placeholder={`${Translate[lang].serial_number}`}
                         bsSize="lg"
-                        name='serial_number'
-                        value={product.serial_number}
-                        onChange={(e)=> handlerText(e)}
+                        name={`serial_number${index}`}
+                        value={serial}
+                        onChange={(e)=> {
+                            let update = product?.serial_number?.map((item, ind)=>{
+                                if(index === ind){
+                                    return e.target.value
+                                } else{
+                                    return item
+                                }
+                            })
+                            setProduct({...product, serial_number: update})
+                        }}
                         validate={{
                             required: {
                                 value: true,
-                                errorMessage: 'This Field is required'
-                            },
-                            // pattern: {
-                            //     value: "^[0-9]+$",
-                            //     errorMessage: `English format is invalid`
-                            // }
+                                errorMessage: Translate[lang].field_required
+                            }
                         }}
 
                     />
                 </Col>
+                })}
                 {/* <Col md={6}></Col>
                 <Col md={3} className='mb-3'>
                         <label className="text-label text-center d-block or"> {Translate[lang].or}</label>

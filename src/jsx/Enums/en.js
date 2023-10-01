@@ -210,5 +210,10 @@ export const English = {
     post_date: 'Post Date',
     createdAt: 'CreatedAt',
     order_id: 'Order Id',
-    static_pages: 'Static Pages'
+    static_pages: 'Static Pages',
+    field_required: 'This Field is required',
+    ordered_successfully: 'Ordered Successfully',
+    ordered_failed: 'Ordered Failed',
+    failed_msg: 'The payment process is not complete',
+    back_home: 'Back to Home'
 }

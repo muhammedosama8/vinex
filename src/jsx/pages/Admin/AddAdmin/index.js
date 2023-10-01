@@ -116,7 +116,7 @@ const AddAdmin = () => {
 						validate={{
 							required: {
 								value:true,
-								errorMessage: 'This Field is required'
+								errorMessage: Translate[lang].field_required
 							},
 						}}
 						placeholder={`${Translate[lang]?.first_name}`}
@@ -133,7 +133,7 @@ const AddAdmin = () => {
 						validate={{
 							required: {
 								value:true,
-								errorMessage: 'This Field is required'
+								errorMessage: Translate[lang].field_required
 							},
 						}}
 						placeholder={`${Translate[lang]?.last_name}`}
@@ -150,7 +150,7 @@ const AddAdmin = () => {
 						validate={{
 							required: {
 								value:true,
-								errorMessage: 'This Field is required'
+								errorMessage: Translate[lang].field_required
 							},
 						}}
 						placeholder='example@example.com'
@@ -167,7 +167,7 @@ const AddAdmin = () => {
 						validate={{
 							required: {
 								value:true,
-								errorMessage: 'This Field is required'
+								errorMessage: Translate[lang].field_required
 							},
 						}}
                   onFocus={(e)=> setShowPassword(false)}
@@ -196,7 +196,7 @@ const AddAdmin = () => {
 						validate={{
 							required: {
 								value:true,
-								errorMessage: 'This Field is required'
+								errorMessage: Translate[lang].field_required
 							},
 						}}
 						placeholder={`${Translate[lang]?.phone}`}

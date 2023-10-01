@@ -27,14 +27,14 @@ const CardItem = ({item, index, setModal, setItem}) =>{
                     <td>{item.user.email || '-'}</td>
                     <td>{item.user.country_code}{item.user.phone}</td>
                     <td>{item.total}</td>
-                    <td>{item.day.split('T')[0]}</td>
-                    <td>{item.interval_hour.from.split(':')[0]}:{item.interval_hour.from.split(':')[1]}</td>
-                    <td>{item.interval_hour.to.split(':')[0]}:{item.interval_hour.to.split(':')[1]}</td>
+                    <td>{item?.day?.split('T')[0] || '-'}</td>
+                    <td>{item.interval_hour?.from?.split(':')[0] || '-'}:{item.interval_hour?.from?.split(':')[1] || '-'}</td>
+                    <td>{item.interval_hour?.to?.split(':')[0] || '-'}:{item.interval_hour?.to?.split(':')[1] || '-'}</td>
                     <td className="text-capitalize">{Translate[lang][item.payment_method]}</td>
                     <td>{item?.payments[0]?.Ref || '-'}</td>
                     <td>{item?.payments[0]?.invoice_id || '-'}</td>
                     <td>{item?.payments[0]?.PostDate || '-'}</td>
-                    <td>{item?.payments[0]?.createdAt.split('T')[0] || '-'}</td>
+                    <td>{item?.payments[0]?.createdAt?.split('T')[0] || '-'}</td>
                     <td>
                       <Badge
                         className="text-capitalize"

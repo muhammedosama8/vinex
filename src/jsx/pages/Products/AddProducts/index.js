@@ -341,7 +341,7 @@ const AddProducts = () => {
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[A-Za-z0-9 ]+$/',
@@ -362,7 +362,7 @@ const AddProducts = () => {
                                 validate={{
                                     required: {
                                         value:true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[\u0621-\u064A0-9١-٩ ]+$/',
@@ -394,7 +394,7 @@ const AddProducts = () => {
                             }}
                             rows="6" >
                         </textarea>
-                        {errors['desc_en'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
+                        {errors['desc_en'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>{Translate[lang].field_required}</p>}
                 </Col>
                 <Col md={6} className="mb-3">
                         <label className="text-label">{Translate[lang]?.arabic_description}*</label>
@@ -417,7 +417,7 @@ const AddProducts = () => {
                             }}
                             rows="6" >
                         </textarea>
-                        {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>This Field is required</p>}
+                        {errors['desc_ar'] && <p className="text-danger m-0" style={{fontSize: '12.8px'}}>{Translate[lang].field_required}</p>}
                 </Col>
                 <Col md={6} sm={6} className="mb-3">
                         <label className="text-label">{Translate[lang]?.category}*</label>
@@ -449,7 +449,7 @@ const AddProducts = () => {
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     },
                                     pattern: {
                                         value: '/^[A-Za-z0-9 ]+$/',
@@ -481,7 +481,7 @@ const AddProducts = () => {
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     }
                                 }}
                                 value={product.price}
@@ -498,7 +498,7 @@ const AddProducts = () => {
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     }
                                 }}
                                 min='0.0000000000001'
@@ -516,7 +516,7 @@ const AddProducts = () => {
                                 validate={{
                                     required: {
                                         value: true,
-                                        errorMessage: 'This Field is required'
+                                        errorMessage: Translate[lang].field_required
                                     }
                                 }}
                                 min='1'
@@ -535,7 +535,7 @@ const AddProducts = () => {
                                 // validate={{
                                 //     required: {
                                 //         value: true,
-                                //         errorMessage: 'This Field is required'
+                                //         errorMessage: Translate[lang].field_required
                                 //     }
                                 // }}
                                 value={product.weight}

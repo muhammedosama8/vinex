@@ -53,6 +53,8 @@ import DigitalProducts from './pages/DigitalProducts'
 import AddDigitalProducts from './pages/DigitalProducts/AddDigitalProducts'
 import Delivery from './pages/Setting/Delivery'
 import Payment from './pages/Setting/Payment'
+import OrderSuccessful from './common/OrderSuccessful'
+import OrderFailed from './common/OrderFailed'
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -146,6 +148,10 @@ const Markup = () => {
 
     //Profile
     {url: 'profile', component: <Profile />},
+
+
+    {url: 'admin/order-successful', component: <OrderSuccessful />},
+    {url: 'admin/order-failed', component: <OrderFailed />},
 
     // Error
     {url: '*', component: <Error404 />},
