@@ -158,7 +158,8 @@ const AddDigitalProducts = () => {
                             value: response.product?.sub_category_id,
                             id: response.product?.sub_category_id,
                         } : '',
-                        serial_number: response.product.product_serial_numbers?.map(item=> item?.serial_number)
+                        serial_number: response.product.product_serial_numbers?.map(item=> item?.serial_number),
+                        amount: response.product.product_serial_numbers?.length
                     }
                     productsService.getDynamicVariantOfProducts(prod_id).then(res2=>{
                         if(res2.status === 200){
