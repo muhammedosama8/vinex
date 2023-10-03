@@ -490,6 +490,9 @@ const AddDigitalProducts = () => {
                                 }}
                                 value={product.amount}
                                 onChange={(e)=> {
+                                    if(!e.target.value){
+                                        return
+                                    }
                                     let quantity
                                     if( parseInt(product.amount) > parseInt(e.target.value)){
                                         quantity = product.serial_number?.filter((_, ind)=> ind+1 <= parseInt(e.target.value))
