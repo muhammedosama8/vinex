@@ -157,7 +157,8 @@ const AddDigitalProducts = () => {
                             label: lang==='en' ? response.product?.sub_category?.name_en : response.product?.category?.name_ar,
                             value: response.product?.sub_category_id,
                             id: response.product?.sub_category_id,
-                        } : ''
+                        } : '',
+                        serial_number: response.product.product_serial_numbers?.map(item=> item?.serial_number)
                     }
                     productsService.getDynamicVariantOfProducts(prod_id).then(res2=>{
                         if(res2.status === 200){
@@ -270,7 +271,7 @@ const AddDigitalProducts = () => {
             })
         } else {
             productsService?.create(data)?.then(res=>{
-                if(res.data?.status === 201){
+                if(res?.data?.status === 201){
                     setConfirm(true)
                     toast.success('Product Added Successfully')
                     // navigate('/products')
@@ -490,11 +491,10 @@ const AddDigitalProducts = () => {
                                 value={product.amount}
                                 onChange={(e)=> {
                                     let quantity
-                                    console.log( product.amount , e.target.value, product.serial_number)
-                                    if( product.amount > parseInt(e.target.value)){
-                                        quantity = product.serial_number?.filter((_, ind)=> ind+1 <= e.target.value)
+                                    if( parseInt(product.amount) > parseInt(e.target.value)){
+                                        quantity = product.serial_number?.filter((_, ind)=> ind+1 <= parseInt(e.target.value))
                                     } else {
-                                        quantity = [...product.serial_number, ...Array.from({ length: e.target.value-product.amount }, (_) => '')]
+                                        quantity = [...product.serial_number, ...Array.from({ length: parseInt(e.target.value)-parseInt(product.amount) }, (_) => '')]
                                     }
                                     setProduct({...product, serial_number: quantity, amount: e.target.value})
                                 }}

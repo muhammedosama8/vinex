@@ -23,7 +23,7 @@ export default class ProductsService extends BaseService {
     }
 
     getProduct(id){
-        return http.get(`${apiEndpoint}/${id}`)
+        return http.get(`${apiGetEndpoint}/${id}`)
     }
 
     getDynamicVariant(id){
