@@ -25,7 +25,7 @@ const Orders = ({item, index,type}) =>{
             <td>{item?.day?.split('T')[0] || '-'}</td>
             <td>{item.interval_hour?.from?.split(':')[0] || '-'}:{item.interval_hour?.from?.split(':')[1] || '-'}</td>
             <td>{item.interval_hour?.to?.split(':')[0] || '-'}:{item.interval_hour?.to?.split(':')[1] || '-'}</td>
-            <td>{Translate[lang][item.payment_method]}</td>
+            <td>{item.payments[0]?.payment_type === 'knet' ? Translate[lang][item.payments[0]?.payment_type] : Translate[lang][item.payment_method]}</td>
             <td>{item?.payments[0]?.Ref || '-'}</td>
             <td>{item?.payments[0]?.invoice_id || '-'}</td>
             <td>{item?.payments[0]?.PostDate || '-'}</td>

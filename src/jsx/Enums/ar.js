@@ -215,5 +215,6 @@ export const Arabic = {
     ordered_successfully: 'تم الطلب بنجاح',
     ordered_failed: 'فشل الطلب',
     failed_msg: 'عمليه الدفع لم تكتمل',
-    back_home: 'العودة إلى الصفحة الرئيسية'
+    back_home: 'العودة إلى الصفحة الرئيسية',
+    knet: 'كي نت'
 }

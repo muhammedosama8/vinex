@@ -215,5 +215,6 @@ export const English = {
     ordered_successfully: 'Ordered Successfully',
     ordered_failed: 'Ordered Failed',
     failed_msg: 'The payment process is not complete',
-    back_home: 'Back to Home'
+    back_home: 'Back to Home',
+    knet: 'Knet'
 }
