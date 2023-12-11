@@ -69,7 +69,7 @@ const Static = () =>{
         })
     },[])
     const submit = () =>{
-	const hasEmptyData = formData.some(obj => obj.description_en === "<p></p>\n" || obj.description_ar === "<p></p>\n");
+	const hasEmptyData = formData.some(obj => draftToHtml(convertToRaw(obj.description_en.getCurrentContent())) === "<p></p>\n" || draftToHtml(convertToRaw(obj.description_ar.getCurrentContent())) === "<p></p>\n")
         if(hasEmptyData){
             toast.error('Add Description First')
             return
