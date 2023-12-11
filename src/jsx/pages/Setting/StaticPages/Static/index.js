@@ -69,6 +69,11 @@ const Static = () =>{
         })
     },[])
     const submit = () =>{
+	const hasEmptyData = formData.some(obj => obj.description_en === '' || obj.description_ar === '');
+        if(hasEmptyData){
+            toast.error('Add Description First')
+            return
+        }
         let data ={
             type: window.location.pathname.split('/')[2],
             static_page: formData.map(res=>{
