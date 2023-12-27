@@ -54,10 +54,18 @@ const Variant = ()=>{
          variantService.getVariant(formData?.category?.id)?.then(res=>{
             if(res?.status === 200){
                if(res.data?.meta.data?.length > 0){
-                  let tags = res.data?.meta.data?.map(tag=> tag.name_en)
+                  let tags = res.data?.meta.data?.map(tag=> tag.name_en.toLowerCase())
                   setIsAdd(false)
                   setTags([...tags])
-                  setFormData({...formData, variant: res.data?.meta?.data})
+                  setFormData({
+                     ...formData, 
+                     variant: res.data?.meta?.data.map(item=> {
+                        return{
+                           ...item,
+                           name_en: item.name_en.toLowerCase()
+                        }
+                     })
+                  })
                } else{
                   setIsAdd(true)
                }
@@ -73,10 +81,18 @@ const Variant = ()=>{
             setId(Number(variant_id))
             if(res?.status === 200){
                if(res.data?.meta.data?.length > 0){
-                  let tags = res.data?.meta.data?.map(tag=> tag.name_en)
+                  let tags = res.data?.meta.data?.map(tag=> tag.name_en.toLowerCase()) // lang === 'en' ?  : tag.name_ar
                   setIsAdd(false)
                   setTags([...tags])
-                  setFormData({category: categoriesOptions?.filter(opt=> opt.id === Number(variant_id))[0], variant: res.data?.meta?.data})
+                  setFormData({
+                     category: categoriesOptions?.filter(opt=> opt.id === Number(variant_id))[0], 
+                     variant: res.data?.meta?.data.map(item=> {
+                        return{
+                           ...item,
+                           name_en: item.name_en.toLowerCase()
+                        }
+                     })
+                  })
                } else{
                   setIsAdd(true)
                }
@@ -103,10 +119,10 @@ const Variant = ()=>{
       let filter = formData?.variant?.filter(res=> filterFound?.includes(res.name_en))
       
       let update = filterNotFound?.map((tag)=>{
-         if(lang === 'en'){
+         if(lang === 'ar'){
             return {
-               name_en: tag,
-               name_ar: '',
+               name_en: '',
+               name_ar: tag,
                variant_values: [
                   {
                      value_ar: "",
@@ -116,8 +132,8 @@ const Variant = ()=>{
             }
          } else{
             return {
-               name_en: '',
-               name_ar: tag,
+               name_en: tag,
+               name_ar: checkTypeVariant(tag) ? 'اللون' : '',
                variant_values: [
                   {
                      value_ar: "",
@@ -392,7 +408,7 @@ const Variant = ()=>{
                                              let valuesUpdate = res.variant_values
                                              valuesUpdate.push({
                                                 value_ar: '',
-                                                value_en: checkTypeVariant(item.name_en) ? '#dedede' : '',
+                                                value_en: checkTypeVariant(item.name_en || item.name_ar) ? '#dedede' : '',
                                              })
                                              return{
                                                 ...res,
