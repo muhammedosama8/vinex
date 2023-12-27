@@ -75,7 +75,7 @@ const Static = () =>{
             return
         }
         let data ={
-            type: window.location.pathname.split('/')[2],
+            type: window.location.pathname.split('/')[2] === 'privacy' ? 'Privacy' : window.location.pathname.split('/')[2],
             static_page: formData.map(res=>{
                 let en = draftToHtml(convertToRaw(res.description_en.getCurrentContent()))
                 let ar = draftToHtml(convertToRaw(res.description_ar.getCurrentContent()))
