@@ -55,7 +55,7 @@ import Payment from "./pages/Setting/Payment";
 import OrderSuccessful from "./common/OrderSuccessful";
 import OrderFailed from "./common/OrderFailed";
 import PaymentLink from "./pages/PaymentLink";
-import TranactionStatus from "./pages/TranactionStatus";
+//import TranactionStatus from "./pages/TranactionStatus";
 
 const Markup = () => {
   // let path = window.location.pathname
@@ -161,7 +161,7 @@ const Markup = () => {
 
     //Payment Link
     { url: "payment-link", component: <PaymentLink /> },
-    { url: "tranaction-status", component: <TranactionStatus /> },
+    //{ url: "tranaction-status", component: <TranactionStatus /> },
 
     { url: "admin/successful", component: <OrderSuccessful /> },
     { url: "admin/failed", component: <OrderFailed /> },
