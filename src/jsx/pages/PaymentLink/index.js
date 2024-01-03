@@ -15,10 +15,12 @@ const PaymentLink = () => {
 
   const submit = () => {
     let data = { price };
+    setLoading(true);
     adminService.buy(data).then((res) => {
       if (res?.status === 201) {
         setUrl(res?.data?.data);
       }
+      setLoading(false);
     });
   };
 
@@ -91,12 +93,14 @@ const PaymentLink = () => {
                 padding: "2rem 0",
                 boxShadow: "0 0 5px #dedede",
                 borderRadius: "8px",
+                direction: "ltr",
+                flexDirection: "row-reverse",
               }}
             >
-              <Col md={1}>
+              <Col md={2}>
                 <CopyToClipboardButton text={url} />
               </Col>
-              <Col md={11}>
+              <Col md={10}>
                 <p className="m-0" style={{ textAlign: "left" }}>
                   {url}
                 </p>
