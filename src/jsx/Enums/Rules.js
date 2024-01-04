@@ -20,4 +20,5 @@ export const Rules = [
   { label: "Payment Link", value: "payment_link" },
   //   { label: "Tranaction Status", value: "tranaction_status" },
   { label: "Delivery", value: "delivery" },
+  { label: "Create an Invoice", value: "create_an_invoice" },
 ];

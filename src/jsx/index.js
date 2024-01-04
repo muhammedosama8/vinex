@@ -55,6 +55,7 @@ import Payment from "./pages/Setting/Payment";
 import OrderSuccessful from "./common/OrderSuccessful";
 import OrderFailed from "./common/OrderFailed";
 import PaymentLink from "./pages/PaymentLink";
+import CreateInvoice from "./pages/Setting/CreateInvoice";
 //import TranactionStatus from "./pages/TranactionStatus";
 
 const Markup = () => {
@@ -155,6 +156,7 @@ const Markup = () => {
     { url: "pages/faqs", component: <Static /> },
     { url: "delivery", component: <Delivery /> },
     { url: "payment", component: <Payment /> },
+    { url: "create-an-invoice", component: <CreateInvoice /> },
 
     //Profile
     { url: "profile", component: <Profile /> },

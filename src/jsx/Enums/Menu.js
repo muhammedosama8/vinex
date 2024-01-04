@@ -200,6 +200,12 @@ export const MenuList = [
         rule: "payment",
       },
       {
+        title: "Create an Invoice",
+        text: "create_an_invoice",
+        to: "create-an-invoice",
+        rule: "create_an_invoice",
+      },
+      {
         title: "Pages",
         text: "pages",
         to: "pages",
