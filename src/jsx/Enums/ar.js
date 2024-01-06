@@ -188,6 +188,7 @@ export const Arabic = {
   twitter: "تويتر",
   linked_in: "لينكد إن",
   telegram: "تيليجرام",
+  download: "تحميل",
   tiktok: "تيك توك",
   app_store: "متجل أبل",
   play_store: "متجر جوجل",

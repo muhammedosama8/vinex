@@ -119,6 +119,7 @@ export const English = {
   available_amount: "Available Amount",
   payment_method: "Payment Method",
   total_price: "Total Price",
+  downloade: "Download",
   sub_price: "Sub Price",
   total: "Total",
   customer_name: "Customer Name",

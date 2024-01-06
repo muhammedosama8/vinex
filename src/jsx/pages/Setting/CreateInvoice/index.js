@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Button, Card, CardBody, Col, Row } from "reactstrap";
 import ControlService from "../../../../services/ControlServices";
 import { Translate } from "../../../Enums/Tranlate";
+import html2pdf from "html2pdf.js";
 
 const CreateInvoice = () => {
   const [formData, setFormData] = useState({
@@ -43,55 +44,124 @@ const CreateInvoice = () => {
     }
 
     const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      `<html>
-        <head>
-            <title>${Translate[lang]?.invoice}</title>
-        </head>
-        <body>
-        <div style="width: 85%;margin: auto; direction: ${
-          lang === "ar" ? "rtl" : "ltr"
-        } ">
-            <div style="text-align: center;margin-top: 2rem;">
-                <img src=${logo} alt='logo' width='200' style="margin-bottom: 8px" />
-                <p style="margin: 4px 0;">${formData.address}</p>
-                <p style="margin: 4px 0;">${formData.phone}</p>
-                <p style="margin: 4px 0;">${formData.site}</p>
-            </div>
-            <div style="margin-top: 2rem;">
-                <div style='display: flex;text-align: ${
-                  lang === "ar" ? "right" : "left"
-                }'>
-                    <h3 style='width: 50%'>${Translate[lang]?.item}</h3>
-                    <h3 style='width: 50%'>${Translate[lang]?.price}</h3>
-                </div>
-
-                ${itemsText}
-                
-                </div>
-                <div style=' margin-top: 3rem; text-align: ${
-                  lang === "ar" ? "right" : "left"
-                }'>
-                    <h4 style='margin: 4px 0'>${
-                      Translate[lang].total_price
-                    }</h4>
-                    <h4 style='margin: 4px 0'>${totalPrice}</h4>
-                  </div>
-            </div>
+    let htmlCode = `<html>
+    <head>
+        <title>${Translate[lang]?.invoice}</title>
+    </head>
+    <body id='pdf'>
+    <div style="width: 85%;margin: auto; direction: ${
+      lang === "ar" ? "rtl" : "ltr"
+    } ">
+        <div style="text-align: center;margin-top: 2rem;">
+            <img src=${logo} alt='logo' width='200' style="margin-bottom: 8px" />
+            <p style="margin: 4px 0;">${formData.address}</p>
+            <p style="margin: 4px 0;">${formData.phone}</p>
+            <p style="margin: 4px 0;">${formData.site}</p>
         </div>
-        </body>
-        </html>
-        `
-    );
+        <div style="margin-top: 2rem;">
+            <div style='display: flex;text-align: ${
+              lang === "ar" ? "right" : "left"
+            }'>
+                <h3 style='width: 50%'>${Translate[lang]?.item}</h3>
+                <h3 style='width: 50%'>${Translate[lang]?.price}</h3>
+            </div>
+
+            ${itemsText}
+            
+            </div>
+            <div style=' margin-top: 3rem; text-align: ${
+              lang === "ar" ? "right" : "left"
+            }'>
+                <h3 style='margin: 4px 0'>${Translate[lang].total_price}</h3>
+                <h3 style='margin: 4px 0'>${totalPrice}</h3>
+              </div>
+        </div>
+    </div>
+    </body>
+    </html>
+    `;
+    printWindow.document.write(htmlCode);
 
     printWindow.document.close();
+
+    // // Create a PDF from the cloned element
+    // html2pdf(htmlCode, {
+    //   margin: 10,
+    //   filename: "invoice.pdf",
+    //   jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    //   // output: () => {
+    //   //   window.print();
+    //   // },
+    // });
+
     setTimeout(() => {
       printWindow.print();
     }, 1000);
   };
 
+  const download = () => {
+    const totalPrice = formData?.items
+      ?.reduce((accumulator, item) => accumulator + Number(item.price), 0)
+      .toFixed(3);
+    let itemsText = ``;
+    let filter = formData.items?.filter((res) => res.item && res.price);
+    for (let i = 0; i < filter?.length; i++) {
+      // eslint-disable-next-line no-unused-vars
+      itemsText += `<div style='display: flex;text-align: ${
+        lang === "ar" ? "right" : "left"
+      }'><p style='margin: 4px 0;width: 50%'>${i + 1}. ${
+        filter[i].item
+      }</p><p style='margin: 4px 0;width: 50%'>${filter[i].price}</p></div>`;
+    }
+
+    let htmlCode = `
+    <div style="width: 85%;margin: auto; direction: ${
+      lang === "ar" ? "rtl" : "ltr"
+    } ">
+        <div style="text-align: center;margin-top: 2rem;">
+            <img src=${logo} alt='logo' width='200' style="margin-bottom: 8px" />
+            <p style="margin: 4px 0;">${formData.address}</p>
+            <p style="margin: 4px 0;">${formData.phone}</p>
+            <p style="margin: 4px 0;">${formData.site}</p>
+        </div>
+        <div style="margin-top: 2rem;">
+            <div style='display: flex;text-align: ${
+              lang === "ar" ? "right" : "left"
+            }'>
+                <h3 style='width: 50%'>${Translate[lang]?.item}</h3>
+                <h3 style='width: 50%'>${Translate[lang]?.price}</h3>
+            </div>
+
+            ${itemsText}
+            
+            </div>
+            <div style=' margin-top: 3rem; text-align: ${
+              lang === "ar" ? "right" : "left"
+            }'>
+                <h3 style='margin: 4px 0'>${Translate[lang].total_price}</h3>
+                <h3 style='margin: 4px 0'>${totalPrice}</h3>
+              </div>
+        </div>
+    </div>
+    `;
+
+    setTimeout(() => {
+      html2pdf(htmlCode, {
+        margin: 10,
+        filename: "invoice.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        output: () => {
+          setTimeout(() => {
+            window.print();
+          }, 1000);
+        },
+      });
+    }, 1000);
+  };
   return (
-    <Card>
+    <Card id="pdf">
       <CardBody>
         <div className="text-center">
           <img src={logo} alt="logo" width={200} className="mb-3" />
@@ -242,8 +312,18 @@ const CreateInvoice = () => {
               }}
             >
               <Button
-                color="primary"
+                color="secondary"
                 style={{ marginTop: "40px" }}
+                type="button"
+                onClick={() => {
+                  download();
+                }}
+              >
+                {Translate[lang].download}
+              </Button>
+              <Button
+                color="primary"
+                style={{ margin: "40px 12px 0" }}
                 type="submit"
               >
                 {Translate[lang].print}
