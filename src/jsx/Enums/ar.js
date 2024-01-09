@@ -150,6 +150,7 @@ export const Arabic = {
   title: "العنوان",
   message: "الرساله",
   send: "إرسال",
+  client_name: "إسم العميل",
   delete_message:
     "يرجى ملاحظة أنه لا يمكن التراجع عن هذا الإجراء وسيتم حذف التفاصيل.",
   welcome_back: "مرحبا بعودتك",
@@ -162,6 +163,8 @@ export const Arabic = {
   open: "فتح",
   rate: "معدل",
   country_name: "اسم الدولة",
+  track_id: "المسار",
+  tran_id: "النقل",
   country: "الدولة",
   banner: "لافته",
   link: "رابط",

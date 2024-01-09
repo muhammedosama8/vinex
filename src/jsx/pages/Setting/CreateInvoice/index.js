@@ -11,7 +11,7 @@ const CreateInvoice = () => {
     address: "",
     site: "",
     phone: "",
-    items: [{ item: "", price: "" }],
+    items: [{ item: "", price: "",quantity: "" }],
   });
   const [logo, setLogo] = useState("");
   const lang = useSelector((state) => state.auth.lang);
@@ -30,17 +30,18 @@ const CreateInvoice = () => {
 
   const onSubmit = () => {
     const totalPrice = formData?.items
-      ?.reduce((accumulator, item) => accumulator + Number(item.price), 0)
+      ?.reduce((accumulator, item) => accumulator + (Number(item.price) * Number(item.quantity)), 0)
       .toFixed(3);
     let itemsText = ``;
-    let filter = formData.items?.filter((res) => res.item && res.price);
+    let filter = formData.items?.filter((res) => res.item && res.price && res.quantity);
     for (let i = 0; i < filter?.length; i++) {
       // eslint-disable-next-line no-unused-vars
       itemsText += `<div style='display: flex;text-align: ${
         lang === "ar" ? "right" : "left"
-      }'><p style='margin: 4px 0;width: 50%'>${i + 1}. ${
+      }'><p style='margin: 4px 0;width: 33.33333%'>${i + 1}. ${
         filter[i].item
-      }</p><p style='margin: 4px 0;width: 50%'>${filter[i].price}</p></div>`;
+      }</p><p style='margin: 4px 0;width: 33.33333%'>${filter[i].price}</p>
+      <p style='margin: 4px 0;width: 33.33333%'>${filter[i].quantity}</p></div>`;
     }
 
     const printWindow = window.open("", "_blank");
@@ -62,8 +63,9 @@ const CreateInvoice = () => {
             <div style='display: flex;text-align: ${
               lang === "ar" ? "right" : "left"
             }'>
-                <h3 style='width: 50%'>${Translate[lang]?.item}</h3>
-                <h3 style='width: 50%'>${Translate[lang]?.price}</h3>
+                <h3 style='width: 33.33333%'>${Translate[lang]?.item}</h3>
+                <h3 style='width: 33.33333%'>${Translate[lang]?.price}</h3>
+                <h3 style='width: 33.33333%'>${Translate[lang]?.quantity}</h3>
             </div>
 
             ${itemsText}
@@ -101,7 +103,7 @@ const CreateInvoice = () => {
 
   const download = () => {
     const totalPrice = formData?.items
-      ?.reduce((accumulator, item) => accumulator + Number(item.price), 0)
+      ?.reduce((accumulator, item) => accumulator + (Number(item.price)*Number(item.quantity)), 0)
       .toFixed(3);
     let itemsText = ``;
     let filter = formData.items?.filter((res) => res.item && res.price);
@@ -109,9 +111,10 @@ const CreateInvoice = () => {
       // eslint-disable-next-line no-unused-vars
       itemsText += `<div style='display: flex;text-align: ${
         lang === "ar" ? "right" : "left"
-      }'><p style='margin: 4px 0;width: 50%'>${i + 1}. ${
+      }'><p style='margin: 4px 0;width: 33.33333%'>${i + 1}. ${
         filter[i].item
-      }</p><p style='margin: 4px 0;width: 50%'>${filter[i].price}</p></div>`;
+      }</p><p style='margin: 4px 0;width: 33.33333%'>${filter[i].price}</p>
+      <p style='margin: 4px 0;width: 33.33333%'>${filter[i].quantity}</p></div>`;
     }
 
     let htmlCode = `
@@ -128,8 +131,9 @@ const CreateInvoice = () => {
             <div style='display: flex;text-align: ${
               lang === "ar" ? "right" : "left"
             }'>
-                <h3 style='width: 50%'>${Translate[lang]?.item}</h3>
-                <h3 style='width: 50%'>${Translate[lang]?.price}</h3>
+                <h3 style='width: 33.33333%'>${Translate[lang]?.item}</h3>
+                <h3 style='width: 33.33333%'>${Translate[lang]?.price}</h3>
+                <h3 style='width: 33.33333%'>${Translate[lang]?.quantity}</h3>
             </div>
 
             ${itemsText}
@@ -211,7 +215,7 @@ const CreateInvoice = () => {
 
             <Row className="mt-5">
               <Col
-                md={6}
+                md={4}
                 className="mb-2"
                 style={{
                   textAlign: lang === "ar" ? "right" : "left",
@@ -220,17 +224,24 @@ const CreateInvoice = () => {
                 {Translate[lang]?.item}
               </Col>
               <Col
-                md={6}
+                md={4}
                 className="mb-2"
                 style={{ textAlign: lang === "ar" ? "right" : "left" }}
               >
                 {Translate[lang]?.price}
               </Col>
+              <Col
+                md={4}
+                className="mb-2"
+                style={{ textAlign: lang === "ar" ? "right" : "left" }}
+              >
+                {Translate[lang]?.quantity}
+              </Col>
 
               {formData.items?.map((item, index) => {
                 return (
                   <>
-                    <Col md={6}>
+                    <Col md={4}>
                       <AvField
                         type="text"
                         placeholder={`${Translate[lang]?.item} ${index + 1}`}
@@ -251,7 +262,7 @@ const CreateInvoice = () => {
                         }}
                       />
                     </Col>
-                    <Col md={6}>
+                    <Col md={4}>
                       <AvField
                         type="number"
                         placeholder={`${Translate[lang]?.price} ${index + 1}`}
@@ -272,6 +283,27 @@ const CreateInvoice = () => {
                         }}
                       />
                     </Col>
+                    <Col md={4}>
+                      <AvField
+                        type="number"
+                        placeholder={`${Translate[lang]?.quantity} ${index + 1}`}
+                        value={item.quantity}
+                        name="quantity"
+                        onChange={(e) => {
+                          let update = formData.items?.map((res, ind) => {
+                            if (index === ind) {
+                              return {
+                                ...res,
+                                quantity: e.target.value,
+                              };
+                            } else {
+                              return res;
+                            }
+                          });
+                          setFormData({ ...formData, items: update });
+                        }}
+                      />
+                    </Col>
                   </>
                 );
               })}
@@ -281,7 +313,7 @@ const CreateInvoice = () => {
                 onClick={() => {
                   setFormData({
                     ...formData,
-                    items: [...formData.items, { item: "", price: "" }],
+                    items: [...formData.items, { item: "", price: "",quantity: "" }],
                   });
                 }}
               >
@@ -299,7 +331,7 @@ const CreateInvoice = () => {
               <h5>
                 {formData?.items
                   ?.reduce(
-                    (accumulator, item) => accumulator + Number(item.price),
+                    (accumulator, item) => accumulator + (Number(item.price) * Number(item.quantity)),
                     0
                   )
                   .toFixed(3)}

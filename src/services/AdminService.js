@@ -3,7 +3,6 @@ import http from "./HttpService";
 import { API_BASE_URL_ENV } from "../jsx/common/common";
 
 const apiEndpoint = API_BASE_URL_ENV() + "/admin";
-const apiBuyEndpoint = API_BASE_URL_ENV() + "/admin/buy";
 const apiTogglle = API_BASE_URL_ENV() + "/admin/block";
 const apiCategories = API_BASE_URL_ENV() + "/categories";
 const apiDashboard = API_BASE_URL_ENV() + "/admin/dashboard";
@@ -36,9 +35,6 @@ export default class AdminService extends BaseService {
     return http.post(`${apiCategories}`, data);
   };
 
-  buy = (data) => {
-    return http.post(`${apiBuyEndpoint}`, data);
-  };
 
   toggleStatus(id, data) {
     return http.put(`${apiTogglle}/${id}`, data);
