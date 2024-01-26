@@ -699,6 +699,8 @@ const AddProducts = () => {
                               ...res,
                               color: e,
                             };
+                          } else {
+                            return res
                           }
                         });
                         setCustomVariant([...update]);
@@ -735,7 +737,7 @@ const AddProducts = () => {
                         ?.variant_values?.map((res) => {
                           return {
                             label: lang === "en" ? res.value_en : res.value_ar,
-                            value: lang === "en" ? res.value_en : res.value_ar,
+                            value: res.value_en,
                           };
                         })}
                       value={res.size}
@@ -746,6 +748,8 @@ const AddProducts = () => {
                               ...res,
                               size: e,
                             };
+                          } else{
+                            return res
                           }
                         });
                         setCustomVariant([...update]);
@@ -769,6 +773,8 @@ const AddProducts = () => {
                             ...res,
                             quantity: e.target.value,
                           };
+                        } else{
+                          return res
                         }
                       });
                       setCustomVariant([...update]);
@@ -910,7 +916,7 @@ const AddProducts = () => {
                               }
                               className="mr-2"
                               required
-                              onChange={() => {
+                              onClick={(e) => {
                                 let var_value = {
                                   name_en: item.name_en,
                                   name_ar: item.name_ar,
@@ -923,6 +929,7 @@ const AddProducts = () => {
                                 let isExist = product?.variant?.filter(
                                   (res) => res.variant_id === item.id
                                 );
+                                // console.log(!isExist?.length);
                                 if (!isExist?.length) {
                                   setProduct({
                                     ...product,
@@ -1073,6 +1080,9 @@ const AddProducts = () => {
             );
           })}
         </Row>
+        {/* <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
+          {Translate[lang]?.images_variant}
+        </label> */}
         <div className="d-flex justify-content-between mt-4">
           <Button
             variant="secondary"
