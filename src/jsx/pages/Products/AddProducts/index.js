@@ -48,19 +48,14 @@ const AddProducts = () => {
   const dispatch = useDispatch();
   const [confirm, setConfirm] = useState(false);
   const [id, setId] = useState(null);
-  const [hasColorAndSize, setHasColorAndSize] = useState(false);
   const [loading, setLoadning] = useState(false);
+  const [imagesForAll, setImagesForAll] = useState(false);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
   const [brandOptions, setBrandOptions] = useState([]);
   const [subCategoriesOptions, setSubCategoriesOptions] = useState([]);
+  const [staticVariantValue, setStaticVariantValue] = useState({});
   const [variant, setVariant] = useState([]);
-  const [customVariant, setCustomVariant] = useState([
-    {
-      color: "",
-      size: "",
-      quantity: "",
-    },
-  ]);
+  const [customVariant, setCustomVariant] = useState([]);
   const [dynamicVariant, setDynamicVariant] = useState([]);
   // const [productDynamicVariant, setProductDynamicVariant] = useState([])
   const [files, setFiles] = useState([{}, {}, {}, {}, {}]);
@@ -75,7 +70,7 @@ const AddProducts = () => {
 
   useEffect(() => {
     categoriesService.getList().then((res) => {
-      if (res.data?.status === 200) {
+      if (res?.data?.status === 200) {
         let categories = res.data?.meta?.data?.map((item) => {
           return {
             id: item?.id,
@@ -87,7 +82,7 @@ const AddProducts = () => {
       }
     });
     brandsService.getList().then((res) => {
-      if (res.data?.status === 200) {
+      if (res?.data?.status === 200) {
         let categories = res.data?.meta?.data?.map((item) => {
           return {
             id: item?.id,
@@ -104,10 +99,12 @@ const AddProducts = () => {
     if (!!product?.category) {
       adminService.getVariant(product?.category?.id)?.then((res) => {
         if (res?.data?.status === 200) {
-          let check = res.data?.meta.data?.some(
-            (res) => res.name_en === "color" || res.name_en === "size"
-          );
-          setHasColorAndSize(check);
+          let custom = res.data?.meta.data?.reduce((result, item) => {
+            result[item.name_en] = '';
+            return result;
+          }, {})
+          setCustomVariant([{...custom, quantity: '', images: [{}, {}, {}, {}, {}]}])
+          setStaticVariantValue(custom)
           setVariant(res.data?.meta.data);
         }
       });
@@ -115,7 +112,7 @@ const AddProducts = () => {
       subCategoriesService
         .getListForCategory(product?.category?.id)
         .then((res) => {
-          if (res.data?.status === 200) {
+          if (res?.data?.status === 200) {
             let subCategories = res.data?.meta?.data?.map((item) => {
               return {
                 id: item?.id,
@@ -130,7 +127,7 @@ const AddProducts = () => {
       productsService
         ?.getDynamicVariant(product?.category?.value)
         .then((res) => {
-          if (res.status === 200) {
+          if (res?.status === 200) {
             let data = res.data?.data?.map((item) => {
               return {
                 ...item,
@@ -152,7 +149,7 @@ const AddProducts = () => {
       dispatch(loadingToggleAction(true));
       productsService.getProduct(prod_id)?.then((res) => {
         let response = res.data?.data;
-        if (res.data?.status === 200) {
+        if (res?.data?.status === 200) {
           let data = {
             ...response?.product,
             offerPrice: !!Number(response.product.offerPrice)
@@ -226,7 +223,7 @@ const AddProducts = () => {
     }
   }, []);
 
-  const fileHandler = (e, index) => {
+  const fileHandler = (e, index, ) => {
     let filesAll = e.target.files;
     const filesData = Object.values(filesAll);
     let update = files?.map((file, updateIndex) => {
@@ -254,6 +251,32 @@ const AddProducts = () => {
     }, 200);
   };
 
+  const variantFileHandler = (e, imageIndex, customVariantIndex) => {
+    let filesAll = e.target.files;
+    const filesData = Object.values(filesAll);
+
+    new BaseService().postUpload(filesData[0]).then((res) => {
+      if (res?.data?.status) {
+        let update = customVariant.map((item, ind) => {
+          if (ind === customVariantIndex) {
+            return {
+              ...item,
+              images: item?.images?.map((img, imgInd)=>{
+              if(imgInd === imageIndex){
+                return { src: res.data.url }
+              } else {
+                return img
+              }
+            })}
+          } else {
+            return { ...item };
+          }
+        });
+        setCustomVariant(update);
+      }
+    });
+  };
+
   const handlerText = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
@@ -266,12 +289,20 @@ const AddProducts = () => {
       });
       return;
     }
-    if (product?.images?.filter((res) => !!res?.src)?.length === 0) {
+    if (imagesForAll && product?.images?.filter((res) => !!res?.src)?.length === 0) {
       toast.error("Upload Images");
       return;
     }
-    if (product?.variant?.length !== variant?.length) {
-      toast.error("Selected Variant");
+    if (!imagesForAll && customVariant?.map(obj =>
+          obj.images.every(obj => Object.keys(obj).length === 0)
+        )?.includes(true)) {
+      toast.error("Upload Images in Cards");
+      return;
+    }
+    if (customVariant?.length > 0 && customVariant?.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(obj =>
+      Object.values(obj)?.every(value => value === "")
+    )?.includes(true)) {
+      toast.error("Selected at Least One Variant");
       return;
     }
     setLoadning(true);
@@ -279,17 +310,24 @@ const AddProducts = () => {
       name_en: product.name_en,
       name_ar: product.name_ar,
       price: parseFloat(product.price),
-      type: "normal",
       code: product.code,
       category_id: product.category?.value,
+      all_image: imagesForAll,
       images: product?.images
         ?.filter((res) => !!res?.src)
         ?.map((item) => item?.src),
-      weight: product?.weight,
-      variant: product.variant?.map((res) => {
+      variant: customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
+        return Object.values(res).filter(item => !!item)?.map(data=>{
+          return {
+            variant_value_id: data?.id,
+                variant_id: data?.variant_id,
+          }
+        })
+      }),
+      variant_data: customVariant?.map(({ quantity, images }) => ({ quantity,images }))?.map((res) => {
         return {
-          variant_value_id: res?.variant_value_id,
-          variant_id: res?.variant_id,
+          images: res?.images?.filter(img=> !!img.src)?.map(img=> img.src),
+          amount: Number(res?.quantity),
         };
       }),
       dynamic_variant: product?.dynamic_variant?.map((dy) => {
@@ -297,7 +335,7 @@ const AddProducts = () => {
           dynamic_variant_id: dy?.id,
         };
       }),
-      amount: parseFloat(product.amount),
+      // amount: parseFloat(product.amount),
       description_en: product.description_en,
       description_ar: product.description_ar,
       bestSeller: product.bestSeller,
@@ -310,6 +348,7 @@ const AddProducts = () => {
     if (!!product.sub_category)
       data["sub_category_id"] = product?.sub_category?.value;
     if (!!product.brand) data["brand_id"] = product?.brand?.value;
+    if (!!product.weight) data["weight"] = product?.weight;
 
     if (!!id) {
       productsService.update(id, data)?.then((res) => {
@@ -335,7 +374,6 @@ const AddProducts = () => {
         if (res.data?.status === 201) {
           setConfirm(true);
           toast.success("Product Added Successfully");
-          // navigate('/products')
         }
         setLoadning(false);
       });
@@ -572,7 +610,7 @@ const AddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
-          <Col md={6} sm={6} className="mb-3">
+          {/* <Col md={6} sm={6} className="mb-3">
             <AvField
               label={`${Translate[lang]?.quantity}*`}
               type="number"
@@ -589,7 +627,7 @@ const AddProducts = () => {
               value={product.amount}
               onChange={(e) => handlerText(e)}
             />
-          </Col>
+          </Col> */}
           <Col md={6} sm={6} className="mb-3">
             <AvField
               label={Translate[lang]?.weight}
@@ -658,143 +696,247 @@ const AddProducts = () => {
             />
           </Col>
         </Row>
-        {hasColorAndSize &&
-          customVariant.map((res, index) => {
-            return (
-              <Row>
-                {variant?.filter((res) => res.name_en === "color")?.length >
-                  0 && (
-                  <Col md={3}>
-                    <label className="text-label">
-                      {lang === "en" ? "Color" : "اللون"}
-                    </label>
-                    <Select
-                      placeholder={Translate[lang]?.select}
-                      options={variant
-                        ?.filter((res) => res.name_en === "color")[0]
-                        ?.variant_values?.map((res) => {
-                          return {
-                            label: res.value_en,
-                            value: res.value_en,
-                          };
-                        })}
-                      styles={{
-                        option: (provided, state) => {
-                          return {
-                            ...provided,
-                            "&": {
-                              background: state.data?.value,
-                            },
-                            "&:hover": {
-                              border: "1px solid #fff",
-                            },
-                          };
-                        },
-                      }}
-                      value={res.color}
-                      onChange={(e) => {
-                        let update = customVariant?.map((res, ind) => {
-                          if (ind === index) {
-                            return {
-                              ...res,
-                              color: e,
-                            };
-                          } else {
-                            return res
-                          }
-                        });
-                        setCustomVariant([...update]);
-                      }}
-                    />
-                  </Col>
-                )}
-                {variant?.filter((res) => res.name_en === "color")?.length >
-                  0 && (
-                  <Col md={1} className="d-flex align-items-center">
-                    <span
-                      className={`d-inline-block`}
-                      style={{
-                        background: res.color?.value,
-                        width: "30px",
-                        height: "30px",
-                        border: "1px solid",
-                        textAlign: "center",
-                        marginTop: "12px",
-                      }}
-                    ></span>
-                  </Col>
-                )}
-                {variant?.filter((res) => res.name_en === "size")?.length >
-                  0 && (
-                  <Col md={4}>
-                    <label className="text-label">
-                      {lang === "en" ? "Size" : "المقاس"}
-                    </label>
-                    <Select
-                      placeholder={Translate[lang]?.select}
-                      options={variant
-                        ?.filter((res) => res.name_en === "size")[0]
-                        ?.variant_values?.map((res) => {
-                          return {
-                            label: lang === "en" ? res.value_en : res.value_ar,
-                            value: res.value_en,
-                          };
-                        })}
-                      value={res.size}
-                      onChange={(e) => {
-                        let update = customVariant?.map((res, ind) => {
-                          if (ind === index) {
-                            return {
-                              ...res,
-                              size: e,
-                            };
-                          } else{
-                            return res
-                          }
-                        });
-                        setCustomVariant([...update]);
-                      }}
-                    />
-                  </Col>
-                )}
-                <Col md={4}>
-                  <AvField
-                    label={Translate[lang]?.quantity}
-                    type="number"
-                    placeholder={Translate[lang]?.quantity}
-                    min="0"
-                    bsSize="lg"
-                    name="quantity"
-                    value={res.quantity}
+
+        {variant?.length > 0 && 
+          customVariant?.map((cVariant, index)=>{
+            return <Row className="mb-3 position-relative" key={index} style={{ boxShadow: 'rgb(222 222 222 / 89%) 0px 0px 5px', padding: '24px 0 12px 0' }}> 
+            {variant.map(res => {
+              if(res.name_en === "color"){
+                return <>
+                <Col md={3} className='mb-3'>
+                  <label className="text-label">
+                    {lang === "en" ? "Color" : "اللون"}
+                  </label>
+                  <Select
+                    placeholder={Translate[lang]?.select}
+                    options={res.variant_values?.map((res1) => {
+                        return {
+                          ...res1,
+                          label: res1.value_en,
+                          value: res1.value_en,
+                        };
+                    })}
+                    styles={{
+                      option: (provided, state) => {
+                        return {
+                          ...provided,
+                          "&": {
+                            background: state.data?.value,
+                            border: `1px solid ${state.data?.value}`,
+                          },
+                          "&:hover": {
+                            border: "1px solid #fff",
+                          },
+                        };
+                      },
+                    }}
+                    value={cVariant?.color}
                     onChange={(e) => {
-                      let update = customVariant?.map((res, ind) => {
+                      let update = customVariant?.map((res1, ind) => {
                         if (ind === index) {
                           return {
-                            ...res,
-                            quantity: e.target.value,
+                            ...res1,
+                            color: {...e,variant_id: res.id},
                           };
-                        } else{
-                          return res
+                        } else {
+                          return res1
                         }
                       });
                       setCustomVariant([...update]);
                     }}
                   />
                 </Col>
-              </Row>
+                <Col md={1} className="d-flex align-items-center">
+                  <span
+                    className={`d-inline-block`}
+                    style={{
+                      background: cVariant?.color?.value,
+                      width: "30px",
+                      height: "30px",
+                      border: "1px solid",
+                      textAlign: "center",
+                      marginTop: "16px",
+                    }}
+                  ></span>
+                </Col>
+                </>
+              } else {
+                return <Col md={4} className='mb-3'>
+                  <label className="text-label">
+                    {lang === "en" ? res.name_en : res.name_ar}
+                  </label>
+                  <Select
+                    placeholder={Translate[lang]?.select}
+                    options={res.variant_values?.map((res1) => {
+                        return {
+                          ...res1,
+                          label: lang === "en" ? res1.value_en : res1.value_ar,
+                          value: res1.value_en,
+                        };
+                    })}
+                    value={cVariant[res?.name_en]}
+                    onChange={(e) => {
+                      let update = customVariant?.map((res1, ind) => {
+                        if (ind === index) {
+                          return {
+                            ...res1,
+                            [res.name_en]: {...e,variant_id: res.id},
+                          };
+                        } else{
+                          return res1
+                        }
+                      });
+                      setCustomVariant([...update]);
+                    }}
+                  />
+                </Col>
+              }
+            })}
+          <Col md={4}>
+                <AvField
+                  label={Translate[lang]?.quantity}
+                  type="number"
+                  placeholder={Translate[lang]?.quantity}
+                  min="0"
+                  bsSize="lg"
+                  name={`quantity${index}`}
+                  value={cVariant?.quantity}
+                  validate={{
+                    required: {
+                      value: true,
+                      errorMessage: Translate[lang].field_required,
+                    },
+                    pattern: {
+                      value: "/^[0-9 ]+$/",
+                      errorMessage: `Format is invalid`,
+                    },
+                  }}
+                  onChange={(e) => {
+                    let update = customVariant?.map((res, ind) => {
+                      if (ind === index) {
+                        return {
+                          ...res,
+                          quantity: e.target.value,
+                        };
+                      } else{
+                        return res
+                      }
+                    });
+                    setCustomVariant([...update]);
+                  }}
+                />
+          </Col>
+          <Col md={12}>
+          {!imagesForAll && <>
+            <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
+              {Translate[lang]?.images}
+            </label>
+          <Row>
+            {cVariant?.images?.map((data, i) => {
+            return (
+              <Col md={2} sm={3} className="mb-3" key={i}>
+                <div className="image-placeholder">
+                  <div className="avatar-edit">
+                    <input
+                      type="file"
+                      onChange={(e) => variantFileHandler(e, i, index)}
+                      id={`imageUpload${index}${i}`}
+                    />
+                    <label htmlFor={`imageUpload${index}${i}`} name=""></label>
+                  </div>
+                  <button
+                    className="delete-img"
+                    type="button"
+                    onClick={() => {
+                      let update = customVariant.map((item, ind) => {
+                        if (ind === index) {
+                          return {
+                            ...item,
+                            images: item?.images?.map((img, imgInd)=>{
+                            if(imgInd === i){
+                              return { src: "" }
+                            } else {
+                              return img
+                            }
+                          })}
+                        } else {
+                          return { ...item };
+                        }
+                      });
+                      setCustomVariant(update);
+                    }}
+                  >
+                    <i className="la la-trash"></i>
+                  </button>
+                  <div className="avatar-preview4" style={{height: '9rem'}}>
+                    {!!data.src ? (
+                      <div id={`image${index}${i}`}>
+                        <img
+                          id={`saveImage${index}${i}`}
+                          src={data?.src}
+                          alt="icon"
+                          className="w-100"
+                        />
+                      </div>
+                    ) : (
+                      <div id={`image${index}${index}`}>
+                        {files[index]?.name && (
+                          <img
+                            id={`saveImage${index}${index}`}
+                            src={URL.createObjectURL(files[index])}
+                            alt="icon"
+                          />
+                        )}
+                        {!files[index]?.name && (
+                          <img
+                            id={`saveImage${index}${index}`}
+                            src={uploadImg}
+                            alt="icon"
+                            style={{
+                              width: "60px",
+                              height: "60px",
+                            }}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Col>
             );
           })}
-        {hasColorAndSize && (
+          </Row></>}
+          </Col>
+          {index > 0 && <button type="button" style={{
+              background: 'none', border: 'none', color: 'var(--danger)', fontSize: '24px',
+              position: 'absolute', top: '4px',
+              left: lang==='ar' ? '12px' : 'auto',
+              right: lang==='en' ? '12px' : 'auto',
+              
+            }}
+            onClick={()=>{
+              let update = customVariant.filter((_, ind)=> ind !== index)
+              setCustomVariant(update)
+            }}
+          >
+            <i className="la la-times-circle"></i>
+          </button>}
+        </Row>
+          })
+        }
+
+        {/* Add New Value Button */}
+        {variant?.length > 0 && (
           <button
-            className="btn btn-link px-0 "
+            className="btn btn-outline-danger mb-4 "
             type="button"
             onClick={() =>
               setCustomVariant([
                 ...customVariant,
                 {
-                  color: "",
-                  size: "",
+                  ...staticVariantValue,
                   quantity: "",
+                  images: [{}, {}, {}, {}, {}]
                 },
               ])
             }
@@ -802,169 +944,8 @@ const AddProducts = () => {
             {Translate[lang].add_new_value}
           </button>
         )}
-        {variant
-          ?.filter((res1) => res1.name_en !== "color")
-          .filter((res1) => res1.name_en !== "size")?.length > 0 && (
-          <Row>
-            {variant
-              ?.filter((res1) => res1.name_en !== "color")
-              .filter((res1) => res1.name_en !== "size")
-              ?.map((item, index) => {
-                let findInd = product?.variant?.findIndex(
-                  (res) => res.name_en === item.name_en
-                );
-                return (
-                  <Col md={6} sm={6} className="mb-3">
-                    <label className="text-label">
-                      {lang === "en" ? item.name_en : item.name_ar}
-                    </label>
-                    <div
-                      className="d-grid mt-2"
-                      style={{ gridTemplateColumns: "auto auto auto auto" }}
-                    >
-                      {item?.variant_values?.map((value) => {
-                        if (item?.name_en === "color") {
-                          return (
-                            <label
-                              for={value?.value_en}
-                              className="m-0 mr-3 position-relative"
-                            >
-                              <input
-                                type="radio"
-                                id={value?.value_en}
-                                name={item.name_en}
-                                value={value?.value_en}
-                                checked={
-                                  product.variant[findInd]?.variant_values
-                                    ?.value_en === value?.value_en
-                                }
-                                className="mr-2"
-                                required
-                                style={{
-                                  width: "30px",
-                                  height: "30px",
-                                  opacity: 0,
-                                }}
-                                onChange={() => {
-                                  let var_value = {
-                                    name_en: item.name_en,
-                                    name_ar: item.name_ar,
-                                    variant_value_id: value.id,
-                                    variant_id: item.id,
-                                    variant_values: {
-                                      ...value,
-                                    },
-                                  };
-                                  let isExist = product?.variant?.filter(
-                                    (res) => res.variant_id === item.id
-                                  );
-                                  if (!isExist?.length) {
-                                    setProduct({
-                                      ...product,
-                                      variant: [...product.variant, var_value],
-                                    });
-                                  } else {
-                                    let update = product?.variant?.map(
-                                      (res) => {
-                                        if (res.variant_id === item.id) {
-                                          return var_value;
-                                        } else {
-                                          return res;
-                                        }
-                                      }
-                                    );
-                                    setProduct({
-                                      ...product,
-                                      variant: [...update],
-                                    });
-                                  }
-                                }}
-                              />
-                              <span
-                                className={`d-inline-block`}
-                                style={{
-                                  background: value?.value_en,
-                                  width: "30px",
-                                  height: "30px",
-                                  border: "1px solid",
-                                  textAlign: "center",
-                                  position: "absolute",
-                                  left: "0",
-                                }}
-                              >
-                                {value?.value_en ===
-                                product.variant[findInd]?.variant_values
-                                  ?.value_en ? (
-                                  <i className="la la-check color"></i>
-                                ) : (
-                                  ""
-                                )}
-                              </span>
-                            </label>
-                          );
-                        }
-                        return (
-                          <label for={value?.value_en} className="m-0 mr-3">
-                            <input
-                              type="radio"
-                              id={value?.value_en}
-                              name={item.name_en}
-                              value={value?.value_en}
-                              checked={
-                                product.variant[findInd]?.variant_values
-                                  ?.value_en === value?.value_en
-                              }
-                              className="mr-2"
-                              required
-                              onClick={(e) => {
-                                let var_value = {
-                                  name_en: item.name_en,
-                                  name_ar: item.name_ar,
-                                  variant_value_id: value.id,
-                                  variant_id: item.id,
-                                  variant_values: {
-                                    ...value,
-                                  },
-                                };
-                                let isExist = product?.variant?.filter(
-                                  (res) => res.variant_id === item.id
-                                );
-                                // console.log(!isExist?.length);
-                                if (!isExist?.length) {
-                                  setProduct({
-                                    ...product,
-                                    variant: [...product.variant, var_value],
-                                  });
-                                } else {
-                                  let update = product?.variant?.map((res) => {
-                                    if (res.variant_id === item.id) {
-                                      return var_value;
-                                    } else {
-                                      return res;
-                                    }
-                                  });
-                                  setProduct({
-                                    ...product,
-                                    variant: [...update],
-                                  });
-                                }
-                                // if(product.variant?.length === 0){
-                                //     setProduct({...product, variant: [var_value]})
-                                // } else {
 
-                                // }
-                              }}
-                            />
-                            {lang === "en" ? value?.value_en : value?.value_ar}
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </Col>
-                );
-              })}
-          </Row>
-        )}
+        {/* Dynamic Variant */}
         {dynamicVariant?.length > 0 && (
           <Row>
             <Col md={12}>
@@ -1021,7 +1002,13 @@ const AddProducts = () => {
         )}
 
         <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
-          {Translate[lang]?.images}
+          <input
+            type='checkbox' 
+            name='images' 
+            className={`${lang === 'ar' ? 'ml-2' : 'mr-2'}`} 
+            onClick={(e) => setImagesForAll(e.target.checked)} />
+          {Translate[lang]?.images_for_all_products}
+
         </label>
         <Row>
           {product?.images?.map((data, index) => {
@@ -1080,9 +1067,7 @@ const AddProducts = () => {
             );
           })}
         </Row>
-        {/* <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
-          {Translate[lang]?.images_variant}
-        </label> */}
+
         <div className="d-flex justify-content-between mt-4">
           <Button
             variant="secondary"
