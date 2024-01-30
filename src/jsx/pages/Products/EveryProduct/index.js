@@ -40,7 +40,7 @@ const EveryProduct = () =>{
             }
             setLoading(false)
         })
-    },[])
+    },[shouldUpdate])
 
     return <Card>
     <Card.Body className={`${hasData === 0 && 'text-center'} `}>
