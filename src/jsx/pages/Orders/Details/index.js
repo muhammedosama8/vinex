@@ -44,7 +44,6 @@ const OrderDetails = () => {
                     return <tr key={index} className="text-center">
                         <td>{cart.id}</td>
                         <td>{lang === 'en' ? cart.product.name_en : cart.product.name_ar}</td>
-                        <td>{cart.product.price}</td>
                         <td>{cart.product.variant?.map(res=> {
                           return <Badge 
                           className="mb-2 py-2"
@@ -63,6 +62,7 @@ const OrderDetails = () => {
                               }}></span> : lang === 'en' ? res?.variant_value?.value_en : res?.variant_value?.value_ar}
                             </Badge>
                         })}</td>
+                        <td>{cart.product.price}</td>
                         <td>{cart.amount}</td>
                         <td>{Number(cart.amount)*Number(cart.product.price)}</td>
                     </tr>
