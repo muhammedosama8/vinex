@@ -24,6 +24,7 @@ const AddDigitalProducts = () => {
         amount: 1,
         description_en: '',
         description_ar: '',
+        code: '',
         bestSeller: false,
         newIn: false,
         offer: false,
@@ -63,7 +64,7 @@ const AddDigitalProducts = () => {
 
     useEffect(()=>{
         categoriesService.getList().then(res=>{
-            if(res.data?.status === 200){
+            if(res?.data?.status === 200){
                let categories =  res.data?.meta?.data?.map(item=>{
                   return{
                      id: item?.id,
@@ -75,7 +76,7 @@ const AddDigitalProducts = () => {
             }
         })
         brandsService.getList().then(res=>{
-            if(res.data?.status === 200){
+            if(res?.data?.status === 200){
                let categories =  res.data?.meta?.data?.map(item=>{
                   return{
                      id: item?.id,
@@ -91,7 +92,7 @@ const AddDigitalProducts = () => {
     useEffect(()=>{
         if(!!product?.category){
            subCategoriesService.getListForCategory(product?.category?.id).then(res=>{
-                if(res.data?.status === 200){
+                if(res?.data?.status === 200){
                     let subCategories =  res.data?.meta?.data?.map(item=>{
                         return{
                             id: item?.id,
@@ -125,7 +126,7 @@ const AddDigitalProducts = () => {
             dispatch(loadingToggleAction(true))
             productsService?.getProduct(prod_id)?.then(res=>{
                 let response = res.data.data
-                if(res.data?.status === 200){
+                if(res?.data?.status === 200){
                     let data= {
                         ...response?.product,
                         offerPrice: response.product.offerPrice || '',
@@ -238,27 +239,28 @@ const AddDigitalProducts = () => {
             name_en: product.name_en,
             name_ar: product.name_ar,
             price: parseFloat(product.price),
+            cost: product.cost,
             category_id: product.category?.value,
             images: product?.images?.filter(res=> !!res?.src)?.map(item=> item?.src),
-            dynamic_variant: product?.dynamic_variant?.map(dy=>{
-                return {
-                    dynamic_variant_id: dy?.id
-                }
-            }),
             amount: parseFloat(product.amount),
             description_en: product.description_en,
-            type: 'digital',
             description_ar: product.description_ar,
+
+            // dynamic_variant: product?.dynamic_variant?.map(dy=>{
+            //     return {
+            //         dynamic_variant_id: dy?.id
+            //     }
+            // }),
+            
             bestSeller: product.bestSeller,
             newIn: product.newIn,
             offer: product.offer,
-            cost: product.cost,
             offerPrice: parseFloat(product.offerPrice),
             serial_number: product?.serial_number
         }
         if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
         if(!!product.brand) data['brand_id']= product?.brand?.value
-        // if(!!product.serial_image.src) data['serial_number']= product?.serial_image?.src
+        if(!!product.code) data['code']= product?.code
 
         if(!!id){
             productsService?.update(id, data)?.then(res=>{
@@ -271,7 +273,7 @@ const AddDigitalProducts = () => {
                 setLoadning(false)
             })
         } else {
-            productsService?.create(data)?.then(res=>{
+            productsService?.createDigitalProduct(data)?.then(res=>{
                 if(res?.data?.status === 201){
                     setConfirm(true)
                     toast.success('Product Added Successfully')
@@ -472,6 +474,23 @@ const AddDigitalProducts = () => {
                             />
                 </Col>
                 <Col md={6} className="mb-3">
+                        <AvField
+                                label={`${Translate[lang].code}*`}
+                                type='text'
+                                placeholder={Translate[lang].code}
+                                bsSize="lg"
+                                name='code'
+                                // validate={{
+                                //     required: {
+                                //         value: true,
+                                //         errorMessage: Translate[lang].field_required
+                                //     }
+                                // }}
+                                value={product.code}
+                                onChange={(e)=> handlerText(e)}
+                            />
+                </Col>
+                <Col md={6} className="mb-3">
                     <AvField
                                 label={`${Translate[lang].quantity}*`}
                                 type='number'
@@ -546,7 +565,7 @@ const AddDigitalProducts = () => {
                         onChange={(e)=> setProduct({...product, offer: e.target.checked})}
                       />
                 </Col>
-                {dynamicVariant?.length > 0 && <Col md={6}>
+                {/* {dynamicVariant?.length > 0 && <Col md={6}>
                 <label className="text-label mb-2 d-block">{Translate[lang].dynamic_variant}</label>
                 <Select 
                     options={dynamicVariant?.filter(res=> !product.dynamic_variant?.some(res2=> res.label === res2.label))}
@@ -558,7 +577,7 @@ const AddDigitalProducts = () => {
                         setProduct({...product, dynamic_variant: e})
                     }}
                 />
-            </Col>}
+            </Col>} */}
             </Row>
             
 

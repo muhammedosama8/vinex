@@ -8,10 +8,14 @@ const apiDynamicVariantEndpoint = API_BASE_URL_ENV() + "/dynamicVariant/dynamicV
 const apiDynamicVariantForProductEndpoint = API_BASE_URL_ENV() + "/product/dynamicVariantsOfProduct";
 const apiTogglle = API_BASE_URL_ENV() +"/admin/block"
 const apiProductCode = API_BASE_URL_ENV() +"/product/codeAuth"
+const apiDigitalProduct = API_BASE_URL_ENV() +"/product/digtal"
 
 export default class ProductsService extends BaseService {
     constructor() {
         super(apiEndpoint);
+    }
+    createDigitalProduct(data) {
+        return http.post(apiDigitalProduct, data);
     }
     getAllProducts(params) {
         return http.get(apiEndpoint, {params});
