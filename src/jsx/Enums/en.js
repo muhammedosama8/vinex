@@ -133,6 +133,7 @@ export const English = {
   new_user: "New User",
   search: "Search",
   order_day: "Order Day",
+  day: "Day",
   from: "From",
   to: "To",
   coupon: "Coupon",
@@ -160,6 +161,9 @@ export const English = {
   delete_message:
     "Kindly note that this action can`t be undone and the details will get deleted.",
   welcome_back: "Welcome Back",
+  welcome: "Welcome",
+  thanks: "We thank you for shopping at",
+  application_submitted: "Application Submitted",
   details: "Details",
   sign_text: "Sign in by entering information below",
   text: "Very Good Works are Waiting for you",

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Badge, Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../../common/DeleteModal";
 import { Translate } from "../../../Enums/Tranlate";
 import AddressModal from "./AddressModal";
@@ -12,6 +12,7 @@ const CardItem = ({ item, index, setModal, setItem }) => {
   const lang = useSelector((state) => state.auth?.lang);
   const [detailsModal, setDetailsModal] = useState(false)
   const isExist = (data) => Auth?.admin?.admin_roles?.includes(data);
+  const navigate = useNavigate()
 
   const changeStatusToggle = () => {
     if (!isExist("order")) {
@@ -86,7 +87,11 @@ const CardItem = ({ item, index, setModal, setItem }) => {
           {Translate[lang].details}
         </Link>
       </td>
-      <td>
+      <td className="d-flex align-items-center cursor-pointer">
+        <i 
+          className="la la-eye"
+          onClick={()=> navigate('/orders/invoice', {state: item})}
+        ></i>
         {isExist("order") && (
           <Dropdown>
             <Dropdown.Toggle

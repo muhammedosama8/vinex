@@ -230,6 +230,10 @@ const AddDigitalProducts = () => {
             })
             return
         }
+        if(!product.category?.value){
+            toast.error('Select Category')
+            return
+        }
         if(product?.images?.filter(res=> !!res?.src)?.length === 0){
             toast.error('Upload Images')
             return
@@ -239,6 +243,7 @@ const AddDigitalProducts = () => {
             name_en: product.name_en,
             name_ar: product.name_ar,
             price: parseFloat(product.price),
+            code: product?.code,
             cost: product.cost,
             category_id: product.category?.value,
             images: product?.images?.filter(res=> !!res?.src)?.map(item=> item?.src),
@@ -260,7 +265,6 @@ const AddDigitalProducts = () => {
         }
         if(!!product.sub_category) data['sub_category_id']= product?.sub_category?.value
         if(!!product.brand) data['brand_id']= product?.brand?.value
-        if(!!product.code) data['code']= product?.code
 
         if(!!id){
             productsService?.update(id, data)?.then(res=>{
@@ -480,12 +484,12 @@ const AddDigitalProducts = () => {
                                 placeholder={Translate[lang].code}
                                 bsSize="lg"
                                 name='code'
-                                // validate={{
-                                //     required: {
-                                //         value: true,
-                                //         errorMessage: Translate[lang].field_required
-                                //     }
-                                // }}
+                                validate={{
+                                    required: {
+                                        value: true,
+                                        errorMessage: Translate[lang].field_required
+                                    }
+                                }}
                                 value={product.code}
                                 onChange={(e)=> handlerText(e)}
                             />

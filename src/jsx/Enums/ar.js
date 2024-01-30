@@ -158,6 +158,9 @@ export const Arabic = {
   delete_message:
     "يرجى ملاحظة أنه لا يمكن التراجع عن هذا الإجراء وسيتم حذف التفاصيل.",
   welcome_back: "مرحبا بعودتك",
+  welcome: "مرحبا",
+  thanks: "نشكرك على التسوق في",
+  application_submitted: "تم تقديم الطلب!",
   sign_text: "قم بتسجيل الدخول عن طريق إدخال المعلومات أدناه",
   text: "أعمال جيدة جدا في انتظاركم",
   sign_in: "تسجيل الدخول",
@@ -217,6 +220,7 @@ export const Arabic = {
   apt_number: "رقم الشقة",
   other_instructions: "تعليمات أخرى",
   delivery_day: "يوم التوصيل",
+  day: "يوم",
   time: "الوقت",
   confirm_added: "تأكيد الإضافة",
   confirm_des: "يمكنك إضافة منتج آخر عن طريق تغيير بعض المعلومات",

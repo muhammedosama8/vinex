@@ -58,6 +58,7 @@ import PaymentLink from "./pages/PaymentLink";
 import CreateInvoice from "./pages/Setting/CreateInvoice";
 import OrderDetails from "./pages/Orders/Details";
 import EveryProduct from "./pages/Products/EveryProduct";
+import Invoice from "./pages/Orders/Invoice";
 //import TranactionStatus from "./pages/TranactionStatus";
 
 const Markup = () => {
@@ -107,6 +108,7 @@ const Markup = () => {
     { url: "orders", component: <Orders /> },
     { url: "orders/add-orders", component: <AddOrders /> },
     { url: "orders/details", component: <OrderDetails /> },
+    { url: "orders/invoice", component: <Invoice /> },
 
     // Reports
     { url: "reports", component: <Reports /> },
