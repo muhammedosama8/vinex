@@ -7,6 +7,7 @@ const apiGetEndpoint = API_BASE_URL_ENV() + "/product/Auth";
 const apiDynamicVariantEndpoint = API_BASE_URL_ENV() + "/dynamicVariant/dynamicVariantsByCategory";
 const apiDynamicVariantForProductEndpoint = API_BASE_URL_ENV() + "/product/dynamicVariantsOfProduct";
 const apiTogglle = API_BASE_URL_ENV() +"/admin/block"
+const apiProductCode = API_BASE_URL_ENV() +"/product/codeAuth"
 
 export default class ProductsService extends BaseService {
     constructor() {
@@ -14,6 +15,9 @@ export default class ProductsService extends BaseService {
     }
     getAllProducts(params) {
         return http.get(apiEndpoint, {params});
+    }
+    getCustomProducts(id){
+        return http.get(`${apiProductCode}/${id}`);
     }
     getList(params) {
         return http.get(apiGetEndpoint, {params});

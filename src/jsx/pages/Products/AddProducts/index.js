@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import BaseService from "../../../../services/BaseService";
 import SubCategoriesService from "../../../../services/SubCategoriesService";
 import ProductsService from "../../../../services/ProductsService";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmModal from "../../../common/ConfirmModal";
 import BrandsService from "../../../../services/BrandsService";
 import { loadingToggleAction } from "../../../../store/actions/AuthActions";
@@ -60,6 +60,7 @@ const AddProducts = () => {
   // const [productDynamicVariant, setProductDynamicVariant] = useState([])
   const [files, setFiles] = useState([{}, {}, {}, {}, {}]);
   const navigate = useNavigate();
+  const location = useLocation();
   const categoriesService = new CategoriesService();
   const subCategoriesService = new SubCategoriesService();
   const adminService = new AdminService();
@@ -103,7 +104,9 @@ const AddProducts = () => {
             result[item.name_en] = '';
             return result;
           }, {})
-          setCustomVariant([{...custom, quantity: '', images: [{}, {}, {}, {}, {}]}])
+          if(!id){
+            setCustomVariant([{...custom, quantity: '', images: [{}, {}, {}, {}, {}]}])
+          }
           setStaticVariantValue(custom)
           setVariant(res.data?.meta.data);
         }
@@ -146,6 +149,7 @@ const AddProducts = () => {
     setId(Number(prod_id));
 
     if (!!prod_id) {
+      let obj = {}
       dispatch(loadingToggleAction(true));
       productsService.getProduct(prod_id)?.then((res) => {
         let response = res.data?.data;
@@ -197,6 +201,15 @@ const AddProducts = () => {
                 }
               : "",
             variant: response.product?.variant?.map((item) => {
+              obj[`${item.variant?.name_en}`] = {
+                // ...obj,
+                id: item?.variant_value?.id,
+                variant_id: item.variant?.id,
+                label: item.variant_value?.value_en,
+                value: item.variant_value?.value_en,
+                value_ar: item.variant?.name_ar,
+                value_en: item.variant?.name_en,
+              }
               return {
                 name_ar: item.variant?.name_ar,
                 name_en: item.variant?.name_en,
@@ -218,6 +231,10 @@ const AddProducts = () => {
               dispatch(loadingToggleAction(false));
             }
           });
+          setCustomVariant([{
+            ...obj,
+            quantity: response?.product?.amount,
+          }])
         }
       });
     }
@@ -293,7 +310,7 @@ const AddProducts = () => {
       toast.error("Upload Images");
       return;
     }
-    if (!imagesForAll && customVariant?.map(obj =>
+    if (!id && !imagesForAll && customVariant?.map(obj =>
           obj.images.every(obj => Object.keys(obj).length === 0)
         )?.includes(true)) {
       toast.error("Upload Images in Cards");
@@ -312,30 +329,29 @@ const AddProducts = () => {
       price: parseFloat(product.price),
       code: product.code,
       category_id: product.category?.value,
-      all_image: imagesForAll,
       images: product?.images
         ?.filter((res) => !!res?.src)
         ?.map((item) => item?.src),
-      variant: customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
+      variant: !id ? customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
         return Object.values(res).filter(item => !!item)?.map(data=>{
           return {
             variant_value_id: data?.id,
                 variant_id: data?.variant_id,
           }
         })
-      }),
-      variant_data: customVariant?.map(({ quantity, images }) => ({ quantity,images }))?.map((res) => {
-        return {
-          images: res?.images?.filter(img=> !!img.src)?.map(img=> img.src),
-          amount: Number(res?.quantity),
-        };
-      }),
+      }) : customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
+        return Object.values(res).filter(item => !!item)?.map(data=>{
+          return {
+            variant_value_id: data?.id,
+                variant_id: data?.variant_id,
+          }
+        })
+      })[0],
       dynamic_variant: product?.dynamic_variant?.map((dy) => {
         return {
           dynamic_variant_id: dy?.id,
         };
       }),
-      // amount: parseFloat(product.amount),
       description_en: product.description_en,
       description_ar: product.description_ar,
       bestSeller: product.bestSeller,
@@ -349,23 +365,31 @@ const AddProducts = () => {
       data["sub_category_id"] = product?.sub_category?.value;
     if (!!product.brand) data["brand_id"] = product?.brand?.value;
     if (!!product.weight) data["weight"] = product?.weight;
+    if(!id) data['all_image']= imagesForAll
+    if(!id) data['variant_data'] = customVariant?.map(({ quantity, images }) => ({ quantity,images }))?.map((res) => {
+      return {
+        images: res?.images?.filter(img=> !!img.src)?.map(img=> img.src),
+        amount: Number(res?.quantity),
+      };
+    })
+    if(!!id) data['amount'] = customVariant[0]?.quantity
 
     if (!!id) {
       productsService.update(id, data)?.then((res) => {
         if (res.data?.status === 200) {
           toast.success("Product Updated Successfully");
-          // navigate('/products')
-          setConfirm(true);
-          setProduct({
-            ...product,
-            images: [
-              { src: "" },
-              { src: "" },
-              { src: "" },
-              { src: "" },
-              { src: "" },
-            ],
-          });
+          navigate(`/products/${product?.id}`, {state: product?.code})
+          // setConfirm(true);
+          // setProduct({
+          //   ...product,
+          //   images: [
+          //     { src: "" },
+          //     { src: "" },
+          //     { src: "" },
+          //     { src: "" },
+          //     { src: "" },
+          //   ],
+          // });
         }
         setLoadning(false);
       });
@@ -827,12 +851,12 @@ const AddProducts = () => {
                 />
           </Col>
           <Col md={12}>
-          {!imagesForAll && <>
+          {(!id && !imagesForAll) && <>
             <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
               {Translate[lang]?.images}
             </label>
           <Row>
-            {cVariant?.images?.map((data, i) => {
+            {!id && cVariant?.images?.map((data, i) => {
             return (
               <Col md={2} sm={3} className="mb-3" key={i}>
                 <div className="image-placeholder">
@@ -875,7 +899,7 @@ const AddProducts = () => {
                           id={`saveImage${index}${i}`}
                           src={data?.src}
                           alt="icon"
-                          className="w-100"
+                          className="w-100 h-100"
                         />
                       </div>
                     ) : (
@@ -926,7 +950,7 @@ const AddProducts = () => {
         }
 
         {/* Add New Value Button */}
-        {variant?.length > 0 && (
+        {(!id && variant?.length > 0 )&& (
           <button
             className="btn btn-outline-danger mb-4 "
             type="button"
@@ -1001,7 +1025,7 @@ const AddProducts = () => {
           </Row>
         )}
 
-        <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
+       {!id ? <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
           <input
             type='checkbox' 
             name='images' 
@@ -1009,7 +1033,9 @@ const AddProducts = () => {
             onClick={(e) => setImagesForAll(e.target.checked)} />
           {Translate[lang]?.images_for_all_products}
 
-        </label>
+        </label> : <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
+          {Translate[lang]?.images}
+        </label>}
         <Row>
           {product?.images?.map((data, index) => {
             return (

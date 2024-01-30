@@ -3,9 +3,9 @@ import { Badge, Dropdown, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import ProductsService from "../../../../services/ProductsService";
-import DeleteModal from "../../../common/DeleteModal";
-import { Translate } from "../../../Enums/Tranlate";
+import ProductsService from "../../../../../services/ProductsService";
+import DeleteModal from "../../../../common/DeleteModal";
+import { Translate } from "../../../../Enums/Tranlate";
 
 const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
@@ -70,8 +70,29 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                     <td>
                       <Badge variant="success light">{lang === 'en' ? item.category?.name_en : item.category?.name_ar}</Badge>
                     </td>
+                    <td>
+                      {item?.variant?.map(res=>{
+                        return <Badge 
+                        className="mb-2 py-2"
+                          key={res?.id} 
+                          variant="primary light"
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            {lang === 'en' ? res?.variant?.name_en : res?.variant?.name_ar}: {res?.variant?.name_en ==='color' ? <span style={{
+                              height: '24px', width: '24px', 
+                              background: res?.variant_value?.value_en, 
+                              border: '1px solid #fff',
+                              display: 'inline-block', margin: '0 4px'
+                            }}></span> : lang === 'en' ? res?.variant_value?.value_en : res?.variant_value?.value_ar}
+                          </Badge>
+                      })}
+                      
+                    </td>
                     <td>{item.price}</td>
-                    {/* <td>
+                    <td>
                       <input
                         type='number'
                         value={quantity}
@@ -104,9 +125,9 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                         disabled={!isExist('products')}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
-                    </td> */}
+                    </td>
                     <td>
-                      {/* {isExist('products') && <Dropdown>
+                      {isExist('products') && <Dropdown>
                         <Dropdown.Toggle
                           className="light sharp i-false"
                         >
@@ -119,8 +140,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                           {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang]?.deactive}</Dropdown.Item>}
                         {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>{Translate[lang]?.active}</Dropdown.Item>}
                         </Dropdown.Menu>
-                      </Dropdown>} */}
-                      <i className="la la-eye cursor-pointer" onClick={()=>navigate(`/products/${item.id}`, {state: item.code})}></i>
+                      </Dropdown>}
                     </td>
                     {deleteModal && <DeleteModal
                       open={deleteModal}

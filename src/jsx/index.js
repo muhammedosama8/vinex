@@ -57,6 +57,7 @@ import OrderFailed from "./common/OrderFailed";
 import PaymentLink from "./pages/PaymentLink";
 import CreateInvoice from "./pages/Setting/CreateInvoice";
 import OrderDetails from "./pages/Orders/Details";
+import EveryProduct from "./pages/Products/EveryProduct";
 //import TranactionStatus from "./pages/TranactionStatus";
 
 const Markup = () => {
@@ -118,6 +119,7 @@ const Markup = () => {
     { url: "products", component: <Products /> },
     { url: "products/add-products", component: <AddProducts /> },
     { url: "products/add-products/:id", component: <AddProducts /> },
+    { url: "products/:id", component: <EveryProduct /> },
 
     //Digital Products
     { url: "digital-products", component: <DigitalProducts /> },

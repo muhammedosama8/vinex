@@ -68,7 +68,7 @@ const Delivery = () => {
 
     const submit = () =>{
         let data = {
-            delivery_possibility: true,
+            delivery_possibility: formData.delivery_possibility,
             delivery_all_area: formData.delivery_all_area,
             cash_in_delivery: parseFloat(formData.cash_in_delivery),
             delivery_fee: parseFloat(formData.delivery_fee),
