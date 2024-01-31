@@ -55,7 +55,7 @@ const Invoice = () =>{
             <title>${Translate[lang]?.invoice}</title>
         </head>
         <body style="direction: ${lang==='en' ? 'ltr' : 'rtl'};">
-        <div style="margin: 0 2rem">
+        <div>
         <div>
             <div style="background-color: rgb(222 222 222 / 21%); border: 1px solid #c3c1c1; border-radius: 12px; padding: 13px; text-align: center">
                 <img src=${logo} alt="logo" style="width: 5rem;" />
@@ -69,8 +69,8 @@ const Invoice = () =>{
                     <p style="margin-bottom: 0.5rem">${Translate[lang].details} ${Translate[lang].product}</p>
                 </div>
                 <div>
-                    <div style="text-align: center; width: 50%; margin-top: 2rem">
-                    <div style="display: flex; justify-content: space-between; border: 1px solid #dedede; padding: 25px">
+                    <div style="text-align: center; width: 50%; margin-top: 1rem">
+                    <div style="display: flex; justify-content: space-between; border: 1px solid #dedede; padding: 15px 25px">
                         <div>
                             <img src=${product?.images?.length ? product?.images[0]?.url : ''} alt="product" style="width: 8rem" />
                         </div>
@@ -84,7 +84,7 @@ const Invoice = () =>{
                     </div>
                 </div>
 
-                <div style="margin-top: 2rem; display: flex; justify-content: space-between ;background-color: rgb(222 222 222 / 21%); border: 1px solid #c3c1c1; border-radius: 12px; padding: 13px;">
+                <div style="margin-top: 1rem; display: flex; justify-content: space-between ;background-color: rgb(222 222 222 / 21%); border: 1px solid #c3c1c1; border-radius: 12px; padding: 13px;">
                     <p style="margin: 0">${Translate[lang].order_id}: ${order?.id}</p>
                     <p style="margin: 0">${Translate[lang].day}: ${order?.day?.split('T')[0]}</p>
                 </div>
