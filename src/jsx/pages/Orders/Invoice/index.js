@@ -89,9 +89,9 @@ const Invoice = () =>{
                     <p style="margin: 0">${Translate[lang].day}: ${order?.day?.split('T')[0]}</p>
                 </div>
 
-                <div style="padding-top: 1.5rem; display: flex">
+                <div style="padding-top: 1rem; display: flex">
                     <div style="width: 33.333333%; padding-left: 1rem ; padding-right: 1rem">
-                            <div style="background-color: #dedede; padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem">
+                            <div style="background-color: #dedede; padding-top: 1rem; padding-bottom: 1rem; padding-left: 1rem ; padding-right: 1rem">
                                 <h4 style="margin: 0">${Translate[lang].details} ${Translate[lang].address}</h4>
                             </div>
                             <div style="background-color: rgb(222 222 222 / 21%); padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem">
@@ -102,7 +102,7 @@ const Invoice = () =>{
                             </div>
                     </div>
                     <div style="width: 66.666666%; padding-left: 1rem ; padding-right: 1rem">
-                            <div style="background-color: #dedede; padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem">
+                            <div style="background-color: #dedede; padding-top: 1rem; padding-bottom: 1rem; padding-left: 1rem ; padding-right: 1rem">
                                 <h4 style="margin: 0">${Translate[lang].details} ${Translate[lang].order}</h4>
                             </div>
                             <div style="background-color: rgb(222 222 222 / 21%); padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem ">

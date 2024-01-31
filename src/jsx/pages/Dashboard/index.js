@@ -3,6 +3,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import AdminService from "../../../services/AdminService";
 import './style.scss'
+import kuwaiCoin from '../../../images/kuwai-coin.png'
 import { Translate } from "../../Enums/Tranlate";
 
 const Home = () => {
@@ -198,7 +199,7 @@ const Home = () => {
                     {formData.totalSales}
                     </span>
                   </div>
-                  <i className='la la-dollar' style={{fontSize: '3rem'}}></i>
+                  <img src={kuwaiCoin} alt='kuwaiCoin' width='48' />
                 </div>
               </div>
             </div>
@@ -213,7 +214,7 @@ const Home = () => {
                     {formData.salesDaily}
                     </span>
                   </div>
-                  <i className='la la-dollar' style={{fontSize: '3rem'}}></i>
+                  <img src={kuwaiCoin} alt='kuwaiCoin' width='48' />
                 </div>
               </div>
             </div>

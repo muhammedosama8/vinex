@@ -316,12 +316,12 @@ const AddProducts = () => {
       toast.error("Upload Images in Cards");
       return;
     }
-    if (customVariant?.length > 0 && customVariant?.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(obj =>
-      Object.values(obj)?.every(value => value === "")
-    )?.includes(true)) {
-      toast.error("Selected at Least One Variant");
-      return;
-    }
+    // if (customVariant?.length > 0 && customVariant?.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(obj =>
+    //   Object.values(obj)?.every(value => value === "")
+    // )?.includes(true)) {
+    //   toast.error("Selected at Least One Variant");
+    //   return;
+    // }
     setLoadning(true);
     let data = {
       name_en: product.name_en,
@@ -1025,7 +1025,7 @@ const AddProducts = () => {
           </Row>
         )}
 
-       {!id ? <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
+       {!id ? <label className="d-block text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
           <input
             type='checkbox' 
             name='images' 

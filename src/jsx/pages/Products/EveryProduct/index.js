@@ -27,7 +27,7 @@ const EveryProduct = () =>{
     const productsService = new ProductsService()
 
     useEffect(()=> {
-        let code = Number(location?.state)
+        let code = location?.state
         setLoading(true)
         productsService.getCustomProducts(code)?.then(res=>{
             if(res?.status === 200){
