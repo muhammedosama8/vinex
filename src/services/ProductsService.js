@@ -20,9 +20,6 @@ export default class ProductsService extends BaseService {
     getAllProducts(params) {
         return http.get(apiEndpoint, {params});
     }
-    getCustomProducts(id){
-        return http.get(`${apiProductCode}/${id}`);
-    }
     getList(params) {
         return http.get(apiGetEndpoint, {params});
     }

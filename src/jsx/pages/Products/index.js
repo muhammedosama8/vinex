@@ -15,7 +15,6 @@ const Products = () =>{
     const [search, setSearch] =useState(null)
     const [loading, setLoading] =useState(false)
     const [indexEdit, setIndexEdit] = useState(null)
-    const [isDeleted, setIsDeleted] =useState(false)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
@@ -45,14 +44,7 @@ const Products = () =>{
               {Translate[lang]?.add} {Translate[lang]?.products}
           </Button>}
         </div>
-        <div className="d-flex align-items-center mb-3 ">
-          <Button variant={isDeleted ? 'secondary' : 'primary'} className='mx-2' onClick={()=> setIsDeleted(false)}>
-            {Translate[lang]?.active}
-          </Button>
-          <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
-            {Translate[lang]?.not_active}
-          </Button>
-        </div>
+        
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
             {loading && <div style={{height: '300px'}}>
@@ -104,7 +96,7 @@ const Products = () =>{
                   service={productsService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
-                  isDeleted={isDeleted}
+                  // isDeleted={isDeleted}
                   setLoading={setLoading}
                   type={'normal'}
                   search={search}

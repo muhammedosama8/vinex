@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Badge, Card, Table, Dropdown, Form  } from "react-bootstrap";
+import { Badge, Card, Table, Dropdown, Form, Button  } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -7,9 +7,10 @@ import ProductsService from "../../../../services/ProductsService";
 import DeleteModal from "../../../common/DeleteModal";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
-import Pagination from "../../../common/Pagination/Pagination";
 import { Translate } from "../../../Enums/Tranlate";
 import CardItem from "./CardItem";
+import CustomProductsService from "../../../../services/CustomProductsService";
+import Pagination from "../../../common/Pagination/Pagination";
 
 const EveryProduct = () =>{
     const [products, setProducts] =useState([])
@@ -24,25 +25,18 @@ const EveryProduct = () =>{
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    const productsService = new ProductsService()
+    const customProductsService = new CustomProductsService()
 
-    useEffect(()=> {
-        let code = location?.state
-        setLoading(true)
-        productsService.getCustomProducts(code)?.then(res=>{
-            if(res?.status === 200){
-                setProducts(res?.data?.meta?.data)
-                if(res?.data?.meta?.data?.length > 0){
-                    setHasData(1)
-                } else{
-                    setHasData(0)
-                }
-            }
-            setLoading(false)
-        })
-    },[shouldUpdate])
-
-    return <Card>
+    return <>
+    <div className="d-flex align-items-center mb-3 ">
+          <Button variant={isDeleted ? 'secondary' : 'primary'} className='mx-2' onClick={()=> setIsDeleted(false)}>
+            {Translate[lang]?.active}
+          </Button>
+          <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
+            {Translate[lang]?.not_active}
+          </Button>
+        </div>
+        <Card>
     <Card.Body className={`${hasData === 0 && 'text-center'} `}>
     {loading && <div style={{height: '300px'}}>
         <Loader />
@@ -91,7 +85,19 @@ const EveryProduct = () =>{
         </tbody>
       </Table>}
       {hasData === 0 && <NoData />}
+      <Pagination
+                  setData={setProducts}
+                  service={customProductsService}
+                  shouldUpdate={shouldUpdate}
+                  setHasData={setHasData}
+                  isDeleted={isDeleted}
+                  setLoading={setLoading}
+                  type={'normal'}
+                  search={search}
+                  id={location?.state}
+                />
     </Card.Body>
   </Card>
+  </>
 }
 export default EveryProduct;

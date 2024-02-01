@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { Translate } from "../../Enums/Tranlate"
 import './style.scss'
 
-const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoading, type, search})=>{
+const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoading, type, search,id})=>{
     const [totalPages, setTotalPages] = useState()
     const [page, setPage] = useState(1)
     const [pageShow, setPageShow] = useState(1)
@@ -20,19 +20,36 @@ const Pagination = ({setData, service,shouldUpdate,isDeleted, setHasData,setLoad
         if(!!type) params['type'] = type
         if(!!search) params['search'] = search
 
-        service?.getList({...params}).then(res=>{
-            if(res?.status === 200){
-                setData([...res.data?.meta?.data]) 
-                let total= Math.ceil(res.data?.meta?.totalLength / 10)
-                setTotalPages(total)
-                if(res.data?.meta?.totalLength > 0){
-                    setHasData(1)
-                } else {
-                    setHasData(0)
+        if(id){
+            service?.getList(id, {...params}).then(res=>{
+                if(res?.status === 200){
+                    setData([...res.data?.meta?.data]) 
+                    let total= Math.ceil(res.data?.meta?.totalLength / 10)
+                    setTotalPages(total)
+                    if(res.data?.meta?.totalLength > 0){
+                        setHasData(1)
+                    } else {
+                        setHasData(0)
+                    }
                 }
-            }
-            setLoading(false)
-        })
+                setLoading(false)
+            })
+        } else{
+            service?.getList({...params}).then(res=>{
+                if(res?.status === 200){
+                    setData([...res.data?.meta?.data]) 
+                    let total= Math.ceil(res.data?.meta?.totalLength / 10)
+                    setTotalPages(total)
+                    if(res.data?.meta?.totalLength > 0){
+                        setHasData(1)
+                    } else {
+                        setHasData(0)
+                    }
+                }
+                setLoading(false)
+            })
+        }
+        
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     },[page, isDeleted, shouldUpdate, search])
 
