@@ -50,6 +50,7 @@ const AddProducts = () => {
   const [id, setId] = useState(null);
   const [loading, setLoadning] = useState(false);
   const [imagesForAll, setImagesForAll] = useState(false);
+  const [hasVariant, setHasVariant] = useState(false);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
   const [brandOptions, setBrandOptions] = useState([]);
   const [subCategoriesOptions, setSubCategoriesOptions] = useState([]);
@@ -100,13 +101,18 @@ const AddProducts = () => {
     if (!!product?.category) {
       adminService.getVariant(product?.category?.id)?.then((res) => {
         if (res?.data?.status === 200) {
+          if(res?.data?.meta.data?.length > 0){
+            setHasVariant(true)
+            setImagesForAll(false)
+          } else {
+            setHasVariant(false)
+            setImagesForAll(true)
+          }
           let custom = res.data?.meta.data?.reduce((result, item) => {
             result[item.name_en] = '';
             return result;
           }, {})
-          if(!id){
-            setCustomVariant([{...custom, quantity: '', images: [{}, {}, {}, {}, {}]}])
-          }
+          if(!id) setCustomVariant([{...custom, quantity: '', images: [{}, {}, {}, {}, {}]}])
           setStaticVariantValue(custom)
           setVariant(res.data?.meta.data);
         }
@@ -156,6 +162,7 @@ const AddProducts = () => {
         if (res?.data?.status === 200) {
           let data = {
             ...response?.product,
+            weight: response?.product.weight || '',
             offerPrice: !!Number(response.product.offerPrice)
               ? response.product.offerPrice
               : "",
@@ -332,21 +339,6 @@ const AddProducts = () => {
       images: product?.images
         ?.filter((res) => !!res?.src)
         ?.map((item) => item?.src),
-      variant: !id ? customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
-        return Object.values(res).filter(item => !!item)?.map(data=>{
-          return {
-            variant_value_id: data?.id,
-                variant_id: data?.variant_id,
-          }
-        })
-      }) : customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
-        return Object.values(res).filter(item => !!item)?.map(data=>{
-          return {
-            variant_value_id: data?.id,
-                variant_id: data?.variant_id,
-          }
-        })
-      })[0],
       dynamic_variant: product?.dynamic_variant?.map((dy) => {
         return {
           dynamic_variant_id: dy?.id,
@@ -366,13 +358,31 @@ const AddProducts = () => {
     if (!!product.brand) data["brand_id"] = product?.brand?.value;
     if (!!product.weight) data["weight"] = product?.weight;
     if(!id) data['all_image']= imagesForAll
-    if(!id) data['variant_data'] = customVariant?.map(({ quantity, images }) => ({ quantity,images }))?.map((res) => {
+    if(!id && hasVariant) data['variant_data'] = customVariant?.map(({ quantity, images }) => ({ quantity,images }))?.map((res) => {
       return {
         images: res?.images?.filter(img=> !!img.src)?.map(img=> img.src),
         amount: Number(res?.quantity),
       };
     })
-    if(!!id) data['amount'] = customVariant[0]?.quantity
+    if(hasVariant){
+      data['variant'] = !id ? customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
+        return Object.values(res).filter(item => !!item)?.map(data=>{
+          return {
+            variant_value_id: data?.id,
+                variant_id: data?.variant_id,
+          }
+        })
+      }) : customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
+        return Object.values(res).filter(item => !!item)?.map(data=>{
+          return {
+            variant_value_id: data?.id,
+                variant_id: data?.variant_id,
+          }
+        })
+      })[0]
+    }
+    if(!!id && hasVariant) data['amount'] = customVariant[0]?.quantity
+    if(!hasVariant) data['amount']= product.amount
 
     if (!!id) {
       productsService.update(id, data)?.then((res) => {
@@ -634,7 +644,7 @@ const AddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
-          {/* <Col md={6} sm={6} className="mb-3">
+          {!hasVariant && <Col md={6} sm={6} className="mb-3">
             <AvField
               label={`${Translate[lang]?.quantity}*`}
               type="number"
@@ -651,7 +661,7 @@ const AddProducts = () => {
               value={product.amount}
               onChange={(e) => handlerText(e)}
             />
-          </Col> */}
+          </Col>}
           <Col md={6} sm={6} className="mb-3">
             <AvField
               label={Translate[lang]?.weight}
@@ -1025,7 +1035,7 @@ const AddProducts = () => {
           </Row>
         )}
 
-       {!id ? <label className="d-block text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
+       {(!id && hasVariant) ? <label className="d-block text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
           <input
             type='checkbox' 
             name='images' 
