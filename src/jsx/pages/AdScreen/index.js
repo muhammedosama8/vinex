@@ -26,7 +26,7 @@ const AdScreen = () =>{
 
     useEffect(()=>{
         setLoading(true)
-        productsService?.getList()?.then(res=>{
+        productsService?.getList({isDeleted: false})?.then(res=>{
             if(res?.status === 200){
                 let products = res.data?.meta?.data?.map(prod=>{
                     return{
