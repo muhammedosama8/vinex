@@ -31,34 +31,34 @@ const Invoice = () =>{
 
     const print = () => {
         const printWindow = window.open("", "_blank");
-        let itemsText = ``;
         let productsCode = ``;
-        for (let i = 0; i < product?.variant?.length; i++) {
-            if(product?.variant[i].variant?.name_en === 'color'){
-                itemsText += `<p style="margin-bottom: 0.5rem">
-                ${lang === 'en' ? product?.variant[i].variant?.name_en : product?.variant[i].variant?.name_ar}: <span style="
-                    background: ${product?.variant[i].variant_value?.value_en};
-                    height: 24px;
-                    width: 24px;
-                    display: inline-block;
-                    margin: 0 4px;
-                "></span>
-                </p>`
-            } else{
-                itemsText += `<p style="margin-bottom: 0.5rem">
-                ${lang === 'en' ? product?.variant[i].variant?.name_en : product?.variant[i].variant?.name_ar}: ${lang === 'en' ? product?.variant[i].variant_value?.value_en : product?.variant[i].variant_value?.value_ar}
-                </p>`
-            }
-        }
         for(let i = 0; i < order.sub_carts?.length; i++){
-            productsCode += `<div style="text-align: center; width: 40%; margin-top: 1rem">
+            let itemsText = ``;
+            for (let a = 0; a < order.sub_carts[i]?.product?.variant?.length; a++) {
+                if(order.sub_carts[i]?.product?.variant[a]?.name_en === 'color'){
+                    itemsText += `<p style="margin-bottom: 0.5rem">
+                    ${lang === 'en' ? order.sub_carts[i]?.product?.variant[a]?.variant?.name_en : order.sub_carts[i]?.product?.variant[a]?.variant?.name_ar}: <span style="
+                        background: ${order.sub_carts[i]?.product?.variant[a].variant_value?.value_en};
+                        height: 24px;
+                        width: 24px;
+                        display: inline-block;
+                        margin: 0 4px;
+                    "></span>
+                    </p>`
+                } else{
+                    itemsText += `<p style="margin-bottom: 0.5rem">
+                    ${lang === 'en' ? order.sub_carts[i]?.product?.variant[a].variant?.name_en : order.sub_carts[i]?.product?.variant[a].variant?.name_ar}: ${lang === 'en' ? order.sub_carts[i]?.product?.variant[a].variant_value?.value_en : order.sub_carts[i]?.product?.variant[a].variant_value?.value_ar}
+                    </p>`
+                }
+            }
+            productsCode += `<div style="text-align: center; margin-top: 1rem">
                 <div style="display: flex; justify-content: space-between; border: 1px solid #dedede; padding: 15px 25px">
                 <div>
                     <img src=${order.sub_carts[i]?.product?.images?.length ? order.sub_carts[i]?.product?.images[0]?.url : ''} alt="product" style="width: 8rem" />
                 </div>
                 <div className="details">
                     <p style="margin-bottom: 0.5rem">${lang === 'en' ? order.sub_carts[i]?.product?.name_en : order.sub_carts[i]?.product?.name_ar}</p>
-                    <p style="margin-bottom: 0.5rem">${Translate[lang].quantity}: ${order.sub_carts[i]?.product?.amount}</p>
+                    <p style="margin-bottom: 0.5rem">${Translate[lang].quantity}: ${order.sub_carts[i]?.amount}</p>
                     <p style="margin-bottom: 0.5rem">${Translate[lang].price}: ${order.sub_carts[i]?.product?.price}</p>
                     ${itemsText}
                 </div>
@@ -84,7 +84,7 @@ const Invoice = () =>{
                 <div style="text-align: center">
                     <p style="margin-bottom: 0.5rem">${Translate[lang].details} ${Translate[lang].product}</p>
                 </div>
-                <div style="display: flex">
+                <div style="display: grid; grid-template-columns: auto auto">
                     ${productsCode}
                 </div>
 
@@ -95,7 +95,7 @@ const Invoice = () =>{
 
                 <div style="padding-top: 1rem; display: flex">
                     <div style="width: 33.333333%; padding-left: 1rem ; padding-right: 1rem">
-                            <div style="background-color: #dedede; padding-top: 1rem; padding-bottom: 1rem; padding-left: 1rem ; padding-right: 1rem">
+                            <div style="background-color: #dedede; padding-bottom: .5rem; padding-left: 1rem ; padding-right: 1rem">
                                 <h4 style="margin: 0">${Translate[lang].details} ${Translate[lang].address}</h4>
                             </div>
                             <div style="background-color: rgb(222 222 222 / 21%); padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem">
@@ -108,7 +108,7 @@ const Invoice = () =>{
                             </div>
                     </div>
                     <div style="width: 66.666666%; padding-left: 1rem ; padding-right: 1rem">
-                            <div style="background-color: #dedede; padding-top: 1rem; padding-bottom: 1rem; padding-left: 1rem ; padding-right: 1rem">
+                            <div style="background-color: #dedede; padding-bottom: .5rem; padding-left: 1rem ; padding-right: 1rem">
                                 <h4 style="margin: 0">${Translate[lang].details} ${Translate[lang].order}</h4>
                             </div>
                             <div style="background-color: rgb(222 222 222 / 21%); padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem ">
@@ -116,7 +116,6 @@ const Invoice = () =>{
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].name}: ${order?.user?.f_name} {order?.user?.l_name}</p>
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].phone}: ${order?.user?.phone}</p>
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].delivery_day}: ${order?.day?.split('T')[0]}</p>
-                                <p style="margin-bottom: 0.5rem">${lang === 'en' ? product?.description_en : product?.description_ar}</p>
                             </div>
                     </div>
                 </div>
@@ -158,14 +157,14 @@ const Invoice = () =>{
                 </div>
                 <Row>
                     {location?.state?.sub_carts?.map(product=>{
-                        return <Col md={4} sm={6}>
+                        return <Col lg={4} md={6} sm={12}>
                         <div className="product-card d-flex p-3 justify-content-between align-items-center">
                             <div className="prod-img">
                                 <img src={product?.product?.images?.length ? product?.product?.images[0]?.url : ''} alt="product" style={{width: '8rem'}} />
                             </div>
                             <div className="details">
                                 <p className="mb-1">{lang === 'en' ? product?.product?.name_en : product?.product?.name_ar}</p>
-                                <p className="mb-1">{Translate[lang].quantity}: {product?.product?.amount}</p>
+                                <p className="mb-1">{Translate[lang].quantity}: {product?.amount}</p>
                                 <p className="mb-1">{Translate[lang].price}: {product?.product?.price}</p>
                                 {product?.product?.variant?.map(res=>{
                                     if(res.variant?.name_en === 'color'){
@@ -215,7 +214,8 @@ const Invoice = () =>{
                                 <p className="mb-1">{Translate[lang].name}: {order?.user?.f_name} {order?.user?.l_name}</p>
                                 <p className="mb-1">{Translate[lang].phone}: {order?.user?.phone}</p>
                                 <p className="mb-1">{Translate[lang].delivery_day}: {order?.day?.split('T')[0]}</p>
-                                <p className="mb-1">{lang === 'en' ? product?.description_en : product?.description_ar}</p>
+                                {/* <p className="mb-1">{lang === 'en' ? product?.description_en : product?.description_ar}</p> */}
+                                {/* <p style="margin-bottom: 0.5rem">${lang === 'en' ? product?.description_en : product?.description_ar}</p> */}
                             </div>
                     </Col>
                 </Row>
