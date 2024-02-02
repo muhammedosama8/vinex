@@ -6,7 +6,7 @@ import DeleteModal from "../../../common/DeleteModal";
 import { Translate } from "../../../Enums/Tranlate";
 import AddressModal from "./AddressModal";
 
-const CardItem = ({ item, index, setModal, setItem }) => {
+const CardItem = ({ item, index, setModal, setItem, selectedOrders, setSelectedOrders }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const Auth = useSelector((state) => state.auth?.auth);
   const lang = useSelector((state) => state.auth?.lang);
@@ -25,6 +25,18 @@ const CardItem = ({ item, index, setModal, setItem }) => {
   return (
     <tr key={index} className="text-center">
       <td>
+        <input 
+          type='checkbox' 
+          className="mx-3"
+          onClick={(e)=> {
+            if(e.target.checked){
+              setSelectedOrders([...selectedOrders, item])
+            } else {
+              let filter = selectedOrders?.filter(res=> res.id !== item.id)
+              setSelectedOrders(filter)
+            }
+          }}
+        />
         <strong>{item.id}</strong>
       </td>
       <td>
