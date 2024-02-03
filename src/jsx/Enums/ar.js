@@ -208,7 +208,7 @@ export const Arabic = {
   faqs: "الأسئلة الشائعة",
   privacy: "الخصوصية",
   address_name: "العنوان",
-  block: "كتلة",
+  block: "قطعة",
   street: "الشارع",
   area: "المنطقة",
   first: "أولا",

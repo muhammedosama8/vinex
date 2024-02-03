@@ -113,7 +113,7 @@ const Invoice = () =>{
                             </div>
                             <div style="background-color: rgb(222 222 222 / 21%); padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem ">
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].total_price}: ${order?.total}</p>
-                                <p style="margin-bottom: 0.5rem">${Translate[lang].name}: ${order?.user?.f_name} {order?.user?.l_name}</p>
+                                <p style="margin-bottom: 0.5rem">${Translate[lang].name}: ${order?.user?.f_name} ${order?.user?.l_name}</p>
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].phone}: ${order?.user?.phone}</p>
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].delivery_day}: ${order?.day?.split('T')[0]}</p>
                             </div>

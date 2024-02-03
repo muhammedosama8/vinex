@@ -194,7 +194,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang]?.total_sales} </p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.total_sales} ({Translate[lang]?.delivered})</p>
                     <span className="fs-35 text-black font-w600">
                     {formData.totalSales}
                     </span>
@@ -209,7 +209,7 @@ const Home = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <div style={{ textAlign: lang=== 'ar' ? 'right' : 'left'}}>
-                    <p className="fs-14 mb-1">{Translate[lang]?.sales} ({Translate[lang]?.daily})</p>
+                    <p className="fs-14 mb-1">{Translate[lang]?.sales} ({Translate[lang]?.ordered})</p>
                     <span className="fs-35 text-black font-w600">
                     {formData.salesDaily}
                     </span>
