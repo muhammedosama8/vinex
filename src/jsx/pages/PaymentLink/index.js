@@ -23,9 +23,11 @@ const PaymentLink = () => {
     total_price: '',
     client_name: "",
     country_code: "",
-    phone: ""
+    phone: "",
+    paymentType: ""
   });
   const [countriesOptions, setCountriesOptions] = useState([])
+  const [typesOptions, setTypesOptions] = useState([])
   const adminBuyService = new AdminBuyService();
   const countryiesService = new CountryiesService()
   const lang = useSelector((state) => state.auth.lang);
@@ -46,11 +48,22 @@ const PaymentLink = () => {
    })
   },[])
 
+  useEffect(()=>{
+    setTypesOptions([
+      {label: "Knet", value: 'knet'},
+      {label: 'CC', value: 'cc'},
+      {label: 'Samsung Pay', value: 'samsung-pay'},
+      {label: 'Apple Pay', value: 'apple-pay'},
+      {label: 'Google Pay', value: 'google-pay'},
+    ])
+  }, [])
+
   const submit = () => {
     let data = { 
       ...formData ,
       country_code: formData.country_code.country_code,
-      total_price: Number(formData.total_price)
+      total_price: Number(formData.total_price),
+      paymentType: formData?.paymentType?.value
     };
     setLoading(true);
     adminBuyService.create(data).then((res) => {
@@ -157,7 +170,17 @@ const PaymentLink = () => {
                 onChange={(e) => handleFormData(e)}
               />
             </Col>
-            <Col md={6} className='d-flex align-items-baseline justify-content-end'>
+            <Col md={3}>
+              <label className="text-label">{Translate[lang]?.type}</label>
+                  <Select
+                     value={formData?.paymentType}
+                     name="paymentType"
+                     placeholder={Translate[lang]?.select}
+                     options={typesOptions}
+                     onChange={(e)=> setFormData({...formData, paymentType: e})}
+                  />
+            </Col>
+            <Col md={3} className='d-flex align-items-baseline justify-content-end'>
               <Button
                 variant="primary"
                 loading={loading}
