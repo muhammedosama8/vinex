@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../../common/DeleteModal";
 import { Translate } from "../../../Enums/Tranlate";
 import AddressModal from "./AddressModal";
+import OrdersService from "../../../../services/OrdersService";
 
 const CardItem = ({ item, index, setModal, setItem, selectedOrders, setSelectedOrders }) => {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -13,6 +14,7 @@ const CardItem = ({ item, index, setModal, setItem, selectedOrders, setSelectedO
   const [detailsModal, setDetailsModal] = useState(false)
   const isExist = (data) => Auth?.admin?.admin_roles?.includes(data);
   const navigate = useNavigate()
+  const ordersService = new OrdersService();
 
   const changeStatusToggle = () => {
     if (!isExist("order")) {
@@ -126,6 +128,7 @@ const CardItem = ({ item, index, setModal, setItem, selectedOrders, setSelectedO
           open={deleteModal}
           titleMsg={item.customer_name}
           deletedItem={item.id}
+          modelService={ordersService}
           onCloseModal={setDeleteModal}
         />
       )}
